@@ -11,8 +11,11 @@
 <header class="site-header">
     <div class="site-header-inner">
         <div class="site-logo">
-            <a href="<?php echo esc_url(home_url('/')); ?>">
-                Fin<span style="color:#FF1F1F;">Dir</span>
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo-link">
+                <img
+                        src="<?php echo esc_url( get_template_directory_uri() . '/assets/img/logo-vashfindir.svg' ); ?>"
+                        alt="Ваш ФинДиректор"
+                >
             </a>
         </div>
         <nav class="main-nav">
