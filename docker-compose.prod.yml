@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: fin_dir_traefik
+    restart: always
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.le.acme.tlschallenge=true"
+      - "--certificatesresolvers.le.acme.email=${TRAEFIK_ACME_EMAIL}"
+      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik_letsencrypt:/letsencrypt"
+    networks:
+      - web
+
+  db:
+    image: mariadb:11
+    container_name: fin_dir_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - internal
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: fin_dir_wp
+    restart: always
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
+      WORDPRESS_TABLE_PREFIX: ${WP_TABLE_PREFIX}
+    volumes:
+      # Твой wp-content из репозитория
+      - ./wp-content:/var/www/html/wp-content
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fin-dir.rule=Host(`${DOMAIN_MAIN}`,`${DOMAIN_WWW}`)"
+      - "traefik.http.routers.fin-dir.entrypoints=websecure"
+      - "traefik.http.routers.fin-dir.tls.certresolver=le"
+      # редирект http -> https
+      - "traefik.http.routers.fin-dir-http.rule=Host(`${DOMAIN_MAIN}`,`${DOMAIN_WWW}`)"
+      - "traefik.http.routers.fin-dir-http.entrypoints=web"
+      - "traefik.http.routers.fin-dir-http.middlewares=fin-dir-https-redirect"
+      - "traefik.http.middlewares.fin-dir-https-redirect.redirectscheme.scheme=https"
+    networks:
+      - web
+      - internal
+
+volumes:
+  db_data:
+  traefik_letsencrypt:
+
+networks:
+  web:
+    external: false
+  internal:
+    external: false

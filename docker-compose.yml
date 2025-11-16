@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  db:
+    image: mariadb:11
+    container_name: fin_dir_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306" # чтобы не конфликтовать с локальным MySQL (если есть)
+
+  wordpress:
+    image: wordpress:php8.2-apache
+    container_name: fin_dir_wp
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "8000:80"   # сайт будет доступен на http://localhost:8000
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_pass
+    volumes:
+      # Монтируем только wp-content, ядро WP живёт внутри контейнера
+      - ./wp-content:/var/www/html/wp-content
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: fin_dir_pma
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "8080:80"   # phpMyAdmin будет на http://localhost:8080
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root_pass
+
+volumes:
+  db_data:
