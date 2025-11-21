@@ -6,13 +6,14 @@ services:
     container_name: vashfindir_db
     restart: always
     environment:
-      # Лучше сразу использовать MARIADB_*
-      MARIADB_DATABASE: vashfindir_wp
-      MARIADB_USER: vashfindir_user
+      # НЕ секретные вещи — можно захардкодить
+      MYSQL_DATABASE: vashfindir_wp
+      MYSQL_USER: vashfindir_user
 
-      # Секреты — через переменные окружения
-      MARIADB_PASSWORD: ${VF_DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
+      # Секреты — только через переменные окружения
+      # Эти переменные должны быть заданы снаружи (в shell, в GitHub Actions и т.д.)
+      MYSQL_PASSWORD: ${VF_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -51,6 +52,7 @@ services:
     networks:
       - web
       - internal
+
 
 networks:
   # Внешняя сеть Traefik — имя должно совпадать с тем, что создаёт docker-compose Traefik.
