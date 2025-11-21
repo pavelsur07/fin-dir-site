@@ -47,6 +47,7 @@ services:
       - "traefik.http.routers.vf-http.entrypoints=web"
       - "traefik.http.routers.vf-http.middlewares=vf-https-redirect"
       - "traefik.http.middlewares.vf-https-redirect.redirectscheme.scheme=https"
+
     networks:
       - web
       - internal
