@@ -12,7 +12,7 @@ services:
 
       # Секреты — только через переменные окружения
       # Эти переменные должны быть заданы снаружи (в shell, в GitHub Actions и т.д.)
-      MYSQL_PASSWORD: ${VFR_DB_PASSWORD}
+      MYSQL_PASSWORD: ${VF_DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
