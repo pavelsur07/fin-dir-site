@@ -1,18 +1,15 @@
-name: Deploy theme to production
+name: Deploy vashfindir to production
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Deploy via SSH (git pull on server)
+      - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -21,5 +18,5 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
-            git fetch origin main
-            git reset --hard origin/main
+            git pull
+            docker-compose -f docker-compose.prod.yml --env-file .env.prod up -d

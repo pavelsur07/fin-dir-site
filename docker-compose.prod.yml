@@ -1,36 +1,19 @@
 version: "3.9"
 
 services:
-  traefik:
-    image: traefik:v3.1
-    container_name: fin_dir_traefik
-    restart: always
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.le.acme.tlschallenge=true"
-      - "--certificatesresolvers.le.acme.email=${TRAEFIK_ACME_EMAIL}"
-      - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "traefik_letsencrypt:/letsencrypt"
-    networks:
-      - web
-
   db:
     image: mariadb:11
-    container_name: fin_dir_db
+    container_name: vashfindir_db
     restart: always
     environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      # НЕ секретные вещи — можно захардкодить
+      MYSQL_DATABASE: vashfindir_wp
+      MYSQL_USER: vashfindir_user
+
+      # Секреты — только через переменные окружения
+      # Эти переменные должны быть заданы снаружи (в shell, в GitHub Actions и т.д.)
+      MYSQL_PASSWORD: ${VFR_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -38,39 +21,52 @@ services:
 
   wordpress:
     image: wordpress:php8.2-apache
-    container_name: fin_dir_wp
+    container_name: vashfindir_wp
     restart: always
     depends_on:
       - db
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: ${DB_NAME}
-      WORDPRESS_DB_USER: ${DB_USER}
-      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
-      WORDPRESS_TABLE_PREFIX: ${WP_TABLE_PREFIX}
+
+      # Те же имя базы и юзер, что в db
+      WORDPRESS_DB_NAME: vashfindir_wp
+      WORDPRESS_DB_USER: vashfindir_user
+
+      # Пароль БД — из переменной окружения (тот же, что MYSQL_PASSWORD)
+      WORDPRESS_DB_PASSWORD: ${VF_DB_PASSWORD}
+
+      # Не секрет — можно захардкодить
+      WORDPRESS_TABLE_PREFIX: wp_
     volumes:
-      # Твой wp-content из репозитория
+      # wp-content берём из репозитория (тема, плагины и т.п.)
       - ./wp-content:/var/www/html/wp-content
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fin-dir.rule=Host(`${DOMAIN_MAIN}`,`${DOMAIN_WWW}`)"
-      - "traefik.http.routers.fin-dir.entrypoints=websecure"
-      - "traefik.http.routers.fin-dir.tls.certresolver=le"
-      # редирект http -> https
-      - "traefik.http.routers.fin-dir-http.rule=Host(`${DOMAIN_MAIN}`,`${DOMAIN_WWW}`)"
-      - "traefik.http.routers.fin-dir-http.entrypoints=web"
-      - "traefik.http.routers.fin-dir-http.middlewares=fin-dir-https-redirect"
-      - "traefik.http.middlewares.fin-dir-https-redirect.redirectscheme.scheme=https"
+
+      # HTTPS-роутер для vashfindir.ru
+      - "traefik.http.routers.vashfindir.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
+      - "traefik.http.routers.vashfindir.entrypoints=websecure"
+      - "traefik.http.routers.vashfindir.tls.certresolver=le"
+
+      # HTTP -> HTTPS (редирект)
+      - "traefik.http.routers.vashfindir-http.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
+      - "traefik.http.routers.vashfindir-http.entrypoints=web"
+      - "traefik.http.routers.vashfindir-http.middlewares=vashfindir-https-redirect"
+      - "traefik.http.middlewares.vashfindir-https-redirect.redirectscheme.scheme=https"
     networks:
       - web
       - internal
 
-volumes:
-  db_data:
-  traefik_letsencrypt:
-
 networks:
+  # Внешняя сеть Traefik — имя должно совпадать с тем, что создаёт docker-compose Traefik.
+  # Если у тебя compose-проект Traefik называется "traefik", то сеть будет "traefik_web".
   web:
-    external: false
+    external: true
+    name: traefik_web
+
+  # Внутренняя сеть между WP и БД
   internal:
     external: false
+
+volumes:
+  db_data:

@@ -1,6 +1,6 @@
 <footer class="site-footer">
     <div class="site-footer-inner">
-        © <?php echo date('Y'); ?> FinDir — сервис финансового учёта для бизнеса.
+        © <?php echo date('Y'); ?> Ваш ФинДиректор — сервис финансового учёта для бизнеса.
     </div>
 </footer>
 
