@@ -6,14 +6,13 @@ services:
     container_name: vashfindir_db
     restart: always
     environment:
-      # НЕ секретные вещи — можно захардкодить
-      MYSQL_DATABASE: vashfindir_wp
-      MYSQL_USER: vashfindir_user
+      # Лучше сразу использовать MARIADB_*
+      MARIADB_DATABASE: vashfindir_wp
+      MARIADB_USER: vashfindir_user
 
-      # Секреты — только через переменные окружения
-      # Эти переменные должны быть заданы снаружи (в shell, в GitHub Actions и т.д.)
-      MYSQL_PASSWORD: ${VF_DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
+      # Секреты — через переменные окружения
+      MARIADB_PASSWORD: ${VF_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
