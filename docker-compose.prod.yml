@@ -35,17 +35,15 @@ services:
       - ./wp-content:/var/www/html/wp-content
     labels:
       - "traefik.enable=true"
-
-      # ВАЖНО: явно указываем докер-сеть Traefik
       - "traefik.docker.network=traefik_web"
 
       # HTTPS-роутер
-      - "traefik.http.routers.vf.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
+      - "traefik.http.routers.vf.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf.entrypoints=websecure"
       - "traefik.http.routers.vf.tls.certresolver=le"
 
       # HTTP → HTTPS
-      - "traefik.http.routers.vf-http.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
+      - "traefik.http.routers.vf-http.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf-http.entrypoints=web"
       - "traefik.http.routers.vf-http.middlewares=vf-https-redirect"
       - "traefik.http.middlewares.vf-https-redirect.redirectscheme.scheme=https"
