@@ -2,7 +2,7 @@ name: Deploy vashfindir to production
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "main" ]
   workflow_dispatch:
 
 jobs:
@@ -20,12 +20,18 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
 
-            # Обновляем код из GitHub (репозиторий уже один раз склонирован в /opt/vashfindir)
+            # Обновляем код
             git pull
 
-            # Прокидываем пароли БД в окружение
+            # Прокидываем секреты БД
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
 
-            # Поднимаем / перезапускаем прод-стек
+            # 1) Гасим стек, чтобы не было режима "recreate"
+            docker-compose -f docker-compose.prod.yml down || true
+
+            # 2) На всякий случай удаляем контейнеры, если остались битые
+            docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
+
+            # 3) Чистый старт
             docker-compose -f docker-compose.prod.yml up -d
