@@ -26,32 +26,28 @@ services:
       - db
     environment:
       WORDPRESS_DB_HOST: db:3306
-
-      # Те же имя базы и юзер, что в db
       WORDPRESS_DB_NAME: vashfindir_wp
       WORDPRESS_DB_USER: vashfindir_user
-
-      # Пароль БД — из переменной окружения (тот же, что MYSQL_PASSWORD)
       WORDPRESS_DB_PASSWORD: ${VF_DB_PASSWORD}
-
-      # Не секрет — можно захардкодить
       WORDPRESS_TABLE_PREFIX: wp_
     volumes:
-      # wp-content берём из репозитория (тема, плагины и т.п.)
       - ./wp-content:/var/www/html/wp-content
     labels:
       - "traefik.enable=true"
 
-      # HTTPS-роутер для vashfindir.ru
-      - "traefik.http.routers.vashfindir.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
-      - "traefik.http.routers.vashfindir.entrypoints=websecure"
-      - "traefik.http.routers.vashfindir.tls.certresolver=le"
+      # ВАЖНО: явно указываем докер-сеть Traefik
+      - "traefik.docker.network=traefik_web"
 
-      # HTTP -> HTTPS (редирект)
-      - "traefik.http.routers.vashfindir-http.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
-      - "traefik.http.routers.vashfindir-http.entrypoints=web"
-      - "traefik.http.routers.vashfindir-http.middlewares=vashfindir-https-redirect"
-      - "traefik.http.middlewares.vashfindir-https-redirect.redirectscheme.scheme=https"
+      # HTTPS-роутер
+      - "traefik.http.routers.vf.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
+      - "traefik.http.routers.vf.entrypoints=websecure"
+      - "traefik.http.routers.vf.tls.certresolver=le"
+
+      # HTTP → HTTPS
+      - "traefik.http.routers.vf-http.rule=Host(`vashfindir.ru`,`www.vashfindir.ru`)"
+      - "traefik.http.routers.vf-http.entrypoints=web"
+      - "traefik.http.routers.vf-http.middlewares=vf-https-redirect"
+      - "traefik.http.middlewares.vf-https-redirect.redirectscheme.scheme=https"
     networks:
       - web
       - internal
