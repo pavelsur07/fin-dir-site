@@ -5,6 +5,7 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <?php wp_head(); ?>
+
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
@@ -16,12 +17,13 @@
 
         ym(105455340, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
     </script>
-    <!--<noscript><div><img src="https://mc.yandex.ru/watch/105455340" style="position:absolute; left:-9999px;" alt="" /></div></noscript>-->
+    <noscript><div><img src="https://mc.yandex.ru/watch/105455340" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
+
 </head>
 <body <?php body_class(); ?>>
 <!-- Yandex.Metrika counter -->
-    <noscript><div><img src="https://mc.yandex.ru/watch/105455340" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!--<noscript><div><img src="https://mc.yandex.ru/watch/105455340" style="position:absolute; left:-9999px;" alt="" /></div></noscript>-->
 <!-- /Yandex.Metrika counter -->
 
 <header class="site-header">
