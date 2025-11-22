@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <?php wp_head(); ?>
 
-
+    <meta name="yandex-verification" content="dcb00aeaeb0154b8" />
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
