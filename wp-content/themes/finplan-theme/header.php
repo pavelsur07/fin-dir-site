@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <?php wp_head(); ?>
 
+
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function(m,e,t,r,i,k,a){
@@ -15,16 +16,13 @@
             k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
         })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105455340', 'ym');
 
-        ym(105455340, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+        ym(105455340, 'init', {ssr:true, webvisor:true, clickmap:true, accurateTrackBounce:true, trackLinks:true});
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/105455340" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
 
 </head>
 <body <?php body_class(); ?>>
-<!-- Yandex.Metrika counter -->
-    <!--<noscript><div><img src="https://mc.yandex.ru/watch/105455340" style="position:absolute; left:-9999px;" alt="" /></div></noscript>-->
-<!-- /Yandex.Metrika counter -->
 
 <header class="site-header">
     <div class="site-header-inner">
