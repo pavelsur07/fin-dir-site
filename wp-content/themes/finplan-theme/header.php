@@ -25,7 +25,7 @@
 <body <?php body_class(); ?>>
 
 <header class="site-header">
-    <div class="site-header-inner">
+    <div class="site-header-inner container">
         <div class="site-logo">
             <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo-link">
                 <img
@@ -43,7 +43,7 @@
                 'items_wrap'     => '%3$s', // печатаем только <li>...</li>
             ]);
             ?>
-            <a href="#demo" class="btn-primary">Запросить разбор</a>
+            <a href="#cta-consult" class="btn-primary">Бесплатная диагностика</a>
         </nav>
     </div>
 </header>
