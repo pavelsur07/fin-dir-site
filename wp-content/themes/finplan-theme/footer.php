@@ -25,6 +25,10 @@
         </div>
     </div>
 </footer>
+<script async src="https://app.conwix.ru/webchat/widget.js"
+        data-site-key="kj18AUv2ZEEe-CIyAZqnV2my"
+        data-api-base="https://app.conwix.ru">
+</script>
 
 <?php wp_footer(); ?>
 </body>
