@@ -288,7 +288,7 @@ get_header();
             </div>
         </section>
 
-        <!-- ЭКРАН 6: CTA-повтор (консультация) -->
+        <!-- ЭКРАН 6: CTA-повтор (консультация) c формой для отправки в conwix -->
         <section id="cta-consult" class="page-section section-dark">
             <div class="container">
                 <div class="row g-4 align-items-center">
@@ -310,6 +310,7 @@ get_header();
                             сначала разбираемся в вашей ситуации.
                         </p>
                     </div>
+
                     <div class="col-lg-5 offset-lg-1">
                         <div class="card card-soft border-0">
                             <div class="card-body">
@@ -317,23 +318,67 @@ get_header();
                                 <p class="small text-muted mb-3">
                                     Запишем вас на удобное время и уточним детали бизнеса.
                                 </p>
-                                <form>
-                                    <div class="mb-3">
-                                        <label class="form-label">Имя</label>
-                                        <input type="text" class="form-control" placeholder="Как к вам обращаться?">
+
+                                <!-- Форма Conwix во встроенном дизайне -->
+                                <form
+                                        action="https://app.conwix.ru/api/crm/web-forms/C9oADtHY-SbZJcG3VXdAMqgZ/submit"
+                                        method="post"
+                                        class="vf-lead-form"
+                                >
+                                    <!-- UTM + служебные поля -->
+                                    <input type="hidden" name="page_url" value="">
+                                    <input type="hidden" name="utm_source" value="">
+                                    <input type="hidden" name="utm_medium" value="">
+                                    <input type="hidden" name="utm_campaign" value="">
+
+                                    <!-- Honeypot: скрытое поле для ботов -->
+                                    <div style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+                                        <label>
+                                            Не заполняйте это поле
+                                            <input type="text" name="_hpt" tabindex="-1" autocomplete="off">
+                                        </label>
                                     </div>
+
                                     <div class="mb-3">
-                                        <label class="form-label">Телефон / Telegram</label>
-                                        <input type="text" class="form-control" placeholder="+7… или @username">
+                                        <label class="form-label" for="lead-name">Имя*</label>
+                                        <input
+                                                id="lead-name"
+                                                class="form-control"
+                                                type="text"
+                                                name="name"
+                                                placeholder="Как к вам обращаться?"
+                                                required
+                                        >
                                     </div>
+
                                     <div class="mb-3">
-                                        <label class="form-label">Комментарий</label>
-                                        <textarea class="form-control" rows="2" placeholder="Коротко: в чём сейчас главная боль по финансам?"></textarea>
+                                        <label class="form-label" for="lead-phone">Телефон / Telegram*</label>
+                                        <input
+                                                id="lead-phone"
+                                                class="form-control"
+                                                type="tel"
+                                                name="phone"
+                                                placeholder="+7… или @username"
+                                                required
+                                        >
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label" for="lead-comment">Комментарий</label>
+                                        <textarea
+                                                id="lead-comment"
+                                                class="form-control"
+                                                name="comment"
+                                                rows="2"
+                                                placeholder="Коротко: в чём сейчас главная боль по финансам?"
+                                        ></textarea>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary w-100">
                                         Записаться на консультацию
                                     </button>
                                 </form>
+                                <!-- /Форма Conwix -->
                             </div>
                         </div>
                     </div>
@@ -491,6 +536,111 @@ get_header();
                 </div>
             </div>
         </section>
+
+        <script>
+            (function () {
+                var f = document.querySelector('.vf-lead-form');
+                if (!f) return;
+
+                var params = new URLSearchParams(window.location.search);
+                var pageUrlInput = f.querySelector('input[name="page_url"]');
+                if (pageUrlInput) {
+                    pageUrlInput.value = window.location.href;
+                }
+                ['utm_source','utm_medium','utm_campaign'].forEach(function (k) {
+                    var input = f.querySelector('input[name="'+k+'"]');
+                    if (!input) return;
+                    var v = params.get(k);
+                    if (v) input.value = v;
+                });
+
+                if (typeof window.fetch !== 'function') {
+                    return;
+                }
+
+                function ensureMessageContainers() {
+                    var successBox = f.querySelector('.vf-lead-form-success');
+                    var errorBox = f.querySelector('.vf-lead-form-error');
+
+                    if (!successBox) {
+                        successBox = document.createElement('div');
+                        successBox.className = 'vf-lead-form-success';
+                        successBox.style.marginTop = '8px';
+                        successBox.style.fontSize = '14px';
+                        successBox.style.color = '#059669';
+                        f.appendChild(successBox);
+                    }
+
+                    if (!errorBox) {
+                        errorBox = document.createElement('div');
+                        errorBox.className = 'vf-lead-form-error';
+                        errorBox.style.marginTop = '4px';
+                        errorBox.style.fontSize = '13px';
+                        errorBox.style.color = '#dc2626';
+                        f.appendChild(errorBox);
+                    }
+
+                    return { successBox: successBox, errorBox: errorBox };
+                }
+
+                f.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    var containers = ensureMessageContainers();
+                    var successBox = containers.successBox;
+                    var errorBox = containers.errorBox;
+
+                    successBox.textContent = '';
+                    errorBox.textContent = '';
+
+                    var submitBtn = f.querySelector('button[type="submit"]');
+                    var originalText = submitBtn ? submitBtn.textContent : null;
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Отправка...';
+                    }
+
+                    var formData = new FormData(f);
+
+                    fetch(f.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(function (response) {
+                            return response.json().catch(function () {
+                                throw new Error('Invalid JSON response');
+                            });
+                        })
+                        .then(function (data) {
+                            if (data && data.success) {
+                                if (data.redirectUrl) {
+                                    window.location.href = data.redirectUrl;
+                                    return;
+                                }
+                                var message = data.message || 'Спасибо! Заявка отправлена.';
+                                successBox.textContent = message;
+                                errorBox.textContent = '';
+                                f.reset();
+                            } else {
+                                var errMsg = (data && data.error) ? data.error : 'Не удалось отправить форму. Попробуйте ещё раз.';
+                                errorBox.textContent = errMsg;
+                            }
+                        })
+                        .catch(function () {
+                            errorBox.textContent = 'Произошла ошибка при отправке. Попробуйте ещё раз.';
+                        })
+                        .finally(function () {
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = originalText || 'Отправить';
+                            }
+                        });
+                });
+            })();
+        </script>
 
     </main>
 
