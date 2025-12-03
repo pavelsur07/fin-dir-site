@@ -517,3 +517,13 @@ textarea::placeholder {
 .lead-form button[type="submit"] {
     margin-top: 16px;
 }
+
+.site-footer {
+    border-top: 1px solid rgba(10, 21, 72, 0.08);
+    background: #fff;
+}
+
+.site-footer .footer-links a {
+    font-size: 12px;
+}
+
