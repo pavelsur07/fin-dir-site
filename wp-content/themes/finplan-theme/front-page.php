@@ -47,6 +47,7 @@ get_header();
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-5 offset-lg-1">
                         <div class="card card-soft p-4 bg-white">
                             <h2 class="h5 mb-2">Бесплатная диагностическая сессия</h2>
@@ -54,39 +55,96 @@ get_header();
                                 Оставьте контакты — за 45–60 минут разберём ваши цифры и покажем,
                                 где «утекает» прибыль.
                             </p>
-                            <!-- Временно простая форма, потом можно заменить на CF7 или свой обработчик -->
-                            <form>
-                                <div class="mb-3">
-                                    <label class="form-label">Имя</label>
-                                    <input type="text" class="form-control" placeholder="Как к вам обращаться?">
+
+                            <!-- Форма Conwix -->
+                            <form
+                                    action="https://app.conwix.ru/api/crm/web-forms/sLL3qIf1gavWrygOcExMC_9K/submit"
+                                    method="post"
+                                    class="vf-lead-form"
+                            >
+                                <input type="hidden" name="page_url" value="">
+                                <input type="hidden" name="utm_source" value="">
+                                <input type="hidden" name="utm_medium" value="">
+                                <input type="hidden" name="utm_campaign" value="">
+
+                                <!-- Honeypot: скрытое поле для ботов -->
+                                <div style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+                                    <label>
+                                        Не заполняйте это поле
+                                        <input type="text" name="_hpt" tabindex="-1" autocomplete="off">
+                                    </label>
                                 </div>
+
                                 <div class="mb-3">
-                                    <label class="form-label">Телефон / Telegram</label>
-                                    <input type="text" class="form-control" placeholder="+7… или @username">
+                                    <label class="form-label" for="hero_name">Имя*</label>
+                                    <input
+                                            id="hero_name"
+                                            class="form-control"
+                                            type="text"
+                                            name="name"
+                                            placeholder="Как к вам обращаться?"
+                                            required
+                                    >
                                 </div>
+
                                 <div class="mb-3">
-                                    <label class="form-label">Бизнес</label>
-                                    <input type="text" class="form-control" placeholder="Отрасль, формат бизнеса">
+                                    <label class="form-label" for="hero_phone">Телефон / Telegram*</label>
+                                    <input
+                                            id="hero_phone"
+                                            class="form-control"
+                                            type="tel"
+                                            name="phone"
+                                            placeholder="+7… или @username"
+                                            required
+                                    >
                                 </div>
+
                                 <div class="mb-3">
-                                    <label class="form-label">Средняя выручка в месяц</label>
-                                    <select class="form-select">
-                                        <option>до 2 млн ₽</option>
-                                        <option>2–10 млн ₽</option>
-                                        <option>10–50 млн ₽</option>
-                                        <option>50+ млн ₽</option>
+                                    <label class="form-label" for="hero_business">Бизнес*</label>
+                                    <textarea
+                                            id="hero_business"
+                                            class="form-control"
+                                            name="comment"
+                                            rows="2"
+                                            placeholder="Отрасль, формат бизнеса"
+                                            required
+                                    ></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="hero_revenue">Средняя выручка в месяц*</label>
+                                    <select
+                                            id="hero_revenue"
+                                            class="form-select"
+                                            name="field_4"
+                                            required
+                                    >
+                                        <option value="" disabled selected>Выберите диапазон</option>
+                                        <option value="до 2 млн ₽">до 2 млн ₽</option>
+                                        <option value="2–10 млн ₽">2–10 млн ₽</option>
+                                        <option value="10–50 млн ₽">10–50 млн ₽</option>
+                                        <option value="50+ млн ₽">50+ млн ₽</option>
                                     </select>
                                 </div>
+
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="hero_agree">
+                                    <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="hero_agree"
+                                            name="agree"
+                                            required
+                                    >
                                     <label class="form-check-label small" for="hero_agree">
                                         Согласен(а) на обработку персональных данных
                                     </label>
                                 </div>
+
                                 <button type="submit" class="btn btn-primary w-100">
                                     Получить диагноз по финансам
                                 </button>
                             </form>
+                            <!-- /Форма Conwix -->
                         </div>
                     </div>
                 </div>
