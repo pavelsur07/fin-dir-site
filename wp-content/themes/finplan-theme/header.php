@@ -34,16 +34,147 @@
                 >
             </a>
         </div>
-        <nav class="main-nav">
+       <!-- <nav class="main-nav">
             <?php
-            wp_nav_menu([
+/*            wp_nav_menu([
                 'theme_location' => 'primary',
                 'container'      => false,
                 'fallback_cb'    => false,
                 'items_wrap'     => '%3$s', // печатаем только <li>...</li>
             ]);
-            ?>
+            */?>
             <a href="#cta-consult" class="btn-primary">Бесплатная диагностика</a>
+        </nav>-->
+        <nav class="main-nav" aria-label="Главное меню">
+
+            <!-- Mobile burger -->
+            <button class="nav-burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <!-- Desktop -->
+            <div class="nav-desktop">
+                <ul class="nav-list">
+
+                    <!-- Мегаменю: "Возможности" -->
+                    <li class="nav-item nav-dropdown">
+                        <a class="nav-link nav-dropdown-toggle" href="#" aria-haspopup="true" aria-expanded="false">
+                            Возможности <span class="nav-caret">▾</span>
+                        </a>
+
+                        <div class="nav-dropdown-panel" role="menu">
+                            <div class="nav-dropdown-grid">
+                                <div class="nav-dropdown-col">
+                                    <div class="nav-dropdown-title">Аналитика и отчёты</div>
+                                    <ul class="nav-dropdown-ul">
+                                        <?php
+                                        wp_nav_menu([
+                                                'theme_location' => 'mega_analytics',
+                                                'container'      => false,
+                                                'fallback_cb'    => false,
+                                                'items_wrap'     => '%3$s',
+                                        ]);
+                                        ?>
+                                    </ul>
+                                </div>
+
+                                <div class="nav-dropdown-col">
+                                    <div class="nav-dropdown-title">Планирование и контроль</div>
+                                    <ul class="nav-dropdown-ul">
+                                        <?php
+                                        wp_nav_menu([
+                                                'theme_location' => 'mega_planning',
+                                                'container'      => false,
+                                                'fallback_cb'    => false,
+                                                'items_wrap'     => '%3$s',
+                                        ]);
+                                        ?>
+                                    </ul>
+                                </div>
+
+                                <div class="nav-dropdown-cta">
+                                    <a href="#cta-consult" class="btn-primary btn-block">Бесплатная диагностика</a>
+                                    <a href="#template" class="btn-outline-primary btn-block">Скачать шаблон ДДС</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Основное меню из админки -->
+                    <?php
+                    wp_nav_menu([
+                            'theme_location' => 'primary',
+                            'container'      => false,
+                            'fallback_cb'    => false,
+                            'items_wrap'     => '%3$s',
+                    ]);
+                    ?>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="#cta-consult" class="btn-primary">Бесплатная диагностика</a>
+                </div>
+            </div>
+
+            <!-- Mobile -->
+            <div id="mobileMenu" class="nav-mobile" hidden>
+                <div class="nav-mobile-inner">
+                    <div class="nav-mobile-header">
+                        <span class="nav-mobile-title">Меню</span>
+                        <button class="nav-close" type="button" aria-label="Закрыть меню">✕</button>
+                    </div>
+
+                    <div class="nav-mobile-section">
+                        <button class="nav-accordion" type="button" aria-expanded="false">
+                            Возможности <span class="nav-caret">▾</span>
+                        </button>
+
+                        <div class="nav-accordion-panel" hidden>
+                            <div class="nav-acc-title">Аналитика и отчёты</div>
+                            <div class="nav-mobile-links">
+                                <?php
+                                wp_nav_menu([
+                                        'theme_location' => 'mega_analytics',
+                                        'container'      => false,
+                                        'fallback_cb'    => false,
+                                        'menu_class'     => 'nav-mobile-wp',
+                                ]);
+                                ?>
+                            </div>
+
+                            <div class="nav-acc-title mt-12">Планирование и контроль</div>
+                            <div class="nav-mobile-links">
+                                <?php
+                                wp_nav_menu([
+                                        'theme_location' => 'mega_planning',
+                                        'container'      => false,
+                                        'fallback_cb'    => false,
+                                        'menu_class'     => 'nav-mobile-wp',
+                                ]);
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="nav-mobile-links">
+                        <?php
+                        wp_nav_menu([
+                                'theme_location' => 'primary',
+                                'container'      => false,
+                                'fallback_cb'    => false,
+                                'menu_class'     => 'nav-mobile-wp',
+                        ]);
+                        ?>
+                    </div>
+
+                    <div class="nav-mobile-actions">
+                        <a href="#cta-consult" class="btn-primary btn-block">Бесплатная диагностика</a>
+                        <a href="#template" class="btn-outline-primary btn-block">Скачать шаблон ДДС</a>
+                    </div>
+                </div>
+            </div>
         </nav>
+
+
     </div>
 </header>

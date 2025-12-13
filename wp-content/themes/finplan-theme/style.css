@@ -526,4 +526,19 @@ textarea::placeholder {
 .site-footer .footer-links a {
     font-size: 12px;
 }
+.nav-dropdown-ul { margin: 0; padding: 0; }
+.nav-dropdown-ul li { list-style: none; margin: 0; padding: 0; }
+.nav-dropdown-ul a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 12px;
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 500;
+}
+.nav-dropdown-ul a:hover {
+    background: rgba(10, 21, 72, 0.04);
+    text-decoration: none;
+}
+
 

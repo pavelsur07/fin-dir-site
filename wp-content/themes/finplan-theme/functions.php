@@ -34,8 +34,11 @@ function finplan_theme_setup() {
     add_theme_support('title-tag');
     add_theme_support('post-thumbnails');
     add_theme_support('html5', ['search-form', 'gallery', 'caption']);
+
     register_nav_menus([
-        'primary' => __('Primary Menu', 'finplan'),
+        'primary'         => __('Header: основное меню', 'finplan'),
+        'mega_analytics'  => __('Header: мегаменю — Аналитика', 'finplan'),
+        'mega_planning'   => __('Header: мегаменю — Планирование', 'finplan'),
     ]);
 }
 add_action('after_setup_theme', 'finplan_theme_setup');
