@@ -26,6 +26,82 @@ function finplan_enqueue_assets() {
         '5.3.3',
         true
     );
+
+    $menu_js = <<<'JS'
+document.addEventListener('DOMContentLoaded', function () {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const burger = document.querySelector('.nav-burger');
+    const closeBtn = document.querySelector('.nav-close');
+    const accordion = document.querySelector('.nav-accordion');
+    const accordionPanel = document.querySelector('.nav-accordion-panel');
+    const dropdown = document.querySelector('.nav-dropdown');
+    const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+
+    const openMobile = () => {
+        if (!mobileMenu) return;
+        mobileMenu.hidden = false;
+        mobileMenu.classList.add('is-open');
+        if (burger) burger.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeMobile = () => {
+        if (!mobileMenu) return;
+        mobileMenu.classList.remove('is-open');
+        mobileMenu.hidden = true;
+        if (burger) burger.setAttribute('aria-expanded', 'false');
+    };
+
+    if (burger && mobileMenu) {
+        burger.addEventListener('click', openMobile);
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeMobile);
+    }
+
+    if (mobileMenu) {
+        mobileMenu.addEventListener('click', function (event) {
+            if (event.target === mobileMenu) {
+                closeMobile();
+            }
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', closeMobile);
+        });
+    }
+
+    if (accordion && accordionPanel) {
+        accordion.addEventListener('click', function () {
+            const isHidden = accordionPanel.hasAttribute('hidden');
+            accordionPanel.toggleAttribute('hidden');
+            accordion.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+        });
+    }
+
+    if (dropdown && dropdownToggle) {
+        const closeDropdown = () => {
+            dropdown.classList.remove('is-open');
+            dropdownToggle.setAttribute('aria-expanded', 'false');
+        };
+
+        dropdownToggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            const willOpen = !dropdown.classList.contains('is-open');
+            dropdown.classList.toggle('is-open', willOpen);
+            dropdownToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!dropdown.contains(event.target)) {
+                closeDropdown();
+            }
+        });
+    }
+});
+JS;
+
+    wp_add_inline_script('bootstrap-5', $menu_js);
 }
 add_action('wp_enqueue_scripts', 'finplan_enqueue_assets');
 
