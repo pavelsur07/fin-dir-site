@@ -2,6 +2,48 @@
 
 // Подключаем стили и скрипты
 function finplan_enqueue_assets() {
+    $theme_uri = get_template_directory_uri();
+    if (is_page_template('page-new-ui.php')) {
+        wp_enqueue_style(
+            'bootstrap-5',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+            [],
+            '5.3.3'
+        );
+
+        wp_enqueue_style(
+            'bootstrap-icons',
+            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+            ['bootstrap-5'],
+            '1.11.3'
+        );
+
+        wp_enqueue_style(
+            'finplan-new-ui',
+            $theme_uri . '/assets/css/new-ui.css',
+            ['bootstrap-icons'],
+            wp_get_theme()->get('Version')
+        );
+
+        wp_enqueue_script(
+            'bootstrap-5',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+            [],
+            '5.3.3',
+            true
+        );
+
+        wp_enqueue_script(
+            'finplan-new-ui',
+            $theme_uri . '/assets/js/new-ui.js',
+            ['bootstrap-5'],
+            wp_get_theme()->get('Version'),
+            true
+        );
+
+        return;
+    }
+
     // Bootstrap 5 CSS
     wp_enqueue_style(
         'bootstrap-5',
@@ -11,8 +53,6 @@ function finplan_enqueue_assets() {
     );
 
     // Разделённые UI-стили
-    $theme_uri = get_template_directory_uri();
-
     wp_enqueue_style(
         'finplan-ui-variables',
         $theme_uri . '/assets/css/ui-variables.css',
@@ -140,30 +180,6 @@ document.addEventListener('DOMContentLoaded', function () {
 JS;
     if (!is_page_template('page-new-ui.php')) {
         wp_add_inline_script('bootstrap-5', $menu_js);
-    }
-
-    if (is_page_template('page-new-ui.php')) {
-        wp_enqueue_style(
-            'bootstrap-icons',
-            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
-            ['bootstrap-5'],
-            '1.11.3'
-        );
-
-        wp_enqueue_style(
-            'finplan-new-ui',
-            $theme_uri . '/assets/css/new-ui.css',
-            ['bootstrap-icons'],
-            wp_get_theme()->get('Version')
-        );
-
-        wp_enqueue_script(
-            'finplan-new-ui',
-            $theme_uri . '/assets/js/new-ui.js',
-            ['bootstrap-5'],
-            wp_get_theme()->get('Version'),
-            true
-        );
     }
 }
 add_action('wp_enqueue_scripts', 'finplan_enqueue_assets');
