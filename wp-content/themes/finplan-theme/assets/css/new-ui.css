@@ -20,6 +20,28 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(13,28,99,.08);
     }
+    .navbar-brand{ flex-shrink: 0; }
+    .navbar-brand .fw-bold{
+      line-height: 1;
+      white-space: nowrap;
+      font-size: clamp(1.05rem, 1.6vw + .65rem, 1.35rem);
+    }
+    .navbar-nav > li{ list-style: none; }
+    .navbar-nav > li > a:not(.btn){ display: block; }
+    @media (max-width: 991.98px){
+      .navbar-nav{ gap: .25rem; }
+      .navbar-nav > li{ width: 100%; }
+      .navbar-nav > li > a:not(.btn){
+        width: 100%;
+        padding: .65rem .85rem;
+        border-radius: 12px;
+      }
+      .navbar-nav .nav-item.ms-lg-2{ width: 100%; }
+      .navbar-nav .nav-item.ms-lg-2 .btn{
+        width: 100%;
+        text-align: center;
+      }
+    }
     .brand-badge{
       width: 40px; height: 40px;
       border-radius: 12px;

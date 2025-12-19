@@ -2,11 +2,12 @@
 <html <?php language_attributes(); ?>>
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
   <!-- NAV -->
-  <nav class="navbar navbar-expand-lg fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="#top" aria-label="Ваш Финдир">
         <span class="brand-badge"><i class="bi bi-graph-up-arrow"></i></span>
