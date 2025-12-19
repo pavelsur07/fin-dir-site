@@ -2,6 +2,7 @@
 
 // Подключаем стили и скрипты
 function finplan_enqueue_assets() {
+    $is_new_ui_preview = is_page_template('page-new-ui.php');
     // Bootstrap 5 CSS
     wp_enqueue_style(
         'bootstrap-5',
@@ -13,48 +14,50 @@ function finplan_enqueue_assets() {
     // Разделённые UI-стили
     $theme_uri = get_template_directory_uri();
 
-    wp_enqueue_style(
-        'finplan-ui-variables',
-        $theme_uri . '/assets/css/ui-variables.css',
-        ['bootstrap-5'],
-        wp_get_theme()->get('Version')
-    );
+    if (!$is_new_ui_preview) {
+        wp_enqueue_style(
+            'finplan-ui-variables',
+            $theme_uri . '/assets/css/ui-variables.css',
+            ['bootstrap-5'],
+            wp_get_theme()->get('Version')
+        );
 
-    wp_enqueue_style(
-        'finplan-ui-base',
-        $theme_uri . '/assets/css/ui-base.css',
-        ['finplan-ui-variables'],
-        wp_get_theme()->get('Version')
-    );
+        wp_enqueue_style(
+            'finplan-ui-base',
+            $theme_uri . '/assets/css/ui-base.css',
+            ['finplan-ui-variables'],
+            wp_get_theme()->get('Version')
+        );
 
-    wp_enqueue_style(
-        'finplan-ui-layout',
-        $theme_uri . '/assets/css/ui-layout.css',
-        ['finplan-ui-base'],
-        wp_get_theme()->get('Version')
-    );
+        wp_enqueue_style(
+            'finplan-ui-layout',
+            $theme_uri . '/assets/css/ui-layout.css',
+            ['finplan-ui-base'],
+            wp_get_theme()->get('Version')
+        );
 
-    wp_enqueue_style(
-        'finplan-ui-components',
-        $theme_uri . '/assets/css/ui-components.css',
-        ['finplan-ui-layout'],
-        wp_get_theme()->get('Version')
-    );
+        wp_enqueue_style(
+            'finplan-ui-components',
+            $theme_uri . '/assets/css/ui-components.css',
+            ['finplan-ui-layout'],
+            wp_get_theme()->get('Version')
+        );
 
-    wp_enqueue_style(
-        'finplan-ui-pages',
-        $theme_uri . '/assets/css/ui-pages.css',
-        ['finplan-ui-components'],
-        wp_get_theme()->get('Version')
-    );
+        wp_enqueue_style(
+            'finplan-ui-pages',
+            $theme_uri . '/assets/css/ui-pages.css',
+            ['finplan-ui-components'],
+            wp_get_theme()->get('Version')
+        );
 
-    // Стили темы (после Bootstrap, чтобы можно было переопределять)
-    wp_enqueue_style(
-        'finplan-style',
-        get_stylesheet_uri(),
-        ['finplan-ui-pages'],
-        wp_get_theme()->get('Version')
-    );
+        // Стили темы (после Bootstrap, чтобы можно было переопределять)
+        wp_enqueue_style(
+            'finplan-style',
+            get_stylesheet_uri(),
+            ['finplan-ui-pages'],
+            wp_get_theme()->get('Version')
+        );
+    }
 
     // Bootstrap 5 JS (для адаптивного меню и пр.)
     wp_enqueue_script(
@@ -138,11 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 JS;
-    if (!is_page_template('page-new-ui.php')) {
+    if (!$is_new_ui_preview) {
         wp_add_inline_script('bootstrap-5', $menu_js);
     }
 
-    if (is_page_template('page-new-ui.php')) {
+    if ($is_new_ui_preview) {
         wp_enqueue_style(
             'bootstrap-icons',
             'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
