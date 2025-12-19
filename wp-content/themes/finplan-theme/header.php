@@ -93,7 +93,6 @@
                                 </div>
 
                                 <div class="nav-dropdown-cta">
-                                    <a href="#cta-consult" class="btn-primary btn-block">Бесплатная диагностика</a>
                                     <a href="#template" class="btn-outline-primary btn-block">Скачать шаблон ДДС</a>
                                 </div>
                             </div>
@@ -110,10 +109,6 @@
                     ]);
                     ?>
                 </ul>
-
-                <div class="nav-actions">
-                    <a href="#cta-consult" class="btn-primary">Бесплатная диагностика</a>
-                </div>
             </div>
 
             <!-- Mobile -->
@@ -168,7 +163,6 @@
                     </div>
 
                     <div class="nav-mobile-actions">
-                        <a href="#cta-consult" class="btn-primary btn-block">Бесплатная диагностика</a>
                         <a href="#template" class="btn-outline-primary btn-block">Скачать шаблон ДДС</a>
                     </div>
                 </div>
