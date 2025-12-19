@@ -3,22 +3,50 @@
 // Подключаем стили и скрипты
 function finplan_enqueue_assets() {
     $is_new_ui_preview = is_page_template('page-new-ui.php');
-    // Bootstrap 5 CSS
-    wp_enqueue_style(
-        'bootstrap-5',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-        [],
-        '5.3.3'
-    );
-
-    // Разделённые UI-стили
     $theme_uri = get_template_directory_uri();
 
-    if (!$is_new_ui_preview) {
+    if ($is_new_ui_preview) {
+        wp_enqueue_style(
+            'bootstrap-5',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+            [],
+            '5.3.3'
+        );
+
+        wp_enqueue_style(
+            'bootstrap-icons',
+            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+            ['bootstrap-5'],
+            '1.11.3'
+        );
+
+        wp_enqueue_style(
+            'finplan-new-ui',
+            $theme_uri . '/assets/css/new-ui.css',
+            ['bootstrap-icons'],
+            wp_get_theme()->get('Version')
+        );
+
+        wp_enqueue_script(
+            'bootstrap-5',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+            [],
+            '5.3.3',
+            true
+        );
+
+        wp_enqueue_script(
+            'finplan-new-ui',
+            $theme_uri . '/assets/js/new-ui.js',
+            ['bootstrap-5'],
+            wp_get_theme()->get('Version'),
+            true
+        );
+    } else {
         wp_enqueue_style(
             'finplan-ui-variables',
             $theme_uri . '/assets/css/ui-variables.css',
-            ['bootstrap-5'],
+            [],
             wp_get_theme()->get('Version')
         );
 
@@ -57,18 +85,7 @@ function finplan_enqueue_assets() {
             ['finplan-ui-pages'],
             wp_get_theme()->get('Version')
         );
-    }
-
-    // Bootstrap 5 JS (для адаптивного меню и пр.)
-    wp_enqueue_script(
-        'bootstrap-5',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
-        [],
-        '5.3.3',
-        true
-    );
-
-    $menu_js = <<<'JS'
+        $menu_js = <<<'JS'
 document.addEventListener('DOMContentLoaded', function () {
     const mobileMenu = document.getElementById('mobileMenu');
     const burger = document.querySelector('.nav-burger');
@@ -141,35 +158,52 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 JS;
-    if (!$is_new_ui_preview) {
-        wp_add_inline_script('bootstrap-5', $menu_js);
-    }
-
-    if ($is_new_ui_preview) {
-        wp_enqueue_style(
-            'bootstrap-icons',
-            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
-            ['bootstrap-5'],
-            '1.11.3'
-        );
-
-        wp_enqueue_style(
-            'finplan-new-ui',
-            $theme_uri . '/assets/css/new-ui.css',
-            ['bootstrap-icons'],
-            wp_get_theme()->get('Version')
-        );
-
-        wp_enqueue_script(
-            'finplan-new-ui',
-            $theme_uri . '/assets/js/new-ui.js',
-            ['bootstrap-5'],
-            wp_get_theme()->get('Version'),
-            true
-        );
+        wp_register_script('finplan-legacy-nav', false, [], wp_get_theme()->get('Version'), true);
+        wp_add_inline_script('finplan-legacy-nav', $menu_js);
+        wp_enqueue_script('finplan-legacy-nav');
     }
 }
 add_action('wp_enqueue_scripts', 'finplan_enqueue_assets');
+
+function finplan_nav_item_class($classes, $item, $args, $depth) {
+    if (is_admin()) {
+        return $classes;
+    }
+
+    if (isset($args->theme_location) && $args->theme_location !== 'primary') {
+        return $classes;
+    }
+
+    if (!in_array('nav-item', $classes, true)) {
+        $classes[] = 'nav-item';
+    }
+
+    return $classes;
+}
+add_filter('nav_menu_css_class', 'finplan_nav_item_class', 10, 4);
+
+function finplan_nav_link_attributes($atts, $item, $args, $depth) {
+    if (is_admin()) {
+        return $atts;
+    }
+
+    if (isset($args->theme_location) && $args->theme_location !== 'primary') {
+        return $atts;
+    }
+
+    $existing_classes = isset($atts['class']) ? $atts['class'] : '';
+
+    if (strpos($existing_classes, 'btn') !== false) {
+        return $atts;
+    }
+
+    if (strpos($existing_classes, 'nav-link') === false) {
+        $atts['class'] = trim($existing_classes . ' nav-link');
+    }
+
+    return $atts;
+}
+add_filter('nav_menu_link_attributes', 'finplan_nav_link_attributes', 10, 4);
 
 // Базовая поддержка фич
 function finplan_theme_setup() {
