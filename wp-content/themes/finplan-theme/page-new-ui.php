@@ -1,542 +1,639 @@
 <?php
-/* Template Name: New UI (Preview) */
-
-get_header();
+/*
+    Template Name: New UI Preview
+*/
+get_header('new');
 ?>
-
-<main id="new-ui-app">
-
-<!-- Навигация -->
-<nav class="navbar navbar-expand-lg sticky-top">
+  <section class="diff-strip">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="#top">
-            <span class="brand-logo-badge">ВФ</span>
-            <span class="brand-logo-text">Ваш ФинДиректор</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="mainNav" class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-                <li class="nav-item"><a class="nav-link" href="#services">Услуги</a></li>
-                <li class="nav-item"><a class="nav-link" href="#results">Результаты</a></li>
-                <li class="nav-item"><a class="nav-link" href="#industries">Отрасли</a></li>
-                <li class="nav-item"><a class="nav-link" href="#materials">Материалы</a></li>
-                <li class="nav-item">
-                    <a class="btn btn-primary ms-lg-3 mt-2 mt-lg-0" href="#cta-consult">Бесплатная диагностика</a>
-                </li>
+      <div class="row g-2">
+        <div class="col-md-4">
+          <div class="diff-item">
+            <i class="bi bi-bar-chart-steps fs-4"></i>
+            <div>
+              <div class="diff-title">Не «отчёты»</div>
+              <div class="diff-text">Считаем и объясняем, <b>что делать</b> (приоритеты, стоп-лист, переносы, усиления).</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="diff-item">
+            <i class="bi bi-speedometer2 fs-4"></i>
+            <div>
+              <div class="diff-title">Не «внедрение на месяцы»</div>
+              <div class="diff-text"><b>24 часа</b> — и вы видите движение денег. Дальше — наращиваем глубину.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="diff-item">
+            <i class="bi bi-person-check fs-4"></i>
+            <div>
+              <div class="diff-title">Не «CFO за часы»</div>
+              <div class="diff-text">Сервис + финдир = <b>решения</b>, а не присутствие. Вы делегируете без потери контроля.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section chaos anchor" id="problem">
+    <div class="container">
+      <div class="row align-items-end mb-4 g-3">
+        <div class="col-lg-7">
+          <h2 class="section-title mb-2">Когда цифры есть — а уверенности нет</h2>
+          <p class="lead lead-muted mb-0">
+            Мы строим систему, в которой собственник понимает: <b>что происходит</b>, <b>что будет</b> и <b>что делать</b>.
+          </p>
+        </div>
+        <div class="col-lg-5 text-lg-end">
+          <a class="btn btn-accent px-4" href="#audit"></a>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <div class="pain">
+            <div class="icon-bubble mb-3"><i class="bi bi-question-circle"></i></div>
+            <div class="fw-bold">«Прибыль есть, а денег нет»</div>
+            <div class="small lead-muted mt-1">Разделяем прибыль и деньги — показываем реальность, без самообмана.</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="pain">
+            <div class="icon-bubble mb-3"><i class="bi bi-exclamation-circle"></i></div>
+            <div class="fw-bold">Кассовые разрывы</div>
+            <div class="small lead-muted mt-1">Риски видны заранее: приоритеты платежей, переносы, стоп-лист.</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="pain">
+            <div class="icon-bubble mb-3"><i class="bi bi-graph-down-arrow"></i></div>
+            <div class="fw-bold">Решения «на глаз»</div>
+            <div class="small lead-muted mt-1">Появляется опора: что можно платить/нанимать/масштабировать — и почему.</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="pain">
+            <div class="icon-bubble mb-3"><i class="bi bi-emoji-frown"></i></div>
+            <div class="fw-bold">Стресс собственника</div>
+            <div class="small lead-muted mt-1">Финансы перестают быть сюрпризом. Вы делегируете, не теряя контроль.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section anchor" id="solution">
+    <div class="container">
+      <div class="row align-items-start g-4">
+        <div class="col-lg-6">
+          <h2 class="section-title mb-2">Новая логика: «картина денег → действия → дисциплина»</h2>
+          <p class="lead lead-muted mb-4">Сервис + финдиректор: дашборд, прогноз и платёжные решения для управляемого роста.</p>
+
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="pill"><i class="bi bi-cash-stack"></i> Картина денег</span>
+            <span class="pill"><i class="bi bi-calendar2-week"></i> Приоритеты платежей</span>
+            <span class="pill"><i class="bi bi-check2-square"></i> План действий</span>
+          </div>
+
+          <div class="feature-card mb-3">
+            <div class="mini-title mb-1"><i class="bi bi-cloud"></i> Кабинет собственника</div>
+            <div class="text-secondary">
+              ДДС + календарь платежей + отчёты как инструмент, но главный результат — <b>понятные решения</b>.
+              Быстрый старт без «внедрения на месяцы».
+            </div>
+            <div class="mt-3 small text-secondary">
+              (Глубина автоматизации расширяется по мере роста: правила, интеграции, отчёты, сценарии.)
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="mini-title mb-1"><i class="bi bi-person-check"></i> Финдиректор как переводчик цифр в действия</div>
+            <div class="text-secondary">
+              Не «закрываем месяц», а разбираем ситуацию и выбираем приоритеты:
+              что оплатить, что переносить, что резать, где усилить маржу и сохранить кэш.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="mini-title mb-1"><i class="bi bi-eye"></i> Видите реальность</div>
+                <div class="text-secondary">Понимаете, что происходит с деньгами <b>сейчас</b>, а не «потом в отчёте».</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="mini-title mb-1"><i class="bi bi-shield"></i> Снижаете риски</div>
+                <div class="text-secondary">Предупреждаете кассовые разрывы до того, как они случатся.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="mini-title mb-1"><i class="bi bi-check2-square"></i> Получаете план</div>
+                <div class="text-secondary">После разбора — приоритеты и шаги, а не «табличка без выводов».</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="mini-title mb-1"><i class="bi bi-rocket-takeoff"></i> Растёте спокойнее</div>
+                <div class="text-secondary">Решения на цифрах: рост без хаоса и постоянных «пожаров».</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3 p-4 rounded-4" style="background: var(--bg-soft); border: 1px solid rgba(10,21,72,.10);">
+            <div class="fw-bold" style="color:var(--brand);">Фраза, которая держит позиционирование:</div>
+            <div class="text-secondary mt-1">
+              <b>Финансовые решения каждый день — а не отчёты раз в месяц.</b>
+            </div>
+            <a class="btn btn-accent mt-3" href="#audit">Получить бесплатный разбор</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- DASHBOARD (NEW) -->
+  <section class="section anchor" id="dashboard">
+    <div class="container">
+      <div class="row align-items-end mb-4 g-3">
+        <div class="col-lg-8">
+          <h2 class="section-title mb-2">Дашборд: деньги и прибыль на одном экране</h2>
+          <p class="lead lead-muted mb-0">
+            «Картинка контроля» для собственника: факт, прогноз и ближайшие платежи — без таблиц и хаоса.
+          </p>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+          <a class="btn btn-outline-brand px-4" href="#audit">Хочу такой дашборд</a>
+        </div>
+      </div>
+
+      <div class="row g-3 align-items-start">
+        <div class="col-lg-5">
+          <div class="feature-card h-100">
+            <div class="mini-title mb-2"><i class="bi bi-speedometer2"></i> Что видно в первую минуту</div>
+            <ul class="list-unstyled mb-0">
+              <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Деньги сейчас + прогноз на 14 дней</li>
+              <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Выручка и чистая прибыль MTD</li>
+              <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Дебиторка / кредиторка</li>
+              <li class="d-flex gap-2"><i class="bi bi-check2-circle text-success"></i> Ближайшие платежи и риск кассового разрыва</li>
             </ul>
+            <div class="mt-3 small text-secondary">
+              Ниже — медиа-блок 16:9. Можно оставить изображение или заменить на видео (MP4).
+            </div>
+          </div>
         </div>
-    </div>
-</nav>
 
-<!-- ЭКРАН 1: Hero + форма -->
-<section id="top" class="page-section">
+        <div class="col-lg-7">
+          <!-- Media 16:9. По умолчанию показываем изображение.
+               Чтобы показать видео — добавьте class="d-none" на <img> и уберите d-none у <video>. -->
+          <div class="ratio ratio-16x9 rounded-4 overflow-hidden" style="box-shadow: var(--shadow); border: 1px solid rgba(10,21,72,.10);">
+            <img
+              id="dashboardMediaImage"
+              src="5081b51a-cbda-4777-9839-65e90537e27e.png"
+              alt="Дашборд: деньги и прибыль"
+              style="width:100%; height:100%; object-fit:cover;"
+            />
+            <video
+              id="dashboardMediaVideo"
+              class="d-none"
+              controls
+              playsinline
+              muted
+              style="width:100%; height:100%; object-fit:cover; background:#000;"
+            >
+              <!-- Пример: <source src="dashboard-demo.mp4" type="video/mp4" /> -->
+            </video>
+          </div>
+          <div class="small text-secondary mt-2">
+            *Замените <code>src</code> у изображения на ваш файл или подключите видео через <code>&lt;source&gt;</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section steps anchor" id="how">
     <div class="container">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-6">
-                <div class="badge-accent mb-3">
-                    Финансовый директор + облачный сервис учёта
-                </div>
-                <h1 class="hero-title mb-3">
-                    Берём финансы бизнеса под контроль<br>за 90 дней
-                </h1>
-                <p class="hero-subtitle mb-3">
-                    Настраиваем управленческий учёт, ДДС и платёжный календарь. Вы видите,
-                    куда уходят деньги, и заранее знаете о кассовых разрывах.
-                </p>
-                <ul class="hero-list">
-                    <li>Диагностика текущей финансовой ситуации и рисков</li>
-                    <li>Внедрение ДДС и платёжного календаря в нашем сервисе</li>
-                    <li>План по росту чистой прибыли на 6–12 месяцев</li>
-                </ul>
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    <a href="#cta-consult" class="btn btn-primary">
-                        Записаться на диагностику
-                    </a>
-                    <a href="#materials" class="btn btn-outline-primary">
-                        Скачать шаблон ДДС
-                    </a>
-                </div>
-                <div class="stats">
-                    <div class="stats-item">
-                        <strong>15+ лет</strong>
-                        <span>опыта CFO в производстве, торговле и онлайн-бизнесе</span>
-                    </div>
-                    <div class="stats-item">
-                        <strong>20+ компаний</strong>
-                        <span>выведены из кассовых разрывов в стабильный плюс</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 offset-lg-1">
-                <div class="card card-soft p-4">
-                    <h2 class="h5 mb-2">Бесплатная диагностическая сессия</h2>
-                    <p class="small text-muted mb-3">
-                        Оставьте контакты — за 45–60 минут разберём ваши цифры и покажем,
-                        где «утекает» прибыль.
-                    </p>
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Имя</label>
-                            <input type="text" class="form-control" placeholder="Как к вам обращаться?">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Телефон / Telegram</label>
-                            <input type="text" class="form-control" placeholder="+7… или @username">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Бизнес</label>
-                            <input type="text" class="form-control" placeholder="Отрасль, формат бизнеса">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Средняя выручка в месяц</label>
-                            <select class="form-select">
-                                <option>до 2 млн ₽</option>
-                                <option>2–10 млн ₽</option>
-                                <option>10–50 млн ₽</option>
-                                <option>50+ млн ₽</option>
-                            </select>
-                        </div>
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="agree">
-                            <label class="form-check-label small" for="agree">
-                                Согласен(а) на обработку персональных данных
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">
-                            Получить диагноз по финансам
-                        </button>
-                    </form>
-                </div>
-            </div>
+      <div class="row align-items-end mb-4 g-3">
+        <div class="col-lg-8">
+          <h2 class="section-title mb-2">Старт за 24 часа: быстро, без лишней сложности</h2>
+          <p class="lead lead-muted mb-0">
+            Сначала — базовая управляемость денег. Затем — углубление (правила, интеграции, отчёты, контроль исполнения).
+          </p>
         </div>
-    </div>
-</section>
+        <div class="col-lg-4 text-lg-end">
+          <a class="btn btn-outline-brand px-4" href="#pricing">Смотреть сценарии</a>
+        </div>
+      </div>
 
-<!-- ЭКРАН 2: Основные услуги / Форматы -->
-<section id="services" class="page-section section-muted">
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <div class="step">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <span class="step-num">1</span>
+              <div class="fw-bold">Разбор (45–60 мин)</div>
+            </div>
+            <div class="text-secondary">
+              Фиксируем реальность: где «утечки», где риски разрывов, что критично в платежах.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <span class="step-num">2</span>
+              <div class="fw-bold">Настройка ДДС за 24 часа</div>
+            </div>
+            <div class="text-secondary">
+              Структура ДДС + правила. Уже на следующий день вы видите движение денег и проблемные зоны.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <span class="step-num">3</span>
+              <div class="fw-bold">Приоритеты платежей</div>
+            </div>
+            <div class="text-secondary">
+              Платёжный календарь: что платим, что переносим, что стоп — без пожаров и «угадываний».
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <span class="step-num">4</span>
+              <div class="fw-bold">Решения и дисциплина</div>
+            </div>
+            <div class="text-secondary">
+              Разборы и контроль исполнения: маржа, расходы, бюджеты, точки роста — в понятных действиях.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 p-4 rounded-4" style="background:#fff; border:1px solid rgba(10,21,72,.10);">
+        <div class="fw-bold" style="color:var(--brand);"><i class="bi bi-info-circle"></i> Важно</div>
+        <div class="text-secondary mt-1">
+          «24 часа» — это про быстрый старт управляемости денег (ДДС и первичная картина).
+          Дальше мы наращиваем глубину: автоматизация, интеграции, детализация прибыли и сценарии.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section anchor" id="pricing">
     <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Что мы делаем как Ваш ФинДиректор</h2>
-                <p class="section-subtitle">
-                    Не просто закрываем отчётность, а помогаем собственнику управлять
-                    деньгами и прибылью: от ДДС до стратегических решений.
-                </p>
-            </div>
+      <div class="row align-items-end mb-4 g-3">
+        <div class="col-lg-8">
+          <h2 class="section-title mb-2">Сценарии: порядок или управление ростом</h2>
+          <p class="lead lead-muted mb-0">
+            В Blue Ocean-логике это не «пакеты услуг», а два результата: <b>управляемость</b> и <b>управление</b>.
+          </p>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h5 mb-2">Финдиректор на аутсорсе</h3>
-                    <p class="small text-muted mb-3">
-                        Ежемесячное сопровождение: планирование ДДС, контроль факта,
-                        платёжный календарь, отчёты для собственника.
-                    </p>
-                    <ul class="small mb-3">
-                        <li>План-факт по деньгам и прибыли</li>
-                        <li>Совместное принятие финансовых решений</li>
-                        <li>Регулярные фин-встречи с собственником</li>
-                    </ul>
-                    <span class="badge bg-light text-dark">Для бизнеса от 2 млн ₽/мес</span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h5 mb-2">Диагностика и настройка ДДС</h3>
-                    <p class="small text-muted mb-3">
-                        За 10–14 дней наводим порядок в движении денег, выделяем статьи,
-                        показываем, где теряется прибыль.
-                    </p>
-                    <ul class="small mb-3">
-                        <li>Карта потоков денег по бизнесу</li>
-                        <li>Сценарий: как закрывать кассовые разрывы</li>
-                        <li>Подготовка к внедрению платёжного календаря</li>
-                    </ul>
-                    <span class="badge bg-light text-dark">Фиксированная стоимость</span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h5 mb-2">Фин-сервис для собственника</h3>
-                    <p class="small text-muted mb-3">
-                        Облачный сервис, в котором в одном окне видно счета, ДДС,
-                        платёжный календарь и ключевые отчёты.
-                    </p>
-                    <ul class="small mb-3">
-                        <li>Банки, касса, онлайн-кошельки и даже крипта</li>
-                        <li>Автоправила распределения по статьям</li>
-                        <li>Отчёты в сервисе и в Google-таблицах</li>
-                    </ul>
-                    <span class="badge bg-light text-dark">Подключается в рамках сопровождения</span>
-                </div>
-            </div>
+        <div class="col-lg-4 text-lg-end">
+          <a class="btn btn-accent px-4" href="#audit">Обсудить мой случай</a>
         </div>
-    </div>
-</section>
+      </div>
 
-<!-- ЭКРАН 3: Выгоды для собственника -->
-<section class="page-section">
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="pricing-card">
+            <div class="pricing-head">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fw-bold fs-4" style="color:var(--brand);">Управляемость денег</div>
+                  <div class="text-secondary">Поставить базу и убрать хаос</div>
+                </div>
+                <span class="badge text-bg-light">Старт</span>
+              </div>
+            </div>
+
+            <div class="p-4 pt-2">
+              <ul class="list-unstyled mb-4">
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Разбор + карта потоков и обязательств</li>
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> ДДС: настройка за 24 часа (быстрый старт)</li>
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Платёжный календарь: приоритеты и стоп-лист</li>
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Простые правила «как принимать решения»</li>
+              </ul>
+
+              <div class="p-3 rounded-4" style="background: rgba(10,21,72,.05); border:1px solid rgba(10,21,72,.10);">
+                <div class="fw-bold" style="color:var(--brand);">Результат:</div>
+                <div class="text-secondary">вы видите деньги и риски, можете управлять платежами без пожаров.</div>
+              </div>
+
+              <div class="d-flex flex-wrap gap-2 mt-4">
+                <a class="btn btn-outline-brand px-4" href="#audit">Обсудить мой случай</a>
+                <a class="btn btn-link text-decoration-none" href="#trust" style="color:var(--brand);">
+                  Смотреть результаты <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="pricing-card highlight">
+            <div class="pricing-head">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <div class="fw-bold fs-4" style="color:var(--brand);">Управление бизнесом</div>
+                    <span class="pricing-badge"><i class="bi bi-star-fill"></i> Рекомендуем</span>
+                  </div>
+                  <div class="text-secondary">Решения на цифрах + дисциплина исполнения</div>
+                </div>
+                <span class="badge" style="background:rgba(255,31,31,.12); color:var(--accent); border:1px solid rgba(255,31,31,.22);">
+                  Best value
+                </span>
+              </div>
+            </div>
+
+            <div class="p-4 pt-2">
+              <ul class="list-unstyled mb-4">
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Всё из «Управляемости денег»</li>
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Регулярные разборы: приоритеты, бюджеты, контроль</li>
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Рекомендации по марже/расходам/точкам роста</li>
+                <li class="d-flex gap-2 mb-2"><i class="bi bi-check2-circle text-success"></i> Контроль исполнения: меньше «планов в стол»</li>
+              </ul>
+
+              <div class="p-3 rounded-4" style="background: rgba(255,31,31,.06); border:1px solid rgba(255,31,31,.18);">
+                <div class="fw-bold" style="color:var(--brand);">Результат:</div>
+                <div class="text-secondary">предсказуемость, спокойствие собственника, рост без хаоса.</div>
+              </div>
+
+              <div class="d-flex flex-wrap gap-2 mt-4">
+                <a class="btn btn-accent px-4" href="#audit">Обсудить мой случай</a>
+                <a class="btn btn-outline-brand px-4" href="#how">Как стартуем</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 small text-secondary">
+        *Цены и точное наполнение можно уточнить позже. Блок выстроен под Blue Ocean: «результат → сценарий».
+      </div>
+    </div>
+  </section>
+
+  <section class="section anchor" id="trust">
     <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Какие задачи собственника мы закрываем</h2>
-                <p class="section-subtitle">
-                    Финансы — не про «ведомости», а про спокойную голову собственника:
-                    понятные цифры, предсказуемость и управляемый рост.
-                </p>
-            </div>
+      <div class="row align-items-end mb-4 g-3">
+        <div class="col-lg-8">
+          <h2 class="section-title mb-2">Результаты: «до → после»</h2>
+          <p class="lead lead-muted mb-0">
+            Мы не обещаем «красивые отчёты». Мы делаем так, чтобы в бизнесе появлялись решения и спокойствие.
+          </p>
         </div>
-        <div class="row g-4">
-            <div class="col-md-3 col-6">
-                <h3 class="h6">Деньги под контролем</h3>
-                <p class="small text-muted">
-                    Понимание, сколько денег есть сегодня и сколько будет через
-                    неделю/месяц с учётом всех обязательств.
-                </p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h3 class="h6">Кассовые разрывы — под управлением</h3>
-                <p class="small text-muted">
-                    Платёжный календарь показывает дефицит заранее — есть время
-                    договориться, перенести, привлечь финансирование.
-                </p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h3 class="h6">Понимание реальной прибыли</h3>
-                <p class="small text-muted">
-                    Видно, какие направления и продукты зарабатывают, а какие сжигают
-                    деньги и время команды.
-                </p>
-            </div>
-            <div class="col-md-3 col-6">
-                <h3 class="h6">Решения на основе цифр</h3>
-                <p class="small text-muted">
-                    Обоснованные ответы на вопросы: «нанимать ли людей», «открывать ли
-                    новую точку», «идти ли в маркетплейсы».
-                </p>
-            </div>
+        <div class="col-lg-4 text-lg-end">
+          <a class="btn btn-outline-brand px-4" href="#audit">Хочу разбор</a>
         </div>
-    </div>
-</section>
+      </div>
 
-<!-- ЭКРАН 4: Отрасли -->
-<section id="industries" class="page-section section-muted">
+      <div class="row g-3">
+        <div class="col-lg-4">
+          <div class="case-card">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge text-bg-light"><i class="bi bi-building"></i> Производство</span>
+              <span class="badge text-bg-light">Платежи</span>
+            </div>
+            <div class="fw-bold mb-1">Было: платежи «вдогонку», разрывы</div>
+            <div class="text-secondary mb-3">Не было приоритетов и понятных правил — всё решали в пожарном режиме.</div>
+            <div class="fw-bold">Стало:</div>
+            <div class="text-secondary">календарь + приоритеты + дисциплина — риски видны заранее.</div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="case-card">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge text-bg-light"><i class="bi bi-cone-striped"></i> Стройка</span>
+              <span class="badge text-bg-light">Кэш</span>
+            </div>
+            <div class="fw-bold mb-1">Было: «прибыль есть», денег нет</div>
+            <div class="text-secondary mb-3">Не видели обязательства и реальную картину денег в моменте.</div>
+            <div class="fw-bold">Стало:</div>
+            <div class="text-secondary">ДДС + правила — финансовая реальность стала понятной и управляемой.</div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="case-card">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge text-bg-light"><i class="bi bi-cart3"></i> Торговля / e-com</span>
+              <span class="badge text-bg-light">Маржа</span>
+            </div>
+            <div class="fw-bold mb-1">Было: много движений, мало понимания</div>
+            <div class="text-secondary mb-3">Не было ясности «что реально зарабатывает» и что нужно резать.</div>
+            <div class="fw-bold">Стало:</div>
+            <div class="text-secondary">фокус на марже/расходах → решения и приоритеты, а не «таблица без выводов».</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-4">
+          <div class="feature-card text-center">
+            <div class="display-6 fw-bold" style="color:var(--brand);">15+ лет</div>
+            <div class="text-secondary">опыта в финансах бизнеса</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card text-center">
+            <div class="display-6 fw-bold" style="color:var(--brand);">Сервис</div>
+            <div class="text-secondary">даёт прозрачность и дисциплину</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card text-center">
+            <div class="display-6 fw-bold" style="color:var(--brand);">Финдир</div>
+            <div class="text-secondary">переводит цифры в действия</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- ABOUT -->
+  <section class="section anchor" id="about">
     <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Понимаем специфику вашего бизнеса</h2>
-                <p class="section-subtitle">
-                    Работали с производством, торговлей, строительством и онлайн-торговлей.
-                    Учитываем особенности ценообразования, складов и длинного цикла сделки.
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-10">
-                <div class="pill-list d-flex flex-wrap gap-2 mb-3">
-                    <span class="badge bg-light text-dark">Производство</span>
-                    <span class="badge bg-light text-dark">Оптовая и розничная торговля</span>
-                    <span class="badge bg-light text-dark">Продажа автотехники</span>
-                    <span class="badge bg-light text-dark">Строительство и девелопмент</span>
-                    <span class="badge bg-light text-dark">Онлайн-торговля и маркетплейсы</span>
-                    <span class="badge bg-light text-dark">Услуги и агентства</span>
-                </div>
-                <p class="small text-muted">
-                    На старте обсуждаем, как устроен ваш бизнес: маржинальность,
-                    циклы оплат, сезонность. Встраиваем управленческий учёт в
-                    реальную операционку, а не в «идеальную картинку».
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h2 class="section-title mb-2">О нас — коротко и по делу</h2>
+          <p class="lead lead-muted mb-4">Сервис + финдиректор: дашборд, прогноз и платёжные решения для управляемого роста.</p>
 
-<!-- ЭКРАН 5: Кейсы / результаты -->
-<section id="results" class="page-section">
+          <div class="feature-card mb-3">
+            <div class="mini-title mb-1"><i class="bi bi-person-badge"></i> Экспертиза из практики</div>
+            <div class="text-secondary">
+              Настраиваем ДДС и платежный календарь так, чтобы это было удобно использовать каждый день — без «лишней бухгалтерии».
+            </div>
+          </div>
+
+          <div class="feature-card mb-3">
+            <div class="mini-title mb-1"><i class="bi bi-sliders"></i> Понятные правила</div>
+            <div class="text-secondary">
+              Фиксируем правила учета и приоритеты платежей: что критично, что переносится, где риск кассового разрыва.
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="mini-title mb-1"><i class="bi bi-check2-circle"></i> Прозрачность и ответственность</div>
+            <div class="text-secondary">
+              Никакой «магии»: диагностика → быстрый старт → регулярные разборы и контроль исполнения.
+            </div>
+          </div>
+
+          <div class="mt-3 d-flex flex-wrap gap-2">
+            <a class="btn btn-accent px-4" href="#audit">Забронировать аудит</a>
+            <a class="btn btn-outline-brand px-4" href="#dashboard">Посмотреть дашборд</a>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="feature-card p-3" style="overflow:hidden;">
+            <!-- Заглушка 4:5. При замене на фото: просто поменяйте src на ваш файл -->
+            <div class="ratio" style="--bs-aspect-ratio: 125%;">
+              <img
+                src="about-placeholder-4x5.png"
+                alt="О нас: фото основателя/команды"
+                style="object-fit: cover; width:100%; height:100%; border-radius: 16px;"
+              />
+            </div>
+            <div class="small text-secondary mt-2">
+              *Заглушка. Рекомендуем фото в соотношении сторон 4:5.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section audit anchor" id="audit">
     <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Реальные истории клиентов</h2>
-                <p class="section-subtitle">
-                    Мы не публикуем конфиденциальные цифры, но делимся логикой, за счёт чего
-                    выросла прибыль и исчезли постоянные кассовые разрывы.
-                </p>
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h2 class="section-title mb-2">Бесплатный разбор: что делать с финансами уже сейчас</h2>
+          <p class="lead lead-muted mb-4">Сервис + финдиректор: дашборд, прогноз и платёжные решения для управляемого роста.</p>
+
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="p-3 rounded-4" style="background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);">
+                <div class="fw-bold"><i class="bi bi-eye"></i> Картина денег</div>
+                <div class="small lead-muted mt-1">что реально происходит</div>
+              </div>
             </div>
+            <div class="col-sm-6">
+              <div class="p-3 rounded-4" style="background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);">
+                <div class="fw-bold"><i class="bi bi-exclamation-octagon"></i> Риски</div>
+                <div class="small lead-muted mt-1">где разрывы/утечки</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 rounded-4" style="background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);">
+                <div class="fw-bold"><i class="bi bi-list-check"></i> Действия</div>
+                <div class="small lead-muted mt-1">приоритеты и шаги</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="p-3 rounded-4" style="background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14);">
+                <div class="fw-bold"><i class="bi bi-lightning-charge"></i> Быстрый старт</div>
+                <div class="small lead-muted mt-1">ДДС за 24 часа</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 small-note">
+            Нажимая «Забронировать разбор», вы соглашаетесь на обработку данных для связи по заявке.
+          </div>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <div class="case-tag mb-2">Производство</div>
-                    <h3 class="h6 mb-2">
-                        Из «дырок» по зарплате — к резерву в 2 ФОТ за полгода
-                    </h3>
-                    <ul class="small text-muted mb-0">
-                        <li>Внедрили ДДС и платёжный календарь</li>
-                        <li>Пересобрали график оплат поставщикам</li>
-                        <li>Создали резервный фонд на 2 месяца расходов</li>
-                    </ul>
+
+        <div class="col-lg-6">
+          <div class="form-card">
+            <div class="fw-bold fs-5" style="color:var(--brand);">Заявка на разбор</div>
+            <div class="text-secondary mb-3">Оставьте контакты — предложим удобное время.</div>
+
+            <form action="#" method="post" id="auditForm" novalidate>
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="form-label small">Имя</label>
+                  <input class="form-control" name="name" type="text" placeholder="Иван" required />
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <div class="case-tag mb-2">Онлайн-торговля</div>
-                    <h3 class="h6 mb-2">
-                        E-commerce из «работаем в ноль» к +18% чистой прибыли
-                    </h3>
-                    <ul class="small text-muted mb-0">
-                        <li>Разделили ДДС по каналам продаж</li>
-                        <li>Отказались от нерентабельных SKU</li>
-                        <li>Оптимизировали рекламный бюджет по ROMI</li>
-                    </ul>
+                <div class="col-md-6">
+                  <label class="form-label small">Телефон</label>
+                  <input class="form-control" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required />
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <div class="case-tag mb-2">Строительство</div>
-                    <h3 class="h6 mb-2">
-                        Контроль по объектам вместо «общего котла»
-                    </h3>
-                    <ul class="small text-muted mb-0">
-                        <li>Выделили ДДС по каждому объекту</li>
-                        <li>Настроили контроль авансов и этапов</li>
-                        <li>Стали заранее видеть дефицит по объектам</li>
-                    </ul>
+                <div class="col-12">
+                  <label class="form-label small">E-mail</label>
+                  <input class="form-control" name="email" type="email" placeholder="you@company.ru" required />
                 </div>
+                <div class="col-12">
+                  <label class="form-label small">Сфера бизнеса</label>
+                  <select class="form-select" name="business" required>
+                    <option value="" selected disabled>Выберите…</option>
+                    <option>Производство</option>
+                    <option>Торговля</option>
+                    <option>Строительство</option>
+                    <option>Автотехника / спецтехника</option>
+                    <option>E-commerce / маркетплейсы</option>
+                    <option>Услуги</option>
+                    <option>Другое</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label small">Комментарий (необязательно)</label>
+                  <textarea class="form-control" name="comment" rows="3" placeholder="Например: кассовые разрывы, не понимаю прибыль, нужен порядок…"></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-accent w-100 mt-3 py-2">
+                Забронировать разбор
+              </button>
+
+              <div class="text-secondary small mt-2">
+                Альтернатива: <a href="#footer" class="text-decoration-none" style="color:var(--brand);">связаться напрямую</a>.
+              </div>
+            </form>
+
+            <div class="alert alert-success mt-3 d-none" id="formSuccess" role="alert">
+              Заявка принята. Мы свяжемся с вами в ближайшее время.
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- ЭКРАН 6: CTA-повтор (консультация) -->
-<section id="cta-consult" class="page-section section-dark">
-    <div class="container">
-        <div class="row g-4 align-items-center">
-            <div class="col-lg-6">
-                <h2 class="section-title mb-3">
-                    Начнём с диагностической сессии
-                </h2>
-                <p class="section-subtitle mb-3">
-                    За одну встречу мы поймём, где вы находитесь сейчас, покажем
-                    ключевые точки потерь и предложим план на 3–6 месяцев.
-                </p>
-                <ul class="hero-list mb-3">
-                    <li>Анализ текущих отчётов и платёжного календаря (если есть)</li>
-                    <li>Оценка рисков по кассовым разрывам и обязательствам</li>
-                    <li>Рекомендации по первому шагу уже в конце встречи</li>
-                </ul>
-                <p class="small text-light mb-0">
-                    Формат: онлайн, 45–60 минут. Мы ничего не продаём «с ходу» —
-                    сначала разбираемся в вашей ситуации.
-                </p>
-            </div>
-            <div class="col-lg-5 offset-lg-1">
-                <div class="card card-soft border-0">
-                    <div class="card-body">
-                        <h3 class="h6 mb-2 text-dark">Оставьте контакты</h3>
-                        <p class="small text-muted mb-3">
-                            Запишем вас на удобное время и уточним детали бизнеса.
-                        </p>
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Имя</label>
-                                <input type="text" class="form-control" placeholder="Как к вам обращаться?">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Телефон / Telegram</label>
-                                <input type="text" class="form-control" placeholder="+7… или @username">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Комментарий</label>
-                                <textarea class="form-control" rows="2" placeholder="Коротко: в чём сейчас главная боль по финансам?"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100">
-                                Записаться на консультацию
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+  
 
-<!-- ЭКРАН 7: Материалы / лид-магниты -->
-<section id="materials" class="page-section section-muted">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Материалы для собственника</h2>
-                <p class="section-subtitle">
-                    Если хотите сначала разобраться сами — используйте наши шаблоны и чек-листы.
-                    Это те же инструменты, с которыми мы работаем на проектах.
-                </p>
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h6 mb-2">Шаблон ДДС + платёжный календарь</h3>
-                    <p class="small text-muted mb-3">
-                        Готовая Google-таблица, где можно вести движение денег и видеть
-                        кассовые разрывы заранее.
-                    </p>
-                    <ul class="small text-muted mb-3">
-                        <li>Настроенные статьи ДДС для малого бизнеса</li>
-                        <li>Автоматический расчёт остатка денег по дням</li>
-                        <li>Инструкция по заполнению на 2 страницы</li>
-                    </ul>
-                    <a href="#" class="btn btn-outline-primary btn-sm">
-                        Получить шаблон
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h6 mb-2">Чек-лист: 15 ошибок в управлении деньгами</h3>
-                    <p class="small text-muted mb-3">
-                        Список типичных ошибок, из-за которых прибыль на бумаге есть,
-                        а денег на счетах — нет.
-                    </p>
-                    <ul class="small text-muted mb-3">
-                        <li>Ошибки в договорённостях с поставщиками и подрядчиками</li>
-                        <li>Невидимые «пылесосы» денег в операционке</li>
-                        <li>Что проверить в первую очередь за 1–2 дня</li>
-                    </ul>
-                    <a href="#" class="btn btn-outline-primary btn-sm">
-                        Скачать чек-лист
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-<!-- ЭКРАН 8: Кратко про тарифы / форматы -->
-<section class="page-section">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Форматы работы</h2>
-                <p class="section-subtitle">
-                    Подбираем формат под масштаб, задачи и уровень зрелости вашего бизнеса.
-                    Важнее не «тариф», а то, решаются ли ваши задачи.
-                </p>
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h6 mb-1">Диагностика</h3>
-                    <p class="small text-muted mb-2">
-                        10–14 дней
-                    </p>
-                    <p class="small text-muted mb-3">
-                        Быстрый аудит, карта потоков денег, рекомендации по первым шагам.
-                    </p>
-                    <p class="small text-muted mb-0">
-                        Подходит, если вы только начинаете разбираться в финансах.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4 border border-2 border-primary">
-                    <h3 class="h6 mb-1">Финдиректор на аутсорсе</h3>
-                    <p class="small text-muted mb-2">
-                        От 3 месяцев
-                    </p>
-                    <p class="small text-muted mb-3">
-                        Регулярное планирование, контроль и отчётность. ДДС, платёжный календарь,
-                        анализ прибыли и рисков.
-                    </p>
-                    <p class="small text-muted mb-0">
-                        Для бизнеса, который хочет расти и управлять прибылью, а не только выручкой.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-soft h-100 p-4">
-                    <h3 class="h6 mb-1">Настройка фин-сервиса</h3>
-                    <p class="small text-muted mb-2">
-                        Сопровождение + облачный сервис
-                    </p>
-                    <p class="small text-muted mb-3">
-                        Экономим ваше время: интеграции, автоправила, отчёты в пару кликов.
-                    </p>
-                    <p class="small text-muted mb-0">
-                        Доступно клиентам, с которыми работаем на постоянной основе.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    const form = document.getElementById('auditForm');
+    const ok  = document.getElementById('formSuccess');
 
-<!-- ЭКРАН 9: Блог / статьи -->
-<section class="page-section section-muted">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-7">
-                <h2 class="section-title">Статьи для предпринимателей</h2>
-                <p class="section-subtitle">
-                    Пишем о том, как управлять деньгами в малом и среднем бизнесе без
-                    лишней «финансовой магии» и сложных терминов.
-                </p>
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <h3 class="h6">ДДС, ОПиУ и Баланс «на пальцах»</h3>
-                <p class="small text-muted">
-                    Три отчёта, которые должен понимать собственник, чтобы управлять
-                    деньгами и прибылью.
-                </p>
-                <a href="#" class="small">Читать статью →</a>
-            </div>
-            <div class="col-md-4">
-                <h3 class="h6">Как перестать тушить кассовые разрывы</h3>
-                <p class="small text-muted">
-                    Пошаговый план, как внедрить платёжный календарь и вернуть контроль
-                    над платежами.
-                </p>
-                <a href="#" class="small">Читать статью →</a>
-            </div>
-            <div class="col-md-4">
-                <h3 class="h6">Когда бизнесу нужен финдиректор</h3>
-                <p class="small text-muted">
-                    Признаки того, что бухгалтер и «табличка в Excel» больше не справляются.
-                </p>
-                <a href="#" class="small">Читать статью →</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="page-section pt-4 pb-4">
-    <div class="container footer">
-        <div class="row align-items-center">
-            <div class="col-md-6 mb-2 mb-md-0">
-                <div class="d-flex align-items-center">
-                    <span class="brand-logo-badge" style="transform: scale(0.85); margin-right: 6px;">ВФ</span>
-                    <span>Ваш ФинДиректор</span>
-                </div>
-                <div class="mt-2 small">
-                    Финансовый директор на аутсорсе и сервис управления деньгами.
-                </div>
-            </div>
-            <div class="col-md-6 text-md-end small">
-                <div>Телеграм: @your_cfo_bot</div>
-                <div>E-mail: hello@vashfindir.ru</div>
-                <div class="mt-1">© <span id="year"></span> Ваш ФинДиректор</div>
-            </div>
-        </div>
-    </div>
-</footer>
-
-</main>
-
-<?php
-get_footer();
-?>
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+      ok.classList.remove('d-none');
+      form.reset();
+      form.classList.remove('was-validated');
+      setTimeout(() => ok.classList.add('d-none'), 4500);
+    });
+  </script>
+<?php get_footer('new'); ?>
