@@ -20,11 +20,14 @@
 
       <div class="collapse navbar-collapse" id="nav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-          <li class="nav-item"><a class="nav-link" href="#problem">Боли</a></li>
-          <li class="nav-item"><a class="nav-link" href="#solution">Новая логика</a></li>
-          <li class="nav-item"><a class="nav-link" href="#how">Старт за 24 часа</a></li>
-          <li class="nav-item"><a class="nav-link" href="#pricing">Сценарии</a></li>
-          <li class="nav-item"><a class="nav-link" href="#trust">Результаты</a></li>
+          <?php
+          wp_nav_menu([
+            'theme_location' => 'primary',
+            'container' => false,
+            'items_wrap' => '%3$s',
+            'fallback_cb' => false,
+          ]);
+          ?>
           <li class="nav-item ms-lg-2">
             <a class="btn btn-outline-brand px-3" href="#login">Войти</a>
           </li>
