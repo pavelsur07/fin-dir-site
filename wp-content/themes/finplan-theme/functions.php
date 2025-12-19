@@ -138,8 +138,33 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 JS;
+    if (!is_page_template('page-new-ui.php')) {
+        wp_add_inline_script('bootstrap-5', $menu_js);
+    }
 
-    wp_add_inline_script('bootstrap-5', $menu_js);
+    if (is_page_template('page-new-ui.php')) {
+        wp_enqueue_style(
+            'bootstrap-icons',
+            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+            ['bootstrap-5'],
+            '1.11.3'
+        );
+
+        wp_enqueue_style(
+            'finplan-new-ui',
+            $theme_uri . '/assets/css/new-ui.css',
+            ['bootstrap-icons'],
+            wp_get_theme()->get('Version')
+        );
+
+        wp_enqueue_script(
+            'finplan-new-ui',
+            $theme_uri . '/assets/js/new-ui.js',
+            ['bootstrap-5'],
+            wp_get_theme()->get('Version'),
+            true
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'finplan_enqueue_assets');
 
