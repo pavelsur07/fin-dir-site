@@ -22,7 +22,7 @@ services:
   wordpress:
     build:
       context: .
-      dockerfile: Dockerfile.wordpress
+      dockerfile: wordpress:php8.2-apache
     container_name: vashfindir_wp
     restart: always
     depends_on:
