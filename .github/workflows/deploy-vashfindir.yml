@@ -23,9 +23,21 @@ jobs:
             cd ${{ secrets.DEPLOY_PATH }}
 
             # Обновляем код (без reset/clean, чтобы не трогать wp-content с правами контейнера)
+            STASH_FLAG=0
+            if [ -n "$(git status --porcelain)" ]; then
+              STASH_FLAG=1
+              git stash push -u -m "deploy-autostash"
+            fi
+
             git fetch --all --prune
             BRANCH="$(git rev-parse --abbrev-ref HEAD)"
             git merge --ff-only "origin/${BRANCH}"
+
+            if [ "$STASH_FLAG" -eq 1 ]; then
+              if ! git stash pop; then
+                echo "Warning: failed to reapply local changes automatically; they remain in stash" >&2
+              fi
+            fi
 
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
