@@ -18,6 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            sudo -Es <<'EOF'
             set -e
 
             cd ${{ secrets.DEPLOY_PATH }}
@@ -50,3 +51,4 @@ jobs:
             docker-compose -f docker-compose.prod.yml up -d --build
 
             docker-compose -f docker-compose.prod.yml restart wordpress || true
+            EOF
