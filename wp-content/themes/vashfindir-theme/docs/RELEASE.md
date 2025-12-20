@@ -1,7 +1,15 @@
-# RELEASE CHECKLIST v1.0.0
+# Релизы
 
-- [ ] Update version in style.css
-- [ ] Replace CDN assets with bundled versions if required
-- [ ] Verify menus and templates render correctly
-- [ ] Validate PHP 8.1+ compatibility
-- [ ] Smoke test on latest WordPress
+## Версионирование
+- `1.0.0-dev` — разработка
+- `1.0.0` — первый релиз
+
+## Чеклист релиза v1.0.0
+- [ ] Тема активируется без ошибок
+- [ ] Главная страница (landing) собрана из компонентов (organisms)
+- [ ] Страницы: Сервис / Финдир на аутсорсе — информативные заглушки
+- [ ] Страница О нас — информационная
+- [ ] Нет inline CSS/JS в шаблонах
+- [ ] assets подключаются через enqueue, версии выставлены
+- [ ] Меню primary работает, есть fallback
+- [ ] Проверено: desktop/mobile, header/footer, формы (если есть)

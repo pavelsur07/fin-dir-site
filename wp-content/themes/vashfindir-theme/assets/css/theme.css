@@ -32,3 +32,15 @@ main {
     color: #0d6efd;
     border-color: #0d6efd;
 }
+/* === Design Tokens (vashfindir) === */
+:root{
+    --vfd-brand: #0A1548;
+    --vfd-accent: #FF1F1F;
+    --vfd-text: #0f172a;
+    --vfd-muted: #64748b;
+    --vfd-bg: #ffffff;
+    --vfd-border: rgba(15, 23, 42, 0.12);
+    --vfd-radius: 16px;
+    --vfd-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+}
+

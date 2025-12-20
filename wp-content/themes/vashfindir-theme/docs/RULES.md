@@ -1,5 +1,38 @@
-# RULES
+# vashfindir-theme — правила разработки
 
-- Theme focuses on UI only; business logic belongs in plugins.
-- Avoid inline CSS and JS; use enqueued assets.
-- Keep the folder structure organized as defined.
+## 0) Цель темы
+Тема отвечает только за UI/верстку/стили/клиентский JS.
+Любая бизнес-логика (CPT, интеграции, REST API, формы с отправкой, обработка данных) — только в плагинах.
+
+## 1) Архитектура: Component-Based + Atomic Design
+Мы используем CBA + Atomic Design (Brad Frost) для поддержки и масштабирования.
+
+**Уровни компонентов:**
+- `template-parts/atoms/*` — атомы (button, badge, icon, heading, link, divider)
+- `template-parts/molecules/*` — молекулы (cards, list items, form rows)
+- `template-parts/organisms/*` — организмы (секции лендинга: hero, problem, solution, pricing и т.д.)
+- `templates/*.php` — шаблоны страниц: только сборка организмов и layout
+- `header.php / footer.php` — каркас документа
+
+**Правило:** шаблоны страниц не содержат сложной разметки. Разметка живёт в components.
+
+## 2) Источник дизайна
+Главная страница берётся из эталонного HTML-файла и переносится по секциям.
+Перенос делаем не монолитом, а организмами/молекулами/атомами.
+
+## 3) Запрещено
+- Inline CSS и inline JS в шаблонах (всё в assets)
+- Бизнес-логика в теме (CPT, REST, интеграции, обработчики форм)
+- “Случайные” классы/стили в разных местах без токенов
+
+## 4) Разрешено
+- UI-скрипты в `assets/js/theme.js`
+- Стили в `assets/css/theme.css`
+- WP хуки только для setup/enqueue/helpers (inc/)
+
+## 5) Стандарты безопасности
+- Любые выводы: `esc_html`, `esc_attr`, `esc_url`
+- Ссылки и атрибуты только после экранирования
+
+## 6) Принцип изменений
+Каждый шаг — атомарный коммит: маленькое изменение, которое легко проверить и откатить.
