@@ -18,7 +18,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            sudo -Es <<'EOF'
+            # Передаём пароль sudo через stdin, чтобы обойти требование интерактивного TTY.
+            cat <<'EOF_DEPLOY' >/tmp/vashfindir-deploy.sh
             set -e
 
             cd ${{ secrets.DEPLOY_PATH }}
@@ -51,4 +52,8 @@ jobs:
             docker-compose -f docker-compose.prod.yml up -d --build
 
             docker-compose -f docker-compose.prod.yml restart wordpress || true
-            EOF
+            EOF_DEPLOY
+
+            chmod +x /tmp/vashfindir-deploy.sh
+            printf '%s\n' "${{ secrets.SUDO_PASSWORD }}" | sudo -S -E /tmp/vashfindir-deploy.sh
+            rm -f /tmp/vashfindir-deploy.sh
