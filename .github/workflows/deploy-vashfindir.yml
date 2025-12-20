@@ -18,20 +18,43 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ${{ secrets.DEPLOY_PATH }}
+            set -euo pipefail
 
-            # Обновляем код
-            git pull
+            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+            COMPOSE_FILE="${DEPLOY_PATH}/docker-compose.prod.yml"
 
-            # Прокидываем секреты БД
+            echo "==> cd ${DEPLOY_PATH}"
+            cd "${DEPLOY_PATH}"
+
+            echo "==> git sync (hard reset to origin/master)"
+            git fetch --all --prune
+            # Если у тебя основная ветка main, поменяй origin/master на origin/main
+            git reset --hard origin/master
+            git clean -fd
+
+            echo "==> export DB secrets (from GitHub Secrets)"
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
 
-            # 1) Гасим стек, чтобы не было режима "recreate"
-            docker-compose -f docker-compose.prod.yml down || true
+            echo "==> sanity: render docker-compose config"
+            docker-compose -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
+            # Печатаем верх конфига для контроля, что файл тот и сервисы есть
+            sed -n '1,120p' /tmp/vashfindir.compose.rendered.yml
 
-            # 2) На всякий случай удаляем контейнеры, если остались битые
+            echo "==> stop stack (ignore errors)"
+            docker-compose -f "${COMPOSE_FILE}" down || true
+
+            echo "==> remove orphan containers (ignore errors)"
             docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
 
-            # 3) Чистый старт
-            docker-compose -f docker-compose.prod.yml up -d
+            echo "==> start stack"
+            docker-compose -f "${COMPOSE_FILE}" up -d --remove-orphans
+
+            echo "==> status"
+            docker-compose -f "${COMPOSE_FILE}" ps
+
+            echo "==> logs: db (tail)"
+            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 db || true
+
+            echo "==> logs: wordpress (tail)"
+            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 wordpress || true
