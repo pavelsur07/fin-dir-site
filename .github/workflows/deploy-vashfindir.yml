@@ -22,8 +22,15 @@ jobs:
 
             cd ${{ secrets.DEPLOY_PATH }}
 
-            # Обновляем код
-            git pull
+            # --- FIX: make deploy idempotent (server state = git state) ---
+            # If repo is dirty (e.g. .gitignore edited on server), git pull fails.
+            # We hard-reset to origin/<branch> and remove untracked files.
+            git fetch --all --prune
+
+            # Detect current branch (master/main) and reset to its remote
+            BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+            git reset --hard "origin/${BRANCH}"
+            git clean -fd
 
             # Прокидываем секреты БД
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
@@ -35,12 +42,11 @@ jobs:
             # 2) На всякий случай удаляем контейнеры, если остались битые
             docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
 
-            # 3) КРИТИЧНО: пересобираем wordpress image, иначе тема (themes) не обновляется,
-            #    т.к. themes не примонтированы как volume и находятся внутри image.
+            # 3) КРИТИЧНО: пересобираем wordpress image, иначе тема (themes) не обновляется
             docker-compose -f docker-compose.prod.yml build --no-cache wordpress
 
             # 4) Поднимаем стек с учетом сборки
             docker-compose -f docker-compose.prod.yml up -d --build
 
-            # 5) На всякий случай рестарт wordpress (сброс OPcache, если включен)
+            # 5) Рестарт wordpress (сброс OPcache, если включен)
             docker-compose -f docker-compose.prod.yml restart wordpress || true
