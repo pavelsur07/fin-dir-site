@@ -6,27 +6,27 @@ services:
     container_name: vashfindir_db
     restart: always
     environment:
-      # Лучше сразу использовать MARIADB_*
       MARIADB_DATABASE: vashfindir_wp
       MARIADB_USER: vashfindir_user
-
-      # Секреты — через переменные окружения
       MARIADB_PASSWORD: ${VF_DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - internal
-
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${VF_DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   wordpress:
-    build:
-      context: .
-      dockerfile: wordpress:php8.2-apache
+    image: wordpress:php8.2-apache
     container_name: vashfindir_wp
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: vashfindir_wp
@@ -34,36 +34,34 @@ services:
       WORDPRESS_DB_PASSWORD: ${VF_DB_PASSWORD}
       WORDPRESS_TABLE_PREFIX: wp_
     volumes:
-      # Монтируем всю директорию wp-content из репозитория
+      # wp-content из репозитория (темы/плагины/загрузки)
       - ./wp-content:/var/www/html/wp-content
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_web"
 
-      # HTTPS-роутер
+      # HTTPS
       - "traefik.http.routers.vf.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf.entrypoints=websecure"
       - "traefik.http.routers.vf.tls.certresolver=le"
 
-      # HTTP → HTTPS
+      # HTTP -> HTTPS
       - "traefik.http.routers.vf-http.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf-http.entrypoints=web"
       - "traefik.http.routers.vf-http.middlewares=vf-https-redirect"
       - "traefik.http.middlewares.vf-https-redirect.redirectscheme.scheme=https"
 
+      # ВАЖНО: явно указать порт сервиса внутри контейнера (Apache = 80)
+      - "traefik.http.services.vf.loadbalancer.server.port=80"
+
     networks:
       - web
       - internal
 
-
 networks:
-  # Внешняя сеть Traefik — имя должно совпадать с тем, что создаёт docker-compose Traefik.
-  # Если у тебя compose-проект Traefik называется "traefik", то сеть будет "traefik_web".
   web:
     external: true
     name: traefik_web
-
-  # Внутренняя сеть между WP и БД
   internal:
     external: false
 
