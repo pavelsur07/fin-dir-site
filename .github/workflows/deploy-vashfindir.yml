@@ -44,14 +44,21 @@ jobs:
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
 
-            docker-compose -f docker-compose.prod.yml down || true
+            # Поддержка docker-compose и docker compose на сервере
+            if command -v docker-compose >/dev/null 2>&1; then
+              COMPOSE_CMD=(docker-compose)
+            else
+              COMPOSE_CMD=(docker compose)
+            fi
+
+            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml down || true
             docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
 
             # Пересборка image (внутри него тема)
-            docker-compose -f docker-compose.prod.yml build --no-cache wordpress
-            docker-compose -f docker-compose.prod.yml up -d --build
+            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml build --no-cache wordpress
+            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml up -d --build
 
-            docker-compose -f docker-compose.prod.yml restart wordpress || true
+            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml restart wordpress || true
             EOF_DEPLOY
 
             chmod +x /tmp/vashfindir-deploy.sh
