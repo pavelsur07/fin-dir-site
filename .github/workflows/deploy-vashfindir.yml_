@@ -18,8 +18,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            set -e
-
             cd ${{ secrets.DEPLOY_PATH }}
 
             # Обновляем код
@@ -29,18 +27,11 @@ jobs:
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
 
-            # 1) Останавливаем стек
+            # 1) Гасим стек, чтобы не было режима "recreate"
             docker-compose -f docker-compose.prod.yml down || true
 
             # 2) На всякий случай удаляем контейнеры, если остались битые
             docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
 
-            # 3) КРИТИЧНО: пересобираем wordpress image, иначе тема (themes) не обновляется,
-            #    т.к. themes не примонтированы как volume и находятся внутри image.
-            docker-compose -f docker-compose.prod.yml build --no-cache wordpress
-
-            # 4) Поднимаем стек с учетом сборки
-            docker-compose -f docker-compose.prod.yml up -d --build
-
-            # 5) На всякий случай рестарт wordpress (сброс OPcache, если включен)
-            docker-compose -f docker-compose.prod.yml restart wordpress || true
+            # 3) Чистый старт
+            docker-compose -f docker-compose.prod.yml up -d
