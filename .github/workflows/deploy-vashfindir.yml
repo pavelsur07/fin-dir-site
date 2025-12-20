@@ -18,49 +18,20 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            # Передаём пароль sudo через stdin, чтобы обойти требование интерактивного TTY.
-            cat <<'EOF_DEPLOY' >/tmp/vashfindir-deploy.sh
-            set -e
-
             cd ${{ secrets.DEPLOY_PATH }}
 
-            # Обновляем код (без reset/clean, чтобы не трогать wp-content с правами контейнера)
-            STASH_FLAG=0
-            if [ -n "$(git status --porcelain)" ]; then
-              STASH_FLAG=1
-              git stash push -u -m "deploy-autostash"
-            fi
+            # Обновляем код
+            git pull
 
-            git fetch --all --prune
-            BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-            git merge --ff-only "origin/${BRANCH}"
-
-            if [ "$STASH_FLAG" -eq 1 ]; then
-              if ! git stash pop; then
-                echo "Warning: failed to reapply local changes automatically; they remain in stash" >&2
-              fi
-            fi
-
+            # Прокидываем секреты БД
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
 
-            # Поддержка docker-compose и docker compose на сервере
-            if command -v docker-compose >/dev/null 2>&1; then
-              COMPOSE_CMD=(docker-compose)
-            else
-              COMPOSE_CMD=(docker compose)
-            fi
+            # 1) Гасим стек, чтобы не было режима "recreate"
+            docker-compose -f docker-compose.prod.yml down || true
 
-            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml down || true
+            # 2) На всякий случай удаляем контейнеры, если остались битые
             docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
 
-            # Пересборка image (внутри него тема)
-            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml build --no-cache wordpress
-            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml up -d --build
-
-            "${COMPOSE_CMD[@]}" -f docker-compose.prod.yml restart wordpress || true
-            EOF_DEPLOY
-
-            chmod +x /tmp/vashfindir-deploy.sh
-            printf '%s\n' "${{ secrets.SUDO_PASSWORD }}" | sudo -S -E /tmp/vashfindir-deploy.sh
-            rm -f /tmp/vashfindir-deploy.sh
+            # 3) Чистый старт
+            docker-compose -f docker-compose.prod.yml up -d
