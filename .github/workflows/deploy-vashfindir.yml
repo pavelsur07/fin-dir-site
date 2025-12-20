@@ -26,6 +26,7 @@ jobs:
             echo "==> cd ${DEPLOY_PATH}"
             cd "${DEPLOY_PATH}"
 
+            sudo /usr/local/sbin/vashfindir-fix-wp-perms || true
             echo "==> git sync (hard reset to origin/master)"
             git fetch --all --prune
             # Если у тебя основная ветка main, поменяй origin/master на origin/main
