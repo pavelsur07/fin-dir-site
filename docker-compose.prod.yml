@@ -20,7 +20,9 @@ services:
 
 
   wordpress:
-    image: wordpress:php8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.wordpress
     container_name: vashfindir_wp
     restart: always
     depends_on:
@@ -32,7 +34,9 @@ services:
       WORDPRESS_DB_PASSWORD: ${VF_DB_PASSWORD}
       WORDPRESS_TABLE_PREFIX: wp_
     volumes:
-      - ./wp-content:/var/www/html/wp-content
+      # Храним загружаемые файлы и языки отдельно, чтобы не терять их между деплоями
+      - wp_uploads:/var/www/html/wp-content/uploads
+      - wp_languages:/var/www/html/wp-content/languages
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_web"
@@ -66,3 +70,5 @@ networks:
 
 volumes:
   db_data:
+  wp_uploads:
+  wp_languages:
