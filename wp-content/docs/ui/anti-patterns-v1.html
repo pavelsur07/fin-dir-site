@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anti‑паттерны UI — Enterprise B2B (Ваш финдир)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --brand:#0A1548;
+            --brand-2:#0d1c63;
+
+            --cta:#B00020;
+            --cta-hover:#8E001A;
+            --cta-2: var(--brand-2);
+            --cta-2-hover: var(--brand);
+
+            --text:#0b1020;
+            --muted:#5c677d;
+
+            --bg:#f7f8fc;
+            --card:#ffffff;
+            --border: rgba(10,21,72,.14);
+
+            --radius-card: 6px;
+            --radius-control: 6px;
+            --shadow: 0 10px 30px rgba(10,21,72,.08);
+
+            --content-max: 1140px;
+            --prose-max: 62ch;
+
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body{ background: var(--bg); color: var(--text); font-family: var(--font-sans); }
+        .container-demo{ max-width: var(--content-max); }
+        .prose{ max-width: var(--prose-max); }
+
+        .card-e{
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+        }
+
+        .label{
+            display:inline-flex; align-items:center; gap:.4rem;
+            padding: .3rem .55rem; border-radius: 999px;
+            border: 1px solid rgba(10,21,72,.12);
+            background: rgba(10,21,72,.04);
+            color: var(--brand);
+            font-weight: 900; font-size: 12px;
+        }
+        .rule{ border-left: 3px solid rgba(10,21,72,.22); padding-left: 12px; }
+
+        .btn-cta{
+            background: var(--cta); border-color: var(--cta); color:#fff;
+            font-weight: 900; border-radius: var(--radius-control); padding:.6rem .9rem;
+        }
+        .btn-cta:hover{ background: var(--cta-hover); border-color: var(--cta-hover); color:#fff; }
+
+        .btn-cta2{
+            background: var(--cta-2); border-color: var(--cta-2); color:#fff;
+            font-weight: 900; border-radius: var(--radius-control); padding:.6rem .9rem;
+        }
+        .btn-cta2:hover{ background: var(--cta-2-hover); border-color: var(--cta-2-hover); color:#fff; }
+
+        .btn-outline-e{
+            background:#fff; border:1px solid rgba(10,21,72,.22); color: var(--brand);
+            font-weight: 800; border-radius: var(--radius-control); padding:.6rem .9rem;
+        }
+        .btn-outline-e:hover{ border-color: rgba(10,21,72,.35); color: var(--brand); }
+
+        .bad{ border: 1px solid rgba(176,0,32,.25); background: rgba(176,0,32,.04); border-radius: var(--radius-card); padding: 14px; }
+        .good{ border: 1px solid rgba(10,21,72,.14); background: rgba(10,21,72,.03); border-radius: var(--radius-card); padding: 14px; }
+
+        .pill{
+            display:inline-flex; align-items:center; gap:.4rem;
+            padding:.25rem .55rem; border-radius: 999px;
+            font-size: 12px; font-weight: 900;
+            border: 1px solid rgba(10,21,72,.14);
+            background: rgba(255,255,255,.7);
+            color: var(--brand);
+        }
+
+        code{ background: rgba(10,21,72,.06); border: 1px solid rgba(10,21,72,.08); border-radius: 6px; padding: .15rem .45rem; }
+        .small-muted{ color: var(--muted); font-size: 13px; line-height: 1.45; }
+    </style>
+</head>
+
+<body>
+<header class="py-3" style="background:#fff; border-bottom:1px solid rgba(10,21,72,.08);">
+    <div class="container container-demo d-flex align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-2">
+            <span class="label">UI System</span>
+            <span class="small-muted">Anti‑паттерны (Blue Ocean, Enterprise B2B)</span>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-e btn-sm">Документ (MD)</button>
+            <button class="btn btn-cta2 btn-sm">CTA от бренда</button>
+            <button class="btn btn-cta btn-sm">Ответственный CTA</button>
+        </div>
+    </div>
+</header>
+
+<main class="py-5">
+    <div class="container container-demo">
+        <div class="card-e p-4 p-md-5">
+            <div class="prose">
+                <h1 style="font-weight:900; color:var(--brand); letter-spacing:-0.02em;">Anti‑паттерны: как не стать “default SaaS”</h1>
+                <p class="small-muted mt-2">
+                    Это демонстрационный шаблон. Он фиксирует “запреты” и эталонные решения для дальнейшей верстки:
+                    меньше шума, больше управляемости и доверия.
+                </p>
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                    <span class="pill">1 filled CTA на секцию</span>
+                    <span class="pill">Без градиентов/стекла</span>
+                    <span class="pill">56–64ch для текста</span>
+                    <span class="pill">Радиусы 4–8px</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-4">
+            <div class="col-12 col-lg-6">
+                <div class="card-e p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 style="font-size:22px; font-weight:900; color:var(--brand); margin:0;">Цвет: нельзя</h2>
+                        <span class="label">❌ Anti‑pattern</span>
+                    </div>
+                    <div class="bad mt-3">
+                        <div class="fw-bold" style="color:#7a0017;">Много акцентов и “синий по умолчанию”</div>
+                        <div class="small-muted mt-1">
+                            2–3 CTA‑цвета в одном блоке, “вкусные” градиенты, промо‑красный.
+                        </div>
+                        <div class="mt-3 d-flex flex-wrap gap-2">
+                            <button class="btn btn-primary">Default Blue</button>
+                            <button class="btn btn-success">Green</button>
+                            <button class="btn btn-danger">Red</button>
+                        </div>
+                        <div class="small-muted mt-3">Выглядит как типовой SaaS‑лендинг.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card-e p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 style="font-size:22px; font-weight:900; color:var(--brand); margin:0;">Цвет: как надо</h2>
+                        <span class="label">✅ Pattern</span>
+                    </div>
+                    <div class="good mt-3">
+                        <div class="fw-bold" style="color:var(--brand);">Один акцент и роли цветов</div>
+                        <div class="small-muted mt-1">
+                            <code>--brand</code> для структуры, <code>--cta-2</code> (брендовый) для “начать”,
+                            <code>--cta</code> для “ответственного” шага.
+                        </div>
+                        <div class="mt-3 d-flex flex-wrap gap-2">
+                            <button class="btn btn-cta2">Начать</button>
+                            <button class="btn btn-outline-e">Подробнее</button>
+                            <button class="btn btn-cta">Подтвердить</button>
+                        </div>
+                        <div class="small-muted mt-3">Сдержанно, управляемо, enterprise‑тон.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-12 col-lg-6">
+                <div class="card-e p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 style="font-size:22px; font-weight:900; color:var(--brand); margin:0;">Типографика: нельзя</h2>
+                        <span class="label">❌ Anti‑pattern</span>
+                    </div>
+                    <div class="bad mt-3">
+                        <div style="font-size:28px; font-weight:800;">Очень эмоциональный заголовок!!!</div>
+                        <div style="font-size:20px; font-weight:700; color:#1f6feb;">Подзаголовок в стиле промо</div>
+                        <div style="font-size:16px; line-height:1.8;" class="mt-2">
+                            Длинный текст на всю ширину экрана — читать тяжело, выглядит как “лендинг‑простыня”.
+                        </div>
+                        <div class="small-muted mt-3">Слишком много ролей текста и “эффектов”.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card-e p-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h2 style="font-size:22px; font-weight:900; color:var(--brand); margin:0;">Типографика: как надо</h2>
+                        <span class="label">✅ Pattern</span>
+                    </div>
+                    <div class="good mt-3">
+                        <div class="rule">
+                            <div style="font-size:22px; font-weight:900; color:var(--brand); letter-spacing:-0.01em;">
+                                Контроль денег и прогноз кассы
+                            </div>
+                            <div class="small-muted mt-1 prose">
+                                Текст ограничен до <code>62ch</code>. 3 роли текста: управляющий / основной / служебный.
+                            </div>
+                        </div>
+                        <div class="small-muted mt-3">Спокойно, понятно, “рабочая тишина”.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-e p-4 mt-4">
+            <h2 style="font-size:22px; font-weight:900; color:var(--brand); margin:0;">Чек‑лист перед мерджем</h2>
+            <ul class="mt-3 mb-0 small-muted" style="padding-left: 1.1rem;">
+                <li>В секции не больше <b>1 filled CTA</b></li>
+                <li>Нет градиентов / glass / неонов</li>
+                <li>Текст ограничен по ширине (56–64ch)</li>
+                <li>Радиусы в пределах 4–8px</li>
+                <li>Цвет = роль (структура/действие/риск), а не “красота”</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<footer class="py-4" style="background:#fff; border-top:1px solid rgba(10,21,72,.08);">
+    <div class="container container-demo d-flex flex-column flex-md-row justify-content-between gap-2">
+        <div class="small-muted">Шаблон UI: anti‑паттерны для Enterprise B2B (финансы)</div>
+        <div class="small-muted">© <span id="y"></span> Ваш финдир</div>
+    </div>
+</footer>
+
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

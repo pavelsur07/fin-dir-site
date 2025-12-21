@@ -1,0 +1,1501 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enterprise B2B — Typography & Layout Demo</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --cta-2-hover: var(--brand);
+            --cta-2: var(--brand-2);
+            --brand-2: #0d1c63;
+            --brand: #0A1548;
+            --cta: #B00020;
+            --cta-hover: #8E001A;
+
+            /* Secondary CTA (outline, blue) */
+            --cta-secondary: #0A1548;
+            --cta-secondary-hover: #0d1c63;
+
+            --text: #0b1020;
+            --muted: #5c677d;
+
+            --bg-soft: #f7f8fc;
+            --card: #ffffff;
+            --border: rgba(10,21,72,.14);
+
+            /* Width */
+            --content-max: 1140px;
+            --prose-max: 62ch;
+
+            /* Radius (enterprise sharp) */
+            --radius-card: 6px;
+            --radius-control: 6px;
+
+            /* Shadow */
+            --shadow: 0 10px 30px rgba(10,21,72,.10);
+
+            /* Typography */
+            --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+            --fs-body: 16px;
+            --lh-body: 1.55;
+
+            --fs-lead: 18px;
+            --lh-lead: 1.55;
+
+            --fs-h1: clamp(32px, 3.2vw, 46px);
+            --lh-h1: 1.06;
+            --ls-h1: -0.03em;
+
+            --fs-h2: clamp(24px, 2.1vw, 34px);
+            --lh-h2: 1.12;
+            --ls-h2: -0.02em;
+
+            --fs-h3: 20px;
+            --lh-h3: 1.20;
+
+            --fs-small: 13px;
+            --lh-small: 1.45;
+        }
+
+        body{
+            background: var(--bg-soft);
+            color: var(--text);
+            font-family: var(--font-sans);
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+        }
+
+        .container-demo{ max-width: var(--content-max); }
+        .prose{ max-width: var(--prose-max); }
+
+        .section{ padding: clamp(48px, 6vw, 80px) 0; }
+        .section + .section{ border-top: 1px solid rgba(10,21,72,.06); }
+
+        h1{
+            font-size: var(--fs-h1);
+            line-height: var(--lh-h1);
+            letter-spacing: var(--ls-h1);
+            font-weight: 900;
+            color: var(--brand);
+            margin-bottom: .5rem;
+        }
+        h2{
+            font-size: var(--fs-h2);
+            line-height: var(--lh-h2);
+            letter-spacing: var(--ls-h2);
+            font-weight: 900;
+            color: var(--brand);
+            margin-bottom: .5rem;
+        }
+        h3{
+            font-size: var(--fs-h3);
+            line-height: var(--lh-h3);
+            font-weight: 900;
+            color: var(--brand);
+            margin-bottom: .35rem;
+        }
+        .lead{
+            font-size: var(--fs-lead);
+            line-height: var(--lh-lead);
+            color: var(--muted);
+            margin-bottom: 0;
+        }
+        .small, .text-muted{
+            font-size: var(--fs-small);
+            line-height: var(--lh-small);
+        }
+
+        .card-e{
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-cta{
+            background: var(--cta);
+            border-color: var(--cta);
+            color: #fff;
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+        }
+        .btn-cta:hover{
+            background: var(--cta-hover);
+            border-color: var(--cta-hover);
+            color:#fff;
+        }
+        .btn-outline-brand{
+            background: #fff;
+            border: 1px solid rgba(10,21,72,.22);
+            color: var(--brand);
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+        }
+        .btn-outline-brand:hover{
+            border-color: rgba(10,21,72,.35);
+            color: var(--brand);
+            background: #fff;
+        }
+
+        /* Secondary CTA (outline, blue) */
+        .btn-cta-secondary{
+            background: #fff;
+            border: 1px solid rgba(10,21,72,.22);
+            color: var(--brand-2);
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+        }
+        .btn-cta-secondary:hover{
+            border-color: rgba(10,21,72,.35);
+            color: var(--cta-secondary-hover);
+            background: rgba(10,21,72,.04);
+        }
+
+        /* Filled CTA (enterprise, blue) */
+        .btn-cta-fill{
+            background: var(--cta);
+            border-color: var(--cta);
+            color:#fff;
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+            box-shadow: 0 12px 28px rgba(45,107,255,.16);
+        }
+        .btn-cta-fill:hover{
+            background: var(--cta-hover);
+            border-color: var(--cta-hover);
+            color:#fff;
+            filter: brightness(.98);
+        }
+
+
+
+
+
+        /* Filled CTA v2 (deeper crimson) — for “Регистрация” */
+        .btn-cta-fill-2{
+            background: var(--cta-2);
+            border-color: var(--cta-2);
+            color:#fff;
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+            box-shadow: 0 12px 28px rgba(10,21,72,.18);
+        }
+        .btn-cta-fill-2:hover{
+            background: var(--cta-2-hover);
+            border-color: var(--cta-2-hover);
+            color:#fff;
+            filter: brightness(.99);
+        }
+        .form-control{
+            border-radius: var(--radius-control);
+            border-color: rgba(10,21,72,.18);
+            padding: .75rem .9rem;
+        }
+        .form-control:focus{
+            border-color: rgba(10,21,72,.35);
+            box-shadow: 0 0 0 .2rem rgba(45,107,255,.18);
+        }
+
+        .ruler{
+            height: 10px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(10,21,72,.10), rgba(45,107,255,.12));
+            border: 1px solid rgba(10,21,72,.10);
+        }
+        .label{
+            display:inline-block;
+            padding: .3rem .55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(10,21,72,.12);
+            background: rgba(10,21,72,.04);
+            color: var(--brand);
+            font-weight: 900;
+            font-size: 12px;
+        }
+
+        code{
+            background: rgba(10,21,72,.06);
+            border: 1px solid rgba(10,21,72,.08);
+            border-radius: 6px;
+            padding: .15rem .45rem;
+        }
+
+        .tile{
+            border: 1px solid rgba(10,21,72,.12);
+            border-radius: var(--radius-card);
+            background: rgba(255,255,255,.70);
+            padding: 14px;
+        }
+        .tile .k{
+            font-weight: 900;
+            color: var(--brand);
+            font-size: 12px;
+            letter-spacing: .02em;
+            text-transform: uppercase;
+        }
+        .tile .v{
+            font-weight: 900;
+            color: var(--text);
+            font-size: 18px;
+            letter-spacing: -0.01em;
+            margin-top: 2px;
+        }
+        .tile .h{
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+
+        /* =========================
+           Pricing block (from reference)
+           Styled to match v4 (enterprise)
+           ========================= */
+        .pricing-wrap { max-width: var(--content-max); }
+        .period-btns .btn{
+            border-color: rgba(10,21,72,.18);
+            color: var(--brand);
+            background: #fff;
+            font-weight: 800;
+            border-radius: var(--radius-control);
+            padding: .55rem .85rem;
+        }
+        .period-btns .btn:hover{
+            border-color: rgba(10,21,72,.35);
+            color: var(--brand);
+        }
+        .period-btns .btn.active{
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #fff;
+            box-shadow: 0 .75rem 1.5rem rgba(10,21,72,.14);
+        }
+
+        .pricing-card{
+            border: 1px solid rgba(10,21,72,.10);
+            border-radius: var(--radius-card);
+            box-shadow: 0 10px 25px rgba(10,21,72,.06);
+            overflow: hidden;
+            background:#fff;
+        }
+        .pricing-card .card-header{
+            background: #fff;
+            border-bottom: 1px solid rgba(10,21,72,.08);
+        }
+
+        .plan-badge{
+            background: rgba(10,21,72,.04);
+            color: var(--brand-2);
+            border: 1px solid rgba(10,21,72,.22);
+            font-weight: 900;
+        }
+
+        .price{
+            color: var(--brand);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+        .price .currency{ font-weight: 900; }
+        .price-sub{
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .total-line{
+            margin-top: .35rem;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .total-line b{
+            color: var(--brand);
+            font-weight: 900;
+        }
+
+        .save-pill{
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-weight: 900;
+            color: #0f5132;
+            background: rgba(25,135,84,.10);
+            border: 1px solid rgba(25,135,84,.18);
+            border-radius: 999px;
+            padding: .35rem .6rem;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .featured{
+            border: 2px solid rgba(45,107,255,.30);
+            box-shadow: 0 16px 35px rgba(10,21,72,.10);
+            transform: translateY(-2px);
+        }
+
+        .feature-list li{ margin-bottom: .55rem; }
+        .feature-list .bi{ color: #198754; margin-right: .5rem; }
+
+
+        /* =========================
+           Footer (Enterprise B2B)
+           ========================= */
+        .footer-e{
+            background: var(--brand);
+            border-top: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.86);
+        }
+        .footer-e .footer-title{
+            color:#fff;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+        .footer-e .footer-muted{ color: rgba(255,255,255,.72); }
+        .footer-e a.footer-link{
+            color: rgba(255,255,255,.90);
+            text-decoration: none;
+            font-weight: 800;
+        }
+        .footer-e a.footer-link:hover{
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 2px;
+        }
+        .footer-e .footer-meta a{
+            color: rgba(255,255,255,.78);
+            text-decoration: none;
+        }
+        .footer-e .footer-meta a:hover{
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .footer-e .footer-divider{
+            border-top: 1px solid rgba(255,255,255,.12);
+        }
+        .social-row{
+            display:flex;
+            flex-wrap:wrap;
+            gap:.5rem;
+            align-items:center;
+            margin-top:.6rem;
+        }
+        .social-btn{
+            width: 36px;
+            height: 36px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,.22);
+            background: rgba(255,255,255,.06);
+            color: #fff;
+            text-decoration:none;
+            transition: transform .12s ease, background .12s ease, border-color .12s ease;
+        }
+        .social-btn:hover{
+            background: rgba(255,255,255,.10);
+            border-color: rgba(255,255,255,.35);
+            transform: translateY(-1px);
+        }
+        .social-btn svg{ width:18px; height:18px; fill: currentColor; }
+
+
+        /* Footer v3: softer nav links */
+        .footer-e a.footer-link-soft{
+            color: rgba(255,255,255,.78);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .footer-e a.footer-link-soft:hover{
+            color: rgba(255,255,255,.92);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 2px;
+        }
+
+
+        /* =========================
+           Anti-pattern guards
+           ========================= */
+        /* Kill “default SaaS blue” */
+        .btn-primary{
+            background: var(--brand-2) !important;
+            border-color: var(--brand-2) !important;
+            color:#fff !important;
+            font-weight: 900;
+            border-radius: var(--radius-control) !important;
+        }
+        .btn-primary:hover{
+            background: var(--brand) !important;
+            border-color: var(--brand) !important;
+        }
+        .text-primary{ color: var(--brand-2) !important; }
+        a{ text-underline-offset: 3px; }
+        /* Subtle shadows only */
+        .card-e{ box-shadow: 0 10px 28px rgba(10,21,72,.07) !important; }
+
+
+        /* Navbar toggler icon (Bootstrap without navbar-light class) */
+        .navbar-toggler-icon{
+            background-image: var(--bs-navbar-toggler-icon-bg);
+        }
+
+
+        /* =========================
+           Header menu (Enterprise B2B hover/focus)
+           ========================= */
+
+        /* =========================
+           Header menu (Underline only)
+           ========================= */
+        .nav-e .nav-link{
+            position: relative;
+            display: inline-block;
+            color: var(--brand);
+            font-weight: 800;
+            padding: .35rem .65rem;
+            line-height: 1.2;
+            text-decoration: none;     /* no underline by default */
+            background: transparent;   /* no pill / no highlight */
+            border: none;
+            border-radius: 0;
+        }
+        /* underline (below text, reveals left→right; never overlaps letters) */
+        .nav-e .nav-link::after{
+            content:"";
+            position:absolute;
+            left: .65rem;
+            right: .65rem;
+            bottom: -5px;             /* underline offset (adjust here) */
+            height: 2px;
+            background: rgba(13,28,99,.72);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform .22s ease;
+            border-radius: 2px;
+        }
+        .nav-e .nav-link:hover::after,
+        .nav-e .nav-link:focus-visible::after,
+        .nav-e .nav-link[aria-current="page"]::after{
+            transform: scaleX(1);
+        }
+        .nav-e .nav-link:hover,
+        .nav-e .nav-link:focus-visible{
+            color: var(--brand);       /* no color shift */
+            background: transparent;   /* ensure no background */
+            outline: none;
+            box-shadow: none;
+        }
+
+        /* Offcanvas list items: underline only (no background) */
+        .offcanvas .list-group-item{
+            border-color: rgba(10,21,72,.08);
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            background: transparent;
+        }
+        .offcanvas .list-group-item:hover{
+            background: transparent;
+            text-decoration: underline;
+            text-underline-offset: 7px;
+            text-decoration-thickness: 2px;
+            text-decoration-color: rgba(13,28,99,.55);
+        }
+
+        body{
+            background: var(--bg-soft);
+            color: var(--text);
+            font-family: var(--font-sans);
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+        }
+
+        .container-demo{ max-width: var(--content-max); }
+        .prose{ max-width: var(--prose-max); }
+
+        .section{ padding: clamp(48px, 6vw, 80px) 0; }
+        .section + .section{ border-top: 1px solid rgba(10,21,72,.06); }
+
+        h1{
+            font-size: var(--fs-h1);
+            line-height: var(--lh-h1);
+            letter-spacing: var(--ls-h1);
+            font-weight: 900;
+            color: var(--brand);
+            margin-bottom: .5rem;
+        }
+        h2{
+            font-size: var(--fs-h2);
+            line-height: var(--lh-h2);
+            letter-spacing: var(--ls-h2);
+            font-weight: 900;
+            color: var(--brand);
+            margin-bottom: .5rem;
+        }
+        h3{
+            font-size: var(--fs-h3);
+            line-height: var(--lh-h3);
+            font-weight: 900;
+            color: var(--brand);
+            margin-bottom: .35rem;
+        }
+        .lead{
+            font-size: var(--fs-lead);
+            line-height: var(--lh-lead);
+            color: var(--muted);
+            margin-bottom: 0;
+        }
+        .small, .text-muted{
+            font-size: var(--fs-small);
+            line-height: var(--lh-small);
+        }
+
+        .card-e{
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-cta{
+            background: var(--cta);
+            border-color: var(--cta);
+            color: #fff;
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+        }
+        .btn-cta:hover{
+            background: var(--cta-hover);
+            border-color: var(--cta-hover);
+            color:#fff;
+        }
+        .btn-outline-brand{
+            background: #fff;
+            border: 1px solid rgba(10,21,72,.22);
+            color: var(--brand);
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+        }
+        .btn-outline-brand:hover{
+            border-color: rgba(10,21,72,.35);
+            color: var(--brand);
+            background: #fff;
+        }
+
+        /* Secondary CTA (outline, blue) */
+        .btn-cta-secondary{
+            background: #fff;
+            border: 1px solid rgba(10,21,72,.22);
+            color: var(--brand-2);
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+        }
+        .btn-cta-secondary:hover{
+            border-color: rgba(10,21,72,.35);
+            color: var(--cta-secondary-hover);
+            background: rgba(10,21,72,.04);
+        }
+
+        /* Filled CTA (enterprise, blue) */
+        .btn-cta-fill{
+            background: var(--cta);
+            border-color: var(--cta);
+            color:#fff;
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+            box-shadow: 0 12px 28px rgba(45,107,255,.16);
+        }
+        .btn-cta-fill:hover{
+            background: var(--cta-hover);
+            border-color: var(--cta-hover);
+            color:#fff;
+            filter: brightness(.98);
+        }
+
+
+
+
+
+        /* Filled CTA v2 (deeper crimson) — for “Регистрация” */
+        .btn-cta-fill-2{
+            background: var(--cta-2);
+            border-color: var(--cta-2);
+            color:#fff;
+            font-weight: 900;
+            border-radius: var(--radius-control);
+            padding: .65rem 1rem;
+            box-shadow: 0 12px 28px rgba(10,21,72,.18);
+        }
+        .btn-cta-fill-2:hover{
+            background: var(--cta-2-hover);
+            border-color: var(--cta-2-hover);
+            color:#fff;
+            filter: brightness(.99);
+        }
+        .form-control{
+            border-radius: var(--radius-control);
+            border-color: rgba(10,21,72,.18);
+            padding: .75rem .9rem;
+        }
+        .form-control:focus{
+            border-color: rgba(10,21,72,.35);
+            box-shadow: 0 0 0 .2rem rgba(45,107,255,.18);
+        }
+
+        .ruler{
+            height: 10px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(10,21,72,.10), rgba(45,107,255,.12));
+            border: 1px solid rgba(10,21,72,.10);
+        }
+        .label{
+            display:inline-block;
+            padding: .3rem .55rem;
+            border-radius: 999px;
+            border: 1px solid rgba(10,21,72,.12);
+            background: rgba(10,21,72,.04);
+            color: var(--brand);
+            font-weight: 900;
+            font-size: 12px;
+        }
+
+        code{
+            background: rgba(10,21,72,.06);
+            border: 1px solid rgba(10,21,72,.08);
+            border-radius: 6px;
+            padding: .15rem .45rem;
+        }
+
+        .tile{
+            border: 1px solid rgba(10,21,72,.12);
+            border-radius: var(--radius-card);
+            background: rgba(255,255,255,.70);
+            padding: 14px;
+        }
+        .tile .k{
+            font-weight: 900;
+            color: var(--brand);
+            font-size: 12px;
+            letter-spacing: .02em;
+            text-transform: uppercase;
+        }
+        .tile .v{
+            font-weight: 900;
+            color: var(--text);
+            font-size: 18px;
+            letter-spacing: -0.01em;
+            margin-top: 2px;
+        }
+        .tile .h{
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+
+        /* =========================
+           Pricing block (from reference)
+           Styled to match v4 (enterprise)
+           ========================= */
+        .pricing-wrap { max-width: var(--content-max); }
+        .period-btns .btn{
+            border-color: rgba(10,21,72,.18);
+            color: var(--brand);
+            background: #fff;
+            font-weight: 800;
+            border-radius: var(--radius-control);
+            padding: .55rem .85rem;
+        }
+        .period-btns .btn:hover{
+            border-color: rgba(10,21,72,.35);
+            color: var(--brand);
+        }
+        .period-btns .btn.active{
+            background: var(--brand);
+            border-color: var(--brand);
+            color: #fff;
+            box-shadow: 0 .75rem 1.5rem rgba(10,21,72,.14);
+        }
+
+        .pricing-card{
+            border: 1px solid rgba(10,21,72,.10);
+            border-radius: var(--radius-card);
+            box-shadow: 0 10px 25px rgba(10,21,72,.06);
+            overflow: hidden;
+            background:#fff;
+        }
+        .pricing-card .card-header{
+            background: #fff;
+            border-bottom: 1px solid rgba(10,21,72,.08);
+        }
+
+        .plan-badge{
+            background: rgba(10,21,72,.04);
+            color: var(--brand-2);
+            border: 1px solid rgba(10,21,72,.22);
+            font-weight: 900;
+        }
+
+        .price{
+            color: var(--brand);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+        .price .currency{ font-weight: 900; }
+        .price-sub{
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .total-line{
+            margin-top: .35rem;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .total-line b{
+            color: var(--brand);
+            font-weight: 900;
+        }
+
+        .save-pill{
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-weight: 900;
+            color: #0f5132;
+            background: rgba(25,135,84,.10);
+            border: 1px solid rgba(25,135,84,.18);
+            border-radius: 999px;
+            padding: .35rem .6rem;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .featured{
+            border: 2px solid rgba(45,107,255,.30);
+            box-shadow: 0 16px 35px rgba(10,21,72,.10);
+            transform: translateY(-2px);
+        }
+
+        .feature-list li{ margin-bottom: .55rem; }
+        .feature-list .bi{ color: #198754; margin-right: .5rem; }
+
+
+        /* =========================
+           Footer (Enterprise B2B)
+           ========================= */
+        .footer-e{
+            background: var(--brand);
+            border-top: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.86);
+        }
+        .footer-e .footer-title{
+            color:#fff;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+        .footer-e .footer-muted{ color: rgba(255,255,255,.72); }
+        .footer-e a.footer-link{
+            color: rgba(255,255,255,.90);
+            text-decoration: none;
+            font-weight: 800;
+        }
+        .footer-e a.footer-link:hover{
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 2px;
+        }
+        .footer-e .footer-meta a{
+            color: rgba(255,255,255,.78);
+            text-decoration: none;
+        }
+        .footer-e .footer-meta a:hover{
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .footer-e .footer-divider{
+            border-top: 1px solid rgba(255,255,255,.12);
+        }
+        .social-row{
+            display:flex;
+            flex-wrap:wrap;
+            gap:.5rem;
+            align-items:center;
+            margin-top:.6rem;
+        }
+        .social-btn{
+            width: 36px;
+            height: 36px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,.22);
+            background: rgba(255,255,255,.06);
+            color: #fff;
+            text-decoration:none;
+            transition: transform .12s ease, background .12s ease, border-color .12s ease;
+        }
+        .social-btn:hover{
+            background: rgba(255,255,255,.10);
+            border-color: rgba(255,255,255,.35);
+            transform: translateY(-1px);
+        }
+        .social-btn svg{ width:18px; height:18px; fill: currentColor; }
+
+
+        /* Footer v3: softer nav links */
+        .footer-e a.footer-link-soft{
+            color: rgba(255,255,255,.78);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .footer-e a.footer-link-soft:hover{
+            color: rgba(255,255,255,.92);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 2px;
+        }
+
+
+        /* =========================
+           Anti-pattern guards
+           ========================= */
+        /* Kill “default SaaS blue” */
+        .btn-primary{
+            background: var(--brand-2) !important;
+            border-color: var(--brand-2) !important;
+            color:#fff !important;
+            font-weight: 900;
+            border-radius: var(--radius-control) !important;
+        }
+        .btn-primary:hover{
+            background: var(--brand) !important;
+            border-color: var(--brand) !important;
+        }
+        .text-primary{ color: var(--brand-2) !important; }
+        a{ text-underline-offset: 3px; }
+        /* Subtle shadows only */
+        .card-e{ box-shadow: 0 10px 28px rgba(10,21,72,.07) !important; }
+
+
+        /* Navbar toggler icon (Bootstrap without navbar-light class) */
+        .navbar-toggler-icon{
+            background-image: var(--bs-navbar-toggler-icon-bg);
+        }
+
+
+        /* =========================
+           Header menu (Enterprise B2B hover/focus)
+           ========================= */
+        .offcanvas .list-group-item{
+            border-color: rgba(10,21,72,.08);
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            transition: background .12s ease;
+        }
+        .offcanvas .list-group-item:hover{
+            background: rgba(10,21,72,.04);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header style="background:#fff; border-bottom:1px solid rgba(10,21,72,.08);">
+    <nav class="navbar navbar-expand-lg" aria-label="Основная навигация">
+        <div class="container container-demo py-2">
+            <!-- Brand -->
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#" style="text-decoration:none;">
+                <span class="badge rounded-pill" style="background: rgba(10,21,72,.06); border:1px solid rgba(10,21,72,.10); color: var(--brand); font-weight:900;">UI System</span>
+                <span class="fw-black" style="font-weight:900; color: var(--brand); letter-spacing:-0.02em;">Ваш финдир</span>
+            </a>
+
+            <!-- Mobile toggler -->
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#mainNavOffcanvas"
+                    aria-controls="mainNavOffcanvas" aria-label="Открыть меню"
+                    style="border-color: rgba(10,21,72,.18); border-radius: var(--radius-control);">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Desktop / tablet menu -->
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto gap-lg-2 nav-e" style="--bs-nav-link-padding-y:.35rem;">
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);" aria-current="page">Тарифы</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">О сервисе</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Безопасность</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Документы</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Контакты</a></li>
+                </ul>
+
+                <div class="d-none d-lg-flex align-items-center gap-2">
+                    <button class="btn btn-cta-secondary btn-sm">Войти</button>
+                    <button class="btn btn-cta-fill-2 btn-sm">Регистрация</button>
+                </div>
+
+                <!-- Tablet actions (shown between md and lg if needed) -->
+                <div class="d-none d-md-flex d-lg-none align-items-center gap-2">
+                    <button class="btn btn-cta-secondary btn-sm">Войти</button>
+                    <button class="btn btn-cta-fill-2 btn-sm">Регистрация</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Offcanvas (mobile) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mainNavOffcanvas" aria-labelledby="mainNavOffcanvasLabel">
+        <div class="offcanvas-header" style="border-bottom:1px solid rgba(10,21,72,.08);">
+            <div class="d-flex align-items-center gap-2" id="mainNavOffcanvasLabel">
+                <span class="badge rounded-pill" style="background: rgba(10,21,72,.06); border:1px solid rgba(10,21,72,.10); color: var(--brand); font-weight:900;">Меню</span>
+                <span class="fw-black" style="font-weight:900; color: var(--brand); letter-spacing:-0.02em;">Ваш финдир</span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action" style="font-weight:900; color: var(--brand);">Тарифы</a>
+                <a href="#" class="list-group-item list-group-item-action" style="font-weight:900; color: var(--brand);">О сервисе</a>
+                <a href="#" class="list-group-item list-group-item-action" style="font-weight:900; color: var(--brand);">Безопасность</a>
+                <a href="#" class="list-group-item list-group-item-action" style="font-weight:900; color: var(--brand);">Документы</a>
+                <a href="#" class="list-group-item list-group-item-action" style="font-weight:900; color: var(--brand);">Контакты</a>
+            </div>
+
+            <div class="mt-4 d-grid gap-2">
+                <button class="btn btn-cta-secondary">Войти</button>
+                <button class="btn btn-cta-fill-2">Регистрация</button>
+            </div>
+
+            <div class="mt-4 small" style="color: var(--muted);">
+                UI demo: меню адаптировано под desktop / tablet / mobile.
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Button system showcase (Enterprise B2B) -->
+<section class="section pt-4 pb-0" id="btnShowcase">
+    <div class="container container-demo">
+        <div class="card-e p-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
+                <div class="prose">
+                    <h2 class="mb-2">Кнопки: CTA и статусы</h2>
+                    <p class="lead">Минимализм + доверие: один “основной” CTA, спокойные вторичные действия, красный — только риск.</p>
+                    <div class="text-muted small mt-2">
+                        Цветовая логика для Enterprise B2B (финансы): <code>Blue = действие</code>, <code>Navy = структура</code>, <code>Red = риск</code>.
+                    </div>
+                </div>
+
+                <div class="w-100" style="max-width: 520px;">
+                    <div class="text-muted small mb-2">Примеры</div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-cta-fill">CTA (заливка, синий)</button>
+                        <button class="btn btn-cta">CTA (референс, красный)</button>
+                        <button class="btn btn-cta-secondary">Secondary (outline)</button>
+                        <button class="btn btn-outline-brand">Primary (brand outline)</button>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <button class="btn btn-light" style="border-radius: var(--radius-control); border:1px solid rgba(10,21,72,.14); font-weight:900;">Ghost / нейтральная</button>
+                        <button class="btn btn-success" style="border-radius: var(--radius-control); font-weight:900;">Success</button>
+                        <button class="btn btn-warning" style="border-radius: var(--radius-control); font-weight:900;">Warning</button>
+                        <button class="btn btn-danger" style="border-radius: var(--radius-control); font-weight:900;">Danger</button>
+                    </div>
+
+                    <div class="mt-3 small text-muted">
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="label">CTA fill: <code>--cta-secondary</code></span>
+                            <span class="label">CTA ref: <code>--cta</code></span>
+                            <span class="label">Brand: <code>--brand</code></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-3" style="border-color: rgba(10,21,72,.08);">
+
+            <div class="row g-3">
+                <div class="col-12 col-lg-4">
+                    <div class="tile">
+                        <div class="k">Primary CTA</div>
+                        <div class="h">Регистрация / Оплатить / Начать — <b>синий fill</b> (в финтехе воспринимается как “контроль”).</div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="tile">
+                        <div class="k">Secondary</div>
+                        <div class="h">Войти / Подробнее / Сравнить — <b>outline</b>, без лишнего давления.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="tile">
+                        <div class="k">Danger</div>
+                        <div class="h">Удалить / критические риски — <b>только красный</b>. Не использовать как маркетинговый акцент.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="pricing">
+    <div class="container container-demo">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold mb-2" style="color: var(--brand);">Тарифы</h2>
+            <p class="text-muted mb-0">
+                Формат показа: <b>цена в месяц</b> + ниже <b>итоговая сумма</b> за выбранный период.
+            </p>
+        </div>
+
+        <!-- Period switch -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="btn-group period-btns" role="group" aria-label="Период оплаты">
+                <button type="button" class="btn active" data-period="1">1 месяц</button>
+                <button type="button" class="btn" data-period="3">3 месяца</button>
+                <button type="button" class="btn" data-period="6">6 месяцев</button>
+                <button type="button" class="btn" data-period="12">12 месяцев</button>
+            </div>
+        </div>
+
+        <!-- Included in all plans (Variant A, Blue Ocean) -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="w-100" style="max-width: 920px;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 px-3 py-3"
+                     style="background: rgba(10,21,72,.04); border: 1px solid rgba(10,21,72,.10); border-radius: 12px;">
+                    <div class="fw-semibold" style="color: var(--brand);">
+                        Во всех тарифах включено:
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+              <span class="save-pill" style="color:#1f4fd6; background: rgba(10,21,72,.04); border-color: rgba(10,21,72,.35);">
+                Онбординг и настройка
+              </span>
+                        <span class="save-pill">
+                Консультация финдиректора
+              </span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-2 text-muted small">
+                    Мы не просто показываем отчёты — мы запускаем управляемость: деньги, прогноз и решения.
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Plan 1 -->
+            <div class="col-12 col-lg-4">
+                <div class="card pricing-card h-100">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-start gap-2">
+                            <div>
+                                <div class="badge rounded-pill plan-badge mb-2">Тариф 1</div>
+                                <div class="h5 fw-bold mb-0" style="color: var(--brand);">Start</div>
+                                <div class="footer-muted small">База для контроля денег</div>
+                            </div>
+                            <span class="save-pill d-none" data-save-for="plan1">
+                  <span>Экономия</span>
+                  <span data-save-value></span>
+                </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <div class="display-6 price mb-1" data-permonth-for="plan1">
+                                4 990 <span class="currency">₽</span>
+                            </div>
+                            <div class="price-sub">в месяц</div>
+
+                            <div class="total-line">
+                                Итого: <b data-total-for="plan1">4 990 ₽</b>
+                            </div>
+                        </div>
+
+                        <ul class="list-unstyled feature-list mb-4">
+                            <li><i class="bi bi-check-circle-fill"></i>ДДС и базовая аналитика</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Планирование денег</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Базовые алерты (светофор)</li>
+                        </ul>
+
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-cta-secondary" href="#">Выбрать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan 2 (featured) -->
+            <div class="col-12 col-lg-4">
+                <div class="card pricing-card featured h-100">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-start gap-2">
+                            <div>
+                                <div class="badge rounded-pill plan-badge mb-2">Тариф 2</div>
+                                <div class="h5 fw-bold mb-0" style="color: var(--brand);">Pro</div>
+                                <div class="footer-muted small">Оптимальный для большинства</div>
+                            </div>
+                            <span class="save-pill" data-save-for="plan2">
+                  <span>Экономия</span>
+                  <span data-save-value>—</span>
+                </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <div class="display-6 price mb-1" data-permonth-for="plan2">
+                                14 990 <span class="currency">₽</span>
+                            </div>
+                            <div class="price-sub">в месяц</div>
+
+                            <div class="total-line">
+                                Итого: <b data-total-for="plan2">14 990 ₽</b>
+                            </div>
+                        </div>
+
+                        <ul class="list-unstyled feature-list mb-4">
+                            <li><i class="bi bi-check-circle-fill"></i>Все из Start</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Расширенные отчёты и прогноз</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Приоритетная поддержка</li>
+                        </ul>
+
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-cta-fill" href="#">Выбрать Pro</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan 3 -->
+            <div class="col-12 col-lg-4">
+                <div class="card pricing-card h-100">
+                    <div class="card-header py-3">
+                        <div class="d-flex justify-content-between align-items-start gap-2">
+                            <div>
+                                <div class="badge rounded-pill plan-badge mb-2">Тариф 3</div>
+                                <div class="h5 fw-bold mb-0" style="color: var(--brand);">Business</div>
+                                <div class="footer-muted small">Для команд и роста</div>
+                            </div>
+                            <span class="save-pill d-none" data-save-for="plan3">
+                  <span>Экономия</span>
+                  <span data-save-value></span>
+                </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <div class="display-6 price mb-1" data-permonth-for="plan3">
+                                24 990 <span class="currency">₽</span>
+                            </div>
+                            <div class="price-sub">в месяц</div>
+
+                            <div class="total-line">
+                                Итого: <b data-total-for="plan3">24 990 ₽</b>
+                            </div>
+                        </div>
+
+                        <ul class="list-unstyled feature-list mb-4">
+                            <li><i class="bi bi-check-circle-fill"></i>Все из Pro</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Командный доступ</li>
+                            <li><i class="bi bi-check-circle-fill"></i>Расширенные сценарии и контроль рисков</li>
+                        </ul>
+
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-cta-secondary" href="#">Выбрать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 text-muted small">
+            Рекомендация: делайте <span class="fw-semibold">12 месяцев</span> «по умолчанию» для B2B (сильнее cash-in и ниже “цена в месяц”).
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="section">
+    <div class="container container-demo">
+        <div class="card-e p-4 p-md-5">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-4">
+                <div class="prose">
+                    <h1>Управляйте деньгами до того, как появятся проблемы</h1>
+                    <p class="lead">Эта секция показывает: как выглядят заголовки, lead, ширина читаемого текста и базовые отступы в enterprise-стиле.</p>
+
+                    <div class="mt-4 d-flex flex-wrap gap-2">
+                        <button class="btn btn-cta">Главный CTA</button>
+                        <button class="btn btn-outline-brand">Вторичное действие</button>
+                    </div>
+
+                    <div class="mt-4 text-muted small">
+                        Токены: <code>--content-max: 1140px</code>, <code>--prose-max: 62ch</code>, <code>h1 clamp(32–46)</code>.
+                    </div>
+                </div>
+
+                <div style="min-width: 280px;">
+                    <div class="text-muted small mb-2">Ширина контейнера (1140px)</div>
+                    <div class="ruler mb-3"></div>
+
+                    <div class="text-muted small mb-2">Ширина текста (62ch)</div>
+                    <div class="ruler" style="max-width: 62ch;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container-demo">
+        <div class="row g-4">
+            <div class="col-12 col-lg-7">
+                <div class="card-e p-4">
+                    <h2>Шкала заголовков и текстов</h2>
+                    <div class="prose">
+                        <p class="lead">Цель — минимализм, читаемость и “дорогая” уверенность. Без лишней декоративности.</p>
+
+                        <div class="mt-4">
+                            <h1 style="font-size: var(--fs-h1); margin:0;">H1 — Заголовок</h1>
+                            <div class="footer-muted small">Размер: <code>clamp(32px, 3.2vw, 46px)</code>, вес: <code>900</code></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h2 style="font-size: var(--fs-h2); margin:0;">H2 — Подзаголовок</h2>
+                            <div class="footer-muted small">Размер: <code>clamp(24px, 2.1vw, 34px)</code>, вес: <code>900</code></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h3 style="margin:0;">H3 — Заголовок карточки</h3>
+                            <div class="footer-muted small">Размер: <code>20px</code>, вес: <code>900</code></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="fw-semibold" style="color:var(--brand);">Body — обычный текст</div>
+                            <div class="footer-muted small">Размер: <code>16px</code>, line-height: <code>1.55</code></div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="fw-semibold" style="color:var(--brand);">Small / helper</div>
+                            <div class="footer-muted small">Размер: <code>13px</code>, line-height: <code>1.45</code></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-5">
+                <div class="card-e p-4 h-100">
+                    <h2>Лучшие практики (коротко)</h2>
+                    <ul class="mb-0 text-muted" style="padding-left: 1.1rem;">
+                        <li class="mb-2"><b style="color:var(--brand);">1 смысл = 1 акцент</b> (CTA один цвет).</li>
+                        <li class="mb-2">Текст ограничиваем до <code>56–68ch</code>.</li>
+                        <li class="mb-2">Отступы секций: <code>clamp(48px..80px)</code>.</li>
+                        <li class="mb-2">Весов немного: <code>400 / 600 / 900</code>.</li>
+                        <li>Карточки — единый padding: <code>16–20px</code>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container-demo">
+        <div class="card-e p-4">
+            <h2>Демо блоков в сетке (enterprise)</h2>
+            <p class="lead prose">Ниже — пример “дашбордных” плиток: короткие метрики + пояснение. Это показывает ширину, сетку и плотность контента.</p>
+
+            <div class="row g-3 mt-3">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="tile">
+                        <div class="k">Cash</div>
+                        <div class="v">1 240 000 ₽</div>
+                        <div class="h">Остаток на счетах на сегодня</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="tile">
+                        <div class="k">Forecast</div>
+                        <div class="v">+310 000 ₽</div>
+                        <div class="h">Прогноз на 30 дней</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="tile">
+                        <div class="k">Risk</div>
+                        <div class="v">Средний</div>
+                        <div class="h">Вероятность разрыва 15–30%</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="tile">
+                        <div class="k">Plan</div>
+                        <div class="v">12 платежей</div>
+                        <div class="h">Запланировано на неделю</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-muted small">
+                Контейнер: <code>1140px</code> · Карточка: радиус <code>6px</code> · Шрифт: системный стек.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container container-demo">
+        <div class="card-e p-4 p-md-5">
+            <div class="row g-4 align-items-center">
+                <div class="col-12 col-lg-7">
+                    <h2>Форма и читабельность</h2>
+                    <p class="lead prose">Фокус поля — через мягкое свечение CTA. В enterprise важно: спокойно, чётко, без “кислоты”.</p>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="mb-2 text-muted small">Email</div>
+                    <input class="form-control" placeholder="you@company.com" />
+                    <div class="d-flex gap-2 mt-3">
+                        <button class="btn btn-cta w-100">Отправить</button>
+                        <button class="btn btn-outline-brand w-100">Отмена</button>
+                    </div>
+                    <div class="text-muted small mt-2">
+                        Контроль ширины текста: <code>62ch</code>, поэтому формы читаются лучше рядом с текстом.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Footer demo (Enterprise B2B — v2) -->
+
+<!-- Footer demo (Enterprise B2B — best practice) -->
+<footer class="footer-e">
+    <div class="container container-demo py-5">
+        <div class="row g-4">
+            <!-- Brand / Value -->
+            <div class="col-12 col-lg-4">
+                <div class="footer-title">Ваш финдир</div>
+                <div class="footer-muted small mt-2" style="max-width: 46ch;">
+                    Финансовый SaaS + сопровождение. Контроль денег, прогноз и решения — чтобы управлять “до”, а не “после”.
+                </div>
+
+                <div class="mt-3 d-flex flex-column gap-1 small">
+                    <div class="footer-muted">• Данные клиентов защищены</div>
+                    <div class="footer-muted">• Роли доступа и журнал действий</div>
+                    <div class="footer-muted">• Поддержка и онбординг</div>
+                </div>
+            </div>
+
+            <!-- Product -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="footer-muted small mb-2" style="letter-spacing:.02em; text-transform:uppercase;">Продукт</div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="#" class="footer-link-soft">Тарифы</a>
+                    <a href="#" class="footer-link-soft">О сервисе</a>
+                    <a href="#" class="footer-link-soft">Возможности</a>
+                    <a href="#" class="footer-link-soft">Интеграции</a>
+                    <a href="#" class="footer-link-soft">FAQ</a>
+                </div>
+            </div>
+
+            <!-- Company -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="footer-muted small mb-2" style="letter-spacing:.02em; text-transform:uppercase;">Компания</div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="#" class="footer-link-soft">Безопасность</a>
+                    <a href="#" class="footer-link-soft">Документы</a>
+                    <a href="#" class="footer-link-soft">Контакты</a>
+                    <a href="#" class="footer-link-soft">Партнёрам</a>
+                </div>
+            </div>
+
+            <!-- Contacts + Messengers -->
+            <div class="col-12 col-lg-2">
+                <div class="footer-muted small mb-2" style="letter-spacing:.02em; text-transform:uppercase;">Связь</div>
+
+                <div class="d-flex flex-column gap-2 small">
+                    <div class="d-flex flex-column">
+                        <span class="footer-muted" style="font-size: 12px;">Email</span>
+                        <a href="mailto:support@yourdomain.ru" class="footer-link" style="font-weight:800;">support@yourdomain.ru</a>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="footer-muted" style="font-size: 12px;">Telegram</span>
+                        <a href="#" class="footer-link" style="font-weight:800;">@yourhandle</a>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <span class="footer-muted" style="font-size: 12px;">WhatsApp</span>
+                        <a href="#" class="footer-link" style="font-weight:800;">Написать в WhatsApp</a>
+                    </div>
+                </div>
+
+                <div class="footer-muted small mt-3">Мы отвечаем быстро в рабочее время.</div>
+
+                <div class="footer-muted small mt-3">Соцсети</div>
+                <div class="social-row" style="gap:.45rem;">
+                    <a class="social-btn" href="#" aria-label="VK" title="VK">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.7 17.4h-1.2c-4.4 0-6.9-3-7-8.1h2.2c.2 3.7 1.7 5.2 2.9 5.5V9.3h2v3.2c1.2-.1 2.5-1.5 2.9-3.2h2c-.3 2-1.8 3.4-2.8 4 .9.5 2.6 1.8 3.1 4.1h-2.2c-.4-1.4-1.5-2.4-3-2.6v2.6Z"/></svg>
+                    </a>
+                    <a class="social-btn" href="#" aria-label="YouTube" title="YouTube">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 7.3a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.4A2.7 2.7 0 0 0 2.4 7.3 28.2 28.2 0 0 0 2 12s0 3.2.4 4.7a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.4a2.7 2.7 0 0 0 1.9-1.9c.4-1.5.4-4.7.4-4.7s0-3.2-.4-4.7ZM10.3 14.9V9.1L15.4 12l-5.1 2.9Z"/></svg>
+                    </a>
+                    <a class="social-btn" href="#" aria-label="Instagram" title="Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5ZM17.8 7.6a.8.8 0 1 1-.8-.8.8.8 0 0 1 .8.8Z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-divider mt-4 pt-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+                <div class="footer-muted small">
+                    ИНН/ОГРН/реквизиты — в документах. Данные клиентов защищены.
+                </div>
+                <div class="d-flex flex-wrap gap-3 small">
+                    <a href="#" class="footer-link-soft">Политика конфиденциальности</a>
+                    <span class="footer-muted">·</span>
+                    <a href="#" class="footer-link-soft">Оферта</a>
+                    <span class="footer-muted">·</span>
+                    <span class="footer-muted">© <span id="y"></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
