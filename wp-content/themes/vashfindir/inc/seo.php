@@ -34,7 +34,7 @@ add_action('wp_head', function () {
     }
 
     if ($description !== '') {
-        echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
+       /* echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";*/
     }
 
     echo "<meta name=\"robots\" content=\"index,follow\">\n";

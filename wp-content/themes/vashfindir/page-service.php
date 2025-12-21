@@ -1,3 +1,4 @@
+<?php echo "<!-- TEMPLATE: page-service.php -->\n"; ?>
 <?php
 if (!defined('ABSPATH')) exit;
 get_header();

@@ -8,93 +8,483 @@ Requires PHP: 8.0
 Author: vashfindir
 */
 
-body {
+/* =========================================================
+   Base tokens / reset / typography
+   ========================================================= */
+
+:root{
+    /* Brand */
+    --vf-brand:#0A1548;
+    --vf-brand-2:#0d1c63;
+
+    /* Text */
+    --vf-text:#0b1020;
+    --vf-muted:#5c677d;
+
+    /* Surfaces */
+    --vf-bg:#f5f6f8;
+    --vf-card:#ffffff;
+
+    /* UI */
+    --vf-border: rgba(10,21,72,.14);
+    --vf-radius: 6px;
+    --vf-shadow: 0 10px 30px rgba(10,21,72,.08);
+
+    /* Layout */
+    --vf-content-max: 1140px;
+}
+
+*,
+*::before,
+*::after{ box-sizing: border-box; }
+
+html, body{ height: 100%; }
+
+body{
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-    background: #f5f6f8;
-    color: #1f2933;
+    background: var(--vf-bg);
+    color: var(--vf-text);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.site-container {
-    max-width: 960px;
+img{ max-width: 100%; height: auto; }
+
+a{ color: inherit; }
+
+.container{
+    max-width: var(--vf-content-max);
     margin: 0 auto;
-    padding: 2rem 1.5rem 3rem;
+    padding: 0 16px;
 }
 
-.site-header,
-.site-footer {
-    background: #ffffff;
-    border: 1px solid #e1e5eb;
-    border-radius: 8px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+.site-container{
+    min-height: 100%;
 }
 
-.site-title {
-    margin: 0 0 0.25rem;
-    font-size: 1.8rem;
-    font-weight: 700;
+/* Typo defaults */
+h1, h2, h3, h4, h5, h6{
+    margin: 0 0 12px;
+    color: var(--vf-text);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+p{ margin: 0 0 12px; }
+
+small{ color: var(--vf-muted); }
+
+/* =========================================================
+   Buttons (shared)
+   ========================================================= */
+
+.vf-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: .65rem 1rem;
+    border-radius: var(--vf-radius);
+    font-weight: 900;
+    text-decoration:none;
+    border: 1px solid transparent;
+    line-height: 1;
+    cursor: pointer;
 }
 
-.site-description {
-    margin: 0;
-    color: #52606d;
+.vf-btn--primary{
+    background: var(--vf-brand-2);
+    border-color: var(--vf-brand-2);
+    color:#fff;
+    box-shadow: 0 12px 28px rgba(10,21,72,.18);
 }
 
-.nav-primary {
-    margin-top: 0.75rem;
+.vf-btn--primary:hover{
+    background: var(--vf-brand);
+    border-color: var(--vf-brand);
+    color:#fff;
 }
 
-.nav-primary ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 1rem;
+.vf-btn--secondary{
+    background:#fff;
+    border: 1px solid rgba(10,21,72,.22);
+    color: var(--vf-brand-2);
 }
 
-.nav-primary a {
-    color: #175cd3;
-    text-decoration: none;
+.vf-btn--secondary:hover{
+    background: rgba(10,21,72,.04);
+    border-color: rgba(10,21,72,.35);
+    color: var(--vf-brand-2);
 }
 
-.nav-primary a:hover,
-.nav-primary a:focus {
+.vf-btn--block{ width:100%; }
+
+/* =========================================================
+   Enterprise Header (responsive)
+   ========================================================= */
+
+.vf-header{
+    background:#fff;
+    border-bottom:1px solid rgba(10,21,72,.08);
+}
+
+.vf-header__inner{
+    max-width: var(--vf-content-max);
+    margin: 0 auto;
+    padding: 12px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+}
+
+.vf-brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    white-space: nowrap;
+}
+
+.vf-brand__badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width: 36px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgba(10,21,72,.06);
+    border:1px solid rgba(10,21,72,.10);
+    color: var(--vf-brand);
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: .02em;
+}
+
+.vf-brand__name{
+    color: var(--vf-brand);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.vf-nav{
+    display:none;
+    gap: 16px;
+    align-items:center;
+}
+
+.vf-nav__link{
+    color: var(--vf-brand);
+    text-decoration:none;
+    font-weight: 800;
+}
+
+.vf-nav__link:hover{
     text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
-.main-content {
-    background: #ffffff;
-    border: 1px solid #e1e5eb;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+.vf-header__actions{
+    display:none;
+    align-items:center;
+    gap: 10px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #111827;
-    margin-top: 0;
+/* Burger */
+.vf-burger{
+    border: 1px solid rgba(10,21,72,.18);
+    border-radius: var(--vf-radius);
+    background:#fff;
+    padding: 10px 12px;
 }
 
-.entry-title {
-    margin-bottom: 0.5rem;
+.vf-burger__lines{
+    display:block;
+    width: 18px;
+    height: 2px;
+    background: var(--vf-brand);
+    position: relative;
 }
 
-.entry-excerpt {
-    color: #52606d;
+.vf-burger__lines::before,
+.vf-burger__lines::after{
+    content:"";
+    position:absolute;
+    left:0;
+    width: 18px;
+    height: 2px;
+    background: var(--vf-brand);
 }
 
-.no-content {
-    text-align: center;
-    color: #52606d;
-    font-size: 1.05rem;
+.vf-burger__lines::before{ top: -6px; }
+.vf-burger__lines::after{ top: 6px; }
+
+/* Mobile drawer */
+.vf-mobile{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
 }
 
-.site-footer {
-    text-align: center;
-    font-size: 0.95rem;
-    color: #52606d;
+.vf-mobile__panel{
+    position: absolute;
+    top:0; right:0;
+    width: min(360px, 92vw);
+    height: 100%;
+    background: #fff;
+    border-left: 1px solid rgba(10,21,72,.10);
+    box-shadow: var(--vf-shadow);
+    padding: 14px;
+    display:flex;
+    flex-direction:column;
 }
+
+.vf-mobile__backdrop{
+    position:absolute;
+    inset:0;
+    background: rgba(11,16,32,.35);
+}
+
+.vf-mobile__head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(10,21,72,.08);
+}
+
+.vf-mobile__title{
+    font-weight: 900;
+    color: var(--vf-brand);
+}
+
+.vf-mobile__close{
+    border: 1px solid rgba(10,21,72,.14);
+    border-radius: var(--vf-radius);
+    background:#fff;
+    padding: 6px 10px;
+    font-weight: 900;
+}
+
+.vf-mobile__links{
+    display:flex;
+    flex-direction:column;
+    padding: 12px 0;
+    gap: 8px;
+}
+
+.vf-mobile__link{
+    padding: 10px 10px;
+    border-radius: var(--vf-radius);
+    text-decoration:none;
+    color: var(--vf-brand);
+    font-weight: 900;
+    border: 1px solid rgba(10,21,72,.10);
+    background: rgba(10,21,72,.02);
+}
+
+.vf-mobile__actions{
+    margin-top: auto;
+    display:grid;
+    gap: 10px;
+}
+
+/* Desktop */
+@media (min-width: 992px){
+    .vf-burger{ display:none; }
+    .vf-nav{ display:flex; }
+    .vf-header__actions{ display:flex; }
+}
+
+/* =========================================================
+   Footer (enterprise) — FIXED hierarchy
+   ========================================================= */
+
+.vf-footer{
+    margin-top: 56px;
+    background: var(--vf-brand);
+    color: rgba(255,255,255,.78);
+    border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.vf-footer__inner{
+    max-width: var(--vf-content-max);
+    margin: 0 auto;
+    padding: 44px 16px 28px;
+}
+
+.vf-footer__grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+}
+
+@media (min-width: 900px){
+    .vf-footer__grid{
+        grid-template-columns: 1.4fr 1fr 1fr 1fr;
+        gap: 40px;
+    }
+}
+
+.vf-footer__brand{
+    color:#fff;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    font-size: 18px;
+}
+
+.vf-footer__title{
+    color: rgba(255,255,255,.56);
+    font-weight: 800;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    font-size: 11px;
+    margin-bottom: 12px;
+}
+
+.vf-footer__text{
+    margin: 12px 0 0;
+    color: rgba(255,255,255,.68);
+    max-width: 48ch;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.vf-footer__bullets{
+    margin: 14px 0 0;
+    padding-left: 18px;
+    color: rgba(255,255,255,.66);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.vf-footer__nav{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+}
+
+/* ✅ Главное изменение: ссылки теперь НЕ белые и НЕ жирные */
+.vf-footer__link{
+    color: rgba(255,255,255,.72);
+    text-decoration:none;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.vf-footer__link:hover{
+    color: rgba(255,255,255,.92);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+}
+
+/* “Soft” — для legal/второстепенных */
+.vf-footer__linkSoft{
+    color: rgba(255,255,255,.66);
+    text-decoration:none;
+    font-weight: 600;
+}
+
+.vf-footer__linkSoft:hover{
+    color: rgba(255,255,255,.88);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* “Strong” — только для контактов (но тоже без избыточной жирности) */
+.vf-footer__linkStrong{
+    color: rgba(255,255,255,.94);
+    text-decoration:none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.vf-footer__linkStrong:hover{
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
+}
+
+.vf-footer__kv{ margin: 10px 0; }
+
+.vf-footer__k{
+    color: rgba(255,255,255,.52);
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.vf-footer__note{
+    margin-top: 12px;
+    color: rgba(255,255,255,.66);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+/* Social */
+.vf-social{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.vf-social__item{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.06);
+    color: rgba(255,255,255,.88);
+    text-decoration:none;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: .02em;
+}
+
+.vf-social__item:hover{
+    background: rgba(255,255,255,.10);
+    border-color: rgba(255,255,255,.28);
+    color: #fff;
+}
+
+.vf-footer__bottom{
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,.12);
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+}
+
+@media (min-width: 900px){
+    .vf-footer__bottom{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+    }
+}
+
+.vf-footer__meta{
+    color: rgba(255,255,255,.62);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.vf-footer__legal{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+    align-items:center;
+    font-size: 13px;
+}
+
+.vf-footer__dot{ color: rgba(255,255,255,.35); }
+.vf-footer__copy{ color: rgba(255,255,255,.62); }
