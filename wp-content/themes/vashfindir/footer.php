@@ -1,9 +1,16 @@
+<?php
+/**
+ * Footer
+ */
+?>
+
 <footer class="vf-footer" role="contentinfo">
     <div class="vf-footer__inner">
         <div class="vf-footer__grid">
 
             <div class="vf-footer__col vf-footer__col--brand">
                 <div class="vf-footer__brand">Ваш финдир</div>
+
                 <p class="vf-footer__text">
                     Финансовый SaaS + сопровождение. Контроль денег, прогноз и решения — чтобы управлять “до”, а не “после”.
                 </p>
@@ -45,6 +52,7 @@
                 </div>
 
                 <div class="vf-footer__note">Отвечаем в рабочее время.</div>
+
                 <div class="vf-social" aria-label="Социальные сети">
                     <a class="vf-social__item" href="#" aria-label="Telegram">
                         <svg class="vf-social__icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -66,12 +74,10 @@
 
                     <a class="vf-social__item" href="#" aria-label="Instagram">
                         <svg class="vf-social__icon" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6A5.2 5.2 0 0 1 16.8 22H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm9.6 2H7.2A3.2 3.2 0 0 0 4 7.2v9.6A3.2 3.2 0 0 0 7.2 20h9.6a3.2 3.2 0 0 0 3.2-3.2V7.2A3.2 3.2 0 0 0 16.8 4ZM12 7.3A4.7 4.7 0 1 1 7.3 12 4.7 4.7 0 0 1 12 7.3Zm0 2A2.7 2.7 0 1 0 14.7 12 2.7 2.7 0 0 0 12 9.3Zm5.2-2.5a1.1 1.1 0 1 1-1.1 1.1 1.1 1.1 0 0 1 1.1-1.1Z"/>
+                            <path d="M7.2 2h9.6A5.2 5.2 0 0 1 22 7.2v9.6A5.2 5.2 0 0 1 16.8 22H7.2A5.2 5.2 0 0 1 2 16.8V7.2A5.2 5.2 0 0 1 7.2 2Zm9.6 2H7.2A3.2 3.2 0 0 0 4 7.2v9.6A3.2 3.2 0 0 0 7.2 20h9.6a3.2 3.2 0 0 0 3.2-3.2V7.2A3.2 3.2 0 0 0 16.8 4ZM12 7.3A4.7 4.7 0 1 1 7.3 12 4.7 4.7 0 0 1 12 7.3Zm0 2A2.7 2.7 0 1 0 14.7 12 2.7 2.7 0 0 0 12 9.3Zm5.2-2.5a1.1 1.1 0 1 1-1.1 1.1 1.1 0 0 1 1.1-1.1Z"/>
                         </svg>
                     </a>
                 </div>
-
-
             </div>
         </div>
 
@@ -91,3 +97,9 @@
         </div>
     </div>
 </footer>
+
+</div><!-- /.site-container -->
+
+<?php wp_footer(); ?>
+</body>
+</html>
