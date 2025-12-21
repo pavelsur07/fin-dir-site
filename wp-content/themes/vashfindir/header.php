@@ -25,7 +25,8 @@
                     type="button"
                     aria-label="Открыть меню"
                     aria-controls="vfMobileNav"
-                    aria-expanded="false">
+                    aria-expanded="false"
+                    data-vf-mobile-open>
                 <span class="vf-burger__lines" aria-hidden="true"></span>
             </button>
 
@@ -37,17 +38,25 @@
             </nav>
 
             <div class="vf-header__actions">
-                <a class="vf-btn vf-btn--secondary" href="<?php echo esc_url(home_url('/login/')); ?>">Войти</a>
-                <a class="vf-btn vf-btn--primary" href="<?php echo esc_url(home_url('/register/')); ?>">Регистрация</a>
+                <a class="vf-btn vf-btn--secondary"
+                   href="https://app.vashfindir.ru/login"
+                   target="_blank" rel="noopener">Войти</a>
+
+                <a class="vf-btn vf-btn--primary"
+                   href="https://app.vashfindir.ru/register"
+                   target="_blank" rel="noopener">Регистрация</a>
             </div>
         </div>
 
         <!-- Mobile drawer -->
         <div class="vf-mobile" id="vfMobileNav" hidden>
-            <div class="vf-mobile__panel" role="dialog" aria-label="Меню">
+            <div class="vf-mobile__panel" role="dialog" aria-modal="true" aria-label="Меню">
                 <div class="vf-mobile__head">
                     <div class="vf-mobile__title">Меню</div>
-                    <button class="vf-mobile__close" type="button" aria-label="Закрыть меню">×</button>
+                    <button class="vf-mobile__close"
+                            type="button"
+                            aria-label="Закрыть меню"
+                            data-vf-mobile-close>×</button>
                 </div>
 
                 <div class="vf-mobile__links">
@@ -58,10 +67,16 @@
                 </div>
 
                 <div class="vf-mobile__actions">
-                    <a class="vf-btn vf-btn--secondary vf-btn--block" href="<?php echo esc_url(home_url('/login/')); ?>">Войти</a>
-                    <a class="vf-btn vf-btn--primary vf-btn--block" href="<?php echo esc_url(home_url('/register/')); ?>">Регистрация</a>
+                    <a class="vf-btn vf-btn--secondary vf-btn--block"
+                       href="https://app.vashfindir.ru/login"
+                       target="_blank" rel="noopener">Войти</a>
+
+                    <a class="vf-btn vf-btn--primary vf-btn--block"
+                       href="https://app.vashfindir.ru/register"
+                       target="_blank" rel="noopener">Регистрация</a>
                 </div>
             </div>
-            <div class="vf-mobile__backdrop" data-close="1" aria-hidden="true"></div>
+
+            <div class="vf-mobile__backdrop" aria-hidden="true"></div>
         </div>
     </header>

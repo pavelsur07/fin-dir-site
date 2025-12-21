@@ -1,33 +1,48 @@
-// vashfindir theme js (placeholder)
 (function () {
-    const burger = document.querySelector('.vf-burger');
-    const mobile = document.getElementById('vfMobileNav');
-    if (!burger || !mobile) return;
+    function qs(sel, root) { return (root || document).querySelector(sel); }
+    function on(el, ev, fn) { if (el) el.addEventListener(ev, fn); }
 
-    const closeBtn = mobile.querySelector('.vf-mobile__close');
-    const backdrop = mobile.querySelector('[data-close="1"]');
+    document.addEventListener('DOMContentLoaded', function () {
+        const openBtn = qs('[data-vf-mobile-open]');
+        const mobile = qs('.vf-mobile');
+        const closeBtn = qs('[data-vf-mobile-close]');
+        const backdrop = qs('.vf-mobile__backdrop');
 
-    function openNav() {
-        mobile.hidden = false;
-        burger.setAttribute('aria-expanded', 'true');
-        document.documentElement.style.overflow = 'hidden';
-    }
+        function openMenu() {
+            if (!mobile) return;
+            mobile.hidden = false;
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        }
 
-    function closeNav() {
-        mobile.hidden = true;
-        burger.setAttribute('aria-expanded', 'false');
-        document.documentElement.style.overflow = '';
-    }
+        function closeMenu() {
+            if (!mobile) return;
+            mobile.hidden = true;
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+        }
 
-    burger.addEventListener('click', () => {
-        const expanded = burger.getAttribute('aria-expanded') === 'true';
-        expanded ? closeNav() : openNav();
-    });
+        on(openBtn, 'click', function (e) {
+            e.preventDefault();
+            openMenu();
+        });
 
-    closeBtn && closeBtn.addEventListener('click', closeNav);
-    backdrop && backdrop.addEventListener('click', closeNav);
+        on(closeBtn, 'click', function (e) {
+            e.preventDefault();
+            closeMenu();
+        });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobile.hidden === false) closeNav();
+        on(backdrop, 'click', function () {
+            closeMenu();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeMenu();
+        });
+
+        // safety: if menu exists but no hidden attribute set in markup
+        if (mobile && mobile.getAttribute('hidden') === null) {
+            mobile.hidden = true;
+        }
     });
 })();

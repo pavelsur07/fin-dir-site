@@ -192,11 +192,24 @@ small{ color: var(--vf-muted); }
 }
 
 /* Burger */
+/* Fix: burger button shape + radius on mobile */
 .vf-burger{
+    appearance: none;
+    -webkit-appearance: none;
     border: 1px solid rgba(10,21,72,.18);
     border-radius: var(--vf-radius);
     background:#fff;
     padding: 10px 12px;
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.vf-burger:active{
+    transform: translateY(1px);
 }
 
 .vf-burger__lines{
@@ -337,11 +350,12 @@ small{ color: var(--vf-muted); }
 
 .vf-footer__title{
     color: rgba(255,255,255,.72);
-    font-weight: 800;
-    letter-spacing: .02em;
-    text-transform: none;
-    font-size: 13px;
-    margin-bottom: 12px;
+    font-weight: 700;           /* было слишком жирно */
+    letter-spacing: .02em;      /* как в референсе */
+    text-transform: uppercase;  /* как в референсе */
+    font-size: 12px;            /* ближе к "small label" */
+    line-height: 1.45;
+    margin: 0 0 10px;
 }
 
 .vf-footer__text{
