@@ -1,0 +1,9 @@
+.vf-hero { padding: 2rem 0; }
+.vf-hero__inner { max-width: 960px; margin: 0 auto; }
+.vf-hero__actions { display: flex; gap: 12px; margin-top: 16px; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 14px; border-radius: 6px; text-decoration: none; }
+.btn-primary { background: #0A1548; color: #fff; }
+.btn-outline { background: #fff; color: #0A1548; border: 1px solid #0A1548; }
+
+.vf-card { background: #fff; border: 1px solid #e1e5eb; border-radius: 8px; padding: 16px; }
