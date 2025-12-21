@@ -510,3 +510,76 @@ small{ color: var(--vf-muted); }
 
 .vf-footer__dot{ color: rgba(255,255,255,.35); }
 .vf-footer__copy{ color: rgba(255,255,255,.62); }
+
+/* =========================================================
+   MENU PATCH (reference: menu-underline-offset)
+   - affects ONLY: .vf-nav__link and .vf-mobile__link
+   - no global resets, no tokens override
+   ========================================================= */
+
+/* -------- Desktop / tablet: underline-only, offset, reveal -------- */
+.vf-nav__link{
+    position: relative;
+    display: inline-block;
+    text-decoration: none !important; /* keep clean: no default underline */
+    background: transparent !important; /* no pill */
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: .35rem .65rem; /* reference spacing */
+    line-height: 1.2;
+}
+
+/* underline below text, reveals left→right */
+.vf-nav__link::after{
+    content:"";
+    position:absolute;
+    left: .65rem;
+    right: .65rem;
+    bottom: -5px;              /* underline offset (as reference) */
+    height: 2px;
+    background: rgba(13,28,99,.72);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform .22s ease;
+    border-radius: 2px;
+}
+
+.vf-nav__link:hover::after,
+.vf-nav__link:focus-visible::after,
+.vf-nav__link[aria-current="page"]::after{
+    transform: scaleX(1);
+}
+
+.vf-nav__link:hover,
+.vf-nav__link:focus-visible{
+    background: transparent !important;
+    outline: none;
+    box-shadow: none !important;
+}
+
+/* -------- Mobile drawer: list feel + underline on hover -------- */
+/* IMPORTANT: do NOT restyle container/panel/backdrop — only links */
+.vf-mobile__link{
+    display:block;
+    background: transparent !important;
+    text-decoration: none !important;
+    border-radius: 0 !important;
+}
+
+/* Underline hover/focus/active like reference offcanvas list */
+.vf-mobile__link:hover,
+.vf-mobile__link:focus-visible{
+    background: transparent !important;
+    text-decoration: underline !important;
+    text-underline-offset: 7px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: rgba(13,28,99,.55);
+    outline: none;
+}
+
+.vf-mobile__link[aria-current="page"]{
+    text-decoration: underline !important;
+    text-underline-offset: 7px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: rgba(13,28,99,.55);
+}
