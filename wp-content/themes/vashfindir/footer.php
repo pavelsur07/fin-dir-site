@@ -9,8 +9,14 @@
         <div class="vf-footer__grid">
 
             <div class="vf-footer__col vf-footer__col--brand">
-                <div class="vf-footer__brand">Ваш финдир</div>
-
+                <a class="vf-footer__logo-link" href="<?= esc_url(home_url('/')) ?>" aria-label="Ваш финдир — на главную">
+                    <img class="vf-footer__logo"
+                         src="<?= esc_url(get_theme_file_uri('assets/img/logo-vf-on-dark.png')) ?>"
+                         width="360" height="94"
+                         alt="Ваш финдир"
+                         decoding="async"
+                         loading="lazy">
+                </a>
                 <p class="vf-footer__text">
                     Финансовый SaaS + сопровождение. Контроль денег, прогноз и решения — чтобы управлять “до”, а не “после”.
                 </p>
