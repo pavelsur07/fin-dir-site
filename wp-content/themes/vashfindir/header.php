@@ -34,6 +34,7 @@
                 <a class="vf-nav__link" href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
                 <a class="vf-nav__link" href="<?php echo esc_url(home_url('/service/')); ?>">Сервис</a>
                 <a class="vf-nav__link" href="<?php echo esc_url(home_url('/service-findir/')); ?>">Сервис + Финдир</a>
+                <a class="vf-nav__link" href="<?php echo esc_url(home_url('/academy-finance/')); ?>">Академия</a>
                 <a class="vf-nav__link" href="<?php echo esc_url(home_url('/about/')); ?>">О нас</a>
             </nav>
 
@@ -63,6 +64,7 @@
                     <a class="vf-mobile__link" href="<?php echo esc_url(home_url('/')); ?>">Главная</a>
                     <a class="vf-mobile__link" href="<?php echo esc_url(home_url('/service/')); ?>">Сервис</a>
                     <a class="vf-mobile__link" href="<?php echo esc_url(home_url('/service-findir/')); ?>">Сервис + Финдир</a>
+                    <a class="vf-mobile__link" href="<?php echo esc_url(home_url('/academy-finance/')); ?>">Академия</a>
                     <a class="vf-mobile__link" href="<?php echo esc_url(home_url('/about/')); ?>">О нас</a>
                 </div>
 
