@@ -16,9 +16,16 @@
 <div class="site-container">
     <header class="vf-header" role="banner">
         <div class="vf-header__inner">
-            <a class="vf-brand" href="<?php echo esc_url(home_url('/')); ?>">
-                <span class="vf-brand__badge">ВФ</span>
-                <span class="vf-brand__name">Ваш финдир</span>
+            <a class="vf-logo-link" href="<?= esc_url(home_url('/')) ?>" aria-label="Ваш финдир — на главную">
+                <img
+                        class="vf-logo"
+                        src="<?= esc_url(get_theme_file_uri('assets/img/logo-vf-on-light.png')) ?>"
+                        width="360"
+                        height="94"
+                        alt="Ваш финдир"
+                        decoding="async"
+                        fetchpriority="high"
+                >
             </a>
 
             <button class="vf-burger"

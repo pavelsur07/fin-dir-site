@@ -139,6 +139,7 @@ small{ color: var(--vf-muted); }
     gap: 12px;
 }
 
+/* Base brand (badge + name legacy) */
 .vf-brand{
     display:flex;
     align-items:center;
@@ -181,7 +182,6 @@ small{ color: var(--vf-muted); }
 }
 
 /* Burger */
-/* Fix: burger button shape + radius on mobile */
 .vf-burger{
     appearance: none;
     -webkit-appearance: none;
@@ -229,6 +229,13 @@ small{ color: var(--vf-muted); }
     z-index: 9999;
 }
 
+.vf-mobile__backdrop{
+    position:absolute;
+    inset:0;
+    background: rgba(11,16,32,.35);
+    z-index: 0; /* backdrop BELOW panel */
+}
+
 .vf-mobile__panel{
     position: absolute;
     top:0; right:0;
@@ -240,12 +247,7 @@ small{ color: var(--vf-muted); }
     padding: 14px;
     display:flex;
     flex-direction:column;
-}
-
-.vf-mobile__backdrop{
-    position:absolute;
-    inset:0;
-    background: rgba(11,16,32,.35);
+    z-index: 1; /* panel ABOVE backdrop */
 }
 
 .vf-mobile__head{
@@ -298,6 +300,17 @@ small{ color: var(--vf-muted); }
     .vf-burger{ display:none; }
     .vf-nav{ display:flex; }
     .vf-header__actions{ display:flex; }
+
+    /* стабильная высота + воздух */
+    .vf-header__inner{
+        min-height: 72px;
+        gap: 28px;
+    }
+
+    /* чтобы пункты меню не переносились */
+    .vf-nav{
+        gap: 14px;
+    }
 }
 
 /* =========================================================
@@ -339,10 +352,10 @@ small{ color: var(--vf-muted); }
 
 .vf-footer__title{
     color: rgba(255,255,255,.72);
-    font-weight: 700;           /* было слишком жирно */
-    letter-spacing: .02em;      /* как в референсе */
-    text-transform: uppercase;  /* как в референсе */
-    font-size: 12px;            /* ближе к "small label" */
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    font-size: 12px;
     line-height: 1.45;
     margin: 0 0 10px;
 }
@@ -369,7 +382,7 @@ small{ color: var(--vf-muted); }
     gap: 10px;
 }
 
-/* ✅ Главное изменение: ссылки теперь НЕ белые и НЕ жирные */
+/* links */
 .vf-footer__link{
     color: rgba(255,255,255,.72);
     text-decoration:none;
@@ -385,7 +398,6 @@ small{ color: var(--vf-muted); }
     text-decoration-thickness: 2px;
 }
 
-/* “Soft” — для legal/второстепенных */
 .vf-footer__linkSoft{
     color: rgba(255,255,255,.66);
     text-decoration:none;
@@ -398,7 +410,6 @@ small{ color: var(--vf-muted); }
     text-underline-offset: 3px;
 }
 
-/* “Strong” — только для контактов (но тоже без избыточной жирности) */
 .vf-footer__linkStrong{
     color: rgba(255,255,255,.94);
     text-decoration:none;
@@ -509,24 +520,23 @@ small{ color: var(--vf-muted); }
 .vf-nav__link{
     position: relative;
     display: inline-block;
-    padding: .35rem .65rem; /* reference spacing */
+    padding: .35rem .65rem;
     line-height: 1.2;
-
     color: var(--vf-brand);
     font-weight: 800;
     text-decoration: none;
     background: transparent;
     border: 0;
     border-radius: 0;
+    white-space: nowrap; /* не переносим */
 }
 
-/* underline below text, reveals left→right */
 .vf-nav__link::after{
     content:"";
     position:absolute;
     left: .65rem;
     right: .65rem;
-    bottom: -5px;              /* underline offset */
+    bottom: -5px;
     height: 2px;
     background: rgba(13,28,99,.72);
     transform: scaleX(0);
@@ -547,27 +557,22 @@ small{ color: var(--vf-muted); }
 }
 
 /* -------- Mobile drawer: flush list + underline on hover -------- */
-/* Make list "flush" (no gaps, no cards) */
 .vf-mobile__links{
     gap: 0;
 }
 
-/* links as list-group items */
 .vf-mobile__link{
     display:block;
     padding: .75rem .75rem;
-
     border: 0;
     border-bottom: 1px solid rgba(10,21,72,.08);
     border-radius: 0;
-
     background: transparent;
     text-decoration: none;
     color: var(--vf-brand);
     font-weight: 900;
 }
 
-/* add top divider for the first item */
 .vf-mobile__link:first-child{
     border-top: 1px solid rgba(10,21,72,.08);
 }
@@ -588,27 +593,41 @@ small{ color: var(--vf-muted); }
     text-decoration-thickness: 2px;
     text-decoration-color: rgba(13,28,99,.55);
 }
+
 /* =========================================================
-   FIX: Backdrop must NOT cover the mobile panel
+   Logo (real PNG) + a11y — single source of truth
    ========================================================= */
 
-.vf-mobile{
-    position: fixed; /* у вас уже есть, оставляем */
-    inset: 0;
-    z-index: 9999;
+.vf-sr-only{
+    position:absolute;
+    width:1px;height:1px;
+    padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);
+    white-space:nowrap;border:0;
 }
 
-/* backdrop BELOW the panel */
-.vf-mobile__backdrop{
-    position: absolute;
-    inset: 0;
-    z-index: 0;
+/* Вариант бренда, где внутри только картинка-лого (если используешь .vf-brand__logo) */
+.vf-brand.vf-brand__logo{
+    gap: 0;
+    line-height: 1;
 }
 
-/* panel ABOVE the backdrop */
-.vf-mobile__panel{
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
+/* Лого: управляем дизайном через CSS (HTML width/height оставляем для CLS) */
+.vf-logo{
+    display:block;
+    height:32px;
+    width:auto;
 }
+
+@media (max-width: 768px){
+    .vf-logo{ height:28px; }
+}
+
+/* На будущее — переключение для темного фона (если добавишь второй img) */
+.vf-logo--dark{ display:none; }
+
+.vf-header--dark .vf-logo--light,
+body.vf-dark-header .vf-logo--light{ display:none; }
+
+.vf-header--dark .vf-logo--dark,
+body.vf-dark-header .vf-logo--dark{ display:block; }
