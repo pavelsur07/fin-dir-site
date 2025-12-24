@@ -350,6 +350,24 @@ small{ color: var(--vf-muted); }
     font-size: 18px;
 }
 
+.vf-footer__logo-link{
+    display:inline-flex;
+    align-items:center;
+    text-decoration:none;
+    line-height:1;
+    margin-bottom: 12px;
+}
+
+.vf-footer__logo{
+    display:block;
+    height:28px;
+    width:auto;
+}
+
+@media (max-width: 768px){
+    .vf-footer__logo{ height:24px; }
+}
+
 .vf-footer__title{
     color: rgba(255,255,255,.72);
     font-weight: 700;
