@@ -11,7 +11,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('vashfindir-main', get_template_directory_uri() . '/assets/css/main.css', [], $ver);
 
     // условные стили по типам страниц
-    if (is_front_page() || is_page(['service', 'service-findir'])) {
+    if (is_front_page() || is_page(['service', 'service-findir', 'academy-finance'])) {
         wp_enqueue_style('vashfindir-landing', get_template_directory_uri() . '/assets/css/landing.css', ['vashfindir-main'], $ver);
     }
 
