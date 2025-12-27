@@ -12,8 +12,11 @@ get_header();
     ?>
 
     <?php get_template_part('template-parts/landing/sections'); ?>
+
+    <?php
+    // Home CTA: reusable lead capture form with modal (ref section id="lead-form-2")
+    get_template_part('template-parts/landing/lead-capture');
+    ?>
 </main>
 
 <?php get_footer(); ?>
-
-
