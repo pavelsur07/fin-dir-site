@@ -22,6 +22,8 @@
 - `cards.md` — правила карточек
 - `forms.md` — правила форм
 - `change-log.md` — история изменений UI
+- `control-level.md` — эталон блока выбора сценария (vf-control-level)
+
 
 ---
 

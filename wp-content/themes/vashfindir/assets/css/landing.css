@@ -175,7 +175,7 @@
 
 /* =========================================================
    Hero (Service pages) — variant 3 (wide 16:9)
-   Scoped to .vf-hero3 — соответствует reference-v21.html (Hero 3)
+   Scoped to .vf-hero3
    ========================================================= */
 
 .vf-hero3{
@@ -284,6 +284,126 @@
     background: rgba(10,21,72,.04);
 }
 
+/* =========================================================
+   Control Level (Home) — "vf-control-level"
+   Scoped to .vf-control (safe)
+   ========================================================= */
+
+.vf-control{
+    padding: clamp(28px, 4vw, 56px) 0;
+}
+
+.vf-control__head{
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.vf-control__title{
+    font-weight: 900;
+    font-size: clamp(24px, 2.2vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #0A1548;
+    margin: 0;
+}
+
+.vf-control__grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    align-items: stretch;
+}
+
+@media (min-width: 992px){
+    .vf-control__grid{ grid-template-columns: 1fr 1fr; gap: 18px; }
+}
+
+.vf-control__card{
+    background: #fff;
+    border: 1px solid rgba(10,21,72,.10);
+    border-radius: 6px;
+    box-shadow: 0 10px 28px rgba(10,21,72,.07);
+    padding: clamp(18px, 3vw, 34px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.vf-control__card--pro{
+    border-color: rgba(10,21,72,.16);
+}
+
+/* NEW: icon + title in one line */
+.vf-control__top{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+/* Icon */
+.vf-control__icon{
+    flex: 0 0 auto;
+    font-size: 26px;
+    line-height: 1;
+    color: #0A1548; /* brand */
+}
+
+/* Title */
+.vf-control__h3{
+    margin: 0;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0A1548;
+}
+
+/* Lead text */
+.vf-control__lead{
+    margin: 0 0 14px;
+    color: #5c677d;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 62ch;
+}
+
+.vf-control__list{
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+
+.vf-control__li{
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding-left: 0;
+    color: #0b1020;
+    line-height: 1.45;
+}
+
+.vf-control__li::before,
+.vf-control__li::after{
+    content: none;
+}
+
+.vf-control__li-icon{
+    flex: 0 0 auto;
+    font-size: 18px;
+    line-height: 1;
+    margin-top: .15em;
+}
+
+.vf-control__li--ok .vf-control__li-icon{ color: #198754; }
+.vf-control__li--bad .vf-control__li-icon{ color: #dc3545; }
+
+.vf-control .vf-btn{
+    margin-top: auto;
+}
+
 /* Mobile: full width CTA */
 @media (max-width: 575.98px){
     .vf-hero3__actions{ flex-direction: column; gap: .75rem; }
@@ -370,5 +490,5 @@
     line-height: 1.45;
 }
 
-/* ratio helper (на будущее, если понадобится расширение) */
+/* ratio helper */
 .vf-hero3__media--wide{ aspect-ratio: 16 / 9; }

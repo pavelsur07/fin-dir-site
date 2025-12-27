@@ -12,7 +12,22 @@ add_action('wp_enqueue_scripts', function () {
 
     // условные стили по типам страниц
     if (is_front_page() || is_page(['service', 'service-findir', 'academy-finance'])) {
-        wp_enqueue_style('vashfindir-landing', get_template_directory_uri() . '/assets/css/landing.css', ['vashfindir-main'], $ver);
+
+        // Bootstrap Icons (нужно для bi bi-check-circle-fill и других bi-иконок)
+        // Подключаем только на "landing"-страницах, чтобы не влиять на остальной сайт.
+        wp_enqueue_style(
+            'bootstrap-icons',
+            'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+            [],
+            '1.11.3'
+        );
+
+        wp_enqueue_style(
+            'vashfindir-landing',
+            get_template_directory_uri() . '/assets/css/landing.css',
+            ['vashfindir-main', 'bootstrap-icons'],
+            $ver
+        );
     }
 
     if (is_page('about')) {

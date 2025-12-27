@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финансовый Автопилот | SaaS + AI + CFO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            /* Цвета из референса */
+            --brand: #0A1548;           /* Глубокий темно-синий */
+            --brand-2: #0d1c63;         /* Дополнительный синий */
+            --cta: #B00020;             /* Акцентный красный */
+            --cta-hover: #8E001A;
+            --text: #0b1020;
+            --muted: #5c677d;
+            --bg-soft: #f7f8fc;
+            --border: rgba(10,21,72,.14);
+            --radius: 6px;              /* Радиус из референса более строгий */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            background-color: #fff;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+            color: white;
+            padding: 100px 0;
+        }
+
+        /* Кнопки в стиле референса */
+        .btn-accent {
+            background-color: var(--cta);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--cta-hover);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(176, 0, 32, 0.3);
+        }
+
+        .btn-outline-light {
+            border-width: 1px;
+            border-radius: var(--radius);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--brand);
+            color: var(--brand);
+            border-radius: var(--radius);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--brand);
+            border-color: var(--brand);
+        }
+
+        /* Карточки */
+        .card-path {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            background: white;
+            height: 100%;
+        }
+
+        .card-path:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(10,21,72,0.08);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--brand); /* Иконки теперь в тон бренда */
+            margin-bottom: 20px;
+        }
+
+        .demo-box {
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .badge-ai {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            padding: 5px 12px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 2.25rem;
+            color: var(--brand);
+            margin-bottom: 50px;
+        }
+
+        .text-info {
+            color: var(--cta) !important; /* Заменяем инфо-голубой на акцентный из референса */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: var(--brand); border-bottom: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">FIN<span style="color: var(--cta);">AI</span>.CFO</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#paths">Решения</a></li>
+                <li class="nav-item"><a class="nav-link" href="#partners">Партнерам</a></li>
+                <li class="nav-item"><a class="nav-link btn btn-outline-light btn-sm ms-lg-3 px-3" href="#">Личный кабинет</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section" style="overflow: hidden;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <span class="badge-ai mb-3">Авторская методология + AI</span>
+                <h1 class="display-4 fw-bold mb-4">Финансы вашего бизнеса под моим личным контролем и защитой AI</h1>
+                <p class="lead mb-5 opacity-75">Я объединил опыт профессиональных CFO и мощь искусственного интеллекта, чтобы вы навсегда забыли о кассовых разрывах и неопределенности.</p>
+                <div class="d-flex flex-column flex-md-row gap-3">
+                    <a href="#paths" class="btn btn-accent btn-lg px-4 py-3 shadow-lg">Внедрить систему роста</a>
+                    <a href="#demo" class="btn btn-outline-light btn-lg px-4 py-3">Посмотреть как это работает</a>
+                </div>
+            </div>
+            <div class="col-lg-6 position-relative text-center">
+                <img src="desktop-hero-home.jpg" alt="Основатель" class="img-fluid position-relative shadow-lg" style="max-height: 600px; z-index: 1; border-radius: var(--radius); filter: brightness(0.95);">
+
+                <div class="demo-box position-absolute p-3 text-start shadow-lg" style="bottom: 10%; right: 5%; width: 250px; z-index: 3; border-left: 4px solid var(--cta); background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);">
+                    <div class="small fw-bold text-dark"><i class="bi bi-robot me-2" style="color: var(--cta);"></i> AI-Советник:</div>
+                    <div class="small text-muted mt-1">"Обнаружена точка роста прибыли на 420 000 руб. через оптимизацию логистики."</div>
+                </div>
+
+                <div class="demo-box position-absolute p-3 text-start shadow-lg" style="top: 15%; left: -5%; width: 200px; z-index: 3; background: rgba(255,255,255,0.98);">
+                    <div class="small fw-bold text-dark"><i class="bi bi-shield-check me-2 text-success"></i> CFO Контроль:</div>
+                    <div class="small text-muted mt-1">Методология внедрена. Отчетность эталонна.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="paths" class="py-5" style="background-color: var(--bg-soft);">
+    <div class="container py-5">
+        <h2 class="text-center section-title">Выберите ваш уровень контроля</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card card-path p-5">
+                    <div class="feature-icon"><i class="bi bi-cpu"></i></div>
+                    <h3 class="fw-bold">Я веду сам</h3>
+                    <p class="text-muted">Для микробизнеса до 2 млн руб/мес. AI-ассистент автоматизирует учет и сбор данных.</p>
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Автосбор из банков и CRM</li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> AI-прогнозы на 30 дней</li>
+                        <li><i class="bi bi-check2-circle text-success me-2"></i> Разовые консультации профи</li>
+                    </ul>
+                    <button class="btn btn-outline-primary w-100 py-3">Начать тест-драйв AI</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-path p-5" style="background: var(--brand); color: white;">
+                    <div class="feature-icon"><i class="bi bi-person-workspace" style="color: var(--cta);"></i></div>
+                    <h3 class="fw-bold text-white">Доверить финансы профи</h3>
+                    <p class="opacity-75">Для компаний от 2 млн руб/мес. Личный CFO внедряет стратегию и отвечает за результат.</p>
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="bi bi-check2-circle text-info me-2"></i> Личный финансовый директор</li>
+                        <li><i class="bi bi-check2-circle text-info me-2"></i> Глубокая аналитика и стратегия</li>
+                        <li><i class="bi bi-check2-circle text-info me-2"></i> Полное делегирование рутины</li>
+                    </ul>
+                    <button class="btn btn-accent w-100 py-3">Обсудить проект со старшим CFO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="demo" class="py-5">
+    <div class="container text-center">
+        <h2 class="section-title">Оцифруем ваш бизнес за 48 часов</h2>
+        <p class="lead text-muted mb-5">Пока другие настраивают таблицы неделями, мы внедряем «Золотой стандарт» учета мгновенно.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="ratio ratio-16x9 shadow-lg overflow-hidden" style="border-radius: var(--radius); border: 1px solid var(--border);">
+                    <div class="bg-dark d-flex align-items-center justify-content-center text-white">
+                        <p><i class="bi bi-play-circle display-1" style="color: var(--cta);"></i><br>Видео-демо эталонной системы</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="py-5" style="background: var(--brand); color: white;">
+    <div class="container text-center">
+        <h2 class="mb-4">Готовы увидеть ясность в цифрах?</h2>
+        <form class="row g-3 justify-content-center mb-4">
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Ваше имя" style="border-radius: var(--radius);">
+            </div>
+            <div class="col-md-3">
+                <input type="tel" class="form-control" placeholder="Телефон" style="border-radius: var(--radius);">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-accent w-100">Жду звонка</button>
+            </div>
+        </form>
+        <div id="partners" class="mt-5 border-top pt-4" style="border-color: rgba(255,255,255,0.1) !important;">
+            <p class="small opacity-50">Вы частный CFO? <a href="#" class="text-white text-decoration-underline">Присоединяйтесь к нашей партнерской программе</a></p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
