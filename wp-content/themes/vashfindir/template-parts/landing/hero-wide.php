@@ -1,15 +1,5 @@
 <?php if (!defined('ABSPATH')) exit; ?>
 <?php
-// Expected args:
-// - kicker (string)
-// - title (string)
-// - lead (string) допускаем <br>
-// - primary: ['label','url']
-// - secondary: ['label','url']
-// - media: ['type' => 'placeholder'|'image', ...]
-//   placeholder: ['label','sub','ratio' => 'wide']
-//   image: ['desktop','tablet','mobile','alt','ratio' => 'wide']
-
 $kicker = isset($args['kicker']) ? (string)$args['kicker'] : '';
 $title  = isset($args['title']) ? (string)$args['title'] : get_the_title();
 $lead   = isset($args['lead']) ? (string)$args['lead'] : (get_the_excerpt() ?: '');
@@ -37,20 +27,18 @@ $ratio_class = ($ratio === 'wide') ? 'vf-hero3__media--wide' : 'vf-hero3__media-
                     <h1 class="vf-hero3__title" id="vf-hero3-title"><?php echo esc_html($title); ?></h1>
 
                     <?php if ($lead !== ''): ?>
-                        <p class="vf-hero3__lead">
-                            <?php echo wp_kses_post(nl2br(esc_html($lead))); ?>
-                        </p>
+                        <p class="vf-hero3__lead"><?php echo wp_kses_post(nl2br(esc_html($lead))); ?></p>
                     <?php endif; ?>
 
                     <div class="vf-hero3__actions">
                         <?php if (!empty($primary['label']) && !empty($primary['url'])): ?>
-                            <a class="btn btn-cta" href="<?php echo esc_url($primary['url']); ?>">
+                            <a class="vf-btn vf-btn--primary" href="<?php echo esc_url($primary['url']); ?>">
                                 <?php echo esc_html($primary['label']); ?>
                             </a>
                         <?php endif; ?>
 
                         <?php if (!empty($secondary['label']) && !empty($secondary['url'])): ?>
-                            <a class="btn btn-cta-secondary" href="<?php echo esc_url($secondary['url']); ?>">
+                            <a class="vf-btn vf-btn--secondary" href="<?php echo esc_url($secondary['url']); ?>">
                                 <?php echo esc_html($secondary['label']); ?>
                             </a>
                         <?php endif; ?>
@@ -71,12 +59,12 @@ $ratio_class = ($ratio === 'wide') ? 'vf-hero3__media--wide' : 'vf-hero3__media-
                                 <source media="(max-width: 575.98px)" srcset="<?php echo esc_url($mobile); ?>">
                                 <source media="(max-width: 991.98px)" srcset="<?php echo esc_url($tablet); ?>">
                                 <img
-                                    class="vf-hero3__image"
-                                    src="<?php echo esc_url($desktop); ?>"
-                                    alt="<?php echo esc_attr($alt); ?>"
-                                    loading="eager"
-                                    decoding="async"
-                                    fetchpriority="high"
+                                        class="vf-hero3__image"
+                                        src="<?php echo esc_url($desktop); ?>"
+                                        alt="<?php echo esc_attr($alt); ?>"
+                                        loading="eager"
+                                        decoding="async"
+                                        fetchpriority="high"
                                 >
                             </picture>
                         <?php else: ?>

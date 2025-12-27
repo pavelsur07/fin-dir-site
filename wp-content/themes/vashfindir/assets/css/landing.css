@@ -1,16 +1,12 @@
-.vf-hero { padding: 2rem 0; }
-.vf-hero__inner { max-width: 960px; margin: 0 auto; }
-.vf-hero__actions { display: flex; gap: 12px; margin-top: 16px; }
-
-.btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 14px; border-radius: 6px; text-decoration: none; }
-.btn-primary { background: #0A1548; color: #fff; }
-.btn-outline { background: #fff; color: #0A1548; border: 1px solid #0A1548; }
-
-.vf-card { background: #fff; border: 1px solid #e1e5eb; border-radius: 8px; padding: 16px; }
+/* landing.css
+   RULES:
+   - no .btn / .btn-* here
+   - buttons are global: .vf-btn in main.css
+   - landing.css contains only section/layout styles
+*/
 
 /* =========================================================
-   Hero (Home) — variant 4 (approved layout)
-   Scoped to .vf-hero4 so other pages/blocks stay intact
+   Hero (Home) — variant 4
    ========================================================= */
 
 .vf-hero4{
@@ -83,50 +79,11 @@
     align-items: stretch;
 }
 
-/* Buttons (scoped) */
-.vf-hero4 .btn{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 14px;
-    min-height: 44px;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    text-decoration: none;
-    line-height: 1;
-    font-weight: 900;
-    box-sizing: border-box;
-}
-
-.vf-hero4 .btn-cta{
-    background: #B00020;
-    border-color: #B00020;
-    color: #fff;
-}
-.vf-hero4 .btn-cta:hover{
-    background: #8E001A;
-    border-color: #8E001A;
-    color: #fff;
-}
-
-.vf-hero4 .btn-cta-secondary{
-    background: #fff;
-    border: 1px solid rgba(10,21,72,.22);
-    color: #0d1c63;
-}
-.vf-hero4 .btn-cta-secondary:hover{
-    border-color: rgba(10,21,72,.35);
-    color: #0d1c63;
-    background: rgba(10,21,72,.04);
-}
-
-/* Mobile: full width CTA */
 @media (max-width: 575.98px){
     .vf-hero4__actions{ flex-direction: column; gap: .75rem; }
-    .vf-hero4 .btn{ width: 100%; }
 }
 
-/* Media (real image) */
+/* Media (square) */
 .vf-hero4__media{ display: flex; }
 .vf-hero4__media-wrap{
     display: flex;
@@ -174,8 +131,154 @@
 }
 
 /* =========================================================
-   Control Level (Home) — "vf-control-level"
-   Scoped to .vf-control (safe)
+   Hero (Service pages) — variant 3 (wide 16:9)
+   ========================================================= */
+
+.vf-hero3{
+    padding: 2rem 0;
+}
+
+.vf-hero3__card{
+    background: #fff;
+    border: 1px solid rgba(10,21,72,.10);
+    border-radius: 6px;
+    box-shadow: 0 10px 28px rgba(10,21,72,.07);
+    overflow: hidden;
+}
+
+.vf-hero3__grid{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+@media (min-width: 992px){
+    .vf-hero3__grid{ flex-direction: row; }
+    .vf-hero3__content{ flex: 0 0 50%; }
+    .vf-hero3__media{ flex: 0 0 50%; }
+}
+
+.vf-hero3__content{
+    padding: clamp(22px, 3vw, 40px);
+}
+
+.vf-hero3__kicker{
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .35rem .65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(10,21,72,.12);
+    background: rgba(10,21,72,.04);
+    color: #0A1548;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.vf-hero3__title{
+    margin-top: .9rem;
+    margin-bottom: .85rem;
+    font-weight: 900;
+    font-size: clamp(32px, 3.2vw, 46px);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: #0A1548;
+}
+
+.vf-hero3__lead{
+    margin: 0;
+    max-width: 62ch;
+    font-size: 18px;
+    line-height: 1.55;
+    color: #5c677d;
+}
+
+.vf-hero3__actions{
+    margin-top: 1.35rem;
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+@media (max-width: 575.98px){
+    .vf-hero3__actions{ flex-direction: column; gap: .75rem; }
+}
+
+/* ✅ Media (16:9) — FIXED padding + radius */
+.vf-hero3__media{ display: flex; }
+
+.vf-hero3__media-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    /* ✅ правильный отступ как в других hero-карточках */
+    padding: 1.25rem;
+}
+
+@media (max-width: 991.98px){
+    .vf-hero3__media-wrap{ padding: 1rem; }
+}
+
+.vf-hero3__picture{
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    /* ✅ закругление и “внутренняя рамка” */
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(10,21,72,.12);
+    background: rgba(10,21,72,.04);
+}
+
+.vf-hero3__image{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* placeholder when no image */
+.vf-hero3__placeholder{
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+
+    /* ✅ те же радиусы/рамка/overflow */
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(10,21,72,.12);
+    background: rgba(10,21,72,.06);
+}
+
+.vf-hero3__placeholder-inner{
+    height: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap: 6px;
+}
+
+.vf-hero3__placeholder-title{
+    font-weight: 900;
+    color: #0A1548;
+    font-size: 18px;
+}
+
+.vf-hero3__placeholder-sub{
+    color: #5c677d;
+    font-size: 13px;
+}
+
+/* =========================================================
+   Control Level
    ========================================================= */
 
 .vf-control{
@@ -290,10 +393,7 @@
 }
 
 /* =========================================================
-   Lead capture (reusable) — lead-form-2
-   - brand card (blue)
-   - white form panel
-   - standard button height (like project)
+   Lead capture (lead-form-2) — layout only
    ========================================================= */
 
 .vf-lead{
@@ -302,7 +402,7 @@
 }
 
 .vf-lead__card{
-    background: #0A1548;
+    background: #0A1548; /* brand ONLY here */
     border: 1px solid rgba(255,255,255,.12);
     border-radius: 16px;
     box-shadow: 0 16px 40px rgba(10,21,72,.20);
@@ -327,7 +427,7 @@
     line-height: 1.08;
     letter-spacing: -0.02em;
     font-weight: 900;
-    color: #ffffff;
+    color: #fff;
 }
 
 .vf-lead__card .vf-lead__text{
@@ -338,7 +438,7 @@
 }
 
 .vf-lead__card .vf-lead__text span{
-    color: #ffffff;
+    color: #fff;
     font-weight: 900;
 }
 
@@ -350,7 +450,7 @@
 }
 
 .vf-lead__formWrap{
-    background: #ffffff;
+    background: #fff;
     border-radius: 14px;
     padding: 18px;
     box-shadow: 0 10px 28px rgba(10,21,72,.12);
@@ -379,24 +479,6 @@
 .vf-lead .vf-field:focus{
     border-color: rgba(10,21,72,.35);
     box-shadow: 0 0 0 3px rgba(10,21,72,.10);
-}
-
-/* ✅ standard project-like button height */
-.vf-lead .vf-btn--primary{
-    background: #0A1548;
-    border-color: #0A1548;
-    color: #fff;
-
-    /* standard height rules */
-    min-height: 44px;
-    padding: 10px 14px;
-    line-height: 1;
-    border-radius: 6px;
-}
-
-.vf-lead .vf-btn--primary:hover{
-    background: #0d1c63;
-    border-color: #0d1c63;
 }
 
 .vf-consent{
