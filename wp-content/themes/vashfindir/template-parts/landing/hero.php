@@ -12,8 +12,8 @@
         </p>
 
         <div class="vf-hero__actions">
-            <a class="btn btn-primary" href="<?php echo esc_url(home_url('/register')); ?>">Регистрация</a>
-            <a class="btn btn-outline" href="<?php echo esc_url(home_url('/login')); ?>">Войти</a>
+            <a class="vf-btn vf-btn--primary" href="<?php echo esc_url(home_url('/register')); ?>">Регистрация</a>
+            <a class="vf-btn vf-btn--secondary" href="<?php echo esc_url(home_url('/login')); ?>">Войти</a>
         </div>
     </div>
 </section>

@@ -29,6 +29,7 @@ Author: vashfindir
     --vf-border: rgba(10,21,72,.14);
     --vf-radius: 6px;
     --vf-shadow: 0 10px 30px rgba(10,21,72,.08);
+    --vf-btn-height: 2.3rem;
 
     /* Layout */
     --vf-content-max: 1140px;
@@ -84,6 +85,7 @@ small{ color: var(--vf-muted); }
     display:inline-flex;
     align-items:center;
     justify-content:center;
+    min-height: var(--vf-btn-height);
     padding: .65rem 1rem;
     border-radius: var(--vf-radius);
     font-weight: 900;
