@@ -481,7 +481,7 @@
     box-shadow: 0 0 0 3px rgba(10,21,72,.10);
 }
 
-.vf-consent{
+.vf-lead .vf-consent{
     display: flex;
     gap: 10px;
     align-items: flex-start;
@@ -491,12 +491,12 @@
     margin-top: 6px;
 }
 
-.vf-consent input{
+.vf-lead .vf-consent input{
     margin-top: .15em;
     flex: 0 0 auto;
 }
 
-.vf-consent a{
+.vf-lead .vf-consent a{
     color: #0A1548;
     text-decoration: underline;
 }
@@ -505,21 +505,21 @@
    Modal
    ========================================================= */
 
-.vf-modal{
+.vf-lead .vf-modal{
     position: fixed;
     inset: 0;
     z-index: 9999;
 }
 
-.vf-modal[hidden]{ display: none; }
+.vf-lead .vf-modal[hidden]{ display: none; }
 
-.vf-modal__backdrop{
+.vf-lead .vf-modal__backdrop{
     position: absolute;
     inset: 0;
     background: rgba(11,16,32,.55);
 }
 
-.vf-modal__dialog{
+.vf-lead .vf-modal__dialog{
     position: relative;
     width: min(500px, calc(100% - 32px));
     margin: 10vh auto 0;
@@ -530,7 +530,7 @@
     padding: 18px;
 }
 
-.vf-modal__close{
+.vf-lead .vf-modal__close{
     position: absolute;
     top: 10px;
     right: 10px;
@@ -545,21 +545,21 @@
     cursor: pointer;
 }
 
-.vf-modal__close:hover{
+.vf-lead .vf-modal__close:hover{
     background: rgba(10,21,72,.04);
     border-color: rgba(10,21,72,.35);
 }
 
-.vf-modal__body{ padding: 8px 8px 6px; }
+.vf-lead .vf-modal__body{ padding: 8px 8px 6px; }
 
-.vf-modal__title{
+.vf-lead .vf-modal__title{
     font-weight: 900;
     font-size: 20px;
     margin: 0 0 8px;
     color: #0A1548;
 }
 
-.vf-modal__text{
+.vf-lead .vf-modal__text{
     margin: 0;
     color: #5c677d;
     line-height: 1.55;
