@@ -43,7 +43,7 @@
     border-radius: 999px;
     border: 1px solid rgba(10,21,72,.12);
     background: rgba(10,21,72,.04);
-    color: #0A1548;
+    color: var(--vf-brand);
     font-weight: 900;
     font-size: 12px;
     letter-spacing: .02em;
@@ -57,7 +57,7 @@
     font-size: clamp(32px, 3.2vw, 46px);
     line-height: 1.06;
     letter-spacing: -0.03em;
-    color: #0A1548;
+    color: var(--vf-brand);
 }
 
 .vf-hero4__lead{
@@ -65,7 +65,7 @@
     max-width: 62ch;
     font-size: 18px;
     line-height: 1.55;
-    color: #5c677d;
+    color: var(--vf-muted);
 }
 
 .vf-hero4__actions{
@@ -136,7 +136,7 @@
 }
 
 .vf-hero3__card{
-    background: #fff;
+    background: var(--vf-card);
     border: 1px solid rgba(10,21,72,.10);
     border-radius: 6px;
     box-shadow: 0 10px 28px rgba(10,21,72,.07);
@@ -167,7 +167,7 @@
     border-radius: 999px;
     border: 1px solid rgba(10,21,72,.12);
     background: rgba(10,21,72,.04);
-    color: #0A1548;
+    color: var(--vf-brand);
     font-weight: 900;
     font-size: 12px;
     letter-spacing: .02em;
@@ -181,7 +181,7 @@
     font-size: clamp(32px, 3.2vw, 46px);
     line-height: 1.06;
     letter-spacing: -0.03em;
-    color: #0A1548;
+    color: var(--vf-brand);
 }
 
 .vf-hero3__lead{
@@ -189,7 +189,7 @@
     max-width: 62ch;
     font-size: 18px;
     line-height: 1.55;
-    color: #5c677d;
+    color: var(--vf-muted);
 }
 
 .vf-hero3__actions{
@@ -265,12 +265,12 @@
 
 .vf-hero3__placeholder-title{
     font-weight: 900;
-    color: #0A1548;
+    color: var(--vf-brand);
     font-size: 18px;
 }
 
 .vf-hero3__placeholder-sub{
-    color: #5c677d;
+    color: var(--vf-muted);
     font-size: 13px;
 }
 
@@ -302,7 +302,7 @@
 }
 
 .vf-control__card{
-    background: #fff;
+    background: var(--vf-card);
     border: 1px solid rgba(10,21,72,.10);
     border-radius: 6px;
     box-shadow: 0 10px 28px rgba(10,21,72,.07);
@@ -327,7 +327,7 @@
     flex: 0 0 auto;
     font-size: 26px;
     line-height: 1;
-    color: #0A1548;
+    color: var(--vf-brand);
 }
 
 .vf-control__h3{
@@ -336,12 +336,12 @@
     font-size: 22px;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    color: #0A1548;
+    color: var(--vf-brand);
 }
 
 .vf-control__lead{
     margin: 0 0 14px;
-    color: #5c677d;
+    color: var(--vf-muted);
     font-size: 16px;
     line-height: 1.55;
     max-width: 62ch;
@@ -360,7 +360,7 @@
     gap: 10px;
     align-items: flex-start;
     padding-left: 0;
-    color: #0b1020;
+    color: var(--vf-text);
     line-height: 1.45;
 }
 
@@ -475,7 +475,7 @@
 }
 
 .vf-lead__card{
-    background: #0A1548; /* brand ONLY here */
+    background: var(--vf-brand);
     border: 1px solid rgba(255,255,255,.12);
     border-radius: 16px;
     box-shadow: 0 16px 40px rgba(10,21,72,.20);
@@ -523,7 +523,7 @@
 }
 
 .vf-lead__formWrap{
-    background: #fff;
+    background: var(--vf-card);
     border-radius: 14px;
     padding: 18px;
     box-shadow: 0 10px 28px rgba(10,21,72,.12);
@@ -543,8 +543,8 @@
     padding: 10px 12px;
     border-radius: 10px;
     border: 1px solid rgba(10,21,72,.18);
-    background: #fff;
-    color: #0b1020;
+    background: var(--vf-card);
+    color: var(--vf-text);
     font-size: 14px;
     outline: none;
 }
@@ -559,7 +559,7 @@
     gap: 10px;
     align-items: flex-start;
     font-size: 12px;
-    color: #5c677d;
+    color: var(--vf-muted);
     line-height: 1.35;
     margin-top: 6px;
 }
@@ -570,7 +570,7 @@
 }
 
 .vf-lead .vf-consent a{
-    color: #0A1548;
+    color: var(--vf-brand);
     text-decoration: underline;
 }
 
@@ -596,7 +596,7 @@
     position: relative;
     width: min(500px, calc(100% - 32px));
     margin: 10vh auto 0;
-    background: #fff;
+    background: var(--vf-card);
     border: 1px solid rgba(10,21,72,.14);
     border-radius: 8px;
     box-shadow: 0 20px 60px rgba(10,21,72,.25);
@@ -611,8 +611,8 @@
     height: 36px;
     border-radius: 6px;
     border: 1px solid rgba(10,21,72,.18);
-    background: #fff;
-    color: #0A1548;
+    background: var(--vf-card);
+    color: var(--vf-brand);
     font-size: 20px;
     line-height: 1;
     cursor: pointer;
@@ -629,11 +629,11 @@
     font-weight: 900;
     font-size: 20px;
     margin: 0 0 8px;
-    color: #0A1548;
+    color: var(--vf-brand);
 }
 
 .vf-lead .vf-modal__text{
     margin: 0;
-    color: #5c677d;
+    color: var(--vf-muted);
     line-height: 1.55;
 }
