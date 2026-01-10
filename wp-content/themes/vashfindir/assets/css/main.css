@@ -205,6 +205,17 @@ h3{
 .vf-btn--block{ width:100%; }
 
 /* =========================================================
+   Components (shared)
+   ========================================================= */
+
+.vf-surface{
+    border: 1px solid var(--vf-border);
+    border-radius: var(--vf-radius);
+    background: var(--vf-card);
+    overflow: hidden;
+}
+
+/* =========================================================
    Enterprise Header (responsive)
    ========================================================= */
 
