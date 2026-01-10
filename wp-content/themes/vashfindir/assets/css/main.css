@@ -142,6 +142,16 @@ h3{
    Section typography (shared)
    ========================================================= */
 
+/* Page title (H1 utility) */
+.page-title{
+    margin: 0;
+    font-weight: 900;
+    font-size: var(--vf-fs-h1);
+    line-height: var(--vf-lh-h1);
+    letter-spacing: var(--vf-ls-h1);
+    color: var(--vf-brand);
+}
+
 .section-title{
     margin: 0;
     font-weight: 900;
