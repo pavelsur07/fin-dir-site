@@ -393,6 +393,67 @@
 }
 
 /* =========================================================
+   FAQ
+   ========================================================= */
+
+.vf-faq{
+    padding: 2.5rem 0;
+}
+
+.vf-faq__header{
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.vf-faq__title{
+    margin: 0;
+    font-size: clamp(26px, 2.4vw, 34px);
+    font-weight: 600;
+    color: var(--vf-brand);
+}
+
+.vf-faq__subtitle{
+    margin: .5rem auto 0;
+    max-width: 60ch;
+    color: var(--vf-muted);
+}
+
+.vf-faq__body{
+    display: grid;
+    gap: 12px;
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.vf-faq__item{
+    border: 1px solid var(--vf-border);
+    border-radius: var(--vf-radius);
+    background: var(--vf-card);
+    overflow: hidden;
+}
+
+.vf-faq__question{
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    color: var(--vf-text);
+}
+
+.vf-faq__question::-webkit-details-marker{
+    display: none;
+}
+
+.vf-faq__item[open] .vf-faq__question{
+    color: var(--vf-brand);
+}
+
+.vf-faq__answer{
+    padding: 0 1.25rem 1rem;
+    color: var(--vf-muted);
+}
+
+/* =========================================================
    Lead capture (lead-form-2) — layout only
    ========================================================= */
 
