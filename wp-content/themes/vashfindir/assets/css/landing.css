@@ -15,7 +15,7 @@
 }
 
 .vf-hero4__card{
-    --vf-border: rgba(10,21,72,.10);
+    --vf-surface-border: rgba(10,21,72,.10);
     box-shadow: 0 10px 28px rgba(10,21,72,.07);
 }
 
