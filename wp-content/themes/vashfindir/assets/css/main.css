@@ -106,6 +106,27 @@ p{ margin: 0 0 12px; }
 small{ color: var(--vf-muted); }
 
 /* =========================================================
+   Section typography (shared)
+   ========================================================= */
+
+.section-title{
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(24px, 2.2vw, 32px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--vf-brand);
+}
+
+.section-subtitle{
+    margin: .5rem 0 0;
+    color: var(--vf-muted);
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 60ch;
+}
+
+/* =========================================================
    Buttons (shared)
    ========================================================= */
 
