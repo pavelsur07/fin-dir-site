@@ -14,7 +14,7 @@ get_header();
   <div class="container">
     <header class="vf-section-pad-lg">
       <p class="section-subtitle">Design system</p>
-      <h1 class="section-title">Typography & Components</h1>
+      <h1 class="page-title">Typography & Components</h1>
     </header>
 
     <section class="vf-section-pad-lg">
