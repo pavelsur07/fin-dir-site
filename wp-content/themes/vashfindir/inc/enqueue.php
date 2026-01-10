@@ -10,8 +10,15 @@ add_action('wp_enqueue_scripts', function () {
     // базовые стили
     wp_enqueue_style('vashfindir-main', get_template_directory_uri() . '/assets/css/main.css', [], $ver);
 
+    $design_system_template = '';
+    $qo_id = get_queried_object_id();
+    if ($qo_id) {
+        $design_system_template = get_page_template_slug($qo_id);
+    }
+    $is_design_system_sandbox = ($design_system_template === 'page-design-system.php');
+
     // условные стили по типам страниц
-    if (is_front_page() || is_page(['service', 'service-findir', 'academy-finance']) || is_page_template('page-design-system.php')) {
+    if (is_front_page() || is_page(['service', 'service-findir', 'academy-finance']) || $is_design_system_sandbox) {
 
         // Bootstrap Icons (нужно для bi bi-check-circle-fill и других bi-иконок)
         // Подключаем только на "landing"-страницах, чтобы не влиять на остальной сайт.
