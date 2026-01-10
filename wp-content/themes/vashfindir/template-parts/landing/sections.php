@@ -5,3 +5,4 @@ if (!defined('ABSPATH')) {
 
 // Sections container (empty by design)
 // get_template_part('template-parts/landing/<section-name>');
+get_template_part('template-parts/landing/faq');
