@@ -11,9 +11,9 @@ get_header();
 get_template_part('template-parts/blocks/breadcrumbs');
 ?>
 
-<main class="vf-section-pad-lg">
+<main>
   <div class="container">
-    <header class="vf-section-pad-lg">
+    <header class="vf-section-pad-md">
       <p class="section-subtitle">Design system</p>
       <h1 class="page-title">Typography & Components</h1>
     </header>
