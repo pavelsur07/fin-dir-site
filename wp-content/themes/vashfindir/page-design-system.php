@@ -16,7 +16,11 @@ get_header();
       <p class="section-subtitle">Design system</p>
       <h1 class="page-title">Typography & Components</h1>
     </header>
+  </div>
 
+  <?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
+
+  <div class="container">
     <section class="vf-section-pad-lg">
       <p class="section-subtitle">Headings</p>
       <h2 class="section-title">Section title example</h2>
@@ -53,7 +57,6 @@ get_header();
     <section class="vf-section-pad-lg">
       <p class="section-subtitle">Breadcrumbs</p>
       <h2 class="section-title">Breadcrumbs</h2>
-      <?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
     </section>
   </div>
 </main>
