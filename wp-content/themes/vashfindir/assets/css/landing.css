@@ -279,7 +279,6 @@
    ========================================================= */
 
 .vf-control{
-    padding: clamp(28px, 4vw, 56px) 0;
 }
 
 .vf-control__head{
@@ -472,7 +471,6 @@
    ========================================================= */
 
 .vf-lead{
-    padding: clamp(28px, 4vw, 56px) 0;
     background: transparent;
 }
 

@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<section class="vf-lead" id="lead-form-2" aria-labelledby="vfLeadTitle">
+<section class="vf-lead vf-section-pad-lg" id="lead-form-2" aria-labelledby="vfLeadTitle">
     <div class="container">
         <div class="vf-lead__card">
             <div class="vf-lead__grid">
