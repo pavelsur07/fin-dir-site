@@ -9,3 +9,9 @@
 | 4 | «Готовы навести порядок в финансах?» | `wp-content/themes/vashfindir/template-parts/landing/lead-capture.php` | `.vf-lead` | `assets/css/landing.css` |
 
 Sections container: `wp-content/themes/vashfindir/template-parts/landing/sections.php` — файл-контейнер, подключает дополнительные секции через `get_template_part`. Сам ничего не рендерит.
+
+## Control Level: правила для карточек
+
+Для карточек Control Level базовые фон/бордер/радиус задаёт только `vf-surface`, а все локальные отличия в этом блоке делаются через CSS-переменные `--vf-surface-*`. Например, у `.vf-control__card` и `.vf-control__card--pro` допускаются только overrides переменных (включая цвет бордера).
+
+Локальный `box-shadow` можно задавать как свойство компонента, если того требует дизайн, но без переопределения базовых параметров поверхности вне `vf-surface`.
