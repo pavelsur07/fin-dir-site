@@ -407,15 +407,11 @@
 
 .vf-faq__title{
     margin: 0;
-    font-size: clamp(26px, 2.4vw, 34px);
-    font-weight: 600;
-    color: var(--vf-brand);
 }
 
 .vf-faq__subtitle{
     margin: .5rem auto 0;
     max-width: 60ch;
-    color: var(--vf-muted);
 }
 
 .vf-faq__body{
