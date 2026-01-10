@@ -763,40 +763,67 @@ body.vf-dark-header .vf-logo--light{ display:none; }
 .vf-header--dark .vf-logo--dark,
 body.vf-dark-header .vf-logo--dark{ display:block; }
 
+/* Breadcrumbs (VF) — page-level, reusable */
 .vf-breadcrumbs{
-    font-size: var(--vf-fs-small);
-    color: var(--vf-muted);
+  background: var(--vf-card);
+  border-bottom: 1px solid rgba(10,21,72,.08);
+  padding: 12px 0;
 }
 
 .vf-breadcrumbs__list{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--vf-muted);
 }
 
 .vf-breadcrumbs__item{
-    display: flex;
-    align-items: center;
+  display:flex;
+  align-items:center;
+  color: var(--vf-muted);
 }
 
-.vf-breadcrumbs__item:not(:last-child)::after{
-    content: "/";
-    margin: 0 6px;
-    color: var(--vf-border);
+.vf-breadcrumbs__item + .vf-breadcrumbs__item::before{
+  content:"/";
+  display:inline-block;
+  margin:0 10px;
+  color: rgba(10,21,72,.28);
 }
 
 .vf-breadcrumbs__link{
-    color: var(--vf-muted);
-    text-decoration: none;
+  color: var(--vf-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color .16s ease, border-color .16s ease;
 }
 
-.vf-breadcrumbs__link:hover{
-    text-decoration: underline;
+.vf-breadcrumbs__link:hover,
+.vf-breadcrumbs__link:focus-visible{
+  color: var(--vf-brand, var(--vf-text));
+  border-bottom-color: rgba(13,28,99,.45);
+  outline: none;
 }
 
-.vf-breadcrumbs__current{
-    color: var(--vf-text);
+.vf-breadcrumbs__item[aria-current="page"] .vf-breadcrumbs__current{
+  color: var(--vf-text);
+}
+
+.vf-breadcrumbs__link:focus-visible{
+  box-shadow: 0 0 0 3px rgba(10,21,72,.12);
+  border-radius: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+
+@media (max-width: 575.98px){
+  .vf-breadcrumbs__item + .vf-breadcrumbs__item::before{ margin:0 8px; }
 }
