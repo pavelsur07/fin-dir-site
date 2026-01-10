@@ -302,9 +302,7 @@
 }
 
 .vf-control__card{
-    background: var(--vf-card);
-    border: 1px solid rgba(10,21,72,.10);
-    border-radius: 6px;
+    --vf-surface-border: rgba(10,21,72,.10);
     box-shadow: 0 10px 28px rgba(10,21,72,.07);
     padding: clamp(18px, 3vw, 34px);
     height: 100%;
@@ -313,7 +311,7 @@
 }
 
 .vf-control__card--pro{
-    border-color: rgba(10,21,72,.16);
+    --vf-surface-border: rgba(10,21,72,.16);
 }
 
 .vf-control__top{

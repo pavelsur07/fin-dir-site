@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) exit;
         <div class="vf-control__grid" role="list">
             <!-- ===== Card: DIY ===== -->
             <div class="vf-control__col" role="listitem">
-                <div class="vf-control__card">
+                <div class="vf-control__card vf-surface">
                     <div class="vf-control__top">
                         <div class="vf-control__icon" aria-hidden="true">
                             <i class="bi bi-cpu"></i>
@@ -42,7 +42,7 @@ if (!defined('ABSPATH')) exit;
 
             <!-- ===== Card: Pro ===== -->
             <div class="vf-control__col" role="listitem">
-                <div class="vf-control__card vf-control__card--pro">
+                <div class="vf-control__card vf-control__card--pro vf-surface">
                     <div class="vf-control__top">
                         <div class="vf-control__icon vf-control__icon--pro" aria-hidden="true">
                             <i class="bi bi-person-badge"></i>
