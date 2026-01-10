@@ -8,9 +8,8 @@
  */
 
 get_header();
+get_template_part('template-parts/blocks/breadcrumbs');
 ?>
-
-<?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
 
 <main class="vf-section-pad-lg">
   <div class="container">
