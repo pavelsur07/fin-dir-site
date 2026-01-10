@@ -58,9 +58,9 @@ get_template_part('template-parts/blocks/breadcrumbs');
       <h2 class="section-title">Tariffs-2</h2>
     </section>
 
-    <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
-
   </div>
+
+  <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
 </main>
 
 <?php
