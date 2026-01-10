@@ -49,6 +49,12 @@ get_header();
         </details>
       </div>
     </section>
+
+    <section class="vf-section-pad-lg">
+      <p class="section-subtitle">Breadcrumbs</p>
+      <h2 class="section-title">Breadcrumbs</h2>
+      <?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
+    </section>
   </div>
 </main>
 
