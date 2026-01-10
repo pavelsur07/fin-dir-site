@@ -765,9 +765,9 @@ body.vf-dark-header .vf-logo--dark{ display:block; }
 
 /* Breadcrumbs (VF) — page-level, reusable */
 .vf-breadcrumbs{
-  background: transparent;
+  background: var(--vf-card);
   border-bottom: 1px solid rgba(10,21,72,.08);
-  padding: 10px 0;
+  padding: 12px 0;
 }
 
 .vf-breadcrumbs__list{

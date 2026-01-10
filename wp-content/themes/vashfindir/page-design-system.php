@@ -10,6 +10,8 @@
 get_header();
 ?>
 
+<?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
+
 <main>
   <div class="container">
     <header class="vf-section-pad-lg">
@@ -17,8 +19,6 @@ get_header();
       <h1 class="page-title">Typography & Components</h1>
     </header>
   </div>
-
-  <?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
 
   <div class="container">
     <section class="vf-section-pad-lg">
