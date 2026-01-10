@@ -53,10 +53,6 @@ get_template_part('template-parts/blocks/breadcrumbs');
       </div>
     </section>
 
-    <section class="vf-section-pad-lg">
-      <p class="section-subtitle">Breadcrumbs</p>
-      <h2 class="section-title">Breadcrumbs</h2>
-    </section>
   </div>
 </main>
 
