@@ -12,7 +12,7 @@ get_header();
 
 <?php get_template_part('template-parts/blocks/breadcrumbs'); ?>
 
-<main>
+<main class="vf-section-pad-lg">
   <div class="container">
     <header class="vf-section-pad-lg">
       <p class="section-subtitle">Design system</p>
