@@ -7,8 +7,8 @@ if (!defined('ABSPATH')) {
 <section class="vf-faq" id="faq">
     <div class="container">
         <header class="vf-faq__header">
-            <h2 class="vf-faq__title">Частые вопросы</h2>
-            <p class="vf-faq__subtitle">Отвечаем на самые частые вопросы о внедрении финансового директора и формате работы.</p>
+            <h2 class="section-title vf-faq__title">Частые вопросы</h2>
+            <p class="section-subtitle vf-faq__subtitle">Отвечаем на самые частые вопросы о внедрении финансового директора и формате работы.</p>
         </header>
 
         <div class="vf-faq__body">
