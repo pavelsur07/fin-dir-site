@@ -32,7 +32,9 @@ Author: vashfindir
     --vf-btn-height: 2.3rem;
 
     /* Layout */
-    --vf-content-max: 1140px;
+    --vf-content-max: 1320px;
+    --vf-grid-columns: 12;
+    --vf-grid-gap: 24px;
 }
 
 *,
@@ -60,6 +62,32 @@ a{ color: inherit; }
     max-width: var(--vf-content-max);
     margin: 0 auto;
     padding: 0 16px;
+}
+
+.vf-grid-12{
+    display: grid;
+    grid-template-columns: repeat(var(--vf-grid-columns), minmax(0, 1fr));
+    gap: var(--vf-grid-gap);
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px){
+    :root{ --vf-content-max: 1140px; }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px){
+    :root{ --vf-content-max: 960px; }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px){
+    :root{ --vf-content-max: 720px; }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px){
+    :root{ --vf-content-max: 540px; }
+}
+
+@media (max-width: 575.98px){
+    :root{ --vf-content-max: 100%; }
 }
 
 .site-container{
