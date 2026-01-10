@@ -18,7 +18,7 @@ add_action('wp_enqueue_scripts', function () {
     $is_design_system_sandbox = ($design_system_template === 'page-design-system.php');
 
     // условные стили по типам страниц
-    if (is_front_page() || is_page(['service', 'service-findir', 'academy-finance']) || $is_design_system_sandbox) {
+    if (is_front_page() || is_page(['service', 'service-findir', 'academy-finance', 'design-system']) || $is_design_system_sandbox) {
 
         // Bootstrap Icons (нужно для bi bi-check-circle-fill и других bi-иконок)
         // Подключаем только на "landing"-страницах, чтобы не влиять на остальной сайт.
