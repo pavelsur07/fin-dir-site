@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) exit;
 <section class="vf-control" id="vf-control-level">
     <div class="container">
         <div class="vf-control__head">
-            <h2 class="vf-control__title">Выберите ваш уровень контроля</h2>
+            <h2 class="section-title vf-control__title">Выберите ваш уровень контроля</h2>
         </div>
 
         <div class="vf-control__grid" role="list">

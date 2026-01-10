@@ -21,6 +21,21 @@ Author: vashfindir
     --vf-text:#0b1020;
     --vf-muted:#5c677d;
 
+    /* Typography */
+    --vf-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+    --vf-fs-body: 16px;
+    --vf-lh-body: 1.55;
+    --vf-fs-h1: clamp(34px, 3.2vw, 52px);
+    --vf-lh-h1: 1.08;
+    --vf-ls-h1: -0.03em;
+    --vf-fs-h2: clamp(26px, 2.4vw, 34px);
+    --vf-lh-h2: 1.15;
+    --vf-ls-h2: -0.02em;
+    --vf-fs-h3: clamp(20px, 1.6vw, 24px);
+    --vf-lh-h3: 1.2;
+    --vf-fs-small: 14px;
+    --vf-lh-small: 1.45;
+
     /* Surfaces */
     --vf-bg:#f5f6f8;
     --vf-card:#ffffff;
@@ -46,10 +61,11 @@ html, body{ height: 100%; }
 body{
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    font-family: var(--vf-font-sans);
+    font-size: var(--vf-fs-body);
     background: var(--vf-bg);
     color: var(--vf-text);
-    line-height: 1.6;
+    line-height: var(--vf-lh-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -105,6 +121,23 @@ p{ margin: 0 0 12px; }
 
 small{ color: var(--vf-muted); }
 
+h1{
+    font-size: var(--vf-fs-h1);
+    line-height: var(--vf-lh-h1);
+    letter-spacing: var(--vf-ls-h1);
+}
+
+h2{
+    font-size: var(--vf-fs-h2);
+    line-height: var(--vf-lh-h2);
+    letter-spacing: var(--vf-ls-h2);
+}
+
+h3{
+    font-size: var(--vf-fs-h3);
+    line-height: var(--vf-lh-h3);
+}
+
 /* =========================================================
    Section typography (shared)
    ========================================================= */
@@ -112,18 +145,18 @@ small{ color: var(--vf-muted); }
 .section-title{
     margin: 0;
     font-weight: 900;
-    font-size: clamp(24px, 2.2vw, 32px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    font-size: var(--vf-fs-h2);
+    line-height: var(--vf-lh-h2);
+    letter-spacing: var(--vf-ls-h2);
     color: var(--vf-brand);
 }
 
 .section-subtitle{
-    margin: .5rem 0 0;
-    color: var(--vf-muted);
-    font-size: 16px;
-    line-height: 1.55;
+    margin: .5rem auto 0;
     max-width: 60ch;
+    color: var(--vf-muted);
+    font-size: var(--vf-fs-body);
+    line-height: var(--vf-lh-body);
 }
 
 /* =========================================================
