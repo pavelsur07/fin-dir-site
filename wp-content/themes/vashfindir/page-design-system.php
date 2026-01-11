@@ -29,8 +29,8 @@ get_template_part('template-parts/blocks/breadcrumbs');
 
     <section class="vf-section-pad-lg">
       <p class="section-subtitle">Card surface</p>
-      <div class="vf-surface p-4">
-        <h3>vf-surface card</h3>
+      <div class="p-4">
+        <h3>Card</h3>
         <p>This surface demonstrates spacing, background, and typography within a card-like component.</p>
       </div>
     </section>
@@ -38,13 +38,13 @@ get_template_part('template-parts/blocks/breadcrumbs');
     <section class="vf-section-pad-lg">
       <p class="section-subtitle">Accordion / FAQ</p>
       <div class="vf-faq__body">
-        <details class="vf-faq__item vf-surface">
+        <details class="vf-faq__item">
           <summary class="vf-faq__question">What is this page for?</summary>
           <div class="vf-faq__answer">
             <p>It showcases the existing typography and UI components in the theme.</p>
           </div>
         </details>
-        <details class="vf-faq__item vf-surface">
+        <details class="vf-faq__item">
           <summary class="vf-faq__question">How do I use it?</summary>
           <div class="vf-faq__answer">
             <p>Create a page in WordPress and select the “Design System Sandbox” template.</p>

@@ -2,7 +2,7 @@
 
 <section class="vf-hero4" aria-labelledby="vf-hero4-title">
     <div class="container">
-        <div class="vf-hero4__card vf-surface">
+        <div class="vf-hero4__card">
             <div class="vf-hero4__grid">
                 <!-- Left: content -->
                 <div class="vf-hero4__content">
