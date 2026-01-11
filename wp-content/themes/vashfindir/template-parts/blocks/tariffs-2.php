@@ -227,7 +227,7 @@ if (!defined('ABSPATH')) {
             </ul>
 
             <div class="vf-plan__cta">
-              <a class="btn ${idx === 0 || idx === 2 ? "btn-cta-secondary" : "btn-cta"}" href="${link(p.id)}">Подключить</a>
+              <a class="${idx === 0 || idx === 2 ? "vf-cta-btn-outline" : "vf-cta-btn-secondary"}" href="${link(p.id)}">Подключить</a>
               <a class="vf-plan__link" href="${state.audience === "owner" ? "#demo" : "#compare"}">
                 ${state.audience === "owner" ? "Посмотреть, как работает" : "Скачать список фич / открыть сравнение"}
               </a>
@@ -281,7 +281,7 @@ if (!defined('ABSPATH')) {
 
     // CTA click analytics (delegate)
     document.addEventListener("click", (e) => {
-      const a = e.target.closest('#tariffs-2 a.btn-cta');
+      const a = e.target.closest('#tariffs-2 a.vf-cta-btn-secondary, #tariffs-2 a.vf-cta-btn-outline');
       if (!a) return;
       const url = new URL(a.getAttribute("href"), window.location.href);
       const sp = url.searchParams;
