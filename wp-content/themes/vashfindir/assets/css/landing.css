@@ -105,7 +105,6 @@
 }
 
 .vf-hero4__card{
-    --vf-surface-border: rgba(10,21,72,.10);
     box-shadow: 0 10px 28px rgba(10,21,72,.07);
 }
 
@@ -392,7 +391,6 @@
 }
 
 .vf-control__card{
-    --vf-surface-border: rgba(10,21,72,.10);
     box-shadow: 0 10px 28px rgba(10,21,72,.07);
     padding: clamp(18px, 3vw, 34px);
     height: 100%;
@@ -401,7 +399,6 @@
 }
 
 .vf-control__card--pro{
-    --vf-surface-border: rgba(10,21,72,.16);
 }
 
 .vf-control__top{
