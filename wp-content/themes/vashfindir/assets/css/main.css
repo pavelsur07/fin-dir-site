@@ -16,6 +16,13 @@ Author: vashfindir
     /* Brand */
     --vf-brand:#0A1548;
     --vf-brand-2:#0d1c63;
+    --brand-blue: #0A1548;
+    --brand-blue-hover: #0d1c63;
+    --brand-red: #B00020;
+    --brand-red-hover: #8E001A;
+    --cta-radius: 12px;
+    --cta-padding-y: 14px;
+    --cta-padding-x: 22px;
 
     /* Text */
     --vf-text:#0b1020;
@@ -193,6 +200,58 @@ h3{
     border: 1px solid transparent;
     line-height: 1;
     cursor: pointer;
+}
+
+.vf-cta-primary{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--brand-blue);
+    color: #fff;
+    padding: var(--cta-padding-y) var(--cta-padding-x);
+    border-radius: var(--cta-radius);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s ease, transform .05s ease;
+}
+
+.vf-cta-primary:hover{
+    background: var(--brand-blue-hover);
+    color: #fff;
+}
+
+.vf-cta-primary:active{
+    transform: translateY(1px);
+}
+
+.vf-cta-secondary{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--brand-red);
+    color: #fff;
+    padding: var(--cta-padding-y) var(--cta-padding-x);
+    border-radius: var(--cta-radius);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s ease, transform .05s ease;
+}
+
+.vf-cta-secondary:hover{
+    background: var(--brand-red-hover);
+    color: #fff;
+}
+
+.vf-cta-secondary:active{
+    transform: translateY(1px);
 }
 
 .vf-btn--primary{
