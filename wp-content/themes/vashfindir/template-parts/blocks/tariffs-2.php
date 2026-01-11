@@ -25,264 +25,272 @@ if (!defined('ABSPATH')) {
 </div>
 <div aria-label="Карточки тарифов" class="vf-pr2-grid" id="vf-pr2-cards"></div>
 <div class="vf-pr2-cfo-extra" data-open="false" hidden="" id="vf-pr2-cfo-extra">
-<div class="vf-surface vf-pr2-cfo-box">
-<div class="vf-pr2-cfo-box__head">
-<h3 class="mb-0">Партнёрская модель</h3>
-<p class="mb-0 vf-pr2-cfo-note">Для CFO и партнёров: подключайте клиентов и получайте % от подписки.</p>
+<div aria-expanded="false" class="vf-pr2-cfo-extra__head" role="button" tabindex="0">
+<h3 class="vf-pr2-cfo-extra__title">Показать все фичи (для CFO)</h3>
+<div aria-hidden="true" class="vf-badge-save">Сравнение</div>
 </div>
-<div class="vf-pr2-cfo-box__grid">
-<div class="vf-pr2-cfo-kpi">
-<div class="vf-pr2-cfo-kpi__label">Вознаграждение</div>
-<div class="vf-pr2-cfo-kpi__value">20–30%</div>
+<div class="vf-pr2-cfo-extra__body">
+<table aria-label="Сравнение функций" class="vf-pr2-cfo-extra__table">
+<thead>
+<tr>
+<th style="width:48%;">Функция</th>
+<th>Контроль денег</th>
+<th>Управление прибылью</th>
+<th>Финансовая система</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Банки + авторазнесение</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Платежный календарь + заявки</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>PnL / рентабельность</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Баланс / обязательства</td>
+<td class="vf-no">—</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Интеграции 1С / МойСклад (по мере готовности)</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>AI-инсайты / сценарии (по мере готовности)</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Telegram-управление</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="vf-pr2-cfo-kpi">
-<div class="vf-pr2-cfo-kpi__label">Выплаты</div>
-<div class="vf-pr2-cfo-kpi__value">ежемесячно</div>
 </div>
-<div class="vf-pr2-cfo-kpi">
-<div class="vf-pr2-cfo-kpi__label">Материалы</div>
-<div class="vf-pr2-cfo-kpi__value">лендинги + кабинет</div>
+<p class="text-muted mt-3 mb-0" style="font-size:12px;">
+      Цены в демо пересчитываются на лету. Скидки/коэффициенты задаются конфигом, без правок верстки.
+    </p>
 </div>
-</div>
-<div class="vf-pr2-cfo-actions">
-<a class="btn btn-primary" href="#lead2">Стать партнёром</a>
-<button class="btn btn-outline-primary" id="vf-pr2-cfo-close" type="button">Скрыть</button>
-</div>
-</div>
-</div>
-</div>
-
 <script>
   (function(){
-    const root = document.getElementById('tariffs-2');
-    if(!root) return;
-
-    const cardsEl = root.querySelector('#vf-pr2-cards');
-    const cfoExtra = root.querySelector('#vf-pr2-cfo-extra');
-    const btnCfoClose = root.querySelector('#vf-pr2-cfo-close');
-
-    const state = {
-      audience: 'owner',
-      term: 1
+    const cfg = {
+      discounts: { 1: 1.00, 3: 0.95, 6: 0.90, 12: 0.85 },
+      plans: [
+        {
+          id: "starter",
+          title: "Контроль денег",
+          priceMonthly: 3990,
+          subtitles: {
+            owner: "Вы всегда знаете, сколько денег у бизнеса и что будет дальше.",
+            cfo: "База для ежедневного контроля платежей и кассы клиента."
+          },
+          bullets: {
+            owner: [
+              "Деньги под контролем каждый день",
+              "План платежей вперёд",
+              "Отчёты и бот без входа в систему",
+              "Консультации и методология"
+            ],
+            cfo: [
+              "Банки + авторазнесение",
+              "Платёжный календарь + заявки",
+              "ДДС (кассовый метод)",
+              "Telegram-управление"
+            ]
+          }
+        },
+        {
+          id: "base",
+          title: "Управление прибылью",
+          priceMonthly: 13750,
+          subtitles: {
+            owner: "Вы понимаете, где бизнес зарабатывает, а где теряет деньги.",
+            cfo: "PnL и рентабельность: ведение клиента как финансового проекта."
+          },
+          bullets: {
+            owner: [
+              "Маржа и прибыль по продуктам/направлениям",
+              "План‑факт по расходам",
+              "Понятные отчёты для решений",
+              "Консультации и методология"
+            ],
+            cfo: [
+              "Банки + авторазнесение",
+              "Платёжный календарь + заявки",
+              "ДДС + PnL",
+              "Интеграции 1С/МойСклад (по мере готовности)",
+              "AI‑инсайты (по мере готовности)",
+              "Telegram-управление"
+            ]
+          }
+        },
+        {
+          id: "pro",
+          title: "Финансовая система",
+          priceMonthly: 23900,
+          subtitles: {
+            owner: "Бизнес управляется как система, а не через тушение пожаров.",
+            cfo: "Баланс, обязательства, сверки и сценарии — уровень CFO‑практики."
+          },
+          bullets: {
+            owner: [
+              "Сценарии и решения до кассовых разрывов",
+              "Управление долгом и обязательствами",
+              "Финансовая картина бизнеса целиком",
+              "Регулярный ритм управления"
+            ],
+            cfo: [
+              "Банки + авторазнесение",
+              "Платёжный календарь + заявки",
+              "ДДС + PnL + баланс",
+              "Консолидация (по мере готовности)",
+              "AI‑сценарии (по мере готовности)",
+              "Telegram-управление"
+            ]
+          },
+          featured: true
+        }
+      ]
     };
 
-    const fmt = (n)=> new Intl.NumberFormat('ru-RU').format(n);
+    const state = { audience: "owner", term: 1 };
 
-    const data = {
-      owner: {
-        base: [
-          {
-            key: 'start',
-            badge: 'MVP',
-            title: 'Start',
-            desc: 'Для владельца, которому нужно навести порядок и видеть реальную картину.',
-            priceMonth: 4900,
-            features: [
-              'ДДС: факт + план',
-              'Платёжный календарь',
-              'ОПиУ (P&L) базовый',
-              'Отчёты по периодам',
-              '1 компания / 1 пользователь'
-            ],
-            ctaText: 'Попробовать Start',
-            ctaHref: '#lead2'
-          },
-          {
-            key: 'pro',
-            badge: 'Рекомендуем',
-            title: 'Pro',
-            desc: 'Для бизнеса, который растёт и хочет контроль без ручного хаоса.',
-            priceMonth: 9900,
-            features: [
-              'Всё из Start',
-              'Команда (права доступа)',
-              'Кредиты и графики',
-              'Сценарное планирование',
-              'Интеграции (позже: WB/Ozon/1C)'
-            ],
-            ctaText: 'Выбрать Pro',
-            ctaHref: '#lead2',
-            highlight: true
-          },
-          {
-            key: 'max',
-            badge: 'Сервис',
-            title: 'Max + CFO',
-            desc: 'Под ключ: сервис + финансовый директор, который внедряет и ведёт.',
-            priceMonth: 49900,
-            features: [
-              'Всё из Pro',
-              'Внедрение + настройка',
-              'Регламенты и отчётность',
-              'Еженедельные созвоны',
-              'Контроль кассовых разрывов'
-            ],
-            ctaText: 'Обсудить Max',
-            ctaHref: '#lead2'
-          }
-        ],
-        discounts: {
-          1: 1.00,
-          3: 0.93,
-          6: 0.88,
-          12: 0.80
-        }
-      },
-      cfo: {
-        base: [
-          {
-            key: 'partner',
-            badge: 'Партнёр',
-            title: 'Partner',
-            desc: 'Для CFO: подключайте клиентов и получайте вознаграждение.',
-            priceMonth: 0,
-            features: [
-              'Партнёрский кабинет (v1)',
-              'Материалы для продаж',
-              'Ссылка/лендинг на ваш бренд',
-              'Выплаты 20–30% от подписки'
-            ],
-            ctaText: 'Стать партнёром',
-            ctaHref: '#lead2'
-          },
-          {
-            key: 'agency',
-            badge: 'Агентство',
-            title: 'Agency',
-            desc: 'Для агентств: white-label и масштабирование через команду.',
-            priceMonth: 0,
-            features: [
-              'White-label (v1)',
-              'Мульти-клиентский доступ',
-              'Роли и права',
-              'Приоритетная поддержка'
-            ],
-            ctaText: 'Запросить условия',
-            ctaHref: '#lead2',
-            highlight: true
-          },
-          {
-            key: 'enterprise',
-            badge: 'B2B',
-            title: 'Enterprise',
-            desc: 'Для интеграторов и крупных клиентов: кастом и SLA.',
-            priceMonth: 0,
-            features: [
-              'SLA / сопровождение',
-              'Кастомные интеграции',
-              'Импорт/миграция данных',
-              'Обучение команды'
-            ],
-            ctaText: 'Запросить демо',
-            ctaHref: '#lead2'
-          }
-        ],
-        discounts: {
-          1: 1.00,
-          3: 1.00,
-          6: 1.00,
-          12: 1.00
-        }
-      }
-    };
+    const fmt = (n) => new Intl.NumberFormat("ru-RU").format(n) + " ₽";
+    const round = (n) => Math.round(n);
 
-    function setPressed(groupEl, btn){
-      groupEl.querySelectorAll('button[aria-pressed]').forEach(b=> b.setAttribute('aria-pressed','false'));
-      btn.setAttribute('aria-pressed','true');
+    const cardsWrap = document.getElementById("vf-pr2-cards");
+    const cfoExtra = document.getElementById("vf-pr2-cfo-extra");
+    const cfoHead = cfoExtra ? cfoExtra.querySelector(".vf-pr2-cfo-extra__head") : null;
+
+    function compute(plan){
+      const k = cfg.discounts[state.term] ?? 1;
+      const total = round(plan.priceMonthly * state.term * k);
+      const per = round(total / state.term);
+      const full = plan.priceMonthly * state.term;
+      const savings = Math.max(0, round(full - total));
+      const pct = savings > 0 ? Math.round((savings / full) * 100) : 0;
+      return { total, per, savings, pct };
     }
 
-    root.querySelectorAll('.vf-seg').forEach(seg=>{
-      seg.addEventListener('click',(e)=>{
-        const btn = e.target.closest('button[data-audience],button[data-term]');
-        if(!btn) return;
+    function link(planId){
+      const params = new URLSearchParams({
+        tariff: planId,
+        term: String(state.term),
+        audience: state.audience
+      });
+      return "#checkout?" + params.toString();
+    }
 
-        if(btn.dataset.audience){
-          state.audience = btn.dataset.audience;
-          setPressed(seg, btn);
-          if(state.audience === 'cfo'){
-            cfoExtra.hidden = false;
-            cfoExtra.dataset.open = "true";
-          }else{
-            cfoExtra.hidden = true;
-            cfoExtra.dataset.open = "false";
-          }
-        }
+    function render(){
+      cardsWrap.innerHTML = "";
+      cfg.plans.forEach((p, idx) => {
+        const c = compute(p);
+        const el = document.createElement("div");
+        el.className = "vf-plan" + (p.featured ? " is-featured" : "");
+        el.innerHTML = `
+          <div class="vf-plan__inner">
+            <div class="vf-plan__top">
+              <h3 class="vf-plan__title">${p.title}</h3>
+              <p class="vf-plan__subtitle">${p.subtitles[state.audience]}</p>
+            </div>
 
-        if(btn.dataset.term){
-          state.term = parseInt(btn.dataset.term,10);
-          setPressed(seg, btn);
-        }
+            <div class="vf-price">
+              <div class="vf-price__main">
+                <div class="vf-price__per">${fmt(c.per).replace(" ₽","")}</div>
+                <div class="vf-price__unit">₽/мес</div>
+                ${c.savings > 0 ? `<span class="vf-badge-save">-${c.pct}%</span>` : ``}
+              </div>
+              <p class="vf-price__meta">Итого за период: <b>${fmt(c.total)}</b>${c.savings > 0 ? ` · экономия <b>${fmt(c.savings)}</b>` : ``}</p>
+            </div>
 
+            <ul class="list-unstyled feature-list mb-4">
+              ${(p.bullets[state.audience] || []).map(x => `<li><i class="bi bi-check-circle-fill"></i> ${x}</li>`).join("")}
+            </ul>
+
+            <div class="vf-plan__cta">
+              <a class="btn ${idx === 0 || idx === 2 ? "btn-cta-secondary" : "btn-cta"}" href="${link(p.id)}">Подключить</a>
+              <a class="vf-plan__link" href="${state.audience === "owner" ? "#demo" : "#compare"}">
+                ${state.audience === "owner" ? "Посмотреть, как работает" : "Скачать список фич / открыть сравнение"}
+              </a>
+            </div>
+          </div>
+        `;
+        cardsWrap.appendChild(el);
+      });
+
+      if (!cfoExtra) return;
+      if (state.audience === "cfo"){
+        cfoExtra.hidden = false;
+      } else {
+        cfoExtra.hidden = true;
+        cfoExtra.dataset.open = "false";
+        if (cfoHead) cfoHead.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    // Segmented controls
+    document.querySelectorAll('#tariffs-2 [data-audience]').forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.audience = btn.dataset.audience;
+        document.querySelectorAll('#tariffs-2 [data-audience]').forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+        if (window.ym) ym(105455340, 'reachGoal', 'pricing_audience_switch', {audience: state.audience});
         render();
       });
     });
 
-    if(btnCfoClose){
-      btnCfoClose.addEventListener('click', ()=>{
-        cfoExtra.hidden = true;
-        cfoExtra.dataset.open = "false";
+    document.querySelectorAll('#tariffs-2 [data-term]').forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.term = parseInt(btn.dataset.term, 10);
+        document.querySelectorAll('#tariffs-2 [data-term]').forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+        if (window.ym) ym(105455340, 'reachGoal', 'pricing_term_switch', {term: state.term});
+        render();
+      });
+    });
+
+    // CFO extra toggle
+    if (cfoHead){
+      const toggle = () => {
+        const open = cfoExtra.dataset.open === "true";
+        cfoExtra.dataset.open = open ? "false" : "true";
+        cfoHead.setAttribute("aria-expanded", open ? "false" : "true");
+      };
+      cfoHead.addEventListener("click", toggle);
+      cfoHead.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
       });
     }
 
-    function buildCard(item){
-      const disc = data[state.audience].discounts[state.term] || 1;
-      const price = Math.round(item.priceMonth * state.term * disc);
-
-      const priceHtml = item.priceMonth > 0
-        ? `<div class="vf-price">
-            <div class="vf-price__value">${fmt(price)} ₽</div>
-            <div class="vf-price__meta">за ${state.term} мес.</div>
-          </div>`
-        : `<div class="vf-price">
-            <div class="vf-price__value">По запросу</div>
-            <div class="vf-price__meta">условия обсуждаются</div>
-          </div>`;
-
-      const badgeHtml = item.badge ? `<div class="vf-pr2-badge">${item.badge}</div>` : '';
-
-      const li = item.features.map(f=> `<li><i class="bi bi-check-circle-fill"></i><span>${f}</span></li>`).join('');
-
-      const cls = item.highlight ? 'vf-pr2-card vf-pr2-card--hot' : 'vf-pr2-card';
-
-      return `<div class="${cls}">
-        <div class="vf-pr2-card__head">
-          ${badgeHtml}
-          <h3 class="vf-pr2-title">${item.title}</h3>
-          <p class="vf-pr2-desc">${item.desc}</p>
-        </div>
-        ${priceHtml}
-        <ul class="vf-pr2-list">${li}</ul>
-        <div class="vf-pr2-actions">
-          <a class="btn btn-primary w-100" href="${item.ctaHref}" data-plan="${item.key}">${item.ctaText}</a>
-        </div>
-      </div>`;
-    }
-
-    function render(){
-      cardsEl.innerHTML = data[state.audience].base.map(buildCard).join('');
-
-      // метрики кликов
-      cardsEl.querySelectorAll('a[data-plan]').forEach(a=>{
-        a.addEventListener('click', ()=>{
-          const sp = new URLSearchParams(window.location.search);
-          const plan = a.getAttribute('data-plan');
-          // no-op: hook for analytics
-          if(window.ym){
-            ym(0, 'reachGoal', 'pricing_cta_click', { plan, audience: state.audience, term: state.term });
-          }
-          if(window.gtag){
-            gtag('event','pricing_cta_click',{ plan, audience: state.audience, term: state.term });
-          }
-          if(window.dataLayer){
-            window.dataLayer.push({event:'pricing_cta_click', plan, audience: state.audience, term: state.term});
-          }
-          // keep optional: UTM passthrough
-          if(sp.get('utm_source')){
-            // no action (kept 1:1)
-          }
-        }, { once: true });
+    // CTA click analytics (delegate)
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest('#tariffs-2 a.btn-cta');
+      if (!a) return;
+      const url = new URL(a.getAttribute("href"), window.location.href);
+      const sp = url.searchParams;
+      if (window.ym) ym(105455340, 'reachGoal', 'pricing_cta_click', {
+        plan: sp.get('tariff'),
+        term: sp.get('term'),
+        audience: sp.get('audience')
       });
-    }
+    });
 
     render();
   })();
