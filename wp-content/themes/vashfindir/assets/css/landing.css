@@ -1,6 +1,7 @@
 /* landing.css
    RULES:
-   - no .btn / .btn-* here
+   - no global .btn overrides here
+   - landing CTA classes live here: .btn-brand (primary), .btn-cta-secondary (secondary)
    - buttons are global: .vf-btn in main.css
    - landing.css contains only section/layout styles
 */
@@ -57,6 +58,42 @@
       --fs-small: 13px;
       --lh-small: 1.45;
     }
+
+/* =========================================================
+   CTA (Landing)
+   ========================================================= */
+
+.btn-brand{
+    background: var(--brand);
+    border: 1px solid var(--brand);
+    color: #fff;
+    font-weight: 900;
+    border-radius: var(--radius-control);
+    padding: .65rem 1rem;
+}
+
+.btn-brand:hover,
+.btn-brand:focus{
+    background: var(--brand-2);
+    border-color: var(--brand-2);
+    color: #fff;
+}
+
+.btn-cta-secondary{
+    background: #fff;
+    border: 1px solid rgba(10,21,72,.22);
+    color: var(--brand-2);
+    font-weight: 900;
+    border-radius: var(--radius-control);
+    padding: .65rem 1rem;
+}
+
+.btn-cta-secondary:hover,
+.btn-cta-secondary:focus{
+    border-color: rgba(10,21,72,.35);
+    color: var(--cta-secondary-hover);
+    background: rgba(10,21,72,.04);
+}
 
 /* =========================================================
    Hero (Home) — variant 4
