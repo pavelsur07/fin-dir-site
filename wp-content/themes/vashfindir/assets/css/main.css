@@ -250,6 +250,17 @@ h3{
 }
 
 /* =========================================================
+   Components (shared)
+   ========================================================= */
+
+.vf-surface{
+    border: 1px solid var(--vf-surface-border, var(--vf-border));
+    border-radius: var(--vf-surface-radius, var(--vf-radius));
+    background: var(--vf-surface-bg, var(--vf-card));
+    overflow: hidden;
+}
+
+/* =========================================================
    Enterprise Header (responsive)
    ========================================================= */
 
