@@ -786,6 +786,8 @@
 }
 .vf-plan__list{ margin:0; padding-left: 1.1rem; color: var(--text); }
 .vf-plan__list li{ margin: 6px 0; color: var(--text); }
+.feature-list li{ margin-bottom: .55rem; }
+.feature-list .bi{ color: #198754; margin-right: .5rem; }
 .vf-plan__cta{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; }
 .vf-plan__cta .btn{ width: 100%; justify-content: center; border-radius: 14px; padding-top: 12px; padding-bottom: 12px; }
 .vf-plan__link{ font-size: 12px; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; text-align:center; }
