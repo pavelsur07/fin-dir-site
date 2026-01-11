@@ -1,0 +1,2899 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Enterprise B2B — Typography &amp; Layout Demo (v30 Main CTA style)</title>
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<style>:root{
+      --cta-2-hover: var(--brand);
+      --cta-2: var(--brand-2);
+      --brand-2: #0d1c63;
+      --brand: #0A1548;
+      --cta: #B00020;
+      --cta-hover: #8E001A;
+
+      
+      --cta-secondary: #0A1548;
+      --cta-secondary-hover: #0d1c63;
+
+      --text: #0b1020;
+      --muted: #5c677d;
+
+      --bg-soft: #f7f8fc;
+      --card: #ffffff;
+      --border: rgba(10,21,72,.14);
+
+      
+      --content-max: 1320px;
+      --prose-max: 62ch;
+
+      
+      --radius-card: 6px;
+      --radius-control: 6px;
+
+      
+      --shadow: 0 10px 30px rgba(10,21,72,.10);
+
+      
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+      --fs-body: 16px;
+      --lh-body: 1.55;
+
+      --fs-lead: 18px;
+      --lh-lead: 1.55;
+
+      --fs-h1: clamp(32px, 3.2vw, 46px);
+      --lh-h1: 1.06;
+      --ls-h1: -0.03em;
+
+      --fs-h2: clamp(24px, 2.1vw, 34px);
+      --lh-h2: 1.12;
+      --ls-h2: -0.02em;
+
+      --fs-h3: 20px;
+      --lh-h3: 1.20;
+
+      --fs-small: 13px;
+      --lh-small: 1.45;
+    }body{
+      background: var(--bg-soft);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+    }.container-demo{ max-width: var(--content-max); }.prose{ max-width: var(--prose-max); }.section{ padding: clamp(48px, 6vw, 80px) 0; }.section + .section{ border-top: 1px solid rgba(10,21,72,.06); }h1{
+      font-size: var(--fs-h1);
+      line-height: var(--lh-h1);
+      letter-spacing: var(--ls-h1);
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: .5rem;
+    }h2{
+      font-size: var(--fs-h2);
+      line-height: var(--lh-h2);
+      letter-spacing: var(--ls-h2);
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: .5rem;
+    }h3{
+      font-size: var(--fs-h3);
+      line-height: var(--lh-h3);
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: .35rem;
+    }.lead{
+      font-size: var(--fs-lead);
+      line-height: var(--lh-lead);
+      color: var(--muted);
+      margin-bottom: 0;
+    }.small, .text-muted{
+      font-size: var(--fs-small);
+      line-height: var(--lh-small);
+    
+      color: var(--muted);
+    }.card-e{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+    }.btn-cta{
+      background: var(--cta);
+      border-color: var(--cta);
+      color: #fff;
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+    }.btn-cta:hover{
+      background: var(--cta-hover);
+      border-color: var(--cta-hover);
+      color:#fff;
+    }.btn-outline-brand{
+      background: #fff;
+      border: 1px solid rgba(10,21,72,.22);
+      color: var(--brand);
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+    }.btn-outline-brand:hover{
+      border-color: rgba(10,21,72,.35);
+      color: var(--brand);
+      background: #fff;
+    }.btn-cta-secondary{
+      background: #fff;
+      border: 1px solid rgba(10,21,72,.22);
+      color: var(--brand-2);
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+    }.btn-cta-secondary:hover{
+      border-color: rgba(10,21,72,.35);
+      color: var(--cta-secondary-hover);
+      background: rgba(10,21,72,.04);
+    }.btn-cta-fill{
+      background: var(--cta);
+      border-color: var(--cta);
+      color:#fff;
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+      box-shadow: 0 12px 28px rgba(10,21,72,.14);
+}.btn-cta-fill:hover{
+      background: var(--cta-hover);
+      border-color: var(--cta-hover);
+      color:#fff;
+      filter: brightness(.98);
+    }.btn-cta-fill-2{
+      background: var(--cta-2);
+      border-color: var(--cta-2);
+      color:#fff;
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+      box-shadow: 0 12px 28px rgba(10,21,72,.18);
+    }.btn-cta-fill-2:hover{
+      background: var(--cta-2-hover);
+      border-color: var(--cta-2-hover);
+      color:#fff;
+      filter: brightness(.99);
+    }.form-control{
+      border-radius: var(--radius-control);
+      border-color: rgba(10,21,72,.18);
+      padding: .75rem .9rem;
+    }.form-control:focus{
+      border-color: rgba(10,21,72,.35);
+      box-shadow: 0 0 0 .2rem rgba(45,107,255,.18);
+    }.ruler{
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(10,21,72,.10), rgba(45,107,255,.12));
+      border: 1px solid rgba(10,21,72,.10);
+    }.label{
+      display:inline-block;
+      padding: .3rem .55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(10,21,72,.12);
+      background: rgba(10,21,72,.04);
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 12px;
+    }code{
+      background: rgba(10,21,72,.06);
+      border: 1px solid rgba(10,21,72,.08);
+      border-radius: 6px;
+      padding: .15rem .45rem;
+    }.tile{
+      border: 1px solid rgba(10,21,72,.12);
+      border-radius: var(--radius-card);
+      background: rgba(255,255,255,.70);
+      padding: 14px;
+    }.tile .k{
+      font-weight: 900;
+      color: var(--brand);
+      font-size: 12px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }.tile .v{
+      font-weight: 900;
+      color: var(--text);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      margin-top: 2px;
+    }.tile .h{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+      line-height: 1.35;
+    }.period-btns .btn{
+      border-color: rgba(10,21,72,.18);
+      color: var(--brand);
+      background: #fff;
+      font-weight: 800;
+      border-radius: var(--radius-control);
+      padding: .55rem .85rem;
+    }.period-btns .btn:hover{
+      border-color: rgba(10,21,72,.35);
+      color: var(--brand);
+    }.period-btns .btn.active{
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      box-shadow: 0 .75rem 1.5rem rgba(10,21,72,.14);
+    }.pricing-card{
+      border: 1px solid rgba(10,21,72,.10);
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 25px rgba(10,21,72,.06);
+      overflow: hidden;
+      background:#fff;
+    }.pricing-card .card-header{
+      background: #fff;
+      border-bottom: 1px solid rgba(10,21,72,.08);
+    }.plan-badge{
+      background: rgba(10,21,72,.04);
+      color: var(--brand-2);
+      border: 1px solid rgba(10,21,72,.22);
+      font-weight: 900;
+    }.price{
+      color: var(--brand);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }.price .currency{ font-weight: 900; }.price-sub{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }.total-line{
+      margin-top: .35rem;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }.total-line b{
+      color: var(--brand);
+      font-weight: 900;
+    }.save-pill{
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-weight: 900;
+      color: #0f5132;
+      background: rgba(25,135,84,.10);
+      border: 1px solid rgba(25,135,84,.18);
+      border-radius: 999px;
+      padding: .35rem .6rem;
+      font-size: 12px;
+      white-space: nowrap;
+    }.featured{
+      border: 2px solid rgba(45,107,255,.30);
+      box-shadow: 0 16px 35px rgba(10,21,72,.10);
+      transform: translateY(-2px);
+    }.feature-list li{ margin-bottom: .55rem; }.feature-list .bi{ color: #198754; margin-right: .5rem; }.footer-e{
+      background: var(--brand);
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.86);
+    }.footer-e .footer-title{
+      color:#fff;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }.footer-e .footer-muted{ color: rgba(255,255,255,.72); }.footer-e a.footer-link{
+      color: rgba(255,255,255,.90);
+      text-decoration: none;
+      font-weight: 800;
+    }.footer-e a.footer-link:hover{
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+    }.footer-e .footer-divider{
+      border-top: 1px solid rgba(255,255,255,.12);
+    }.social-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      align-items:center;
+      margin-top:.6rem;
+    }.social-btn{
+      width: 36px;
+      height: 36px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      text-decoration:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }.social-btn:hover{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.35);
+      transform: translateY(-1px);
+    }.social-btn svg{ width:18px; height:18px; fill: currentColor; }.footer-e a.footer-link-soft{
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-weight: 700;
+    }.footer-e a.footer-link-soft:hover{
+      color: rgba(255,255,255,.92);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+    }a{ text-underline-offset: 3px; }.card-e{ box-shadow: 0 10px 28px rgba(10,21,72,.07) !important; }.navbar-toggler-icon{
+      background-image: var(--bs-navbar-toggler-icon-bg);
+    }.nav-e .nav-link{
+      position: relative;
+      display: inline-block;
+      color: var(--brand);
+      font-weight: 800;
+      padding: .35rem .65rem;
+      line-height: 1.2;
+      text-decoration: none;     
+      background: transparent;   
+      border: none;
+      border-radius: 0;
+    }.nav-e .nav-link::after{
+      content:"";
+      position:absolute;
+      left: .65rem;
+      right: .65rem;
+      bottom: -5px;             
+      height: 2px;
+      background: rgba(13,28,99,.72);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform .22s ease;
+      border-radius: 2px;
+    }.nav-e .nav-link:hover::after,
+    .nav-e .nav-link:focus-visible::after,
+    .nav-e .nav-link[aria-current="page"]::after{
+      transform: scaleX(1);
+    }.nav-e .nav-link:hover,
+    .nav-e .nav-link:focus-visible{
+      color: var(--brand);       
+      background: transparent;   
+      outline: none;
+      box-shadow: none;
+    }.offcanvas .list-group-item{
+      border-color: rgba(10,21,72,.08);
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+      background: transparent;
+    }.offcanvas .list-group-item:hover{
+      background: transparent;
+      text-decoration: underline;
+      text-underline-offset: 7px;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(13,28,99,.55);
+    }body{
+      background: var(--bg-soft);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+    }.container-demo{ max-width: var(--content-max); }.prose{ max-width: var(--prose-max); }.section{ padding: clamp(48px, 6vw, 80px) 0; }.section + .section{ border-top: 1px solid rgba(10,21,72,.06); }h1{
+      font-size: var(--fs-h1);
+      line-height: var(--lh-h1);
+      letter-spacing: var(--ls-h1);
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: .5rem;
+    }h2{
+      font-size: var(--fs-h2);
+      line-height: var(--lh-h2);
+      letter-spacing: var(--ls-h2);
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: .5rem;
+    }h3{
+      font-size: var(--fs-h3);
+      line-height: var(--lh-h3);
+      font-weight: 900;
+      color: var(--brand);
+      margin-bottom: .35rem;
+    }.lead{
+      font-size: var(--fs-lead);
+      line-height: var(--lh-lead);
+      color: var(--muted);
+      margin-bottom: 0;
+    }.small, .text-muted{
+      font-size: var(--fs-small);
+      line-height: var(--lh-small);
+    
+      color: var(--muted);
+    }.card-e{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+    }.btn-cta{
+      background: var(--cta);
+      border-color: var(--cta);
+      color: #fff;
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+    }.btn-cta:hover{
+      background: var(--cta-hover);
+      border-color: var(--cta-hover);
+      color:#fff;
+    }.btn-outline-brand{
+      background: #fff;
+      border: 1px solid rgba(10,21,72,.22);
+      color: var(--brand);
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+    }.btn-outline-brand:hover{
+      border-color: rgba(10,21,72,.35);
+      color: var(--brand);
+      background: #fff;
+    }.btn-cta-secondary{
+      background: #fff;
+      border: 1px solid rgba(10,21,72,.22);
+      color: var(--brand-2);
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+    }.btn-cta-secondary:hover{
+      border-color: rgba(10,21,72,.35);
+      color: var(--cta-secondary-hover);
+      background: rgba(10,21,72,.04);
+    }.btn-cta-fill{
+      background: var(--cta);
+      border-color: var(--cta);
+      color:#fff;
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+      box-shadow: 0 12px 28px rgba(10,21,72,.14);
+}.btn-cta-fill:hover{
+      background: var(--cta-hover);
+      border-color: var(--cta-hover);
+      color:#fff;
+      filter: brightness(.98);
+    }.btn-cta-fill-2{
+      background: var(--cta-2);
+      border-color: var(--cta-2);
+      color:#fff;
+      font-weight: 900;
+      border-radius: var(--radius-control);
+      padding: .65rem 1rem;
+      box-shadow: 0 12px 28px rgba(10,21,72,.18);
+    }.btn-cta-fill-2:hover{
+      background: var(--cta-2-hover);
+      border-color: var(--cta-2-hover);
+      color:#fff;
+      filter: brightness(.99);
+    }.form-control{
+      border-radius: var(--radius-control);
+      border-color: rgba(10,21,72,.18);
+      padding: .75rem .9rem;
+    }.form-control:focus{
+      border-color: rgba(10,21,72,.35);
+      box-shadow: 0 0 0 .2rem rgba(45,107,255,.18);
+    }.ruler{
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(10,21,72,.10), rgba(45,107,255,.12));
+      border: 1px solid rgba(10,21,72,.10);
+    }.label{
+      display:inline-block;
+      padding: .3rem .55rem;
+      border-radius: 999px;
+      border: 1px solid rgba(10,21,72,.12);
+      background: rgba(10,21,72,.04);
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 12px;
+    }code{
+      background: rgba(10,21,72,.06);
+      border: 1px solid rgba(10,21,72,.08);
+      border-radius: 6px;
+      padding: .15rem .45rem;
+    }.tile{
+      border: 1px solid rgba(10,21,72,.12);
+      border-radius: var(--radius-card);
+      background: rgba(255,255,255,.70);
+      padding: 14px;
+    }.tile .k{
+      font-weight: 900;
+      color: var(--brand);
+      font-size: 12px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }.tile .v{
+      font-weight: 900;
+      color: var(--text);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+      margin-top: 2px;
+    }.tile .h{
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+      line-height: 1.35;
+    }.period-btns .btn{
+      border-color: rgba(10,21,72,.18);
+      color: var(--brand);
+      background: #fff;
+      font-weight: 800;
+      border-radius: var(--radius-control);
+      padding: .55rem .85rem;
+    }.period-btns .btn:hover{
+      border-color: rgba(10,21,72,.35);
+      color: var(--brand);
+    }.period-btns .btn.active{
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      box-shadow: 0 .75rem 1.5rem rgba(10,21,72,.14);
+    }.pricing-card{
+      border: 1px solid rgba(10,21,72,.10);
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 25px rgba(10,21,72,.06);
+      overflow: hidden;
+      background:#fff;
+    }.pricing-card .card-header{
+      background: #fff;
+      border-bottom: 1px solid rgba(10,21,72,.08);
+    }.plan-badge{
+      background: rgba(10,21,72,.04);
+      color: var(--brand-2);
+      border: 1px solid rgba(10,21,72,.22);
+      font-weight: 900;
+    }.price{
+      color: var(--brand);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }.price .currency{ font-weight: 900; }.price-sub{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }.total-line{
+      margin-top: .35rem;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }.total-line b{
+      color: var(--brand);
+      font-weight: 900;
+    }.save-pill{
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-weight: 900;
+      color: #0f5132;
+      background: rgba(25,135,84,.10);
+      border: 1px solid rgba(25,135,84,.18);
+      border-radius: 999px;
+      padding: .35rem .6rem;
+      font-size: 12px;
+      white-space: nowrap;
+    }.featured{
+      border: 2px solid rgba(45,107,255,.30);
+      box-shadow: 0 16px 35px rgba(10,21,72,.10);
+      transform: translateY(-2px);
+    }.feature-list li{ margin-bottom: .55rem; }.feature-list .bi{ color: #198754; margin-right: .5rem; }.footer-e{
+      background: var(--brand);
+      border-top: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.86);
+    }.footer-e .footer-title{
+      color:#fff;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }.footer-e .footer-muted{ color: rgba(255,255,255,.72); }.footer-e a.footer-link{
+      color: rgba(255,255,255,.90);
+      text-decoration: none;
+      font-weight: 800;
+    }.footer-e a.footer-link:hover{
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+    }.footer-e .footer-divider{
+      border-top: 1px solid rgba(255,255,255,.12);
+    }.social-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      align-items:center;
+      margin-top:.6rem;
+    }.social-btn{
+      width: 36px;
+      height: 36px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      text-decoration:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }.social-btn:hover{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.35);
+      transform: translateY(-1px);
+    }.social-btn svg{ width:18px; height:18px; fill: currentColor; }.footer-e a.footer-link-soft{
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-weight: 700;
+    }.footer-e a.footer-link-soft:hover{
+      color: rgba(255,255,255,.92);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+    }a{ text-underline-offset: 3px; }.card-e{ box-shadow: 0 10px 28px rgba(10,21,72,.07) !important; }.navbar-toggler-icon{
+      background-image: var(--bs-navbar-toggler-icon-bg);
+    }.offcanvas .list-group-item{
+      border-color: rgba(10,21,72,.08);
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+      transition: background .12s ease;
+    }.offcanvas .list-group-item:hover{
+      background: rgba(10,21,72,.04);
+    }.vf-photo-card{
+      background:#fff;
+      border: 1px solid rgba(10,21,72,.10);
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 25px rgba(10,21,72,.06);
+      overflow:hidden;
+    }.vf-photo-media{
+      position: relative;
+      width: 100%;
+      background: rgba(10,21,72,.03);
+      border-bottom: 1px solid rgba(10,21,72,.08);
+    }.vf-photo-media.is-portrait{ aspect-ratio: 4 / 5; }.vf-photo-media.is-cover{ aspect-ratio: 16 / 9; }.vf-photo-media.is-square{ aspect-ratio: 1 / 1; }.vf-photo-media img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      object-position: center;
+      display:block;
+    }.vf-photo-body{ padding: 1.25rem; }@media (min-width: 992px){.vf-photo-body{ padding: 1.75rem; }}.vf-photo-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(10,21,72,.12);
+      background: rgba(10,21,72,.04);
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }.vf-photo-meta{
+      border-top: 1px solid rgba(10,21,72,.08);
+      padding: .9rem 1.25rem;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }.vf-hero-demo{
+      background:#fff;
+      border: 1px solid rgba(10,21,72,.10);
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 28px rgba(10,21,72,.07);
+      overflow:hidden;
+    }.vf-hero-inner{ padding: clamp(22px, 3vw, 40px); }.vf-hero-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.35rem .65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(10,21,72,.12);
+      background: rgba(10,21,72,.04);
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }.vf-hero-title{
+      margin-top: .9rem;
+      margin-bottom: .85rem;
+    }.vf-hero-actions{ margin-top: 1.35rem; display:flex; gap:.75rem; flex-wrap:wrap; }.vf-hero-media{
+      width:100%;
+      aspect-ratio: 4 / 5;
+      background: rgba(10,21,72,.06);
+      border-left: 1px solid rgba(10,21,72,.08);
+      position: relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 1.25rem;
+    }.vf-hero-media{
+      border-top: 1px solid rgba(10,21,72,.10);
+    }@media (min-width: 992px){.vf-hero-demo .vf-hero-media{
+        border-top: 0;
+        border-left: 1px solid rgba(10,21,72,.10);
+      }}.vf-hero-media--wide{
+      aspect-ratio: 16 / 9;
+    }.vf-hero-media--square{
+      aspect-ratio: 1 / 1;
+    }.vf-hero-media--boxed{
+      max-width: 560px;            
+      width: 100%;
+      border: 1px solid rgba(10,21,72,.12);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: rgba(10,21,72,.04); 
+      border-left: 1px solid rgba(10,21,72,.12); 
+      border-top: 1px solid rgba(10,21,72,.12);
+    }.vf-hero-media--boxed::after{
+      inset: 12px;
+      border-style: dashed;
+      border-color: rgba(10,21,72,.20);
+    }.vf-hero-media-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      padding: 1.25rem;
+    }@media (max-width: 991.98px){.vf-hero-media--boxed{ max-width: 100%; }.vf-hero-media-wrap{ padding: 1rem; }}.vf-hero-media::after{
+      content:"";
+      position:absolute;
+      inset:10px;
+      border: 1px dashed rgba(10,21,72,.22);
+      border-radius: calc(var(--radius-card) - 2px);
+      pointer-events:none;
+    }.vf-hero-media .vf-hero-media-text{
+      color: rgba(10,21,72,.75);
+      font-weight: 900;
+      line-height: 1.2;
+    }.vf-hero-media .vf-hero-media-sub{
+      display:block;
+      margin-top:.35rem;
+      font-weight: 700;
+      color: rgba(92,103,125,.9);
+      font-size: 13px;
+    }@media (max-width: 991.98px){.vf-hero-media{
+        border-left: none;
+        border-top: 1px solid rgba(10,21,72,.08);
+        aspect-ratio: 16 / 9; 
+      }}
+
+/* Breadcrumbs (VF) */
+.vf-breadcrumbs{
+  background:#fff;
+  border-bottom:1px solid rgba(10,21,72,.08);
+  padding: 12px 0;
+}
+.vf-breadcrumbs .container-demo{
+  padding-left: 12px;
+  padding-right: 12px;
+}
+.vf-breadcrumbs__list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.vf-breadcrumbs__list li{
+  display:flex;
+  align-items:center;
+  color: var(--muted);
+}
+.vf-breadcrumbs__list li+li::before{
+  content:"/";
+  display:inline-block;
+  margin:0 10px;
+  color: rgba(10,21,72,.28);
+}
+.vf-breadcrumbs__list a{
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color .16s ease, border-color .16s ease;
+}
+.vf-breadcrumbs__list a:hover,
+.vf-breadcrumbs__list a:focus-visible{
+  color: var(--brand);
+  border-bottom-color: rgba(13,28,99,.45);
+  outline: none;
+}
+.vf-breadcrumbs__list [aria-current="page"] span{
+  color: var(--text);
+  font-weight: 800;
+}
+.vf-breadcrumbs__list a:focus-visible{
+  box-shadow: 0 0 0 3px rgba(10,21,72,.12);
+  border-radius: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-left: -4px;
+  margin-right: -4px;
+}
+@media (max-width: 575.98px){
+  .vf-breadcrumbs__list li+li::before{ margin:0 8px; }
+}
+
+/* Square placeholder (1:1) */
+.ph-square-e{
+  width:100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  border: 1px solid rgba(10,21,72,.10);
+  background: rgba(10,21,72,.03);
+  overflow: hidden;
+}
+
+
+
+
+/* Mission & Values (VF) */
+.vf-mv-grid{ display:grid; gap:16px; }
+@media (min-width: 992px){
+  .vf-mv-grid{ grid-template-columns: 1.2fr .8fr; align-items:stretch; gap:18px; }
+}
+.vf-mv-card{
+  position:relative;
+  border-radius: 16px;
+  overflow:hidden;
+  border: 1px solid rgba(10,21,72,.10);
+  background: #fff;
+}
+.vf-mv-card__inner{ padding: 28px; }
+@media (max-width: 575.98px){
+  .vf-mv-card__inner{ padding: 18px; }
+}
+.vf-mv-badge{
+  position:absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 14px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  background: rgba(255,255,255,.10);
+}
+.vf-mv-badge.is-light{
+  border: 1px solid rgba(10,21,72,.16);
+  color: var(--brand);
+  background: rgba(10,21,72,.03);
+}
+.vf-mv-mission{
+  background: var(--cta);
+  border-color: rgba(176,0,32,.35);
+  color: #fff;
+}
+.vf-mv-mission h2,
+.vf-mv-mission h3,
+.vf-mv-mission p{ color:#fff; }
+.vf-mv-kicker{
+  font-weight: 900;
+  letter-spacing: .01em;
+  opacity: .92;
+}
+.vf-mv-mission .vf-mv-sub{
+  color: rgba(255,255,255,.88);
+}
+.vf-mv-mission .vf-mv-lines{
+  position:absolute;
+  inset: 0;
+  pointer-events:none;
+  opacity: .16;
+  background-image:
+    linear-gradient(135deg, rgba(255,255,255,.18) 1px, transparent 1px),
+    linear-gradient(45deg, rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size: 160px 160px;
+  background-position: 0 0, 32px 32px;
+}
+.vf-mv-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top: 18px;
+}
+.vf-mv-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 13px;
+  border: 1px solid rgba(255,255,255,.30);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+}
+.vf-mv-chip svg{ opacity:.9; }
+.vf-mv-side{
+  display:grid;
+  gap:16px;
+  height:100%;
+}
+.vf-mv-side .vf-mv-card{ border-radius: 16px; }
+.vf-mv-side h3{ margin: 0 0 8px 0; }
+.vf-mv-side p{ margin: 0; color: var(--muted); }
+.vf-mv-side .vf-mv-card__inner{ padding: 22px; }
+.vf-mv-side .vf-mv-title{
+  color: var(--cta);
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+
+/* What we do & For whom (VF) */
+.vf-wwd-grid{ display:grid; gap:16px; }
+@media (min-width: 992px){
+  .vf-wwd-grid{ grid-template-columns: 1.2fr .8fr; gap:18px; }
+}
+.vf-wwd-stack{ display:grid; gap:16px; }
+.vf-wwd-card{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(10,21,72,.10);
+  background: #fff;
+}
+.vf-wwd-card__inner{ padding: 22px; }
+@media (max-width: 575.98px){
+  .vf-wwd-card__inner{ padding: 18px; }
+}
+.vf-wwd-title{
+  font-weight: 900;
+  color: var(--brand);
+  line-height: 1.12;
+  margin: 0 0 10px 0;
+  font-size: clamp(20px, 2vw, 28px);
+}
+.vf-wwd-text{ color: var(--muted); margin:0; max-width: 58ch; }
+.vf-wwd-chiprow{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 16px; }
+.vf-wwd-chip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(10,21,72,.12);
+  background: rgba(10,21,72,.03);
+  color: var(--brand);
+  font-weight: 800;
+  font-size: 13px;
+}
+.vf-wwd-chip svg{ opacity:.75; }
+.vf-wwd-accent{
+  background: var(--cta);
+  border-color: rgba(176,0,32,.35);
+}
+.vf-wwd-accent .vf-wwd-title,
+.vf-wwd-accent .vf-wwd-text,
+.vf-wwd-accent .vf-wwd-chip{ color: #fff; }
+.vf-wwd-accent .vf-wwd-text{ color: rgba(255,255,255,.90); }
+.vf-wwd-accent .vf-wwd-chip{
+  border-color: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.10);
+}
+.vf-wwd-media{
+  position:absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 168px;
+  height: 112px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.20);
+  background: rgba(255,255,255,.10);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 900;
+  color: rgba(255,255,255,.92);
+}
+@media (max-width: 991.98px){
+  .vf-wwd-media{ position: static; width: 100%; height: 120px; margin-top: 14px; }
+}
+.vf-wwd-list{ margin:0; padding-left: 1.1rem; color: var(--muted); }
+.vf-wwd-list li{ margin: 6px 0; }
+
+
+/* What we do — hero media + equal heights */
+.vf-wwd-feature{
+  display:flex;
+  align-items:stretch;
+  justify-content:space-between;
+  gap: 18px;
+}
+.vf-wwd-feature__content{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.vf-wwd-feature__media{
+  flex: 0 0 auto;
+  width: 200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.vf-wwd-hero{
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.vf-wwd-hero img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* no distortion */
+}
+.vf-wwd-eqh{
+  min-height: 320px;
+}
+.vf-wwd-brand{
+  background: var(--brand);
+  border-color: rgba(10,21,72,.22);
+}
+.vf-wwd-brand .vf-wwd-title,
+.vf-wwd-brand .vf-wwd-text,
+.vf-wwd-brand p,
+.vf-wwd-brand li{ color: #fff; }
+.vf-wwd-brand .vf-wwd-text{ color: rgba(255,255,255,.90); }
+.vf-wwd-brand .vf-wwd-chip{
+  border-color: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.10);
+  color:#fff;
+}
+.vf-wwd-brand .vf-wwd-list{ color: rgba(255,255,255,.90); }
+@media (max-width: 575.98px){
+  .vf-wwd-feature{ flex-direction: column; }
+  .vf-wwd-feature__media{ width: 100%; }
+  .vf-wwd-eqh{ min-height: 0; }
+}
+
+
+
+.vf-wwd-yellow{ background:#FFD84D; border-color: rgba(0,0,0,.08); }
+/* What we do — yellow variant */
+.vf-wwd-yellow .vf-wwd-text{ color:#111; }
+.vf-wwd-yellow .vf-wwd-list{ color:#111; }
+
+/* Lead form 2 (VF) */
+.vf-lead2{
+  background: var(--cta);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(176,0,32,.35);
+}
+.vf-lead2__inner{
+  padding: clamp(18px, 2.8vw, 32px);
+}
+.vf-lead2__grid{
+  display:grid;
+  gap: 18px;
+  align-items:center;
+}
+@media (min-width: 992px){
+  .vf-lead2__grid{ grid-template-columns: 1fr 1fr; gap: 22px; }
+}
+.vf-lead2__title{
+  color:#fff;
+  font-weight: 900;
+  line-height: 1.06;
+  font-size: clamp(26px, 3.2vw, 44px);
+  margin: 0 0 12px 0;
+}
+.vf-lead2__text{
+  color: rgba(255,255,255,.90);
+  margin: 0;
+  max-width: 48ch;
+}
+.vf-lead2__media{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  gap: 18px;
+}
+@media (min-width: 992px){
+  .vf-lead2__media{ justify-content:flex-end; }
+}
+.vf-lead2__photo{
+  width: min(320px, 44%);
+  aspect-ratio: 3 / 4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.vf-lead2__photo img{
+  width:100%;
+  height:100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 34px rgba(0,0,0,.18));
+}
+.vf-lead2__form{
+  width: min(420px, 100%);
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.14);
+}
+@media (min-width: 992px){
+  .vf-lead2__form{ padding: 20px; }
+}
+.vf-field{
+  width:100%;
+  border-radius: 12px;
+  border: 1px solid rgba(10,21,72,.14);
+  background: #fff;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+}
+.vf-field:focus{
+  border-color: rgba(10,21,72,.28);
+  box-shadow: 0 0 0 4px rgba(10,21,72,.10);
+}
+.vf-lead2__form .btn{
+  width: 100%;
+  justify-content: center;
+  border-radius: 14px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.vf-consent{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin-top: 12px;
+  color: rgba(10,21,72,.75);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.vf-consent input{ margin-top: 3px; }
+.vf-consent a{ color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+.vf-lead2__note{
+  margin-top: 14px;
+  color: rgba(255,255,255,.78);
+  font-size: 12px;
+}
+@media (max-width: 575.98px){
+  .vf-lead2__media{ flex-direction: column; align-items:stretch; }
+  .vf-lead2__photo{ width: 100%; max-width: 280px; margin: 0 auto; }
+}
+
+
+
+
+/* Tariffs-2 (VF) */
+.vf-pr2-head{ display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center; }
+.vf-pr2-sub{ max-width: 70ch; color: var(--muted); margin: 0; }
+
+.vf-seg{
+  display:inline-flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(10,21,72,.04);
+  border: 1px solid rgba(10,21,72,.10);
+}
+.vf-seg-btn{
+  border: 0;
+  background: transparent;
+  color: var(--brand);
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  line-height: 1;
+  cursor: pointer;
+}
+.vf-seg-btn:focus{ outline: none; box-shadow: 0 0 0 4px rgba(10,21,72,.10); }
+.vf-seg-btn[aria-pressed="true"]{
+  background: #fff;
+  border: 1px solid rgba(10,21,72,.16);
+  box-shadow: 0 10px 24px rgba(10,21,72,.08);
+}
+
+.vf-pr2-controls{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items:center;
+  margin-top: 8px;
+}
+
+.vf-pr2-grid{
+  display:grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+@media (min-width: 992px){
+  .vf-pr2-grid{ grid-template-columns: repeat(3, 1fr); gap: 18px; }
+}
+
+.vf-plan{
+  border-radius: 16px;
+  border: 1px solid rgba(10,21,72,.10);
+  background: #fff;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height: 100%;
+}
+.vf-plan__inner{ padding: 20px; display:flex; flex-direction:column; gap: 14px; height: 100%; }
+.vf-plan__top{ display:flex; flex-direction:column; gap: 6px; }
+.vf-plan__title{ margin:0; font-weight: 900; color: var(--brand); font-size: 18px; line-height: 1.2; }
+.vf-plan__subtitle{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.45; min-height: 3.4em; }
+
+.vf-price{
+  display:flex;
+  flex-direction:column;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(10,21,72,.08);
+}
+.vf-price__main{
+  display:flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.vf-price__per{
+  font-weight: 900;
+  color: var(--brand);
+  font-size: 28px;
+  letter-spacing: -0.02em;
+}
+.vf-price__unit{ color: var(--muted); font-weight: 700; font-size: 13px; }
+.vf-price__meta{ color: var(--muted); font-size: 12px; margin:0; }
+.vf-badge-save{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  border: 1px solid rgba(10,21,72,.12);
+  background: rgba(10,21,72,.03);
+  color: var(--brand);
+}
+.vf-plan__list{ margin:0; padding-left: 1.1rem; color: var(--text); }
+.vf-plan__list li{ margin: 6px 0; color: var(--text); }
+.vf-plan__cta{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; }
+.vf-plan__cta .btn{ width: 100%; justify-content: center; border-radius: 14px; padding-top: 12px; padding-bottom: 12px; }
+.vf-plan__link{ font-size: 12px; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; text-align:center; }
+
+.vf-plan.is-featured{
+  border-color: rgba(176,0,32,.25);
+  box-shadow: 0 18px 44px rgba(176,0,32,.10);
+}
+.vf-plan.is-featured .vf-badge-save{
+  border-color: rgba(176,0,32,.22);
+  background: rgba(176,0,32,.06);
+  color: var(--cta);
+}
+
+/* CFO extra layer */
+.vf-pr2-cfo-extra{
+  margin-top: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(10,21,72,.10);
+  background: #fff;
+  overflow:hidden;
+}
+.vf-pr2-cfo-extra__head{
+  padding: 16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+.vf-pr2-cfo-extra__title{
+  margin:0;
+  font-weight: 900;
+  color: var(--brand);
+  font-size: 14px;
+}
+.vf-pr2-cfo-extra__body{
+  padding: 0 18px 16px 18px;
+  display:none;
+}
+.vf-pr2-cfo-extra[data-open="true"] .vf-pr2-cfo-extra__body{ display:block; }
+.vf-pr2-cfo-extra__table{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.vf-pr2-cfo-extra__table th,
+.vf-pr2-cfo-extra__table td{
+  padding: 10px 8px;
+  border-top: 1px solid rgba(10,21,72,.08);
+  vertical-align: top;
+}
+.vf-pr2-cfo-extra__table th{ color: var(--muted); font-weight: 800; }
+.vf-ok{ color: var(--brand); font-weight: 900; }
+.vf-no{ color: rgba(92,103,125,.8); font-weight: 800; }
+
+
+/* НАЗВАНИЕ_БЛОКА (VF) */
+.vf-newblock{
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.vf-newblock__inner{
+  padding: clamp(18px, 2.8vw, 32px);
+}
+
+.vf-newblock__title{
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--brand);
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.15;
+}
+
+.prose{
+  max-width: 70ch;
+}
+
+.vf-newblock__lead{
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.vf-newblock__list{
+  margin: 14px 0 0;
+  padding-left: 1.1rem;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.vf-newblock__list li{
+  margin: 6px 0;
+}
+
+.vf-newblock__ctas{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+/* Primary CTA alias (VF) */
+.btn-cta-fill-2{
+  background: var(--cta);
+  color: #fff;
+  border: 1px solid rgba(176,0,32,.25);
+}
+.btn-cta-fill-2:hover{
+  background: var(--cta-2);
+  color: #fff;
+}
+
+/* Media placeholder */
+.vf-newblock__media{
+  border-radius: 18px;
+  border: 1px solid rgba(10,21,72,.12);
+  background: rgba(10,21,72,.04);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+  overflow: hidden;
+}
+
+.vf-newblock__media-inner{
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(10,21,72,.55);
+  font-weight: 900;
+  letter-spacing: .02em;
+}
+
+
+/* VF-INSIGHTS-SWITCH (VF) */
+.vf-insights{
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.vf-insights__inner{
+  padding: clamp(18px, 2.8vw, 32px);
+}
+
+.vf-insights__title{
+  margin: 0;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--brand);
+  font-size: clamp(22px, 2.6vw, 32px);
+  line-height: 1.15;
+}
+
+.vf-insights__lead{
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
+  max-width: 70ch;
+}
+
+.vf-insights__controls{
+  margin-top: 16px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items:center;
+}
+
+.vf-insights__panel{
+  margin-top: 16px;
+}
+
+.vf-insights__panel[hidden]{ display:none !important; }
+
+.vf-insights__list{
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.vf-insights__list li{ margin: 6px 0; }
+
+.vf-insights__cta{
+  margin-top: 16px;
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ===== vf-control-level (choose control) ===== */
+#vf-control-level .text-center h2{ letter-spacing: -0.02em; color: var(--brand); }
+.vf-control__card{ border-radius: var(--radius-card); }
+.vf-control__icon{ font-size: 2rem; line-height: 1; color: var(--brand); }
+.vf-control__icon .bi{ vertical-align: -0.125em; }
+.vf-control__pro{
+  background: var(--brand);
+  border-color: rgba(255,255,255,.12);
+}
+.vf-control__pro *{ color: #fff; }
+.vf-control__pro .vf-control__muted{ color: rgba(255,255,255,.78); }
+.vf-control__pro .feature-list .bi{ color: var(--cta); }
+.vf-control__icon--pro{ color: var(--cta); }
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+
+<style>
+/* Custom modal width: 500px */
+.modal-dialog {
+  max-width: 500px;
+}
+</style>
+
+
+<style>
+/* Brand button (filled) */
+.btn-brand {
+  background-color: #0A1548;
+  border-color: #0A1548;
+  color: #fff;
+}
+.btn-brand:hover,
+.btn-brand:focus {
+  background-color: #0A1548;
+  border-color: #0A1548;
+  color: #fff;
+}
+</style>
+
+</head>
+<body>
+<header style="background:#fff; border-bottom:1px solid rgba(10,21,72,.08);">
+<nav aria-label="Основная навигация" class="navbar navbar-expand-lg">
+<div class="container container-demo py-2">
+<!-- Brand -->
+<a class="navbar-brand d-flex align-items-center gap-2" href="#" style="text-decoration:none;">
+<span class="badge rounded-pill" style="background: rgba(10,21,72,.06); border:1px solid rgba(10,21,72,.10); color: var(--brand); font-weight:900;">UI System</span>
+<span class="fw-black" style="font-weight:900; color: var(--brand); letter-spacing:-0.02em;">Ваш финдир</span>
+</a>
+<!-- Mobile toggler -->
+<button aria-controls="mainNavOffcanvas" aria-label="Открыть меню" class="navbar-toggler" data-bs-target="#mainNavOffcanvas" data-bs-toggle="offcanvas" style="border-color: rgba(10,21,72,.18); border-radius: var(--radius-control);" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<!-- Desktop / tablet menu -->
+<div class="collapse navbar-collapse">
+<ul class="navbar-nav mx-auto gap-lg-2 nav-e" style="--bs-nav-link-padding-y:.35rem;">
+<li class="nav-item"><a aria-current="page" class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Тарифы</a></li>
+<li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">О сервисе</a></li>
+<li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Безопасность</a></li>
+<li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Документы</a></li>
+<li class="nav-item"><a class="nav-link" href="#" style="font-weight:800; color: var(--brand);">Контакты</a></li>
+</ul>
+<div class="d-none d-lg-flex align-items-center gap-2">
+<button class="btn btn-cta-secondary btn-sm">Войти</button>
+<button class="btn btn-cta-fill-2 btn-sm">Регистрация</button>
+</div>
+<!-- Tablet actions (shown between md and lg if needed) -->
+<div class="d-none d-md-flex d-lg-none align-items-center gap-2">
+<button class="btn btn-cta-secondary btn-sm">Войти</button>
+<button class="btn btn-cta-fill-2 btn-sm">Регистрация</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Offcanvas (mobile) -->
+<div aria-labelledby="mainNavOffcanvasLabel" class="offcanvas offcanvas-end" id="mainNavOffcanvas" tabindex="-1">
+<div class="offcanvas-header" style="border-bottom:1px solid rgba(10,21,72,.08);">
+<div class="d-flex align-items-center gap-2" id="mainNavOffcanvasLabel">
+<span class="badge rounded-pill" style="background: rgba(10,21,72,.06); border:1px solid rgba(10,21,72,.10); color: var(--brand); font-weight:900;">Меню</span>
+<span class="fw-black" style="font-weight:900; color: var(--brand); letter-spacing:-0.02em;">Ваш финдир</span>
+</div>
+<button aria-label="Закрыть" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+</div>
+<div class="offcanvas-body d-flex flex-column">
+<div class="list-group list-group-flush">
+<a class="list-group-item list-group-item-action" href="#" style="font-weight:900; color: var(--brand);">Тарифы</a>
+<a class="list-group-item list-group-item-action" href="#" style="font-weight:900; color: var(--brand);">О сервисе</a>
+<a class="list-group-item list-group-item-action" href="#" style="font-weight:900; color: var(--brand);">Безопасность</a>
+<a class="list-group-item list-group-item-action" href="#" style="font-weight:900; color: var(--brand);">Документы</a>
+<a class="list-group-item list-group-item-action" href="#" style="font-weight:900; color: var(--brand);">Контакты</a>
+</div>
+<div class="mt-4 d-grid gap-2">
+<button class="btn btn-cta-secondary">Войти</button>
+<button class="btn btn-cta-fill-2">Регистрация</button>
+</div>
+<div class="mt-4 small" style="color: var(--muted);">
+          UI demo: меню адаптировано под desktop / tablet / mobile.
+        </div>
+</div>
+</div>
+</header>
+
+<main>
+<!-- Breadcrumbs (page-level, reusable) -->
+<nav aria-label="Хлебные крошки" class="vf-breadcrumbs">
+<div class="container">
+<ol class="vf-breadcrumbs__list">
+<li><a href="#">Главная</a></li>
+<li><a href="#">Сервис</a></li>
+<li aria-current="page"><span>Демо Hero — 4</span></li>
+</ol>
+</div>
+</nav>
+<!-- /Breadcrumbs -->
+<!-- Button system showcase (Enterprise B2B) -->
+<section class="section pt-4 pb-0" id="btnShowcase">
+<div class="container">
+<div class="card-e p-4">
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3">
+<div class="prose">
+<h2 class="mb-2">Кнопки: CTA и статусы</h2>
+<p class="lead">Минимализм + доверие: один “основной” CTA, спокойные вторичные действия, красный — только риск.</p>
+<div class="small mt-2">
+              Цветовая логика для Enterprise B2B (финансы): <code>Blue = действие</code>, <code>Navy = структура</code>, <code>Red = риск</code>.
+            </div>
+</div>
+<div class="w-100" style="max-width: 520px;">
+<div class="text-muted small mb-2">Примеры</div>
+<div class="d-flex flex-wrap gap-2">
+<button class="btn btn-cta-fill btn-brand">CTA (заливка, синий)</button>
+<button class="btn btn-cta">CTA (референс, красный)</button>
+<button class="btn btn-cta-secondary">Secondary (outline)</button>
+<button class="btn btn-outline-brand">Primary (brand outline)</button>
+</div>
+<div class="d-flex flex-wrap gap-2 mt-2">
+<button class="btn btn-light" style="border-radius: var(--radius-control); border:1px solid rgba(10,21,72,.14); font-weight:900;">Ghost / нейтральная</button>
+<button class="btn btn-success" style="border-radius: var(--radius-control); font-weight:900;">Success</button>
+<button class="btn btn-warning" style="border-radius: var(--radius-control); font-weight:900;">Warning</button>
+<button class="btn btn-danger" style="border-radius: var(--radius-control); font-weight:900;">Danger</button>
+</div>
+<div class="mt-3 small text-muted">
+<div class="d-flex flex-wrap gap-2">
+<span class="label">CTA fill: <code>--cta-secondary</code></span>
+<span class="label">CTA ref: <code>--cta</code></span>
+<span class="label">Brand: <code>--brand</code></span>
+</div>
+</div>
+</div>
+</div>
+<hr class="my-3" style="border-color: rgba(10,21,72,.08);"/>
+<div class="row g-3">
+<div class="col-12 col-lg-4">
+<div class="tile">
+<div class="k">Primary CTA</div>
+<div class="h">Регистрация / Оплатить / Начать — <span>синий fill</span> (в финтехе воспринимается как “контроль”).</div>
+</div>
+</div>
+<div class="col-12 col-lg-4">
+<div class="tile">
+<div class="k">Secondary</div>
+<div class="h">Войти / Подробнее / Сравнить — <span>outline</span>, без лишнего давления.</div>
+</div>
+</div>
+<div class="col-12 col-lg-4">
+<div class="tile">
+<div class="k">Danger</div>
+<div class="h">Удалить / критические риски — <span>только красный</span>. Не использовать как маркетинговый акцент.</div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<section class="section" id="pricing">
+<div class="container">
+<div class="text-center mb-4">
+<h2 class="mb-2">Тарифы</h2>
+<p class="mb-0">
+          Формат показа: <span>цена в месяц</span> + ниже <span>итоговая сумма</span> за выбранный период.
+        </p>
+</div>
+<!-- Period switch -->
+<div class="d-flex justify-content-center mb-4">
+<div aria-label="Период оплаты" class="btn-group period-btns" role="group">
+<button class="btn active" data-period="1" type="button">1 месяц</button>
+<button class="btn" data-period="3" type="button">3 месяца</button>
+<button class="btn" data-period="6" type="button">6 месяцев</button>
+<button class="btn" data-period="12" type="button">12 месяцев</button>
+</div>
+</div>
+<!-- Included in all plans (Variant A, Blue Ocean) -->
+<div class="d-flex justify-content-center mb-4">
+<div class="w-100" style="max-width: 920px;">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 px-3 py-3" style="background: rgba(10,21,72,.04); border: 1px solid rgba(10,21,72,.10); border-radius: 12px;">
+<div class="">
+              Во всех тарифах включено:
+            </div>
+<div class="d-flex flex-wrap gap-2">
+<span class="save-pill" style="color: var(--brand); background: rgba(10,21,72,.04); border-color: rgba(10,21,72,.35);">
+                Онбординг и настройка
+              </span>
+<span class="save-pill">
+                Консультация финдиректора
+              </span>
+</div>
+</div>
+<div class="text-center mt-2 text-muted small">
+            Мы не просто показываем отчёты — мы запускаем управляемость: деньги, прогноз и решения.
+          </div>
+</div>
+</div>
+<div class="row g-4 align-items-stretch">
+<!-- Plan 1 -->
+<div class="col-12 col-lg-4">
+<div class="card pricing-card h-100">
+<div class="card-header py-3">
+<div class="d-flex justify-content-between align-items-start gap-2">
+<div>
+<div class="badge rounded-pill plan-badge mb-2">Тариф 1</div>
+<div class="h5 fw-bold mb-0">Start</div>
+<div class="footer-muted small">База для контроля денег</div>
+</div>
+<span class="save-pill d-none" data-save-for="plan1">
+<span>Экономия</span>
+<span data-save-value=""></span>
+</span>
+</div>
+</div>
+<div class="card-body p-4">
+<div class="mb-3">
+<div class="display-6 price mb-1" data-permonth-for="plan1">
+                  4 990 <span class="currency">₽</span>
+</div>
+<div class="price-sub">в месяц</div>
+<div class="total-line">
+                  Итого: <span>4 990 ₽</span>
+</div>
+</div>
+<ul class="list-unstyled feature-list mb-4">
+<li><i class="bi bi-check-circle-fill"></i>ДДС и базовая аналитика</li>
+<li><i class="bi bi-check-circle-fill"></i>Планирование денег</li>
+<li><i class="bi bi-check-circle-fill"></i>Базовые алерты (светофор)</li>
+</ul>
+<div class="d-grid gap-2">
+<a class="btn btn-cta-secondary" href="#">Выбрать</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Plan 2 (featured) -->
+<div class="col-12 col-lg-4">
+<div class="card pricing-card featured h-100">
+<div class="card-header py-3">
+<div class="d-flex justify-content-between align-items-start gap-2">
+<div>
+<div class="badge rounded-pill plan-badge mb-2">Тариф 2</div>
+<div class="h5 fw-bold mb-0">Pro</div>
+<div class="footer-muted small">Оптимальный для большинства</div>
+</div>
+<span class="save-pill" data-save-for="plan2">
+<span>Экономия</span>
+<span data-save-value="">—</span>
+</span>
+</div>
+</div>
+<div class="card-body p-4">
+<div class="mb-3">
+<div class="display-6 price mb-1" data-permonth-for="plan2">
+                  14 990 <span class="currency">₽</span>
+</div>
+<div class="price-sub">в месяц</div>
+<div class="total-line">
+                  Итого: <span>14 990 ₽</span>
+</div>
+</div>
+<ul class="list-unstyled feature-list mb-4">
+<li><i class="bi bi-check-circle-fill"></i>Все из Start</li>
+<li><i class="bi bi-check-circle-fill"></i>Расширенные отчёты и прогноз</li>
+<li><i class="bi bi-check-circle-fill"></i>Приоритетная поддержка</li>
+</ul>
+<div class="d-grid gap-2">
+<a class="btn btn-cta-fill" href="#">Выбрать Pro</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Plan 3 -->
+<div class="col-12 col-lg-4">
+<div class="card pricing-card h-100">
+<div class="card-header py-3">
+<div class="d-flex justify-content-between align-items-start gap-2">
+<div>
+<div class="badge rounded-pill plan-badge mb-2">Тариф 3</div>
+<div class="h5 fw-bold mb-0">Business</div>
+<div class="footer-muted small">Для команд и роста</div>
+</div>
+<span class="save-pill d-none" data-save-for="plan3">
+<span>Экономия</span>
+<span data-save-value=""></span>
+</span>
+</div>
+</div>
+<div class="card-body p-4">
+<div class="mb-3">
+<div class="display-6 price mb-1" data-permonth-for="plan3">
+                  24 990 <span class="currency">₽</span>
+</div>
+<div class="price-sub">в месяц</div>
+<div class="total-line">
+                  Итого: <span>24 990 ₽</span>
+</div>
+</div>
+<ul class="list-unstyled feature-list mb-4">
+<li><i class="bi bi-check-circle-fill"></i>Все из Pro</li>
+<li><i class="bi bi-check-circle-fill"></i>Командный доступ</li>
+<li><i class="bi bi-check-circle-fill"></i>Расширенные сценарии и контроль рисков</li>
+</ul>
+<div class="d-grid gap-2">
+<a class="btn btn-cta-secondary" href="#">Выбрать</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="text-center mt-4 text-muted small">
+        Рекомендация: делайте <span class="">12 месяцев</span> «по умолчанию» для B2B (сильнее cash-in и ниже “цена в месяц”).
+</div>
+</div></section>
+<section class="section">
+<div class="container">
+<div class="card-e p-4 p-md-5">
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-4">
+<div class="prose">
+<h1>Управляйте деньгами до того, как появятся проблемы</h1>
+<p class="lead">Эта секция показывает: как выглядят заголовки, lead, ширина читаемого текста и базовые отступы в enterprise-стиле.</p>
+<div class="mt-4 d-flex flex-wrap gap-2">
+<button class="btn btn-cta">Главный CTA</button>
+<button class="btn btn-outline-brand">Вторичное действие</button>
+</div>
+<div class="mt-4 text-muted small">
+              Токены: <code>--content-max: 1140px</code>, <code>--prose-max: 62ch</code>, <code>h1 clamp(32–46)</code>.
+            </div>
+</div>
+<div style="min-width: 280px;">
+<div class="text-muted small mb-2">Ширина контейнера (1140px)</div>
+<div class="ruler mb-3"></div>
+<div class="text-muted small mb-2">Ширина текста (62ch)</div>
+<div class="ruler" style="max-width: 62ch;"></div>
+</div>
+</div>
+</div>
+</div></section>
+<section class="section">
+<div class="container">
+<div class="row g-4">
+<div class="col-12 col-lg-7">
+<div class="card-e p-4">
+<h2>Шкала заголовков и текстов</h2>
+<div class="prose">
+<p class="lead">Цель — минимализм, читаемость и “дорогая” уверенность. Без лишней декоративности.</p>
+<div class="mt-3 small">
+  Основной шрифт (body): <code>system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif</code><br/>
+  Токен: <code>--font-sans</code> → <code>body { font-family: var(--font-sans); }</code>
+</div>
+<div class="mt-4">
+<h1 style="font-size: var(--fs-h1); margin:0;">H1 — Заголовок</h1>
+<div class="footer-muted small">Размер: <code>clamp(32px, 3.2vw, 46px)</code>, вес: <code>900</code></div>
+</div>
+<div class="mt-4">
+<h2 style="font-size: var(--fs-h2); margin:0;">H2 — Подзаголовок</h2>
+<div class="footer-muted small">Размер: <code>clamp(24px, 2.1vw, 34px)</code>, вес: <code>900</code></div>
+</div>
+<div class="mt-4">
+<h3 style="margin:0;">H3 — Заголовок карточки</h3>
+<div class="footer-muted small">Размер: <code>20px</code>, вес: <code>900</code></div>
+</div>
+<div class="mt-4">
+<div class="" style="color:var(--brand);">Body — обычный текст</div>
+<div class="footer-muted small">Размер: <code>16px</code>, line-height: <code>1.55</code></div>
+</div>
+<div class="mt-4">
+<div class="" style="color:var(--brand);">Small / helper</div>
+<div class="footer-muted small">Размер: <code>13px</code>, line-height: <code>1.45</code></div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-12 col-lg-5">
+<div class="card-e p-4 h-100">
+<h2>Лучшие практики (коротко)</h2>
+<ul class="mb-0" style="padding-left: 1.1rem;">
+<li class="mb-2"><span>1 смысл = 1 акцент</span> (CTA один цвет).</li>
+<li class="mb-2">Текст ограничиваем до <code>56–68ch</code>.</li>
+<li class="mb-2">Отступы секций: <code>clamp(48px..80px)</code>.</li>
+<li class="mb-2">Весов немного: <code>400 / 600 / 900</code>.</li>
+<li>Карточки — единый padding: <code>16–20px</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section>
+<section class="section">
+<div class="container">
+<div class="card-e p-4">
+<h2>Демо блоков в сетке (enterprise)</h2>
+<p class="lead prose">Ниже — пример “дашбордных” плиток: короткие метрики + пояснение. Это показывает ширину, сетку и плотность контента.</p>
+<div class="row g-3 mt-3">
+<div class="col-12 col-md-6 col-lg-3">
+<div class="tile">
+<div class="k">Cash</div>
+<div class="v">1 240 000 ₽</div>
+<div class="h">Остаток на счетах на сегодня</div>
+</div>
+</div>
+<div class="col-12 col-md-6 col-lg-3">
+<div class="tile">
+<div class="k">Forecast</div>
+<div class="v">+310 000 ₽</div>
+<div class="h">Прогноз на 30 дней</div>
+</div>
+</div>
+<div class="col-12 col-md-6 col-lg-3">
+<div class="tile">
+<div class="k">Risk</div>
+<div class="v">Средний</div>
+<div class="h">Вероятность разрыва 15–30%</div>
+</div>
+</div>
+<div class="col-12 col-md-6 col-lg-3">
+<div class="tile">
+<div class="k">Plan</div>
+<div class="v">12 платежей</div>
+<div class="h">Запланировано на неделю</div>
+</div>
+</div>
+</div>
+<div class="mt-4 small">
+          Контейнер: <code>1140px</code> · Карточка: радиус <code>6px</code> · Шрифт: системный стек.
+        </div>
+</div>
+</div></section>
+<section class="section">
+<div class="container">
+<div class="card-e p-4 p-md-5">
+<div class="row g-4 align-items-center">
+<div class="col-12 col-lg-7">
+<h2>Форма и читабельность</h2>
+<p class="lead prose">Фокус поля — через мягкое свечение CTA. В enterprise важно: спокойно, чётко, без “кислоты”.</p>
+</div>
+<div class="col-12 col-lg-5">
+<div class="mb-2 small">Email</div>
+<input class="form-control" placeholder="you@company.com"/>
+<div class="d-flex gap-2 mt-3">
+<button class="btn btn-cta w-100">Отправить</button>
+<button class="btn btn-outline-brand w-100">Отмена</button>
+</div>
+<div class="text-muted small mt-2">
+              Контроль ширины текста: <code>62ch</code>, поэтому формы читаются лучше рядом с текстом.
+            </div>
+</div>
+</div>
+</div>
+</div></section>
+<!-- Photo block (Pattern) -->
+<section class="section" id="photoBlock">
+<div class="container">
+<div class="text-center mb-4">
+<h2 class="mb-2">Блок с фотографиями</h2>
+<p class="mb-0 prose" style="margin-left:auto; margin-right:auto;">
+          Паттерн для кейсов, команды, основателя, партнёров. Без градиентов, без “стекла”, без затемнений поверх лица.
+        </p>
+</div>
+<div class="row g-4 align-items-stretch">
+<div class="col-12 col-lg-6">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-portrait">
+<img alt="Фото: основатель (пример)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='800'%20height='1000'%20viewBox='0%200%20800%201000'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='798'%20height='998'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='48'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(портрет%204:5)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='36'%20fill='rgba(92,103,125,.9)'&gt;800×1000px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">Основатель</span>
+<h3 class="mt-3 mb-2">Личное доверие — без визуального шума</h3>
+<p class="lead mb-0">
+                Чистый кадр, нейтральный фон, мягкий свет. Никаких оверлеев поверх лица — это принцип “enterprise‑доверия”.
+              </p>
+<div class="mt-4 d-flex flex-wrap gap-2">
+<a class="btn btn-cta-fill-2" href="#">Начать</a>
+<a class="btn btn-cta-secondary" href="#">Доверить финансы профи</a>
+</div>
+</div>
+<div class="vf-photo-meta">
+<span>Вариант A:</span> портрет 4:5 · для десктопа/планшета — карточка в сетке, для мобайла — в одну колонку.
+            </div>
+</div>
+</div>
+<div class="col-12 col-lg-6">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-cover">
+<img alt="Фото: обложка кейса (пример)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='1200'%20height='675'%20viewBox='0%200%201200%20675'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='1198'%20height='673'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='40'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(обложка%2016:9)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='30'%20fill='rgba(92,103,125,.9)'&gt;1200×675px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">Кейс</span>
+<h3 class="mt-3 mb-2">Обложка 16:9 для историй и блоков “как это работает”</h3>
+<p class="lead mb-0">
+                Работает для карточек в сетке, для секций “кейсы/материалы/возможности”. Сохраняем спокойный контраст и натуральные цвета.
+              </p>
+<div class="mt-4 d-flex flex-wrap gap-2">
+<a class="btn btn-cta-secondary" href="#">Смотреть кейсы</a>
+<a class="btn btn-outline-brand" href="#">Документы</a>
+</div>
+</div>
+<div class="vf-photo-meta">
+<span>Вариант B:</span> обложка 16:9 · хорошо держит сетку на tablet и desktop, на mobile — без обрезки по высоте.
+            </div>
+</div>
+</div>
+</div>
+<div class="card-e p-4 p-md-5 mt-4">
+<h2 class="mb-2">Требования к фото для шаблона</h2>
+<p class="lead prose mb-0">
+          Нормы под наши токены: <code>--content-max: 1140px</code>, радиусы <code>6px</code>, фон секций <code>--bg-soft</code>. Фото — часть доверия, а не декор.
+        </p>
+<div class="row g-4 mt-1">
+<div class="col-12 col-lg-7">
+<div class="prose">
+<h3 class="mt-3">Рекомендуемые форматы</h3>
+<ul style="padding-left: 1.1rem;">
+<li><span>Портрет (основатель/команда):</span> <code>4:5</code> (основной), альтернативно <code>1:1</code> для аватаров.</li>
+<li><span>Обложка (кейсы/блоки):</span> <code>16:9</code>.</li>
+<li><span>Формат файла:</span> предпочтительно <code>.webp</code>, допустимо <code>.jpg</code>.</li>
+</ul>
+<h3 class="mt-4">Минимальные размеры (px)</h3>
+<ul style="padding-left: 1.1rem;">
+<li><span>Mobile:</span> 768px по меньшей стороне.</li>
+<li><span>Tablet:</span> 1200px по меньшей стороне.</li>
+<li><span>Desktop:</span> 1600px по меньшей стороне (ключевые фото).</li>
+</ul>
+<h3 class="mt-4">Свет и цвет</h3>
+<ul style="padding-left: 1.1rem;">
+<li>Свет мягкий, равномерный, без жёстких теней на лице.</li>
+<li>Цвет натуральный, без кислотной сатурации.</li>
+<li><span>Запрещено:</span> градиенты/затемнения/слои поверх лица, “glass”, неон.</li>
+</ul>
+<h3 class="mt-4">Кадрирование</h3>
+<ul style="padding-left: 1.1rem;">
+<li>Без обрезки головы/подбородка, не “впритык”.</li>
+<li>Глаза примерно на верхней трети кадра.</li>
+<li>Фон: однотонный, тёмно‑синий/графит/светло‑серый.</li>
+</ul>
+</div>
+</div>
+<div class="col-12 col-lg-5">
+<div class="tile">
+<div class="k">Как ведёт себя на экранах</div>
+<div class="h mt-2">
+<div><span>Desktop:</span> 2 карточки в ряд (col-lg-6), высота фото задаётся ratio.</div>
+<div class="mt-2"><span>Tablet:</span> 1 карточка в ряд по умолчанию (col-12), можно включать 2× на md.</div>
+<div class="mt-2"><span>Mobile:</span> 1 карточка в ряд, без “гигантских” вертикальных отступов.</div>
+</div>
+</div>
+<div class="tile mt-3">
+<div class="k">Технически</div>
+<div class="h mt-2">
+                Используйте <code>&lt;picture&gt;</code> + <code>srcset</code> (1x/2x), задавайте <code>alt</code>.
+                Внутри блока — никаких плашек поверх лица.
+              </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Demo HERO (Pattern) -->
+<div class="vf-hero-demo mt-4">
+<div class="row g-0 align-items-stretch">
+<!-- A: Left -->
+<div class="col-12 col-lg-6">
+<div class="vf-hero-inner">
+<span class="vf-hero-kicker">Демо блок</span>
+<h1 class="vf-hero-title">
+                Финансовая система для роста, а не отчётов
+              </h1>
+<p class="lead prose">
+                Устойчивый рост и порядок в финансах бизнеса —<br/>за счёт системы, а не ручного контроля.</p>
+<div class="vf-hero-actions">
+<a class="btn btn-cta-fill-2" href="#">Веду сам</a>
+<a class="btn btn-cta-secondary" href="#">Доверить финансы профи</a>
+</div>
+</div>
+</div>
+<!-- B: Right -->
+<div class="col-12 col-lg-6">
+<div aria-label="Фото-заглушка для демонстрации" class="vf-hero-media" role="img">
+<div>
+<div class="vf-hero-media-text">Фото (заглушка)</div>
+<span class="vf-hero-media-sub">заливка: rgba(10,21,72,.06)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row g-4 mt-4">
+<div class="col-12 col-md-6 col-lg-4">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-square">
+<img alt="Фото: аватар (пример)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='900'%20height='900'%20viewBox='0%200%20900%20900'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='898'%20height='898'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='54'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(квадрат%201:1)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='40'%20fill='rgba(92,103,125,.9)'&gt;900×900px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">Аватар</span>
+<h3 class="mt-3 mb-2">Квадрат 1:1</h3>
+<p class="text-muted mb-0">
+                Для экспертов/консультантов/партнёров. Единый ratio на странице — чтобы сетка не “прыгала”.
+              </p>
+</div>
+</div>
+</div>
+<div class="col-12 col-md-6 col-lg-8">
+<div class="card-e p-4 h-100">
+<h3>Где использовать</h3>
+<ul class="mb-0" style="padding-left: 1.1rem;">
+<li><span>Главная:</span> “основатель” + “кейс/как работает”.</li>
+<li><span>О нас:</span> сетка команды (1:1 или 4:5).</li>
+<li><span>Сервис:</span> обложки 16:9 для модулей/материалов.</li>
+</ul>
+</div>
+</div>
+</div>
+</div></section>
+<script>
+(function(){
+  const root = document.querySelector('#vf-insights-switch');
+  if(!root) return;
+
+  const buttons = Array.from(root.querySelectorAll('.vf-insights__btn'));
+  const panels = Array.from(root.querySelectorAll('.vf-insights__panel'));
+  const setMode = (mode) => {
+    buttons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.mode === mode)));
+    panels.forEach(p => {
+      const isActive = p.getAttribute('data-panel') === mode;
+      if (isActive) p.removeAttribute('hidden');
+      else p.setAttribute('hidden', '');
+    });
+  };
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setMode(btn.dataset.mode);
+      }
+    });
+  });
+
+  // default
+  setMode('self');
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Footer demo (Enterprise B2B — v2) -->
+<!-- Footer demo (Enterprise B2B — best practice) -->
+<section class="section" id="demoHero3">
+<div class="container">
+<div class="vf-hero-demo vf-hero-demo--wide">
+<div class="row g-0 align-items-stretch">
+<div class="col-12 col-lg-6">
+<div class="vf-hero-inner">
+<span class="vf-hero-kicker">Демо Hero — 3</span>
+<h1 class="vf-hero-title">
+                Финансовая система для роста, а не отчётов
+              </h1>
+<p class="lead prose">
+                Устойчивый рост и порядок в финансах бизнеса —<br/>за счёт системы, а не ручного контроля.
+              </p>
+<div class="vf-hero-actions">
+<a class="btn btn-cta" href="#start">Веду сам</a>
+<a class="btn btn-cta-secondary" href="#cfo">Доверить финансы профи</a>
+</div>
+</div>
+</div>
+<div class="col-12 col-lg-6 d-flex">
+<div class="vf-hero-media-wrap w-100">
+<div aria-label="Фото-заглушка 16:9" class="vf-hero-media vf-hero-media--wide vf-hero-media--boxed" role="img">
+<div>
+<div class="vf-hero-media-text">Фото 16:9</div>
+<span class="vf-hero-media-sub">заглушка для демонстрации</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<section class="section pt-4 pb-0" id="demoHero4">
+<div class="container">
+<div class="vf-hero-demo">
+<div class="row g-0 align-items-stretch">
+<div class="col-12 col-lg-7">
+<div class="vf-hero-inner">
+<span class="vf-hero-kicker">Демо Hero — 4</span>
+<h1 class="vf-hero-title">
+              Финансовая система для роста, а не отчётов
+            </h1>
+<p class="lead prose">
+              Устойчивый рост и порядок в финансах бизнеса —<br/>за счёт системы, а не ручного контроля.
+            </p>
+<div class="vf-hero-actions">
+<a class="btn btn-cta" href="#start">Веду сам</a>
+<a class="btn btn-cta-secondary" href="#cfo">Доверить финансы профи</a>
+</div>
+</div>
+</div>
+<div class="col-12 col-lg-5 d-flex">
+<div class="vf-hero-media-wrap w-100">
+<div aria-label="Фото-заглушка 1:1" class="vf-hero-media vf-hero-media--square vf-hero-media--boxed" role="img">
+<div>
+<div class="vf-hero-media-text">Фото 1:1</div>
+<span class="vf-hero-media-sub">заглушка для демонстрации</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<!-- What we do (VF) -->
+<section class="section" id="what-we-do">
+<div class="container">
+<div class="text-center mb-4">
+<h2 class="mb-2">Чем занимаемся</h2>
+<p class="mb-0">Мы помогаем бизнесу расти за счет понятной финансовой структуры.</p>
+</div>
+<div class="vf-wwd-grid">
+<!-- Left: main offer cards -->
+<div class="vf-wwd-stack">
+<div class="vf-wwd-card vf-wwd-eqh vf-wwd-brand">
+<div class="vf-wwd-card__inner"><div class="vf-wwd-feature"><div class="vf-wwd-feature__content">
+<div class="vf-wwd-title">Доверить финансы профи</div>
+<p class="vf-wwd-text">Вы управляете сами — мы помогаем настроить систему и сопровождать решения: методология, разборы, контроль план‑факта.</p>
+<div aria-label="Что получаете" class="vf-wwd-chiprow">
+<span class="vf-wwd-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="var(--brand)" r="5"></circle></svg>
+                Настройка структуры финансов
+              </span>
+<span class="vf-wwd-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="var(--brand)" r="5"></circle></svg>
+                Регламент и ритм управления
+              </span>
+<span class="vf-wwd-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="var(--brand)" r="5"></circle></svg>
+                Контроль показателей
+              </span>
+</div>
+</div><div class="vf-wwd-feature__media"><div class="vf-wwd-hero"><img alt="Hero фото-заглушка 4:5 (прозрачный фон)" src="data:image/svg+xml;charset=utf-8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000' viewBox='0 0 800 1000'&gt;
+&lt;rect width='800' height='1000' fill='none'/&gt;
+&lt;circle cx='400' cy='320' r='130' fill='rgba(10,21,72,.12)'/&gt;
+&lt;path d='M170 980c18-210 140-330 230-330s212 120 230 330' fill='rgba(10,21,72,.10)'/&gt;
+&lt;text x='50%%' y='54%%' text-anchor='middle' font-family='Arial, sans-serif' font-size='44' fill='rgba(92,103,125,.85)'&gt;HERO 4:5&lt;/text&gt;
+&lt;/svg&gt;"/></div></div></div></div>
+</div><div class="vf-wwd-card vf-wwd-accent vf-wwd-eqh">
+<div class="vf-wwd-card__inner"><div class="vf-wwd-feature"><div class="vf-wwd-feature__content">
+<div class="vf-wwd-title" style="color:#fff;">Доверить финансы профи</div>
+<p class="vf-wwd-text">Берем ответственность за управленческие финансы: учет, планирование, алерты, решения и регулярный ритм “до”.</p>
+<div aria-label="Что внутри" class="vf-wwd-chiprow">
+<span class="vf-wwd-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="white" r="5"></circle></svg>
+                ДДС и платежный календарь
+              </span>
+<span class="vf-wwd-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="white" r="5"></circle></svg>
+                ОПиУ и маржинальность
+              </span>
+<span class="vf-wwd-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="white" r="5"></circle></svg>
+                Сценарии и решения
+              </span>
+</div>
+</div><div class="vf-wwd-feature__media"><div class="vf-wwd-hero"><img alt="Hero фото-заглушка 4:5 (прозрачный фон)" src="data:image/svg+xml;charset=utf-8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000' viewBox='0 0 800 1000'&gt;
+&lt;rect width='800' height='1000' fill='none'/&gt;
+&lt;circle cx='400' cy='320' r='130' fill='rgba(10,21,72,.12)'/&gt;
+&lt;path d='M170 980c18-210 140-330 230-330s212 120 230 330' fill='rgba(10,21,72,.10)'/&gt;
+&lt;text x='50%%' y='54%%' text-anchor='middle' font-family='Arial, sans-serif' font-size='44' fill='rgba(92,103,125,.85)'&gt;HERO 4:5&lt;/text&gt;
+&lt;/svg&gt;"/></div></div></div></div>
+</div><div class="vf-wwd-card vf-wwd-eqh vf-wwd-yellow" style="background:#FFD84D; border-color: rgba(0,0,0,.08);">
+<div class="vf-wwd-card__inner"><div class="vf-wwd-feature"><div class="vf-wwd-feature__content">
+<div class="vf-wwd-title">Что меняется у клиента</div>
+<ul class="vf-wwd-list">
+<li>Понятно, где деньги и что будет через 2–6 недель.</li>
+<li>Риски подсвечиваются “светофором” до кассового разрыва.</li>
+<li>Решения принимаются на цифрах: маржа, расходы, долг, сценарии.</li>
+</ul>
+</div><div class="vf-wwd-feature__media"><div class="vf-wwd-hero"><img alt="Hero фото-заглушка 4:5 (прозрачный фон)" src="data:image/svg+xml;charset=utf-8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000' viewBox='0 0 800 1000'&gt;
+&lt;rect width='800' height='1000' fill='none'/&gt;
+&lt;circle cx='400' cy='320' r='130' fill='rgba(10,21,72,.12)'/&gt;
+&lt;path d='M170 980c18-210 140-330 230-330s212 120 230 330' fill='rgba(10,21,72,.10)'/&gt;
+&lt;text x='50%%' y='54%%' text-anchor='middle' font-family='Arial, sans-serif' font-size='44' fill='rgba(92,103,125,.85)'&gt;HERO 4:5&lt;/text&gt;
+&lt;/svg&gt;"/></div></div></div></div>
+</div></div>
+<!-- Right: for whom -->
+<div class="vf-wwd-stack">
+<div class="vf-wwd-card">
+<div class="vf-wwd-card__inner">
+<div class="vf-wwd-title" style="font-size: clamp(18px, 1.7vw, 22px);">Для кого наши продукты</div>
+<ul class="vf-wwd-list">
+<li>Малый и средний бизнес с регулярными платежами и сезонностью.</li>
+<li>E-commerce, производство, услуги — где важны оборотка и маржа.</li>
+<li>Выручка от 2 млн/мес и выше (ориентир).</li>
+</ul>
+</div>
+</div>
+<div class="vf-wwd-card">
+<div class="vf-wwd-card__inner">
+<div class="vf-wwd-title" style="font-size: clamp(18px, 1.7vw, 22px);">Кому подойдет быстрее всего</div>
+<ul class="vf-wwd-list">
+<li>Если “денег вроде много”, но постоянно не хватает на платежи.</li>
+<li>Если нет ясной маржинальности по продуктам/каналам.</li>
+<li>Если решения принимаются “на ощущениях”.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<!-- Mission & Values (VF) -->
+<section class="section" id="mission-values">
+<div class="container">
+<div class="text-center mb-4">
+<h2 class="mb-2">Миссия и ценности</h2>
+<p class="mb-0">Все это — через прозрачную систему управления финансами</p>
+</div>
+<div class="vf-mv-grid">
+<!-- Left: Mission -->
+<div class="vf-mv-card vf-mv-mission">
+<div aria-hidden="true" class="vf-mv-lines"></div>
+<div aria-hidden="true" class="vf-mv-badge">1</div>
+<div class="vf-mv-card__inner">
+<div class="vf-mv-kicker mb-2">Наша цель</div>
+<h3 class="mb-3" style="font-size: clamp(22px, 2.2vw, 30px); line-height: 1.12;">
+            Создать культуру эффективного использования инструментов управленческого учета
+            в малом и среднем бизнесе
+          </h3>
+<p class="vf-mv-sub mb-0" style="max-width: 56ch;">
+            Чтобы предприниматель управлял бизнесом <span>“до”</span>: видел риски, планировал деньги и принимал решения на основе цифр.
+          </p>
+<div aria-label="Стратегия голубого океана" class="vf-mv-chips">
+<span class="vf-mv-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="white" r="5"></circle></svg>
+              Сервис + Консультации
+            </span>
+<span class="vf-mv-chip">
+<svg aria-hidden="true" height="10" viewbox="0 0 10 10" width="10"><circle cx="5" cy="5" fill="white" r="5"></circle></svg>
+              Сервис + ФинДиректор
+            </span>
+</div>
+</div>
+</div>
+<!-- Right: Values -->
+<div class="vf-mv-side">
+<div class="vf-mv-card">
+<div aria-hidden="true" class="vf-mv-badge is-light">2</div>
+<div class="vf-mv-card__inner">
+<div class="vf-mv-title mb-2">Сделать мир бизнеса прибыльным</div>
+<p>Через понятные отчеты, дисциплину план‑факта и регулярные управленческие решения.</p>
+</div>
+</div>
+<div class="vf-mv-card">
+<div aria-hidden="true" class="vf-mv-badge is-light">3</div>
+<div class="vf-mv-card__inner">
+<div class="vf-mv-title mb-2">А владельцев — финансово грамотными</div>
+<p>Чтобы “цифры” стали языком управления: маржа, кэш‑флоу, риски и сценарии были на расстоянии одного экрана.</p>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<!-- Team (VF) -->
+<section class="section" id="team">
+<div class="container">
+<div class="row g-3 justify-content-center">
+<div class="col-lg-8 mx-auto">
+<div class="text-center mb-4">
+<h2 class="mb-2">Команда</h2>
+<p class="mb-0">Эксперты по управленческим финансам: сервис + методология + решения.</p>
+</div>
+</div>
+</div>
+<div class="row g-4 align-items-stretch">
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-square">
+<img alt="Фото: Павел Новиков (заглушка)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='900'%20height='900'%20viewBox='0%200%20900%20900'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='898'%20height='898'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='54'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(квадрат%201:1)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='40'%20fill='rgba(92,103,125,.9)'&gt;900×900px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">Основатель</span>
+<h3 class="mt-3 mb-2">Павел Новиков</h3>
+<p class="text-muted mb-0">Методология, продукт и качество сервиса. Выстраивает систему управленческого учета.</p>
+</div>
+</div>
+</div>
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-square">
+<img alt="Фото: Анастасия Смирнова (заглушка)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='900'%20height='900'%20viewBox='0%200%20900%20900'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='898'%20height='898'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='54'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(квадрат%201:1)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='40'%20fill='rgba(92,103,125,.9)'&gt;900×900px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">Финансовый менеджер</span>
+<h3 class="mt-3 mb-2">Анастасия Смирнова</h3>
+<p class="text-muted mb-0">ДДС, платежный календарь и контроль кассовых разрывов. Настраивает регламенты и ритм.</p>
+</div>
+</div>
+</div>
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-square">
+<img alt="Фото: Илья Кузнецов (заглушка)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='900'%20height='900'%20viewBox='0%200%20900%20900'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='898'%20height='898'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='54'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(квадрат%201:1)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='40'%20fill='rgba(92,103,125,.9)'&gt;900×900px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">CFO</span>
+<h3 class="mt-3 mb-2">Илья Кузнецов</h3>
+<p class="text-muted mb-0">ОПиУ, юнит‑экономика и сценарии. Помогает принимать решения о росте и приоритетах.</p>
+</div>
+</div>
+</div>
+<div class="col-12 col-sm-6 col-lg-3">
+<div class="vf-photo-card h-100">
+<div class="vf-photo-media is-square">
+<img alt="Фото: Мария Волкова (заглушка)" src="data:image/svg+xml;charset=utf-8,&lt;svg%20xmlns='http://www.w3.org/2000/svg'%20width='900'%20height='900'%20viewBox='0%200%20900%20900'&gt;&lt;rect%20width='100%'%20height='100%'%20fill='%23ffffff'/&gt;&lt;rect%20x='1'%20y='1'%20width='898'%20height='898'%20fill='none'%20stroke='rgba(10,21,72,.18)'%20stroke-width='2'/&gt;&lt;text%20x='50%'%20y='48%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='54'%20fill='rgba(10,21,72,.70)'&gt;Фото%20(квадрат%201:1)&lt;/text&gt;&lt;text%20x='50%'%20y='60%'%20dominant-baseline='middle'%20text-anchor='middle'%20font-family='Arial,%20sans-serif'%20font-size='40'%20fill='rgba(92,103,125,.9)'&gt;900×900px&lt;/text&gt;&lt;/svg&gt;"/>
+</div>
+<div class="vf-photo-body">
+<span class="vf-photo-eyebrow">Аналитик</span>
+<h3 class="mt-3 mb-2">Мария Волкова</h3>
+<p class="text-muted mb-0">План‑факт, метрики и дашборды. Следит за качеством данных и прозрачностью отчетов.</p>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<!-- Lead form 2 (VF) -->
+<section class="section" id="tariffs-2">
+<div class="container">
+<div class="vf-pr2-head">
+<h2 class="mb-0">Тарифы</h2>
+<p class="vf-pr2-sub">Выберите роль и период оплаты — мы покажем нужные смыслы, а цены пересчитаются автоматически.</p>
+<div aria-label="Переключатели тарифов" class="vf-pr2-controls">
+<div aria-label="Аудитория" class="vf-seg" role="group">
+<button aria-pressed="true" class="vf-seg-btn" data-audience="owner" type="button">Я владелец бизнеса</button>
+<button aria-pressed="false" class="vf-seg-btn" data-audience="cfo" type="button">Я CFO / партнёр</button>
+</div>
+<div aria-label="Период оплаты" class="vf-seg" role="group">
+<button aria-pressed="true" class="vf-seg-btn" data-term="1" type="button">1 мес.</button>
+<button aria-pressed="false" class="vf-seg-btn" data-term="3" type="button">3 мес.</button>
+<button aria-pressed="false" class="vf-seg-btn" data-term="6" type="button">6 мес.</button>
+<button aria-pressed="false" class="vf-seg-btn" data-term="12" type="button">12 мес.</button>
+</div>
+</div>
+</div>
+<div aria-label="Карточки тарифов" class="vf-pr2-grid" id="vf-pr2-cards"></div>
+<div class="vf-pr2-cfo-extra" data-open="false" hidden="" id="vf-pr2-cfo-extra">
+<div aria-expanded="false" class="vf-pr2-cfo-extra__head" role="button" tabindex="0">
+<h3 class="vf-pr2-cfo-extra__title">Показать все фичи (для CFO)</h3>
+<div aria-hidden="true" class="vf-badge-save">Сравнение</div>
+</div>
+<div class="vf-pr2-cfo-extra__body">
+<table aria-label="Сравнение функций" class="vf-pr2-cfo-extra__table">
+<thead>
+<tr>
+<th style="width:48%;">Функция</th>
+<th>Контроль денег</th>
+<th>Управление прибылью</th>
+<th>Финансовая система</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Банки + авторазнесение</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Платежный календарь + заявки</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>PnL / рентабельность</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Баланс / обязательства</td>
+<td class="vf-no">—</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Интеграции 1С / МойСклад (по мере готовности)</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>AI-инсайты / сценарии (по мере готовности)</td>
+<td class="vf-no">—</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+<tr>
+<td>Telegram-управление</td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+<td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="text-muted mt-3 mb-0" style="font-size:12px;">
+      Цены в демо пересчитываются на лету. Скидки/коэффициенты задаются конфигом, без правок верстки.
+    </p>
+</div>
+<script>
+  (function(){
+    const cfg = {
+      discounts: { 1: 1.00, 3: 0.95, 6: 0.90, 12: 0.85 },
+      plans: [
+        {
+          id: "starter",
+          title: "Контроль денег",
+          priceMonthly: 3990,
+          subtitles: {
+            owner: "Вы всегда знаете, сколько денег у бизнеса и что будет дальше.",
+            cfo: "База для ежедневного контроля платежей и кассы клиента."
+          },
+          bullets: {
+            owner: [
+              "Деньги под контролем каждый день",
+              "План платежей вперёд",
+              "Отчёты и бот без входа в систему",
+              "Консультации и методология"
+            ],
+            cfo: [
+              "Банки + авторазнесение",
+              "Платёжный календарь + заявки",
+              "ДДС (кассовый метод)",
+              "Telegram-управление"
+            ]
+          }
+        },
+        {
+          id: "base",
+          title: "Управление прибылью",
+          priceMonthly: 13750,
+          subtitles: {
+            owner: "Вы понимаете, где бизнес зарабатывает, а где теряет деньги.",
+            cfo: "PnL и рентабельность: ведение клиента как финансового проекта."
+          },
+          bullets: {
+            owner: [
+              "Маржа и прибыль по продуктам/направлениям",
+              "План‑факт по расходам",
+              "Понятные отчёты для решений",
+              "Консультации и методология"
+            ],
+            cfo: [
+              "Банки + авторазнесение",
+              "Платёжный календарь + заявки",
+              "ДДС + PnL",
+              "Интеграции 1С/МойСклад (по мере готовности)",
+              "AI‑инсайты (по мере готовности)",
+              "Telegram-управление"
+            ]
+          }
+        },
+        {
+          id: "pro",
+          title: "Финансовая система",
+          priceMonthly: 23900,
+          subtitles: {
+            owner: "Бизнес управляется как система, а не через тушение пожаров.",
+            cfo: "Баланс, обязательства, сверки и сценарии — уровень CFO‑практики."
+          },
+          bullets: {
+            owner: [
+              "Сценарии и решения до кассовых разрывов",
+              "Управление долгом и обязательствами",
+              "Финансовая картина бизнеса целиком",
+              "Регулярный ритм управления"
+            ],
+            cfo: [
+              "Банки + авторазнесение",
+              "Платёжный календарь + заявки",
+              "ДДС + PnL + баланс",
+              "Консолидация (по мере готовности)",
+              "AI‑сценарии (по мере готовности)",
+              "Telegram-управление"
+            ]
+          },
+          featured: true
+        }
+      ]
+    };
+
+    const state = { audience: "owner", term: 1 };
+
+    const fmt = (n) => new Intl.NumberFormat("ru-RU").format(n) + " ₽";
+    const round = (n) => Math.round(n);
+
+    const cardsWrap = document.getElementById("vf-pr2-cards");
+    const cfoExtra = document.getElementById("vf-pr2-cfo-extra");
+    const cfoHead = cfoExtra ? cfoExtra.querySelector(".vf-pr2-cfo-extra__head") : null;
+
+    function compute(plan){
+      const k = cfg.discounts[state.term] ?? 1;
+      const total = round(plan.priceMonthly * state.term * k);
+      const per = round(total / state.term);
+      const full = plan.priceMonthly * state.term;
+      const savings = Math.max(0, round(full - total));
+      const pct = savings > 0 ? Math.round((savings / full) * 100) : 0;
+      return { total, per, savings, pct };
+    }
+
+    function link(planId){
+      const params = new URLSearchParams({
+        tariff: planId,
+        term: String(state.term),
+        audience: state.audience
+      });
+      return "#checkout?" + params.toString();
+    }
+
+    function render(){
+      cardsWrap.innerHTML = "";
+      cfg.plans.forEach((p, idx) => {
+        const c = compute(p);
+        const el = document.createElement("div");
+        el.className = "vf-plan" + (p.featured ? " is-featured" : "");
+        el.innerHTML = `
+          <div class="vf-plan__inner">
+            <div class="vf-plan__top">
+              <h3 class="vf-plan__title">${p.title}</h3>
+              <p class="vf-plan__subtitle">${p.subtitles[state.audience]}</p>
+            </div>
+
+            <div class="vf-price">
+              <div class="vf-price__main">
+                <div class="vf-price__per">${fmt(c.per).replace(" ₽","")}</div>
+                <div class="vf-price__unit">₽/мес</div>
+                ${c.savings > 0 ? `<span class="vf-badge-save">-${c.pct}%</span>` : ``}
+              </div>
+              <p class="vf-price__meta">Итого за период: <b>${fmt(c.total)}</b>${c.savings > 0 ? ` · экономия <b>${fmt(c.savings)}</b>` : ``}</p>
+            </div>
+
+            <ul class="list-unstyled feature-list mb-4">
+              ${(p.bullets[state.audience] || []).map(x => `<li><i class="bi bi-check-circle-fill"></i> ${x}</li>`).join("")}
+            </ul>
+
+            <div class="vf-plan__cta">
+              <a class="btn ${idx === 0 || idx === 2 ? "btn-cta-secondary" : "btn-cta"}" href="${link(p.id)}">Подключить</a>
+              <a class="vf-plan__link" href="${state.audience === "owner" ? "#demo" : "#compare"}">
+                ${state.audience === "owner" ? "Посмотреть, как работает" : "Скачать список фич / открыть сравнение"}
+              </a>
+            </div>
+          </div>
+        `;
+        cardsWrap.appendChild(el);
+      });
+
+      if (!cfoExtra) return;
+      if (state.audience === "cfo"){
+        cfoExtra.hidden = false;
+      } else {
+        cfoExtra.hidden = true;
+        cfoExtra.dataset.open = "false";
+        if (cfoHead) cfoHead.setAttribute("aria-expanded", "false");
+      }
+    }
+
+    // Segmented controls
+    document.querySelectorAll('#tariffs-2 [data-audience]').forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.audience = btn.dataset.audience;
+        document.querySelectorAll('#tariffs-2 [data-audience]').forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+        if (window.ym) ym(105455340, 'reachGoal', 'pricing_audience_switch', {audience: state.audience});
+        render();
+      });
+    });
+
+    document.querySelectorAll('#tariffs-2 [data-term]').forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.term = parseInt(btn.dataset.term, 10);
+        document.querySelectorAll('#tariffs-2 [data-term]').forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+        if (window.ym) ym(105455340, 'reachGoal', 'pricing_term_switch', {term: state.term});
+        render();
+      });
+    });
+
+    // CFO extra toggle
+    if (cfoHead){
+      const toggle = () => {
+        const open = cfoExtra.dataset.open === "true";
+        cfoExtra.dataset.open = open ? "false" : "true";
+        cfoHead.setAttribute("aria-expanded", open ? "false" : "true");
+      };
+      cfoHead.addEventListener("click", toggle);
+      cfoHead.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+      });
+    }
+
+    // CTA click analytics (delegate)
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest('#tariffs-2 a.btn-cta');
+      if (!a) return;
+      const url = new URL(a.getAttribute("href"), window.location.href);
+      const sp = url.searchParams;
+      if (window.ym) ym(105455340, 'reachGoal', 'pricing_cta_click', {
+        plan: sp.get('tariff'),
+        term: sp.get('term'),
+        audience: sp.get('audience')
+      });
+    });
+
+    render();
+  })();
+  </script>
+</section><section class="section" id="lead-form-2">
+<div class="container">
+<div class="vf-lead2">
+<div class="vf-lead2__inner">
+<div class="vf-lead2__grid">
+<div>
+<h2 class="vf-lead2__title">Финансовая система для роста, а не отчётов</h2>
+<p class="vf-lead2__text">
+              Начать работу с нами очень легко. Оставьте заявку — и мы свяжемся, чтобы обсудить вашу задачу и подобрать формат:
+              <span>Доверить финансы профи</span> или <span>Доверить финансы профи</span>.
+            </p>
+<div class="vf-lead2__note">Демо-верстка. Интеграция формы и отправка данных — на вашей стороне.</div>
+</div>
+<div class="vf-lead2__media">
+<form action="#" aria-label="Лид-форма" class="vf-lead2__form" method="post">
+<div class="mb-2">
+<input autocomplete="name" class="vf-field" name="name" placeholder="Ваше имя" type="text"/>
+</div>
+<div class="mb-2">
+<input autocomplete="tel" class="vf-field" name="phone" placeholder="+7 ___ ___-__-__" type="tel"/>
+</div>
+<div class="mb-2">
+<input autocomplete="email" class="vf-field" name="email" placeholder="E-mail" type="email"/>
+</div>
+<button class="btn btn-cta" type="submit">Отправить</button>
+<label class="vf-consent">
+<input checked="" name="consent" type="checkbox"/>
+<span>
+                  Даю согласие на обработку персональных данных в соответствии с
+                  <a href="#">политикой конфиденциальности</a> и принимаю условия
+                  <a href="#">публичной оферты</a>.
+                </span>
+</label>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<main id="vfMain">
+<!-- VF: INSERT NEW SECTIONS ABOVE THIS LINE -->
+<section class="section" id="vf-control-level">
+<div class="container">
+<div class="text-center mb-4">
+<h2 class="mb-0">Выберите ваш уровень контроля</h2>
+</div>
+<div class="row g-4 align-items-stretch">
+<!-- ===== Card: DIY ===== -->
+<div class="col-12 col-lg-6">
+<div class="card-e vf-control__card h-100 p-4 p-lg-5">
+<div class="vf-control__icon mb-4"><i class="bi bi-cpu"></i></div>
+<h3 class="h3 mb-2">Я веду сам</h3>
+<p class="text-muted mb-4">
+              Для микробизнеса до 2 млн руб/мес. AI‑ассистент автоматизирует учёт и сбор данных.
+            </p>
+<ul class="list-unstyled feature-list mb-4">
+<li><i class="bi bi-check-circle-fill"></i>Автосбор из банков и CRM</li>
+<li><i class="bi bi-check-circle-fill"></i>AI‑прогнозы на 30 дней</li>
+<li><i class="bi bi-check-circle-fill"></i>Разовые консультации профи</li>
+</ul>
+<a class="btn btn-outline-brand w-100" href="#">Начать тест‑драйв AI</a>
+</div>
+</div>
+<!-- ===== Card: Pro ===== -->
+<div class="col-12 col-lg-6">
+<div class="card-e vf-control__card vf-control__pro h-100 p-4 p-lg-5">
+<div class="vf-control__icon vf-control__icon--pro mb-4"><i class="bi bi-person-badge"></i></div>
+<h3 class="h3 mb-2">Доверить финансы профи</h3>
+<p class="vf-control__muted mb-4">
+              Для компаний от 2 млн руб/мес. Личный CFO внедряет стратегию и отвечает за результат.
+            </p>
+<ul class="list-unstyled feature-list mb-5">
+<li><i class="bi bi-check-circle-fill"></i>Личный финансовый директор</li>
+<li><i class="bi bi-check-circle-fill"></i>Глубокая аналитика и стратегия</li>
+<li><i class="bi bi-check-circle-fill"></i>Полное делегирование рутины</li>
+</ul>
+<a class="btn btn-cta w-100" href="#">Обсудить проект со старшим CFO</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</main>
+<footer class="footer-e">
+<div class="container container-demo py-5">
+<div class="row g-4">
+<!-- Brand / Value -->
+<div class="col-12 col-lg-4">
+<div class="footer-title">Ваш финдир</div>
+<div class="footer-muted small mt-2" style="max-width: 46ch;">
+            Финансовый SaaS + сопровождение. Контроль денег, прогноз и решения — чтобы управлять “до”, а не “после”.
+          </div>
+<div class="mt-3 d-flex flex-column gap-1 small">
+<div class="footer-muted">• Данные клиентов защищены</div>
+<div class="footer-muted">• Роли доступа и журнал действий</div>
+<div class="footer-muted">• Поддержка и онбординг</div>
+</div>
+</div>
+<!-- Product -->
+<div class="col-12 col-md-6 col-lg-3">
+<div class="footer-muted small mb-2" style="letter-spacing:.02em; text-transform:uppercase;">Продукт</div>
+<div class="d-flex flex-column gap-2">
+<a class="footer-link-soft" href="#">Тарифы</a>
+<a class="footer-link-soft" href="#">О сервисе</a>
+<a class="footer-link-soft" href="#">Возможности</a>
+<a class="footer-link-soft" href="#">Интеграции</a>
+<a class="footer-link-soft" href="#">FAQ</a>
+</div>
+</div>
+<!-- Company -->
+<div class="col-12 col-md-6 col-lg-3">
+<div class="footer-muted small mb-2" style="letter-spacing:.02em; text-transform:uppercase;">Компания</div>
+<div class="d-flex flex-column gap-2">
+<a class="footer-link-soft" href="#">Безопасность</a>
+<a class="footer-link-soft" href="#">Документы</a>
+<a class="footer-link-soft" href="#">Контакты</a>
+<a class="footer-link-soft" href="#">Партнёрам</a>
+</div>
+</div>
+<!-- Contacts + Messengers -->
+<div class="col-12 col-lg-2">
+<div class="footer-muted small mb-2" style="letter-spacing:.02em; text-transform:uppercase;">Связь</div>
+<div class="d-flex flex-column gap-2 small">
+<div class="d-flex flex-column">
+<span class="footer-muted" style="font-size: 12px;">Email</span>
+<a class="footer-link" href="mailto:support@yourdomain.ru" style="font-weight:800;">support@yourdomain.ru</a>
+</div>
+<div class="d-flex flex-column">
+<span class="footer-muted" style="font-size: 12px;">Telegram</span>
+<a class="footer-link" href="#" style="font-weight:800;">@yourhandle</a>
+</div>
+<div class="d-flex flex-column">
+<span class="footer-muted" style="font-size: 12px;">WhatsApp</span>
+<a class="footer-link" href="#" style="font-weight:800;">Написать в WhatsApp</a>
+</div>
+</div>
+<div class="footer-muted small mt-3">Мы отвечаем быстро в рабочее время.</div>
+<div class="footer-muted small mt-3">Соцсети</div>
+<div class="social-row" style="gap:.45rem;">
+<a aria-label="VK" class="social-btn" href="#" title="VK">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12.7 17.4h-1.2c-4.4 0-6.9-3-7-8.1h2.2c.2 3.7 1.7 5.2 2.9 5.5V9.3h2v3.2c1.2-.1 2.5-1.5 2.9-3.2h2c-.3 2-1.8 3.4-2.8 4 .9.5 2.6 1.8 3.1 4.1h-2.2c-.4-1.4-1.5-2.4-3-2.6v2.6Z"></path></svg>
+</a>
+<a aria-label="YouTube" class="social-btn" href="#" title="YouTube">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M21.6 7.3a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.4A2.7 2.7 0 0 0 2.4 7.3 28.2 28.2 0 0 0 2 12s0 3.2.4 4.7a2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.4a2.7 2.7 0 0 0 1.9-1.9c.4-1.5.4-4.7.4-4.7s0-3.2-.4-4.7ZM10.3 14.9V9.1L15.4 12l-5.1 2.9Z"></path></svg>
+</a>
+<a aria-label="Instagram" class="social-btn" href="#" title="Instagram">
+<svg aria-hidden="true" viewbox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4.5A3.5 3.5 0 1 1 8.5 12 3.5 3.5 0 0 1 12 8.5Zm0 2A1.5 1.5 0 1 0 13.5 12 1.5 1.5 0 0 0 12 10.5ZM17.8 7.6a.8.8 0 1 1-.8-.8.8.8 0 0 1 .8.8Z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+<div class="footer-divider mt-4 pt-4">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+<div class="footer-muted small">
+            ИНН/ОГРН/реквизиты — в документах. Данные клиентов защищены.
+          </div>
+<div class="d-flex flex-wrap gap-3 small">
+<a class="footer-link-soft" href="#">Политика конфиденциальности</a>
+<span class="footer-muted">·</span>
+<a class="footer-link-soft" href="#">Оферта</a>
+<span class="footer-muted">·</span>
+<span class="footer-muted">© <span id="y"></span></span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+<!-- ===== Lead Form Modal (opens on submit of #lead-form-2) ===== -->
+<div aria-hidden="true" aria-labelledby="leadModalLabel" class="modal fade" id="leadModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable">
+<div class="modal-content overflow-hidden rounded-4">
+<div class="position-relative">
+
+<button aria-label="Закрыть" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="p-4">
+<h3 class="h4 mb-2" id="leadModalLabel">Спасибо! Заявка принята</h3>
+<p class="text-muted mb-0">Мы свяжемся с вами и подберём формат работы под вашу задачу.</p>
+</div>
+<div class="px-4 pb-4">
+<button class="btn btn-outline-secondary w-100" data-bs-dismiss="modal" type="button">Закрыть</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Open modal on submit of the lead form inside section #lead-form-2
+  document.addEventListener('DOMContentLoaded', function () {
+    var leadSection = document.getElementById('lead-form-2');
+    if (!leadSection) return;
+
+    var leadForm = leadSection.querySelector('form');
+    if (!leadForm) return;
+
+    leadForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var modalEl = document.getElementById('leadModal');
+      if (!modalEl || typeof bootstrap === 'undefined' || !bootstrap.Modal) return;
+
+      var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    });
+  });
+</script>
+</body>
+</html>
