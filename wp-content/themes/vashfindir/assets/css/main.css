@@ -222,6 +222,33 @@ h3{
 
 .vf-btn--block{ width:100%; }
 
+.btn-cta{
+    background: var(--cta);
+    border-color: var(--cta);
+    color: #fff;
+    font-weight: 900;
+    border-radius: var(--radius-control);
+    padding: .65rem 1rem;
+}
+.btn-cta:hover{
+    background: var(--cta-hover);
+    border-color: var(--cta-hover);
+    color:#fff;
+}
+.btn-cta-secondary{
+    background: #fff;
+    border: 1px solid rgba(10,21,72,.22);
+    color: var(--brand-2);
+    font-weight: 900;
+    border-radius: var(--radius-control);
+    padding: .65rem 1rem;
+}
+.btn-cta-secondary:hover{
+    border-color: rgba(10,21,72,.35);
+    color: var(--cta-secondary-hover);
+    background: rgba(10,21,72,.04);
+}
+
 /* =========================================================
    Components (shared)
    ========================================================= */
