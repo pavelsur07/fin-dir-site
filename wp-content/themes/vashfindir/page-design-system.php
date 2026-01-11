@@ -17,6 +17,84 @@ get_template_part('template-parts/blocks/breadcrumbs');
       <p class="section-subtitle">Design system</p>
       <h1 class="page-title">Typography & Components</h1>
     </header>
+    <section class="vf-section-pad-md vf-buttons-showcase">
+      <div class="vf-surface vf-buttons-showcase__card p-4 p-lg-5">
+        <div class="row g-4 align-items-start">
+          <div class="col-12 col-lg-7">
+            <h2 class="vf-buttons-showcase__title">Кнопки: CTA и статусы</h2>
+            <p class="vf-buttons-showcase__lead">
+              Минимализм + доверие: один “основной” CTA, спокойные вторичные
+              действия, красный — только риск.
+            </p>
+            <p class="vf-buttons-showcase__note">
+              Цветовая логика для Enterprise B2B (финансы):
+              <span class="vf-buttons-showcase__chip">Blue = действие</span>
+              <span class="vf-buttons-showcase__chip">Navy = структура</span>
+              <span class="vf-buttons-showcase__chip">Red = риск</span>
+            </p>
+          </div>
+          <div class="col-12 col-lg-5">
+            <div class="vf-buttons-showcase__examples">
+              <div class="vf-buttons-showcase__label">Примеры</div>
+              <div class="vf-buttons-showcase__grid">
+                <button class="vf-btn vf-buttons-showcase__btn vf-buttons-showcase__btn--cta" type="button">
+                  CTA (заливка, синий)
+                </button>
+                <button class="vf-btn vf-buttons-showcase__btn vf-buttons-showcase__btn--cta-danger" type="button">
+                  CTA (референс, красный)
+                </button>
+                <button class="vf-btn vf-buttons-showcase__btn vf-buttons-showcase__btn--outline" type="button">
+                  Secondary (outline)
+                </button>
+                <button class="vf-btn vf-buttons-showcase__btn vf-buttons-showcase__btn--brand-outline" type="button">
+                  Primary (brand outline)
+                </button>
+                <button class="vf-btn vf-buttons-showcase__btn vf-buttons-showcase__btn--ghost" type="button">
+                  Ghost / нейтральная
+                </button>
+                <div class="vf-buttons-showcase__status-row">
+                  <span class="vf-buttons-showcase__badge vf-buttons-showcase__badge--success">Success</span>
+                  <span class="vf-buttons-showcase__badge vf-buttons-showcase__badge--warning">Warning</span>
+                  <span class="vf-buttons-showcase__badge vf-buttons-showcase__badge--danger">Danger</span>
+                </div>
+                <div class="vf-buttons-showcase__chip-row">
+                  <span class="vf-buttons-showcase__pill">
+                    CTA fill: <code>--cta-secondary</code>
+                  </span>
+                  <span class="vf-buttons-showcase__pill">
+                    CTA ref: <code>--cta</code>
+                  </span>
+                  <span class="vf-buttons-showcase__pill">
+                    Brand: <code>--brand</code>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vf-buttons-showcase__divider"></div>
+        <div class="row g-3">
+          <div class="col-12 col-lg-4">
+            <div class="vf-buttons-showcase__info">
+              <div class="vf-buttons-showcase__info-title">PRIMARY CTA</div>
+              <p>Регистрация / Оплатить / Начать — синий fill (в финтехе воспринимается как “контроль”).</p>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="vf-buttons-showcase__info">
+              <div class="vf-buttons-showcase__info-title">SECONDARY</div>
+              <p>Войти / Подробнее / Сравнить — outline, без лишнего давления.</p>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="vf-buttons-showcase__info">
+              <div class="vf-buttons-showcase__info-title">DANGER</div>
+              <p>Удалить / критические риски — только красный. Не использовать как маркетинговый акцент.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="container">
