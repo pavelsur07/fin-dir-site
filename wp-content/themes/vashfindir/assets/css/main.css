@@ -253,6 +253,33 @@ h3{
     transform: translateY(1px);
 }
 
+/* CTA — outline (secondary) */
+.vf-cta-btn-outline{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--brand-blue);
+    padding: var(--cta-padding-y) var(--cta-padding-x);
+    border-radius: var(--cta-radius);
+    border: 2px solid var(--brand-blue);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, transform .05s ease;
+}
+
+.vf-cta-btn-outline:hover{
+    background: var(--brand-blue);
+    color: #fff;
+}
+
+.vf-cta-btn-outline:active{
+    transform: translateY(1px);
+}
+
 .vf-btn--primary{
     background: var(--vf-brand-2);
     border-color: var(--vf-brand-2);
