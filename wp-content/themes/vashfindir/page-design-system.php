@@ -28,6 +28,55 @@ get_template_part('template-parts/blocks/breadcrumbs');
     </section>
 
     <section class="vf-section-pad-lg">
+      <div class="row g-4">
+        <div class="col-12 col-lg-7">
+          <div class="card-e p-4">
+            <h2>Шкала заголовков и текстов</h2>
+            <div class="prose">
+              <p class="lead">Цель — минимализм, читаемость и “дорогая” уверенность. Без лишней декоративности.</p>
+              <div class="mt-3 small">
+                Основной шрифт (body): <code>system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif</code><br>
+                Токен: <code>--font-sans</code> → <code>body { font-family: var(--font-sans); }</code>
+              </div>
+              <div class="mt-4">
+                <h1>H1 — Заголовок</h1>
+                <div class="footer-muted small">Размер: <code>clamp(32px, 3.2vw, 46px)</code>, вес: <code>900</code></div>
+              </div>
+              <div class="mt-4">
+                <h2>H2 — Подзаголовок</h2>
+                <div class="footer-muted small">Размер: <code>clamp(24px, 2.1vw, 34px)</code>, вес: <code>900</code></div>
+              </div>
+              <div class="mt-4">
+                <h3>H3 — Заголовок карточки</h3>
+                <div class="footer-muted small">Размер: <code>20px</code>, вес: <code>900</code></div>
+              </div>
+              <div class="mt-4">
+                <div style="color:var(--brand);">Body — обычный текст</div>
+                <div class="footer-muted small">Размер: <code>16px</code>, line-height: <code>1.55</code></div>
+              </div>
+              <div class="mt-4">
+                <div style="color:var(--brand);">Small / helper</div>
+                <div class="footer-muted small">Размер: <code>13px</code>, line-height: <code>1.45</code></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-5">
+          <div class="card-e p-4 h-100">
+            <h2>Лучшие практики (коротко)</h2>
+            <ul class="mb-0" style="padding-left: 1.1rem;">
+              <li class="mb-2"><span>1 смысл = 1 акцент</span> (CTA один цвет).</li>
+              <li class="mb-2">Текст ограничиваем до <code>56–68ch</code>.</li>
+              <li class="mb-2">Отступы секций: <code>clamp(48px..80px)</code>.</li>
+              <li class="mb-2">Весов немного: <code>400 / 600 / 900</code>.</li>
+              <li>Карточки — единый padding: <code>16–20px</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vf-section-pad-lg">
       <p class="section-subtitle">Card surface</p>
       <div class="vf-surface p-4">
         <h3>vf-surface card</h3>
