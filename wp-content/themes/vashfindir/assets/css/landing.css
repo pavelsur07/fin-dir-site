@@ -4,6 +4,59 @@
    - buttons are global: .vf-btn in main.css
    - landing.css contains only section/layout styles
 */
+:root{
+      --cta-2-hover: var(--brand);
+      --cta-2: var(--brand-2);
+      --brand-2: #0d1c63;
+      --brand: #0A1548;
+      --cta: #B00020;
+      --cta-hover: #8E001A;
+
+      
+      --cta-secondary: #0A1548;
+      --cta-secondary-hover: #0d1c63;
+
+      --text: #0b1020;
+      --muted: #5c677d;
+
+      --bg-soft: #f7f8fc;
+      --card: #ffffff;
+      --border: rgba(10,21,72,.14);
+
+      
+      --content-max: 1320px;
+      --prose-max: 62ch;
+
+      
+      --radius-card: 6px;
+      --radius-control: 6px;
+
+      
+      --shadow: 0 10px 30px rgba(10,21,72,.10);
+
+      
+      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+      --fs-body: 16px;
+      --lh-body: 1.55;
+
+      --fs-lead: 18px;
+      --lh-lead: 1.55;
+
+      --fs-h1: clamp(32px, 3.2vw, 46px);
+      --lh-h1: 1.06;
+      --ls-h1: -0.03em;
+
+      --fs-h2: clamp(24px, 2.1vw, 34px);
+      --lh-h2: 1.12;
+      --ls-h2: -0.02em;
+
+      --fs-h3: 20px;
+      --lh-h3: 1.20;
+
+      --fs-small: 13px;
+      --lh-small: 1.45;
+    }
 
 /* =========================================================
    Hero (Home) — variant 4
