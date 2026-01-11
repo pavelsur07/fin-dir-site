@@ -201,13 +201,14 @@ h3{
     cursor: pointer;
 }
 
-.vf-cta-primary{
+.vf-cta-btn-primary{
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: var(--brand-blue);
     color: #fff;
     padding: var(--cta-padding-y) var(--cta-padding-x);
+    border-radius: var(--vf-radius);
     font-weight: 700;
     font-size: 15px;
     line-height: 1;
@@ -217,22 +218,23 @@ h3{
     transition: background .2s ease, transform .05s ease;
 }
 
-.vf-cta-primary:hover{
+.vf-cta-btn-primary:hover{
     background: var(--brand-blue-hover);
     color: #fff;
 }
 
-.vf-cta-primary:active{
+.vf-cta-btn-primary:active{
     transform: translateY(1px);
 }
 
-.vf-cta-secondary{
+.vf-cta-btn-secondary{
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: var(--brand-red);
     color: #fff;
     padding: var(--cta-padding-y) var(--cta-padding-x);
+    border-radius: var(--vf-radius);
     font-weight: 700;
     font-size: 15px;
     line-height: 1;
@@ -242,12 +244,12 @@ h3{
     transition: background .2s ease, transform .05s ease;
 }
 
-.vf-cta-secondary:hover{
+.vf-cta-btn-secondary:hover{
     background: var(--brand-red-hover);
     color: #fff;
 }
 
-.vf-cta-secondary:active{
+.vf-cta-btn-secondary:active{
     transform: translateY(1px);
 }
 
