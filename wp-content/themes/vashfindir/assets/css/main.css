@@ -261,7 +261,7 @@ h3{
     background: transparent;
     color: var(--brand-blue);
     padding: var(--cta-padding-y) var(--cta-padding-x);
-    border-radius: var(--cta-radius);
+    border-radius: var(--vf-radius);
     border: 2px solid var(--brand-blue);
     font-weight: 700;
     font-size: 15px;
