@@ -6,9 +6,15 @@ if (!defined('ABSPATH')) {
 
 add_action('wp_enqueue_scripts', function () {
     $ver = wp_get_theme()->get('Version');
+    $bootstrap_only = defined('VF_BOOTSTRAP_ONLY') && VF_BOOTSTRAP_ONLY;
 
-    // базовые стили
-    wp_enqueue_style('vashfindir-main', get_template_directory_uri() . '/assets/css/main.css', [], $ver);
+    // Bootstrap 5
+    wp_enqueue_style(
+        'bootstrap',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+        [],
+        '5.3.3'
+    );
 
     $design_system_template = '';
     $qo_id = get_queried_object_id();
@@ -29,20 +35,37 @@ add_action('wp_enqueue_scripts', function () {
             '1.11.3'
         );
 
-        wp_enqueue_style(
-            'vashfindir-landing',
-            get_template_directory_uri() . '/assets/css/landing.css',
-            ['vashfindir-main', 'bootstrap-icons'],
-            $ver
-        );
+        if (!$bootstrap_only) {
+            wp_enqueue_style(
+                'vashfindir-landing',
+                get_template_directory_uri() . '/assets/css/landing.css',
+                ['vashfindir-main', 'bootstrap-icons'],
+                $ver
+            );
+        }
     }
 
-    if (is_page('about')) {
+    if (!$bootstrap_only) {
+        // базовые стили
+        wp_enqueue_style('vashfindir-main', get_template_directory_uri() . '/assets/css/main.css', ['bootstrap'], $ver);
+    }
+
+    if (is_page('about') && !$bootstrap_only) {
         wp_enqueue_style('vashfindir-info', get_template_directory_uri() . '/assets/css/info.css', ['vashfindir-main'], $ver);
     }
 
     // blog.css можно подключить позже, когда заведёте archive/single
     // if (is_home() || is_archive() || is_single()) { ... }
 
-    wp_enqueue_script('vashfindir-main', get_template_directory_uri() . '/assets/js/main.js', [], $ver, true);
+    if (!$bootstrap_only) {
+        wp_enqueue_script('vashfindir-main', get_template_directory_uri() . '/assets/js/main.js', [], $ver, true);
+    }
+
+    wp_enqueue_script(
+        'bootstrap-bundle',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+        [],
+        '5.3.3',
+        true
+    );
 });
