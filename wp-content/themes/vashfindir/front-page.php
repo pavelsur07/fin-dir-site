@@ -245,89 +245,34 @@ get_header();
 
     <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
 
-    <section class="section" id="block-100">
+    <section class="section py-5" id="block-100">
         <div class="container">
             <div class="card-e p-4">
-                <h2>Демо блоков в сетке (enterprise)</h2>
-                <p class="lead prose">Ниже — пример “дашбордных” плиток: короткие метрики + пояснение. Это показывает ширину, сетку и плотность контента.</p>
+                <h2>Почему нам доверяют</h2>
+                <p class="lead prose">Мы не учим «как правильно». Мы помогаем понять, что происходит именно в вашем бизнесе — и где риск. Наш фокус — не отчёты, а управленческие решения: когда можно расти, а когда лучше остановиться.</p>
                 <div class="row g-3 mt-3">
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-lg-4">
                         <div class="tile">
-                            <div class="k">Cash</div>
-                            <div class="v">1 240 000 ₽</div>
-                            <div class="h">Остаток на счетах на сегодня</div>
+                            <div class="k">Трезво</div>
+                            <!--<div class="v">1 240 000 ₽</div>-->
+                            <div class="h">Без мотивации и инфобиза</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-lg-4">
                         <div class="tile">
-                            <div class="k">Forecast</div>
-                            <div class="v">+310 000 ₽</div>
-                            <div class="h">Прогноз на 30 дней</div>
+                            <div class="k">По делу</div>
+                           <!-- <div class="v">+310 000 ₽</div>-->
+                            <div class="h">Только то, что влияет на решения</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-lg-4">
                         <div class="tile">
-                            <div class="k">Risk</div>
-                            <div class="v">Средний</div>
-                            <div class="h">Вероятность разрыва 15–30%</div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div class="tile">
-                            <div class="k">Plan</div>
-                            <div class="v">12 платежей</div>
-                            <div class="h">Запланировано на неделю</div>
+                            <div class="k">Без давления</div>
+                            <!--<div class="v">Средний</div>-->
+                            <div class="h">Диагностика отдельно от услуг</div>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4 small">
-                    Контейнер: <code>1140px</code> · Карточка: радиус <code>6px</code> · Шрифт: системный стек.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TRUST -->
-    <section class="py-5 bg-primary-subtle">
-        <div class="container-xxl vf-anchor" id="trust">
-            <div class="row g-4 align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="vf-fs-h2 mb-2">Почему нам доверяют</h2>
-                    <p class="text-muted mb-0">
-                        Мы не учим «как правильно». Мы помогаем понять, что происходит именно в вашем бизнесе — и где риск.
-                        Наш фокус — не отчёты, а управленческие решения: когда можно расти, а когда лучше остановиться.
-                    </p>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="fw-semibold">Трезво</div>
-                                    <div class="text-muted small">Без мотивации и инфобиза</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="fw-semibold">По делу</div>
-                                    <div class="text-muted small">Только то, что влияет на решения</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="fw-semibold">Без давления</div>
-                                    <div class="text-muted small">Диагностика отдельно от услуг</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
