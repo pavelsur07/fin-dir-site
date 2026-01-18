@@ -107,7 +107,7 @@ get_header();
     </section>
 
     <!-- SYMPTOMS -->
-    <section class="py-5 vf-section-dark">
+    <section class="vf-control vf-section-pad-lg vf-section-dark">
         <div class="container-xxl vf-anchor" id="symptoms">
             <div class="row g-4">
                 <div class="col-lg-5">
@@ -144,6 +144,49 @@ get_header();
                         </li>
                     </ul>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY THIS HAPPENS -->
+    <section class="py-5">
+        <div class="container-xxl vf-anchor" id="why">
+            <div class="vf-control__head">
+                <h2 class="section-title vf-control__title">Почему «формально всё нормально», а внутри тревожно</h2>
+                <p class="section-subtitle vf-faq__subtitle">
+                    Большинство бизнесов живут в разрозненных цифрах. В итоге вы видите цифры, но не понимаете коридор безопасных решений.
+                </p>
+            </div>
+
+            <div class="row g-4 mt-3">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="vf-control__h3">Бухгалтерия — для отчётности</div>
+                            <div class="vf-control__lead">Сходится «по правилам», но не отвечает на вопрос «что можно делать дальше».</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="vf-control__h3">Банк — для остатков</div>
+                            <div class="vf-control__lead">Остаток на счёте не равен свободным деньгам и не показывает риски.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="vf-control__h3">Таблицы — «как получится»</div>
+                            <div class="vf-control__lead">Нету единой картины: ДДС, ОПиУ и Баланс не собраны в систему решений.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-secondary mt-4 mb-0">
+                <strong>Итог:</strong> решения принимаются «на ощущениях», потому что нет понятного <strong>коридора допустимых решений</strong>.
             </div>
         </div>
     </section>
