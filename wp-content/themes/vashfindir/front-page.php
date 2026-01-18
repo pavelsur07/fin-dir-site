@@ -244,6 +244,8 @@ get_header();
     // Home-only section: Control Level (reference block id=vf-control-level)
     get_template_part('template-parts/landing/control-level');
     ?>
+
+    <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
 </main>
 
 <?php get_footer(); ?>
