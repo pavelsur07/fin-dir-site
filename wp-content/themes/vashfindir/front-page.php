@@ -250,7 +250,7 @@ get_header();
         <div class="container-xxl vf-anchor" id="trust">
             <div class="row g-4 align-items-center">
                 <div class="col-lg-6">
-                    <h2 class="mb-2">Почему нам доверяют</h2>
+                    <h2 class="vf-fs-h2 mb-2">Почему нам доверяют</h2>
                     <p class="text-muted mb-0">
                         Мы не учим «как правильно». Мы помогаем понять, что происходит именно в вашем бизнесе — и где риск.
                         Наш фокус — не отчёты, а управленческие решения: когда можно расти, а когда лучше остановиться.
