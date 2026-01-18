@@ -20,6 +20,12 @@ if (!defined('ABSPATH')) {
                     <div class="vf-lead__note">
                         Мы ответим в рабочее время. Обычно — в течение 1 рабочего дня.
                     </div>
+                    <div class="d-flex gap-2 flex-wrap mt-3">
+                        <span class="badge text-bg-light"><i class="bi bi-clock me-1"></i>45 минут</span>
+                        <span class="badge text-bg-light"><i class="bi bi-shield-check me-1"></i>без продаж</span>
+                        <span class="badge text-bg-light"><i class="bi bi-hand-thumbs-up me-1"></i>без обязательств</span>
+                    </div>
+
                 </div>
 
                 <div class="vf-lead__formWrap">
@@ -34,7 +40,7 @@ if (!defined('ABSPATH')) {
                             <input class="vf-field" type="email" name="email" autocomplete="email" placeholder="E-mail" required>
                         </div>
 
-                        <button class="vf-btn vf-btn--primary vf-btn--block" type="submit">Отправить</button>
+                        <button class="vf-btn btn btn-cta w-100 vf-btn--block" type="submit">Отправить</button>
 
                         <label class="vf-consent">
                             <input type="checkbox" name="consent" checked>

@@ -106,50 +106,8 @@ get_header();
         </div>
     </section>
 
-    <!-- SYMPTOMS -->
-    <section class="vf-control vf-section-pad-lg vf-section-dark">
-        <div class="container-xxl vf-anchor" id="symptoms">
-            <div class="row g-4">
-                <div class="col-lg-5">
-                    <h2 class="fw-semibold mb-2">Обычно это звучит так</h2>
-                    <p class="vf-muted-on-dark mb-0">
-                        Если ловите себя на этих мыслях — это не про «ошибки». Это про отсутствие управленческой картины.
-                    </p>
-                </div>
-                <div class="col-lg-7">
-                    <ul class="list-unstyled mb-0">
-                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
-                            <i class="bi bi-dot fs-3"></i>
-                            <div>Выручка выросла, а дышать стало тяжелее</div>
-                        </li>
-                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
-                            <i class="bi bi-dot fs-3"></i>
-                            <div>Деньги в бизнесе есть, но забирать страшно</div>
-                        </li>
-                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
-                            <i class="bi bi-dot fs-3"></i>
-                            <div>Прибыль «на бумаге» есть, а на счетах — напряжение</div>
-                        </li>
-                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
-                            <i class="bi bi-dot fs-3"></i>
-                            <div>Каждое решение ощущается как риск</div>
-                        </li>
-                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
-                            <i class="bi bi-dot fs-3"></i>
-                            <div>Кассовые разрывы возникают внезапно</div>
-                        </li>
-                        <li class="d-flex gap-3 py-2">
-                            <i class="bi bi-dot fs-3"></i>
-                            <div>Нет понимания: это временно или системно</div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- WHY THIS HAPPENS -->
-    <section class="py-5">
+    <section class="py-5 bg-primary-subtle">
         <div class="container-xxl vf-anchor" id="why">
             <div class="vf-control__head">
                 <h2 class="section-title vf-control__title">Почему «формально всё нормально», а внутри тревожно</h2>
@@ -185,8 +143,99 @@ get_header();
                 </div>
             </div>
 
-            <div class="alert alert-secondary mt-4 mb-0">
+            <div class="alert alert-light mt-4 mb-0">
                 <strong>Итог:</strong> решения принимаются «на ощущениях», потому что нет понятного <strong>коридора допустимых решений</strong>.
+            </div>
+        </div>
+    </section>
+
+    <?php get_template_part('template-parts/landing/sections'); ?>
+
+    <?php
+    // Home CTA: reusable lead capture form with modal (ref section id="lead-form-2")
+    get_template_part('template-parts/landing/lead-capture');
+    ?>
+    <!-- OUTPUT / WHAT YOU GET -->
+    <section class="py-5">
+        <div class="container-xxl vf-anchor" id="outcome">
+            <div class="vf-control__head">
+                <h2 class="section-title vf-control__title">С чем вы уйдёте</h2>
+                <p class="section-subtitle vf-faq__subtitle">
+                    После диагностики у вас появится ясность — что происходит, где риск, и можно ли сейчас принимать решения спокойно.
+                </p>
+            </div>
+
+            <div class="row g-3 g-lg-4 mt-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                                <div class="vf-control__icon"><i class="bi bi-eye"></i></div>
+                                <div>
+                                    <div class="fw-semibold">Понятная картина</div>
+                                    <div class="text-muted small">Не «много цифр», а что они значат для решений.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                        <div class="vf-control__icon"><i class="bi bi-exclamation-circle"></i></div>
+                        <div>
+                            <div class="fw-semibold">Зоны риска</div>
+                            <div class="text-muted small">Что именно мешает принимать решения без тревоги.</div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                        <div class="vf-control__icon"><i class="bi bi-cash-coin"></i></div>
+                        <div>
+                            <div class="fw-semibold">Про «забирать деньги»</div>
+                            <div class="text-muted small">Понимание: можно ли сейчас и почему.</div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                        <div class="vf-control__icon"><i class="bi bi-diagram-3"></i></div>
+                        <div>
+                            <div class="fw-semibold">Система или рост</div>
+                            <div class="text-muted small">Проблема в процессах или в масштабе.</div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                        <div class="vf-control__icon"><i class="bi bi-arrow-right"></i></div>
+                        <div>
+                            <div class="fw-semibold">Следующий шаг</div>
+                            <div class="text-muted small">Без давления, без обязательств.</div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -194,13 +243,6 @@ get_header();
     <?php
     // Home-only section: Control Level (reference block id=vf-control-level)
     get_template_part('template-parts/landing/control-level');
-    ?>
-
-    <?php get_template_part('template-parts/landing/sections'); ?>
-
-    <?php
-    // Home CTA: reusable lead capture form with modal (ref section id="lead-form-2")
-    get_template_part('template-parts/landing/lead-capture');
     ?>
 </main>
 
