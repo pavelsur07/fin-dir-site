@@ -106,6 +106,48 @@ get_header();
         </div>
     </section>
 
+    <!-- SYMPTOMS -->
+    <section class="py-5 vf-section-dark">
+        <div class="container-xxl vf-anchor" id="symptoms">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <h2 class="fw-semibold mb-2">Обычно это звучит так</h2>
+                    <p class="vf-muted-on-dark mb-0">
+                        Если ловите себя на этих мыслях — это не про «ошибки». Это про отсутствие управленческой картины.
+                    </p>
+                </div>
+                <div class="col-lg-7">
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+                            <i class="bi bi-dot fs-3"></i>
+                            <div>Выручка выросла, а дышать стало тяжелее</div>
+                        </li>
+                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+                            <i class="bi bi-dot fs-3"></i>
+                            <div>Деньги в бизнесе есть, но забирать страшно</div>
+                        </li>
+                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+                            <i class="bi bi-dot fs-3"></i>
+                            <div>Прибыль «на бумаге» есть, а на счетах — напряжение</div>
+                        </li>
+                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+                            <i class="bi bi-dot fs-3"></i>
+                            <div>Каждое решение ощущается как риск</div>
+                        </li>
+                        <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+                            <i class="bi bi-dot fs-3"></i>
+                            <div>Кассовые разрывы возникают внезапно</div>
+                        </li>
+                        <li class="d-flex gap-3 py-2">
+                            <i class="bi bi-dot fs-3"></i>
+                            <div>Нет понимания: это временно или системно</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <?php
     // Home-only section: Control Level (reference block id=vf-control-level)
     get_template_part('template-parts/landing/control-level');
