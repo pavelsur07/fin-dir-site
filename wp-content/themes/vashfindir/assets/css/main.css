@@ -42,6 +42,18 @@ Author: vashfindir
     --vf-fs-small: 14px;
     --vf-lh-small: 1.45;
 
+    /* Bootstrap typography overrides */
+    --bs-font-sans-serif: var(--vf-font-sans);
+    --bs-body-font-family: var(--vf-font-sans);
+    --bs-body-font-size: var(--vf-fs-body);
+    --bs-body-line-height: var(--vf-lh-body);
+    --bs-body-color: var(--vf-text);
+    --bs-body-bg: var(--vf-bg);
+    --bs-heading-color: var(--vf-text);
+    --bs-h1-font-size: var(--vf-fs-h1);
+    --bs-h2-font-size: var(--vf-fs-h2);
+    --bs-h3-font-size: var(--vf-fs-h3);
+
     /* Surfaces */
     --vf-bg:#f5f6f8;
     --vf-card:#ffffff;
