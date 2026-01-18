@@ -63,6 +63,55 @@
    CTA (Landing)
    ========================================================= */
 
+.section{
+    padding: clamp(48px, 6vw, 80px) 0;
+}
+
+.section + .section{
+    border-top: 1px solid rgba(10,21,72,.06);
+}
+
+.prose{
+    max-width: var(--prose-max);
+}
+
+.card-e{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow);
+}
+
+.tile{
+    border: 1px solid rgba(10,21,72,.12);
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.70);
+    padding: 14px;
+}
+
+.tile .k{
+    font-weight: 900;
+    color: var(--brand);
+    font-size: 12px;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.tile .v{
+    font-weight: 900;
+    color: var(--text);
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    margin-top: 2px;
+}
+
+.tile .h{
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 2px;
+    line-height: 1.35;
+}
+
 .btn-brand{
     background: var(--brand);
     border: 1px solid var(--brand);
