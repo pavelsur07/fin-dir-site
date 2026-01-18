@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<section class="section" id="tariffs-2">
+<section class="section pt-5 pb-5" id="tariffs-2">
     <div class="container">
         <div class="vf-pr2-head">
             <h2 class="section-title vf-control__title">Тарифы</h2>
