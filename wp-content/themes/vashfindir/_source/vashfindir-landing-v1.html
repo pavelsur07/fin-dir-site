@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ваш Финдир — финансовая опора для решений</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --vf-primary:#0A1548;
+      --vf-accent:#FF1F1F;
+      --vf-bg:#0b1020;
+    }
+    /* Light-touch branding (keeps Bootstrap layout standard) */
+    .vf-navbar{ background: rgba(10,21,72,.92); }
+    .vf-hero{
+      background:
+        radial-gradient(1100px 420px at 15% 15%, rgba(255,31,31,.14), transparent 55%),
+        radial-gradient(900px 420px at 80% 20%, rgba(255,31,31,.10), transparent 55%),
+        linear-gradient(180deg, rgba(10,21,72,1), rgba(11,16,32,1));
+      color:#fff;
+    }
+    .vf-section-dark{ background: var(--vf-bg); color:#fff; }
+    .vf-muted-on-dark{ color: rgba(255,255,255,.75) !important; }
+    .btn-vf-primary{
+      --bs-btn-bg: var(--vf-accent);
+      --bs-btn-border-color: var(--vf-accent);
+      --bs-btn-hover-bg: #e91919;
+      --bs-btn-hover-border-color: #e91919;
+      --bs-btn-focus-shadow-rgb: 255, 31, 31;
+      color:#fff;
+    }
+    .btn-vf-outline{
+      --bs-btn-color: #fff;
+      --bs-btn-border-color: rgba(255,255,255,.55);
+      --bs-btn-hover-bg: rgba(255,255,255,.10);
+      --bs-btn-hover-border-color: rgba(255,255,255,.75);
+      --bs-btn-focus-shadow-rgb: 255,255,255;
+    }
+    .vf-card-dark{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color:#fff;
+    }
+    .vf-badge{
+      background: rgba(255,255,255,.12) !important;
+      border: 1px solid rgba(255,255,255,.16);
+      color:#fff !important;
+    }
+    .vf-icon-pill{
+      width: 42px; height: 42px;
+      border-radius: 999px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(10,21,72,.08);
+      border: 1px solid rgba(10,21,72,.10);
+    }
+    .vf-anchor{ scroll-margin-top: 90px; }
+    .vf-footer{ background:#0a0f1f; color: rgba(255,255,255,.75); }
+    .form-text a{ color: inherit; }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg vf-navbar sticky-top">
+  <div class="container-xxl">
+    <a class="navbar-brand text-white fw-semibold" href="#top">
+      Ваш Финдир
+    </a>
+
+    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list fs-2"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link text-white-50" href="#saas">SaaS</a></li>
+        <li class="nav-item"><a class="nav-link text-white-50" href="#outsourced-cfo">Финдиректор</a></li>
+        <li class="nav-item"><a class="nav-link text-white-50" href="#pricing">Тарифы</a></li>
+        <li class="nav-item"><a class="nav-link text-white-50" href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-sm btn-vf-outline" href="#diagnostic">
+          <i class="bi bi-chat-dots me-1"></i>Написать в Telegram
+        </a>
+        <a class="btn btn-sm btn-vf-primary" href="#diagnostic">
+          <i class="bi bi-calendar-check me-1"></i>Диагностика
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" class="vf-hero py-5">
+  <div class="container-xxl">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <h1 class="display-5 fw-semibold mb-3">
+          Вы вроде зарабатываете.<br class="d-none d-md-block">
+          Но не понимаете, можно ли сейчас принимать решения.
+        </h1>
+
+        <p class="lead vf-muted-on-dark mb-4">
+          Выручка растёт, клиентов больше, обороты увеличиваются. А внутри — тревога:
+          <span class="text-white">можно ли нанимать, расширяться, забирать деньги</span> — или это опасно?
+        </p>
+
+        <div class="d-flex gap-2 flex-wrap mb-3">
+          <a class="btn btn-lg btn-vf-primary" href="#diagnostic">
+            <i class="bi bi-calendar-check me-2"></i>Записаться на диагностику
+          </a>
+          <a class="btn btn-lg btn-vf-outline" href="#diagnostic">
+            <i class="bi bi-telegram me-2"></i>Написать в Telegram
+          </a>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <span class="badge rounded-pill vf-badge px-3 py-2"><i class="bi bi-clock me-1"></i>45 минут</span>
+          <span class="badge rounded-pill vf-badge px-3 py-2"><i class="bi bi-shield-check me-1"></i>без продаж</span>
+          <span class="badge rounded-pill vf-badge px-3 py-2"><i class="bi bi-hand-thumbs-up me-1"></i>без обязательств</span>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card vf-card-dark shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="vf-icon-pill" style="background: rgba(255,31,31,.12); border-color: rgba(255,31,31,.18);">
+                <i class="bi bi-exclamation-triangle"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Сейчас</div>
+                <div class="vf-muted-on-dark small">Цифры есть — опоры нет</div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="vf-icon-pill">
+                <i class="bi bi-compass"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">Диагностика</div>
+                <div class="vf-muted-on-dark small">Отделяем ощущения от фактов</div>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+              <div class="vf-icon-pill" style="background: rgba(255,31,31,.10); border-color: rgba(255,31,31,.16);">
+                <i class="bi bi-check2-circle"></i>
+              </div>
+              <div>
+                <div class="fw-semibold">После</div>
+                <div class="vf-muted-on-dark small">Появляется коридор решений</div>
+              </div>
+            </div>
+
+            <hr class="border-white border-opacity-10 my-4">
+
+            <div class="d-grid gap-2">
+              <a class="btn btn-vf-primary" href="#diagnostic">
+                <i class="bi bi-arrow-right-circle me-2"></i>Начать с диагностики
+              </a>
+              <a class="btn btn-vf-outline" href="#pricing">
+                Посмотреть тарифы SaaS
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="small vf-muted-on-dark mt-3">
+          *Визуал — заглушка. Можно заменить на вашу абстрактную иллюстрацию/рендер.
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- WHO IT'S FOR -->
+<section class="py-5">
+  <div class="container-xxl vf-anchor" id="who">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-6">
+        <h2 class="fw-semibold mb-2">Кому это обычно откликается</h2>
+        <p class="text-muted mb-0">
+          Мы работаем с владельцами бизнеса, которые уже зарабатывают, но не чувствуют финансовой опоры
+          и принимают решения «на ощущениях», потому что цифры не дают ясности.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex gap-3">
+              <div class="vf-icon-pill"><i class="bi bi-graph-up"></i></div>
+              <div>
+                <div class="fw-semibold">Есть рост</div>
+                <div class="text-muted small">Выручка растёт, но уверенности меньше</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex gap-3">
+              <div class="vf-icon-pill"><i class="bi bi-lightning-charge"></i></div>
+              <div>
+                <div class="fw-semibold">Решения на нервах</div>
+                <div class="text-muted small">Каждый шаг ощущается как риск</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex gap-3">
+              <div class="vf-icon-pill"><i class="bi bi-clipboard2-check"></i></div>
+              <div>
+                <div class="fw-semibold">Не нужны «советы»</div>
+                <div class="text-muted small">Нужна ясность по вашей ситуации</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex gap-3">
+              <div class="vf-icon-pill"><i class="bi bi-shop-window"></i></div>
+              <div>
+                <div class="fw-semibold">E-commerce / маркетплейсы</div>
+                <div class="text-muted small">Обороты есть — деньги «гуляют»</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex gap-3">
+              <div class="vf-icon-pill"><i class="bi bi-briefcase"></i></div>
+              <div>
+                <div class="fw-semibold">Сервисный бизнес</div>
+                <div class="text-muted small">Сложно держать маржу и кэш</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex gap-3">
+              <div class="vf-icon-pill"><i class="bi bi-people"></i></div>
+              <div>
+                <div class="fw-semibold">SMB без учёта</div>
+                <div class="text-muted small">Цифры есть, системы — нет</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SYMPTOMS -->
+<section class="py-5 vf-section-dark">
+  <div class="container-xxl vf-anchor" id="symptoms">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <h2 class="fw-semibold mb-2">Обычно это звучит так</h2>
+        <p class="vf-muted-on-dark mb-0">
+          Если ловите себя на этих мыслях — это не про «ошибки». Это про отсутствие управленческой картины.
+        </p>
+      </div>
+      <div class="col-lg-7">
+        <ul class="list-unstyled mb-0">
+          <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+            <i class="bi bi-dot fs-3"></i>
+            <div>Выручка выросла, а дышать стало тяжелее</div>
+          </li>
+          <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+            <i class="bi bi-dot fs-3"></i>
+            <div>Деньги в бизнесе есть, но забирать страшно</div>
+          </li>
+          <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+            <i class="bi bi-dot fs-3"></i>
+            <div>Прибыль «на бумаге» есть, а на счетах — напряжение</div>
+          </li>
+          <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+            <i class="bi bi-dot fs-3"></i>
+            <div>Каждое решение ощущается как риск</div>
+          </li>
+          <li class="d-flex gap-3 py-2 border-bottom border-white border-opacity-10">
+            <i class="bi bi-dot fs-3"></i>
+            <div>Кассовые разрывы возникают внезапно</div>
+          </li>
+          <li class="d-flex gap-3 py-2">
+            <i class="bi bi-dot fs-3"></i>
+            <div>Нет понимания: это временно или системно</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY THIS HAPPENS -->
+<section class="py-5">
+  <div class="container-xxl vf-anchor" id="why">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-6">
+        <h2 class="fw-semibold mb-2">Почему «формально всё нормально», а внутри тревожно</h2>
+        <p class="text-muted mb-0">
+          Большинство бизнесов живут в разрозненных цифрах. В итоге вы видите цифры, но не понимаете коридор безопасных решений.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-3">
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="fw-semibold mb-1">Бухгалтерия — для отчётности</div>
+            <div class="text-muted small">Сходится «по правилам», но не отвечает на вопрос «что можно делать дальше».</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="fw-semibold mb-1">Банк — для остатков</div>
+            <div class="text-muted small">Остаток на счёте не равен свободным деньгам и не показывает риски.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body">
+            <div class="fw-semibold mb-1">Таблицы — «как получится»</div>
+            <div class="text-muted small">Нету единой картины: ДДС, ОПиУ и Баланс не собраны в систему решений.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-secondary mt-4 mb-0">
+      <strong>Итог:</strong> решения принимаются «на ощущениях», потому что нет понятного <strong>коридора допустимых решений</strong>.
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSTIC + FORM -->
+<section class="py-5 bg-light">
+  <div class="container-xxl vf-anchor" id="diagnostic">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-7">
+        <h2 class="fw-semibold mb-2">Финансовая диагностика бизнеса</h2>
+        <p class="lead mb-3">
+          Это не консультация и не продажа услуги. Это разговор, после которого появляется ясность.
+        </p>
+
+        <div class="d-flex gap-2 flex-wrap mb-3">
+          <span class="badge text-bg-dark rounded-pill px-3 py-2"><i class="bi bi-clock me-1"></i>45 минут</span>
+          <span class="badge text-bg-dark rounded-pill px-3 py-2"><i class="bi bi-shield-check me-1"></i>без продаж</span>
+          <span class="badge text-bg-dark rounded-pill px-3 py-2"><i class="bi bi-hand-thumbs-up me-1"></i>без обязательств</span>
+        </div>
+
+        <h5 class="fw-semibold mt-4">Что делаем за 45 минут</h5>
+        <ul class="mb-3">
+          <li>Разбираем, где вы сейчас реально находитесь</li>
+          <li>Смотрим, где основные управленческие риски</li>
+          <li>Отделяем «ощущения» от фактов</li>
+          <li>Определяем, чего сейчас делать точно не стоит</li>
+        </ul>
+
+        <div class="alert alert-warning mb-0">
+          <strong>Важно:</strong> на диагностике мы не продаём услуги. Вы уходите с пониманием — что происходит и почему.
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4">
+            <h5 class="fw-semibold mb-3">Записаться на диагностику</h5>
+
+            <form>
+              <div class="mb-3">
+                <label class="form-label">Имя</label>
+                <input type="text" class="form-control" placeholder="Как к вам обращаться" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Telegram или телефон</label>
+                <input type="text" class="form-control" placeholder="@username или +7..." required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Коротко: что болит? (опционально)</label>
+                <textarea class="form-control" rows="3" placeholder="Например: выручка выросла, а денег меньше по ощущениям"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-vf-primary w-100">
+                <i class="bi bi-send me-2"></i>Отправить заявку
+              </button>
+
+              <div class="form-text mt-3">
+                Нажимая «Отправить», вы соглашаетесь с <a href="#legal">политикой обработки данных</a>.
+              </div>
+            </form>
+
+            <hr class="my-4">
+
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-telegram"></i>
+              <div class="small text-muted">
+                Или напишите в Telegram — быстрее: <a href="#" class="text-decoration-none">@vashfindir</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTPUT / WHAT YOU GET -->
+<section class="py-5">
+  <div class="container-xxl vf-anchor" id="outcome">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-7">
+        <h2 class="fw-semibold mb-2">С чем вы уйдёте</h2>
+        <p class="text-muted mb-0">
+          После диагностики у вас появится ясность — что происходит, где риск, и можно ли сейчас принимать решения спокойно.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-3 g-lg-4 mt-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex gap-3">
+          <div class="vf-icon-pill"><i class="bi bi-eye"></i></div>
+          <div>
+            <div class="fw-semibold">Понятная картина</div>
+            <div class="text-muted small">Не «много цифр», а что они значат для решений.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex gap-3">
+          <div class="vf-icon-pill"><i class="bi bi-exclamation-circle"></i></div>
+          <div>
+            <div class="fw-semibold">Зоны риска</div>
+            <div class="text-muted small">Что именно мешает принимать решения без тревоги.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex gap-3">
+          <div class="vf-icon-pill"><i class="bi bi-cash-coin"></i></div>
+          <div>
+            <div class="fw-semibold">Про «забирать деньги»</div>
+            <div class="text-muted small">Понимание: можно ли сейчас и почему.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex gap-3">
+          <div class="vf-icon-pill"><i class="bi bi-diagram-3"></i></div>
+          <div>
+            <div class="fw-semibold">Система или рост</div>
+            <div class="text-muted small">Проблема в процессах или в масштабе.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="d-flex gap-3">
+          <div class="vf-icon-pill"><i class="bi bi-arrow-right"></i></div>
+          <div>
+            <div class="fw-semibold">Следующий шаг</div>
+            <div class="text-muted small">Без давления, без обязательств.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TWO PATHS -->
+<section class="py-5 bg-light">
+  <div class="container-xxl vf-anchor" id="paths">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-8">
+        <h2 class="fw-semibold mb-2">Дальше — два возможных пути</h2>
+        <p class="text-muted mb-0">
+          Можно выстроить опору через сервис и самим держать картину. Или подключить финдиректора как живую опору в решениях.
+        </p>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-3">
+      <div class="col-lg-6 vf-anchor" id="saas">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+              <h3 class="h5 fw-semibold mb-0">SaaS-сервис «Ваш Финдир»</h3>
+              <span class="badge text-bg-dark rounded-pill">для самостоятельного контроля</span>
+            </div>
+            <p class="text-muted">
+              Для тех, кто хочет сам понимать цифры и принимать решения опираясь на систему.
+            </p>
+
+            <ul class="small mb-4">
+              <li>ДДС</li>
+              <li>ОПиУ</li>
+              <li>Баланс</li>
+              <li>Кассовый календарь (БДДС)</li>
+              <li>Интеграции с банками и маркетплейсами</li>
+            </ul>
+
+            <a class="btn btn-outline-primary" href="#pricing">
+              <i class="bi bi-box-arrow-in-right me-2"></i>Посмотреть SaaS и тарифы
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 vf-anchor" id="outsourced-cfo">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 mb-2">
+              <h3 class="h5 fw-semibold mb-0">Финдиректор на аутсорсе</h3>
+              <span class="badge text-bg-warning rounded-pill">через диагностику</span>
+            </div>
+            <p class="text-muted">
+              Для тех, кому нужна живая опора: контроль, прогноз, участие в решениях — спокойствие вместо тревоги.
+            </p>
+
+            <ul class="small mb-4">
+              <li>Контроль финансов и рисков</li>
+              <li>Прогнозирование и план</li>
+              <li>Поддержка ключевых решений</li>
+              <li>Разовые услуги: онбординг, финмодель, консультации</li>
+            </ul>
+
+            <a class="btn btn-vf-primary" href="#diagnostic">
+              <i class="bi bi-calendar-check me-2"></i>Записаться на диагностику
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="py-5">
+  <div class="container-xxl vf-anchor" id="pricing">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-8">
+        <h2 class="fw-semibold mb-2">SaaS — простая логика тарифов</h2>
+        <p class="text-muted mb-0">
+          Без скрытых условий и сложных конфигураций: Start — чтобы навести порядок; Pro — чтобы управлять; Business — для растущего бизнеса.
+        </p>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body p-4">
+            <h3 class="h5 fw-semibold">Start</h3>
+            <p class="text-muted small">Чтобы навести порядок</p>
+            <ul class="list-unstyled small mb-4">
+              <li><i class="bi bi-check2 me-2"></i>Базовый ДДС</li>
+              <li><i class="bi bi-check2 me-2"></i>Структура доходов/расходов</li>
+              <li><i class="bi bi-check2 me-2"></i>Минимальная аналитика</li>
+            </ul>
+            <a class="btn btn-outline-primary w-100" href="#diagnostic">Попробовать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-lg border border-primary">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between">
+              <h3 class="h5 fw-semibold mb-0">Pro</h3>
+              <span class="badge bg-primary rounded-pill">Рекомендуем</span>
+            </div>
+            <p class="text-muted small mt-2">Чтобы управлять и принимать решения</p>
+            <ul class="list-unstyled small mb-4">
+              <li><i class="bi bi-check2 me-2"></i>ДДС + кассовый календарь</li>
+              <li><i class="bi bi-check2 me-2"></i>ОПиУ для управленческих решений</li>
+              <li><i class="bi bi-check2 me-2"></i>Регулярные отчёты и фильтры</li>
+            </ul>
+            <a class="btn btn-primary w-100" href="#diagnostic">Выбрать</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body p-4">
+            <h3 class="h5 fw-semibold">Business</h3>
+            <p class="text-muted small">Для растущего бизнеса</p>
+            <ul class="list-unstyled small mb-4">
+              <li><i class="bi bi-check2 me-2"></i>Баланс и контроль структуры</li>
+              <li><i class="bi bi-check2 me-2"></i>Интеграции (банки/маркетплейсы)</li>
+              <li><i class="bi bi-check2 me-2"></i>Командная работа</li>
+            </ul>
+            <a class="btn btn-outline-primary w-100" href="#diagnostic">Обсудить</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-light border mt-4 mb-0">
+      <strong>Не уверены, что выбрать?</strong> Начните с диагностики — мы разложим по вашей ситуации, что сейчас важно.
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="py-5 bg-light">
+  <div class="container-xxl vf-anchor" id="trust">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <h2 class="fw-semibold mb-2">Почему нам доверяют</h2>
+        <p class="text-muted mb-0">
+          Мы не учим «как правильно». Мы помогаем понять, что происходит именно в вашем бизнесе — и где риск.
+          Наш фокус — не отчёты, а управленческие решения: когда можно расти, а когда лучше остановиться.
+        </p>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <div class="fw-semibold">Трезво</div>
+                <div class="text-muted small">Без мотивации и инфобиза</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <div class="fw-semibold">По делу</div>
+                <div class="text-muted small">Только то, что влияет на решения</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <div class="fw-semibold">Без давления</div>
+                <div class="text-muted small">Диагностика отдельно от услуг</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-5">
+  <div class="container-xxl vf-anchor" id="faq">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-7">
+        <h2 class="fw-semibold mb-2">FAQ</h2>
+        <p class="text-muted mb-0">Коротко снимаем главные страхи — без лишних слов.</p>
+      </div>
+    </div>
+
+    <div class="accordion mt-3" id="faqAcc">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1" aria-expanded="true" aria-controls="a1">
+            Будут ли мне что-то продавать на диагностике?
+          </button>
+        </h2>
+        <div id="a1" class="accordion-collapse collapse show" aria-labelledby="q1" data-bs-parent="#faqAcc">
+          <div class="accordion-body">
+            Нет. Диагностика — отдельный продукт. Наша задача — дать ясность, а не закрыть вас на сделку.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2" aria-expanded="false" aria-controls="a2">
+            Нужно ли готовить отчёты и таблицы?
+          </button>
+        </h2>
+        <div id="a2" class="accordion-collapse collapse" aria-labelledby="q2" data-bs-parent="#faqAcc">
+          <div class="accordion-body">
+            Нет. Работаем с тем, что уже есть: банк, текущие цифры, простая картина бизнеса. Задача — понять риск и решения.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3" aria-expanded="false" aria-controls="a3">
+            Подойдёт ли это малому бизнесу?
+          </button>
+        </h2>
+        <div id="a3" class="accordion-collapse collapse" aria-labelledby="q3" data-bs-parent="#faqAcc">
+          <div class="accordion-body">
+            Да. Особенно если тревога уже появилась: рост есть, а ясности нет.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q4">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4" aria-expanded="false" aria-controls="a4">
+            Если у меня нет финдиректора и «идеальной» бухгалтерии?
+          </button>
+        </h2>
+        <div id="a4" class="accordion-collapse collapse" aria-labelledby="q4" data-bs-parent="#faqAcc">
+          <div class="accordion-body">
+            Это нормально. Так приходит большинство. Мы начинаем с реальности, а не с идеальных условий.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="q5">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a5" aria-expanded="false" aria-controls="a5">
+            Что если мне нужен «не сервис», а человек?
+          </button>
+        </h2>
+        <div id="a5" class="accordion-collapse collapse" aria-labelledby="q5" data-bs-parent="#faqAcc">
+          <div class="accordion-body">
+            Тогда вам подойдёт финдиректор на аутсорсе. Вход всё равно через диагностику — чтобы не обещать лишнего и не гадать.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="py-5 vf-section-dark">
+  <div class="container-xxl text-center">
+    <h2 class="fw-semibold mb-2">Если сейчас нет ощущения опоры — это нормально</h2>
+    <p class="vf-muted-on-dark mb-4">
+      Ненормально — продолжать принимать решения вслепую.
+    </p>
+    <div class="d-flex justify-content-center gap-2 flex-wrap">
+      <a class="btn btn-lg btn-vf-primary" href="#diagnostic">
+        <i class="bi bi-calendar-check me-2"></i>Записаться на диагностику
+      </a>
+      <a class="btn btn-lg btn-vf-outline" href="#diagnostic">
+        <i class="bi bi-telegram me-2"></i>Написать в Telegram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- LEGAL + FOOTER -->
+<section class="py-4" id="legal">
+  <div class="container-xxl">
+    <div class="row g-3 align-items-center">
+      <div class="col-lg-8">
+        <div class="small text-muted">
+          Юридические ссылки (заглушки): <a href="#" class="text-decoration-none">Политика конфиденциальности</a> ·
+          <a href="#" class="text-decoration-none">Согласие на обработку данных</a> ·
+          <a href="#" class="text-decoration-none">Оферта SaaS</a>
+        </div>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a href="#top" class="small text-decoration-none">Наверх ↑</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="vf-footer py-4">
+  <div class="container-xxl">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6">
+        <div class="fw-semibold text-white">Ваш Финдир</div>
+        <div class="small">SaaS для финансовой опоры · Финансовый директор на аутсорсе</div>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <div class="small">Контакт: <a class="text-decoration-none" href="#">@vashfindir</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
