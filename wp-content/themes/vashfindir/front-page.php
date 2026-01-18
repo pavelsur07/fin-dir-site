@@ -245,6 +245,50 @@ get_header();
 
     <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
 
+    <!-- TRUST -->
+    <section class="py-5 bg-primary-subtle">
+        <div class="container-xxl vf-anchor" id="trust">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="mb-2">Почему нам доверяют</h2>
+                    <p class="text-muted mb-0">
+                        Мы не учим «как правильно». Мы помогаем понять, что происходит именно в вашем бизнесе — и где риск.
+                        Наш фокус — не отчёты, а управленческие решения: когда можно расти, а когда лучше остановиться.
+                    </p>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="fw-semibold">Трезво</div>
+                                    <div class="text-muted small">Без мотивации и инфобиза</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="fw-semibold">По делу</div>
+                                    <div class="text-muted small">Только то, что влияет на решения</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="fw-semibold">Без давления</div>
+                                    <div class="text-muted small">Диагностика отдельно от услуг</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <?php get_template_part('template-parts/landing/sections'); ?>
 </main>
