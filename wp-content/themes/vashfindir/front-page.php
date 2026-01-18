@@ -107,7 +107,7 @@ get_header();
     </section>
 
     <!-- WHY THIS HAPPENS -->
-    <section class="py-5 bg-primary-subtle">
+    <section class="py-5 mb-4 bg-primary-subtle">
         <div class="container-xxl vf-anchor" id="why">
             <div class="vf-control__head">
                 <h2 class="section-title vf-control__title">Почему «формально всё нормально», а внутри тревожно</h2>
@@ -148,8 +148,6 @@ get_header();
             </div>
         </div>
     </section>
-
-    <?php get_template_part('template-parts/landing/sections'); ?>
 
     <?php
     // Home CTA: reusable lead capture form with modal (ref section id="lead-form-2")
@@ -246,6 +244,9 @@ get_header();
     ?>
 
     <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
+
+
+    <?php get_template_part('template-parts/landing/sections'); ?>
 </main>
 
 <?php get_footer(); ?>

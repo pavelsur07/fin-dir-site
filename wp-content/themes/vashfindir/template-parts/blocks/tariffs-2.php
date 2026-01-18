@@ -10,85 +10,82 @@ if (!defined('ABSPATH')) {
         <div class="vf-pr2-head">
             <h2 class="section-title vf-control__title">Тарифы</h2>
             <p class="section-subtitle vf-faq__subtitle">Выберите роль и период оплаты — мы покажем нужные смыслы, а цены пересчитаются автоматически.</p>
-                <div aria-label="Переключатели тарифов" class="vf-pr2-controls">
-                    <div aria-label="Аудитория" class="vf-seg" role="group">
-                        <button aria-pressed="true" class="vf-seg-btn" data-audience="owner" type="button">Я владелец бизнеса</button>
-                        <button aria-pressed="false" class="vf-seg-btn" data-audience="cfo" type="button">Я CFO / партнёр</button>
-                    </div>
-                    <div aria-label="Период оплаты" class="vf-seg" role="group">
-                        <button aria-pressed="true" class="vf-seg-btn" data-term="1" type="button">1 мес.</button>
-                        <button aria-pressed="false" class="vf-seg-btn" data-term="3" type="button">3 мес.</button>
-                        <button aria-pressed="false" class="vf-seg-btn" data-term="6" type="button">6 мес.</button>
-                        <button aria-pressed="false" class="vf-seg-btn" data-term="12" type="button">12 мес.</button>
-                    </div>
+            <div aria-label="Переключатели тарифов" class="vf-pr2-controls">
+                <div aria-label="Аудитория" class="vf-seg" role="group">
+                    <button aria-pressed="true" class="vf-seg-btn" data-audience="owner" type="button">Я владелец бизнеса</button>
+                    <button aria-pressed="false" class="vf-seg-btn" data-audience="cfo" type="button">Я CFO / партнёр</button>
+                </div>
+                <div aria-label="Период оплаты" class="vf-seg" role="group">
+                    <button aria-pressed="true" class="vf-seg-btn" data-term="1" type="button">1 мес.</button>
+                    <button aria-pressed="false" class="vf-seg-btn" data-term="3" type="button">3 мес.</button>
+                    <button aria-pressed="false" class="vf-seg-btn" data-term="6" type="button">6 мес.</button>
+                    <button aria-pressed="false" class="vf-seg-btn" data-term="12" type="button">12 мес.</button>
                 </div>
             </div>
-            <div aria-label="Карточки тарифов" class="vf-pr2-grid" id="vf-pr2-cards"></div>
-            <div class="vf-pr2-cfo-extra" data-open="false" hidden="" id="vf-pr2-cfo-extra">
-            <div aria-expanded="false" class="vf-pr2-cfo-extra__head" role="button" tabindex="0">
-            <h3 class="vf-pr2-cfo-extra__title">Показать все фичи (для CFO)</h3>
-            <div aria-hidden="true" class="vf-badge-save">Сравнение</div>
-            </div>
-            <div class="vf-pr2-cfo-extra__body">
-            <table aria-label="Сравнение функций" class="vf-pr2-cfo-extra__table">
-            <thead>
-            <tr>
-            <th style="width:48%;">Функция</th>
-            <th>Контроль денег</th>
-            <th>Управление прибылью</th>
-            <th>Финансовая система</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td>Банки + авторазнесение</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            <tr>
-            <td>Платежный календарь + заявки</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            <tr>
-            <td>PnL / рентабельность</td>
-            <td class="vf-no">—</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            <tr>
-            <td>Баланс / обязательства</td>
-            <td class="vf-no">—</td>
-            <td class="vf-no">—</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            <tr>
-            <td>Интеграции 1С / МойСклад (по мере готовности)</td>
-            <td class="vf-no">—</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            <tr>
-            <td>AI-инсайты / сценарии (по мере готовности)</td>
-            <td class="vf-no">—</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            <tr>
-            <td>Telegram-управление</td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
-            </tr>
-            </tbody>
-            </table>
-            </div>
-            </div>
-            <p class="text-muted mt-3 mb-0" style="font-size:12px;">
-                  Цены в демо пересчитываются на лету. Скидки/коэффициенты задаются конфигом, без правок верстки.
-                </p>
+        </div>
+        <div aria-label="Карточки тарифов" class="vf-pr2-grid" id="vf-pr2-cards"></div>
+        <div class="vf-pr2-cfo-extra" data-open="false" hidden="" id="vf-pr2-cfo-extra">
+        <div aria-expanded="false" class="vf-pr2-cfo-extra__head" role="button" tabindex="0">
+        <h3 class="vf-pr2-cfo-extra__title">Показать все фичи (для CFO)</h3>
+        <div aria-hidden="true" class="vf-badge-save">Сравнение</div>
+        </div>
+        <div class="vf-pr2-cfo-extra__body">
+        <table aria-label="Сравнение функций" class="vf-pr2-cfo-extra__table">
+        <thead>
+        <tr>
+        <th style="width:48%;">Функция</th>
+        <th>Контроль денег</th>
+        <th>Управление прибылью</th>
+        <th>Финансовая система</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Банки + авторазнесение</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        <tr>
+        <td>Платежный календарь + заявки</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        <tr>
+        <td>PnL / рентабельность</td>
+        <td class="vf-no">—</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        <tr>
+        <td>Баланс / обязательства</td>
+        <td class="vf-no">—</td>
+        <td class="vf-no">—</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        <tr>
+        <td>Интеграции 1С / МойСклад (по мере готовности)</td>
+        <td class="vf-no">—</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        <tr>
+        <td>AI-инсайты / сценарии (по мере готовности)</td>
+        <td class="vf-no">—</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        <tr>
+        <td>Telegram-управление</td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        <td class="vf-ok"><i class="bi bi-check-circle-fill"></i></td>
+        </tr>
+        </tbody>
+        </table>
+        </div>
+        </div>
     </div>
     <script>
       (function(){
