@@ -107,7 +107,7 @@ get_header();
     </section>
 
     <!-- WHY THIS HAPPENS -->
-    <section class="py-5 mb-4 bg-primary-subtle">
+    <section class="py-5 mb-5 bg-primary-subtle">
         <div class="container-xxl vf-anchor" id="why">
             <div class="vf-control__head">
                 <h2 class="section-title vf-control__title">Почему «формально всё нормально», а внутри тревожно</h2>
@@ -154,7 +154,7 @@ get_header();
     get_template_part('template-parts/landing/lead-capture');
     ?>
     <!-- OUTPUT / WHAT YOU GET -->
-    <section class="py-5">
+    <section class="py-5 bg-primary-subtle mt-5">
         <div class="container-xxl vf-anchor" id="outcome">
             <div class="vf-control__head">
                 <h2 class="section-title vf-control__title">С чем вы уйдёте</h2>
