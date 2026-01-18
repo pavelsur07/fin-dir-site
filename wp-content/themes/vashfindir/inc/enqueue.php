@@ -7,8 +7,16 @@ if (!defined('ABSPATH')) {
 add_action('wp_enqueue_scripts', function () {
     $ver = wp_get_theme()->get('Version');
 
-    // базовые стили
-    wp_enqueue_style('vashfindir-main', get_template_directory_uri() . '/assets/css/main.css', [], $ver);
+    // Bootstrap 5 (нужен для сетки и базовых компонентов)
+    wp_enqueue_style(
+        'bootstrap',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
+        [],
+        '5.3.3'
+    );
+
+    // базовые стили (идут после Bootstrap для кастомизации)
+    wp_enqueue_style('vashfindir-main', get_template_directory_uri() . '/assets/css/main.css', ['bootstrap'], $ver);
 
     $design_system_template = '';
     $qo_id = get_queried_object_id();
@@ -44,5 +52,14 @@ add_action('wp_enqueue_scripts', function () {
     // blog.css можно подключить позже, когда заведёте archive/single
     // if (is_home() || is_archive() || is_single()) { ... }
 
-    wp_enqueue_script('vashfindir-main', get_template_directory_uri() . '/assets/js/main.js', [], $ver, true);
+    // Bootstrap JS bundle (нужен для компонентов: модалка, offcanvas и т.п.)
+    wp_enqueue_script(
+        'bootstrap',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+        [],
+        '5.3.3',
+        true
+    );
+
+    wp_enqueue_script('vashfindir-main', get_template_directory_uri() . '/assets/js/main.js', ['bootstrap'], $ver, true);
 });
