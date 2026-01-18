@@ -245,6 +245,48 @@ get_header();
 
     <?php get_template_part('template-parts/blocks/tariffs-2'); ?>
 
+    <section class="section" id="block-100">
+        <div class="container">
+            <div class="card-e p-4">
+                <h2>Демо блоков в сетке (enterprise)</h2>
+                <p class="lead prose">Ниже — пример “дашбордных” плиток: короткие метрики + пояснение. Это показывает ширину, сетку и плотность контента.</p>
+                <div class="row g-3 mt-3">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="tile">
+                            <div class="k">Cash</div>
+                            <div class="v">1 240 000 ₽</div>
+                            <div class="h">Остаток на счетах на сегодня</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="tile">
+                            <div class="k">Forecast</div>
+                            <div class="v">+310 000 ₽</div>
+                            <div class="h">Прогноз на 30 дней</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="tile">
+                            <div class="k">Risk</div>
+                            <div class="v">Средний</div>
+                            <div class="h">Вероятность разрыва 15–30%</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="tile">
+                            <div class="k">Plan</div>
+                            <div class="v">12 платежей</div>
+                            <div class="h">Запланировано на неделю</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 small">
+                    Контейнер: <code>1140px</code> · Карточка: радиус <code>6px</code> · Шрифт: системный стек.
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- TRUST -->
     <section class="py-5 bg-primary-subtle">
         <div class="container-xxl vf-anchor" id="trust">
