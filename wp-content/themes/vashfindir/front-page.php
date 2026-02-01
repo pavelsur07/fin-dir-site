@@ -4,7 +4,40 @@ get_header();
 ?>
 
 <main class="main-content" role="main">
-    <?php get_template_part('template-parts/landing/hero-front-page'); ?>
+    <!-- Hero Main -->
+    <section class="hero-section mb-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-7 mb-5 mb-lg-0">
+                    <div class="mb-3">
+                    <h1 class="vf-hero4__kicker">
+                        Автоматизация управленческого учета для малого и среднего бизнеса.
+                    </h1>
+                    </div>
+                    <p class="vf-hero4__title">
+                        Знайте свою чистую прибыль и <span style="color: #FF1F1F;">безопасно выводите</span> дивиденды
+                    </p>
+                    <p class="lead mb-5">
+                        Сервис автоматически собирает данные из ваших банков и 1С CRM в наглядные отчеты (P&L, CashFlow, Баланс). Видьте рентабельность бизнеса в режиме Live, а не в конце месяца.
+                    </p>
+
+                    <div class="d-flex flex-wrap align-items-center gap-4">
+                        <button class="vf-btn vf-btn--primary">Попробовать бесплатно</button>
+                        <div class="small text-muted">
+                            14 дней полного доступа.<br>
+                            Банковская карта не нужна.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-lg-5 text-center">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/hero/mobile-hero-home.jpg'); ?>" alt="Ваш Финдир" class="hero-image-fixed img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <?php /*get_template_part('template-parts/landing/hero-front-page'); */?>
 
     <!-- WHO IT'S FOR -->
     <section class="vf-control vf-section-pad-lg">

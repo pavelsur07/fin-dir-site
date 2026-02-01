@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>ProjectDirection Picker Widget (Tabler)</title>
+
+    <!-- Tabler (Bootstrap 5-based) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <!-- FIX: Bootstrap bundle (нужен для Collapse/Modal и объекта bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Tabler JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+
+    <!-- Минимальные стили: компактные строки + фикс высота окна + скролл -->
+    <style>
+        /* 1) Фиксированная высота окна дерева + 2) скролл содержимого */
+        .pd-tree-body{
+            height:520px;          /* фиксированная высота окна выбора */
+            overflow:auto;         /* прокрутка внутри окна */
+        }
+
+        /* 4) Визуально уменьшаем высоту строк (минимальные изменения) */
+        .pd-tree .list-group-item{ padding-top:.25rem; padding-bottom:.25rem; }
+        .pd-tree .tree-row{ cursor:pointer; }
+        .pd-tree .tree-selected{ outline:2px solid rgba(32,107,196,.35); border-radius:.5rem; }
+        .pd-tree .tree-badge{ font-variant-numeric: tabular-nums; }
+        .pd-tree .tree-toggle.btn{ padding:.125rem .35rem; }
+        .pd-tree .tree-icon{ width:18px; display:inline-flex; justify-content:center; }
+        .pd-tree .tree-label{ line-height:1.2; }
+        .pd-tree .tree-meta{ line-height:1.1; }
+    </style>
+</head>
+
+<body class="bg-muted">
+<div class="page">
+    <div class="page-wrapper">
+
+        <div class="page-header">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <div class="page-pretitle">Типовой виджет</div>
+                        <h2 class="page-title">ProjectDirection Picker (для форм)</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-body">
+            <div class="container-xl">
+
+                <!-- ====== DEMO FORM (как типовой виджет в форме) ====== -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Пример поля формы</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-8">
+                                <label class="form-label">Проект (ProjectDirection)</label>
+
+                                <!-- Видимая часть поля -->
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="ti ti-tree"></i></span>
+                                    <input id="pdDisplay" type="text" class="form-control" placeholder="Не выбрано" readonly>
+                                    <button id="pdOpen" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#pdModal">
+                                        <i class="ti ti-list-tree me-1"></i> Выбрать
+                                    </button>
+                                    <button id="pdClearInline" class="btn btn-outline-secondary" type="button" title="Очистить">
+                                        <i class="ti ti-x"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Скрытое значение для submit -->
+                                <input id="pdValue" type="hidden" name="projectDirection" value="">
+
+                                <div class="form-hint mt-2">
+                                    В Symfony: подставь это значение (ID) в реальное поле <code>projectDirection</code>.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== MODAL: TREE PICKER ====== -->
+                <div class="modal modal-blur fade" id="pdModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Выбор проекта</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body p-0">
+                                <!-- Панель управления -->
+                                <div class="p-3 border-bottom">
+                                    <div class="d-flex gap-2 align-items-center flex-wrap">
+                                        <div class="input-icon flex-grow-1" style="min-width: 240px;">
+                                            <span class="input-icon-addon"><i class="ti ti-search"></i></span>
+                                            <input id="pdSearch" type="text" class="form-control" placeholder="Поиск…">
+                                        </div>
+
+                                        <div class="btn-list ms-auto">
+                                            <button id="pdExpandAll" class="btn btn-outline-secondary" type="button">
+                                                <i class="ti ti-square-plus me-1"></i> Развернуть все
+                                            </button>
+                                            <button id="pdCollapseAll" class="btn btn-outline-secondary" type="button">
+                                                <i class="ti ti-square-minus me-1"></i> Свернуть все
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex gap-3 mt-2 flex-wrap">
+                                        <label class="form-check form-switch m-0">
+                                            <input id="pdAllowGroupSelect" class="form-check-input" type="checkbox">
+                                            <span class="form-check-label">Разрешить выбирать группы</span>
+                                        </label>
+
+                                        <span class="text-secondary">
+                      Группа: <span class="badge bg-secondary-lt">GROUP</span> • Элемент: <span class="badge bg-azure-lt">ITEM</span>
+                    </span>
+                                    </div>
+                                </div>
+
+                                <!-- 1) фикс высота + 2) скролл внутри -->
+                                <div class="pd-tree-body p-2">
+                                    <div id="pdTreeRoot" class="pd-tree list-group list-group-flush">
+
+                                        <!-- ===== Пример данных (замени на реальные из проекта) ===== -->
+
+                                        <!-- GROUP: Автотранспорт -->
+                                        <div class="list-group-item">
+                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                 data-node-type="group" data-node-id="auto" data-node-label="Автотранспорт">
+                                                <button class="btn btn-sm btn-ghost-secondary tree-toggle" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#pd-node-auto"
+                                                        aria-expanded="true" aria-controls="pd-node-auto">
+                                                    <i class="ti ti-chevron-down"></i>
+                                                </button>
+
+                                                <span class="tree-icon"><i class="ti ti-folder text-secondary"></i></span>
+                                                <div class="flex-grow-1 tree-label">
+                                                    <div class="fw-semibold">Автотранспорт</div>
+                                                    <div class="text-secondary small tree-meta">Группа</div>
+                                                </div>
+
+                                                <span class="badge bg-secondary-lt tree-badge">GROUP</span>
+                                            </div>
+
+                                            <div id="pd-node-auto" class="collapse show mt-1">
+                                                <div class="ps-4">
+                                                    <div class="list-group list-group-flush">
+
+                                                        <!-- GROUP: Машина 1 -->
+                                                        <div class="list-group-item px-0">
+                                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                                 data-node-type="group" data-node-id="auto.car1"
+                                                                 data-node-label="Машина 1" data-node-parent="auto">
+                                                                <button class="btn btn-sm btn-ghost-secondary tree-toggle" type="button"
+                                                                        data-bs-toggle="collapse" data-bs-target="#pd-node-auto-car1"
+                                                                        aria-expanded="true" aria-controls="pd-node-auto-car1">
+                                                                    <i class="ti ti-chevron-down"></i>
+                                                                </button>
+
+                                                                <span class="tree-icon"><i class="ti ti-folder text-secondary"></i></span>
+                                                                <div class="flex-grow-1 tree-label">
+                                                                    <div class="fw-semibold">Машина 1</div>
+                                                                    <div class="text-secondary small tree-meta">Группа</div>
+                                                                </div>
+
+                                                                <span class="badge bg-secondary-lt tree-badge">GROUP</span>
+                                                            </div>
+
+                                                            <div id="pd-node-auto-car1" class="collapse show mt-1">
+                                                                <div class="ps-4">
+                                                                    <div class="list-group list-group-flush">
+
+                                                                        <!-- ITEM: Водитель 1 -->
+                                                                        <div class="list-group-item px-0">
+                                                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                                                 data-node-type="item" data-node-id="auto.car1.driver1"
+                                                                                 data-node-label="Водитель 1" data-node-parent="auto.car1">
+                                        <span class="btn btn-sm btn-ghost-secondary opacity-0" style="pointer-events:none;">
+                                          <i class="ti ti-chevron-down"></i>
+                                        </span>
+
+                                                                                <span class="tree-icon"><i class="ti ti-file-description text-azure"></i></span>
+                                                                                <div class="flex-grow-1 tree-label">
+                                                                                    <div>Водитель 1</div>
+                                                                                    <div class="text-secondary small tree-meta">Элемент</div>
+                                                                                </div>
+
+                                                                                <span class="badge bg-azure-lt tree-badge">ITEM</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- ITEM: Водитель 2 -->
+                                                                        <div class="list-group-item px-0">
+                                                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                                                 data-node-type="item" data-node-id="auto.car1.driver2"
+                                                                                 data-node-label="Водитель 2" data-node-parent="auto.car1">
+                                        <span class="btn btn-sm btn-ghost-secondary opacity-0" style="pointer-events:none;">
+                                          <i class="ti ti-chevron-down"></i>
+                                        </span>
+
+                                                                                <span class="tree-icon"><i class="ti ti-file-description text-azure"></i></span>
+                                                                                <div class="flex-grow-1 tree-label">
+                                                                                    <div>Водитель 2</div>
+                                                                                    <div class="text-secondary small tree-meta">Элемент</div>
+                                                                                </div>
+
+                                                                                <span class="badge bg-azure-lt tree-badge">ITEM</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- GROUP: Одежда -->
+                                        <div class="list-group-item">
+                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                 data-node-type="group" data-node-id="cloth" data-node-label="Одежда">
+                                                <button class="btn btn-sm btn-ghost-secondary tree-toggle" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#pd-node-cloth"
+                                                        aria-expanded="true" aria-controls="pd-node-cloth">
+                                                    <i class="ti ti-chevron-down"></i>
+                                                </button>
+
+                                                <span class="tree-icon"><i class="ti ti-folder text-secondary"></i></span>
+                                                <div class="flex-grow-1 tree-label">
+                                                    <div class="fw-semibold">Одежда</div>
+                                                    <div class="text-secondary small tree-meta">Группа</div>
+                                                </div>
+
+                                                <span class="badge bg-secondary-lt tree-badge">GROUP</span>
+                                            </div>
+
+                                            <div id="pd-node-cloth" class="collapse show mt-1">
+                                                <div class="ps-4">
+                                                    <div class="list-group list-group-flush">
+
+                                                        <!-- GROUP: Легинсы -->
+                                                        <div class="list-group-item px-0">
+                                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                                 data-node-type="group" data-node-id="cloth.leggings"
+                                                                 data-node-label="Легинсы" data-node-parent="cloth">
+                                                                <button class="btn btn-sm btn-ghost-secondary tree-toggle" type="button"
+                                                                        data-bs-toggle="collapse" data-bs-target="#pd-node-cloth-leggings"
+                                                                        aria-expanded="true" aria-controls="pd-node-cloth-leggings">
+                                                                    <i class="ti ti-chevron-down"></i>
+                                                                </button>
+
+                                                                <span class="tree-icon"><i class="ti ti-folder text-secondary"></i></span>
+                                                                <div class="flex-grow-1 tree-label">
+                                                                    <div class="fw-semibold">Легинсы</div>
+                                                                    <div class="text-secondary small tree-meta">Группа</div>
+                                                                </div>
+
+                                                                <span class="badge bg-secondary-lt tree-badge">GROUP</span>
+                                                            </div>
+
+                                                            <div id="pd-node-cloth-leggings" class="collapse show mt-1">
+                                                                <div class="ps-4">
+                                                                    <div class="list-group list-group-flush">
+
+                                                                        <!-- ITEM: Модель 1 -->
+                                                                        <div class="list-group-item px-0">
+                                                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                                                 data-node-type="item" data-node-id="cloth.leggings.model1"
+                                                                                 data-node-label="Модель 1" data-node-parent="cloth.leggings">
+                                        <span class="btn btn-sm btn-ghost-secondary opacity-0" style="pointer-events:none;">
+                                          <i class="ti ti-chevron-down"></i>
+                                        </span>
+
+                                                                                <span class="tree-icon"><i class="ti ti-file-description text-azure"></i></span>
+                                                                                <div class="flex-grow-1 tree-label">
+                                                                                    <div>Модель 1</div>
+                                                                                    <div class="text-secondary small tree-meta">Элемент</div>
+                                                                                </div>
+
+                                                                                <span class="badge bg-azure-lt tree-badge">ITEM</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <!-- ITEM: Модель 2 -->
+                                                                        <div class="list-group-item px-0">
+                                                                            <div class="d-flex align-items-center gap-2 tree-row"
+                                                                                 data-node-type="item" data-node-id="cloth.leggings.model2"
+                                                                                 data-node-label="Модель 2" data-node-parent="cloth.leggings">
+                                        <span class="btn btn-sm btn-ghost-secondary opacity-0" style="pointer-events:none;">
+                                          <i class="ti ti-chevron-down"></i>
+                                        </span>
+
+                                                                                <span class="tree-icon"><i class="ti ti-file-description text-azure"></i></span>
+                                                                                <div class="flex-grow-1 tree-label">
+                                                                                    <div>Модель 2</div>
+                                                                                    <div class="text-secondary small tree-meta">Элемент</div>
+                                                                                </div>
+
+                                                                                <span class="badge bg-azure-lt tree-badge">ITEM</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- ===== /пример данных ===== -->
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="me-auto text-secondary small">
+                                    Выбрано: <span id="pdSelectedPreview">—</span>
+                                </div>
+
+                                <button type="button" class="btn btn-outline-secondary" id="pdClear">
+                                    <i class="ti ti-x me-1"></i> Очистить
+                                </button>
+
+                                <button type="button" class="btn btn-primary" id="pdApply">
+                                    <i class="ti ti-check me-1"></i> Применить
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalEl = document.getElementById('pdModal');
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+        const treeRoot = document.getElementById('pdTreeRoot');
+        const search = document.getElementById('pdSearch');
+        const allowGroupSelect = document.getElementById('pdAllowGroupSelect');
+
+        const btnExpandAll = document.getElementById('pdExpandAll');
+        const btnCollapseAll = document.getElementById('pdCollapseAll');
+
+        const btnApply = document.getElementById('pdApply');
+        const btnClear = document.getElementById('pdClear');
+
+        const inlineClear = document.getElementById('pdClearInline');
+
+        const display = document.getElementById('pdDisplay');
+        const value = document.getElementById('pdValue');
+        const preview = document.getElementById('pdSelectedPreview');
+
+        let selected = { id: '', path: '', type: '' };
+
+        function normalize(s){ return (s||'').toString().trim().toLowerCase(); }
+
+        function clearTreeSelection(){
+            const prev = treeRoot.querySelector('.tree-selected');
+            if (prev) prev.classList.remove('tree-selected');
+            selected = { id:'', path:'', type:'' };
+            preview.textContent = '—';
+        }
+
+        function computePath(nodeId){
+            const parts = [];
+            let currentId = nodeId;
+
+            while (currentId){
+                const row = treeRoot.querySelector(`.tree-row[data-node-id="${CSS.escape(currentId)}"]`);
+                if (!row) break;
+                parts.unshift(row.getAttribute('data-node-label') || currentId);
+                currentId = row.getAttribute('data-node-parent') || '';
+            }
+            return parts.join(' → ');
+        }
+
+        function selectNode(row){
+            const type = row.getAttribute('data-node-type');
+            const id = row.getAttribute('data-node-id');
+
+            if (type === 'group' && !allowGroupSelect.checked) return;
+
+            const prev = treeRoot.querySelector('.tree-selected');
+            if (prev) prev.classList.remove('tree-selected');
+            row.classList.add('tree-selected');
+
+            selected.id = id;
+            selected.type = type;
+            selected.path = computePath(id);
+
+            preview.textContent = selected.path;
+            row.scrollIntoView({ block: 'nearest' });
+        }
+
+        // Иконки раскрытия
+        treeRoot.addEventListener('shown.bs.collapse', function (e){
+            const id = e.target.getAttribute('id');
+            const btn = treeRoot.querySelector(`[data-bs-target="#${CSS.escape(id)}"]`);
+            if (!btn) return;
+            const i = btn.querySelector('i');
+            if (i) i.className = 'ti ti-chevron-down';
+        });
+
+        treeRoot.addEventListener('hidden.bs.collapse', function (e){
+            const id = e.target.getAttribute('id');
+            const btn = treeRoot.querySelector(`[data-bs-target="#${CSS.escape(id)}"]`);
+            if (!btn) return;
+            const i = btn.querySelector('i');
+            if (i) i.className = 'ti ti-chevron-right';
+        });
+
+        // Выбор узла по клику
+        treeRoot.addEventListener('click', function (e){
+            const toggleBtn = e.target.closest('.tree-toggle');
+            if (toggleBtn) return; // collapse handled by bootstrap
+
+            const row = e.target.closest('.tree-row');
+            if (!row) return;
+
+            selectNode(row);
+        });
+
+        // Развернуть/Свернуть все — кнопки работают
+        function setAllCollapses(open){
+            treeRoot.querySelectorAll('.collapse').forEach(el => {
+                const c = bootstrap.Collapse.getOrCreateInstance(el, { toggle:false });
+                open ? c.show() : c.hide();
+            });
+        }
+        btnExpandAll.addEventListener('click', () => setAllCollapses(true));
+        btnCollapseAll.addEventListener('click', () => setAllCollapses(false));
+
+        // Поиск (минимальный)
+        function applySearch(q){
+            const query = normalize(q);
+
+            treeRoot.querySelectorAll('.list-group-item').forEach(li => li.classList.remove('d-none'));
+            if (!query) return;
+
+            const rows = Array.from(treeRoot.querySelectorAll('.tree-row'));
+            rows.forEach(row => {
+                const label = normalize(row.getAttribute('data-node-label'));
+                const id = normalize(row.getAttribute('data-node-id'));
+                const match = label.includes(query) || id.includes(query);
+
+                if (!match){
+                    const li = row.closest('.list-group-item');
+                    if (li) li.classList.add('d-none');
+                } else {
+                    // раскрываем родителей
+                    let parentId = row.getAttribute('data-node-parent');
+                    while (parentId){
+                        const parentRow = treeRoot.querySelector(`.tree-row[data-node-id="${CSS.escape(parentId)}"]`);
+                        if (!parentRow) break;
+
+                        const parentLi = parentRow.closest('.list-group-item');
+                        if (parentLi) parentLi.classList.remove('d-none');
+
+                        const toggle = parentRow.querySelector('.tree-toggle');
+                        if (toggle){
+                            const targetSel = toggle.getAttribute('data-bs-target');
+                            const el = targetSel ? document.querySelector(targetSel) : null;
+                            if (el) bootstrap.Collapse.getOrCreateInstance(el, { toggle:false }).show();
+                        }
+
+                        parentId = parentRow.getAttribute('data-node-parent');
+                    }
+                }
+            });
+        }
+        search.addEventListener('input', (e) => applySearch(e.target.value));
+
+        // Применить
+        btnApply.addEventListener('click', () => {
+            if (!selected.id) return;
+
+            value.value = selected.id;
+            display.value = selected.path || selected.id;
+
+            modal.hide();
+        });
+
+        // Очистить (в модалке)
+        btnClear.addEventListener('click', () => clearTreeSelection());
+
+        // Очистить (в форме)
+        inlineClear.addEventListener('click', () => {
+            value.value = '';
+            display.value = '';
+            clearTreeSelection();
+        });
+
+        modalEl.addEventListener('shown.bs.modal', () => search.focus());
+    });
+</script>
+
+</body>
+</html>
