@@ -12,6 +12,7 @@
       --brand: #0A1548;
       --cta: #B00020;
       --cta-hover: #8E001A;
+      --bg-hero-light: #f0f2f5;
 
       
       --cta-secondary: #0A1548;
@@ -998,3 +999,19 @@
 .vf-pr2-cfo-extra__table th{ color: var(--muted); font-weight: 800; }
 .vf-ok{ color: var(--brand); font-weight: 900; }
 .vf-no{ color: rgba(92,103,125,.8); font-weight: 800; }
+
+/* Hero Section Styling */
+.hero-section {
+    background-color: var(--bg-hero-light);
+    padding: 60px 0;
+    overflow: hidden;
+}
+
+/* Фиксированный размер контейнера для фото */
+.hero-image-fixed {
+    width: 600px;
+    /* height: 600px;*/
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}

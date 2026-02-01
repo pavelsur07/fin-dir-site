@@ -31,7 +31,7 @@ get_header();
                 </div>
 
                 <div class="col-xl-6 col-lg-5 text-center">
-                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/hero/mobile-hero-home.jpg'); ?>" alt="Ваш Финдир" class="hero-image-fixed img-fluid">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/hero/desktop-hero-image-1.png'); ?>" alt="Ваш Финдир" class="hero-image-fixed img-fluid">
                 </div>
             </div>
         </div>
