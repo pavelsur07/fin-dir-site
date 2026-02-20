@@ -182,6 +182,25 @@ get_header();
         </div>
     </section>
 
+    <!-- INTEGRATION -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="https://placehold.co/500x500/png?text=Bank+Integration+Schema" alt="Интеграция с банками" class="img-fluid rounded shadow-sm">
+                </div>
+                <div class="col-lg-6 ps-lg-5 mt-5 mt-lg-0">
+                    <h2 class="section-title vf-control__title mb-2">Забудьте про ручной ввод данных</h2>
+                    <p class="vf-control__lead mb-4">«Ваш Финдир» сам подтянет операции и разнесет их по статьям.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success me-3"></i> Интеграция с банками (Тинькофф, Сбер, Точка)</li>
+                        <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success me-3"></i> Автоматическая загрузка из 1С и Excel</li>
+                        <li class="mb-3 d-flex align-items-center"><i class="bi bi-check-circle-fill text-success me-3"></i> Умные правила распознавания категорий (ГСМ, Канцелярия)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
     <?php
     // Home CTA: reusable lead capture form with modal (ref section id="lead-form-2")
     get_template_part('template-parts/landing/lead-capture');
