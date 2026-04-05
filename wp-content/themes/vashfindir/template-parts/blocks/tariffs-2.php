@@ -219,7 +219,7 @@ if (!defined('ABSPATH')) {
                   <p class="vf-price__meta">Итого за период: <b>${fmt(c.total)}</b>${c.savings > 0 ? ` · экономия <b>${fmt(c.savings)}</b>` : ``}</p>
                 </div>
 
-                <ul class="list-unstyled feature-list mb-4">
+                <ul class="feature-list">
                   ${(p.bullets[state.audience] || []).map(x => `<li><i class="bi bi-check-circle-fill"></i> ${x}</li>`).join("")}
                 </ul>
 
