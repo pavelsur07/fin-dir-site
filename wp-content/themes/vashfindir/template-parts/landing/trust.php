@@ -20,19 +20,19 @@ if (!defined('ABSPATH')) exit;
 
             <div class="vf-trust__tiles">
 
-                <div class="tile">
-                    <div class="k">Трезво</div>
-                    <div class="h">Без мотивации и инфобиза</div>
+                <div class="vf-surface vf-trust__card">
+                    <div class="vf-trust__card-title">Трезво</div>
+                    <div class="vf-trust__card-text">Без мотивации и инфобиза</div>
                 </div>
 
-                <div class="tile">
-                    <div class="k">По делу</div>
-                    <div class="h">Только то, что влияет на решения</div>
+                <div class="vf-surface vf-trust__card">
+                    <div class="vf-trust__card-title">По делу</div>
+                    <div class="vf-trust__card-text">Только то, что влияет на решения</div>
                 </div>
 
-                <div class="tile">
-                    <div class="k">Без давления</div>
-                    <div class="h">Диагностика отдельно от услуг</div>
+                <div class="vf-surface vf-trust__card">
+                    <div class="vf-trust__card-title">Без давления</div>
+                    <div class="vf-trust__card-text">Диагностика отдельно от услуг</div>
                 </div>
 
             </div>

@@ -1141,6 +1141,25 @@
     .vf-trust__tiles { grid-template-columns: repeat(3, 1fr); }
 }
 
+.vf-trust__card {
+    padding: 14px;
+}
+
+.vf-trust__card-title {
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    color: var(--vf-brand);
+    margin-bottom: 6px;
+}
+
+.vf-trust__card-text {
+    color: var(--vf-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
 /* Hero Section Styling */
 .hero-section {
     background-color: var(--bg-hero-light);
