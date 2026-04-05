@@ -6,59 +6,8 @@
    - landing.css contains only section/layout styles
 */
 :root{
-      --cta-2-hover: var(--brand);
-      --cta-2: var(--brand-2);
-      --brand-2: #0d1c63;
-      --brand: #0A1548;
-      --cta: #B00020;
-      --cta-hover: #8E001A;
-      --bg-hero-light: #f0f2f5;
-
-      
-      --cta-secondary: #0A1548;
-      --cta-secondary-hover: #0d1c63;
-
-      --text: #0b1020;
-      --muted: #5c677d;
-
-      --bg-soft: #f7f8fc;
-      --card: #ffffff;
-      --border: rgba(10,21,72,.14);
-
-      
-      --content-max: 1320px;
-      --prose-max: 62ch;
-
-      
-      --radius-card: 6px;
-      --radius-control: 6px;
-
-      
-      --shadow: 0 10px 30px rgba(10,21,72,.10);
-
-      
-      --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-
-      --fs-body: 16px;
-      --lh-body: 1.55;
-
-      --fs-lead: 18px;
-      --lh-lead: 1.55;
-
-      --fs-h1: clamp(32px, 3.2vw, 46px);
-      --lh-h1: 1.06;
-      --ls-h1: -0.03em;
-
-      --fs-h2: clamp(24px, 2.1vw, 34px);
-      --lh-h2: 1.12;
-      --ls-h2: -0.02em;
-
-      --fs-h3: 20px;
-      --lh-h3: 1.20;
-
-      --fs-small: 13px;
-      --lh-small: 1.45;
-    }
+    --bg-hero-light: #f0f2f5;
+}
 
 /* =========================================================
    CTA (Landing)
@@ -73,26 +22,26 @@
 }
 
 .prose{
-    max-width: var(--prose-max);
+    max-width: 62ch;
 }
 
 .card-e{
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow);
+    background: var(--vf-card);
+    border: 1px solid var(--vf-border);
+    border-radius: var(--vf-radius);
+    box-shadow: var(--vf-shadow);
 }
 
 .tile{
     border: 1px solid rgba(10,21,72,.12);
-    border-radius: var(--radius-card);
+    border-radius: var(--vf-radius);
     background: rgba(255,255,255,.70);
     padding: 14px;
 }
 
 .tile .k{
     font-weight: 900;
-    color: var(--brand);
+    color: var(--vf-brand);
     font-size: 12px;
     letter-spacing: .02em;
     text-transform: uppercase;
@@ -100,48 +49,48 @@
 
 .tile .v{
     font-weight: 900;
-    color: var(--text);
+    color: var(--vf-text);
     font-size: 18px;
     letter-spacing: -0.01em;
     margin-top: 2px;
 }
 
 .tile .h{
-    color: var(--muted);
+    color: var(--vf-muted);
     font-size: 13px;
     margin-top: 2px;
     line-height: 1.35;
 }
 
 .btn-brand{
-    background: var(--brand);
-    border: 1px solid var(--brand);
+    background: var(--vf-brand);
+    border: 1px solid var(--vf-brand);
     color: #fff;
     font-weight: 900;
-    border-radius: var(--radius-control);
+    border-radius: var(--vf-radius);
     padding: .65rem 1rem;
 }
 
 .btn-brand:hover,
 .btn-brand:focus{
-    background: var(--brand-2);
-    border-color: var(--brand-2);
+    background: var(--vf-brand-2);
+    border-color: var(--vf-brand-2);
     color: #fff;
 }
 
 .btn-cta-secondary{
     background: #fff;
     border: 1px solid rgba(10,21,72,.22);
-    color: var(--brand-2);
+    color: var(--vf-brand-2);
     font-weight: 900;
-    border-radius: var(--radius-control);
+    border-radius: var(--vf-radius);
     padding: .65rem 1rem;
 }
 
 .btn-cta-secondary:hover,
 .btn-cta-secondary:focus{
     border-color: rgba(10,21,72,.35);
-    color: var(--cta-secondary-hover);
+    color: var(--vf-brand-2);
     background: rgba(10,21,72,.04);
 }
 
@@ -847,7 +796,7 @@
 
 /* Tariffs-2 (VF) */
 .vf-pr2-head{ display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center; }
-.vf-pr2-sub{ max-width: 70ch; color: var(--muted); margin: 0; }
+.vf-pr2-sub{ max-width: 70ch; color: var(--vf-muted); margin: 0; }
 
 .vf-seg{
   display:inline-flex;
@@ -860,7 +809,7 @@
 .vf-seg-btn{
   border: 0;
   background: transparent;
-  color: var(--brand);
+  color: var(--vf-brand);
   font-weight: 800;
   font-size: 13px;
   padding: 10px 14px;
@@ -904,8 +853,8 @@
 }
 .vf-plan__inner{ padding: 20px; display:flex; flex-direction:column; gap: 14px; height: 100%; }
 .vf-plan__top{ display:flex; flex-direction:column; gap: 6px; }
-.vf-plan__title{ margin:0; font-weight: 900; color: var(--brand); font-size: 18px; line-height: 1.2; }
-.vf-plan__subtitle{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.45; min-height: 3.4em; }
+.vf-plan__title{ margin:0; font-weight: 900; color: var(--vf-brand); font-size: 18px; line-height: 1.2; }
+.vf-plan__subtitle{ margin:0; color: var(--vf-muted); font-size: 13px; line-height: 1.45; min-height: 3.4em; }
 
 .vf-price{
   display:flex;
@@ -922,12 +871,12 @@
 }
 .vf-price__per{
   font-weight: 900;
-  color: var(--brand);
+  color: var(--vf-brand);
   font-size: 28px;
   letter-spacing: -0.02em;
 }
-.vf-price__unit{ color: var(--muted); font-weight: 700; font-size: 13px; }
-.vf-price__meta{ color: var(--muted); font-size: 12px; margin:0; }
+.vf-price__unit{ color: var(--vf-muted); font-weight: 700; font-size: 13px; }
+.vf-price__meta{ color: var(--vf-muted); font-size: 12px; margin:0; }
 .vf-badge-save{
   display:inline-flex;
   align-items:center;
@@ -938,15 +887,15 @@
   font-size: 12px;
   border: 1px solid rgba(10,21,72,.12);
   background: rgba(10,21,72,.03);
-  color: var(--brand);
+  color: var(--vf-brand);
 }
-.vf-plan__list{ margin:0; padding-left: 1.1rem; color: var(--text); }
-.vf-plan__list li{ margin: 6px 0; color: var(--text); }
+.vf-plan__list{ margin:0; padding-left: 1.1rem; color: var(--vf-text); }
+.vf-plan__list li{ margin: 6px 0; color: var(--vf-text); }
 .feature-list li{ margin-bottom: .55rem; }
 .feature-list .bi{ color: #198754; margin-right: .5rem; }
 .vf-plan__cta{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; }
 .vf-plan__cta .btn{ width: 100%; justify-content: center; border-radius: 14px; padding-top: 12px; padding-bottom: 12px; }
-.vf-plan__link{ font-size: 12px; color: var(--brand); text-decoration: underline; text-underline-offset: 3px; text-align:center; }
+.vf-plan__link{ font-size: 12px; color: var(--vf-brand); text-decoration: underline; text-underline-offset: 3px; text-align:center; }
 
 .vf-plan.is-featured{
   border-color: rgba(176,0,32,.25);
@@ -955,7 +904,7 @@
 .vf-plan.is-featured .vf-badge-save{
   border-color: rgba(176,0,32,.22);
   background: rgba(176,0,32,.06);
-  color: var(--cta);
+  color: var(--brand-red);
 }
 
 /* CFO extra layer */
@@ -977,7 +926,7 @@
 .vf-pr2-cfo-extra__title{
   margin:0;
   font-weight: 900;
-  color: var(--brand);
+  color: var(--vf-brand);
   font-size: 14px;
 }
 .vf-pr2-cfo-extra__body{
@@ -996,8 +945,8 @@
   border-top: 1px solid rgba(10,21,72,.08);
   vertical-align: top;
 }
-.vf-pr2-cfo-extra__table th{ color: var(--muted); font-weight: 800; }
-.vf-ok{ color: var(--brand); font-weight: 900; }
+.vf-pr2-cfo-extra__table th{ color: var(--vf-muted); font-weight: 800; }
+.vf-ok{ color: var(--vf-brand); font-weight: 900; }
 .vf-no{ color: rgba(92,103,125,.8); font-weight: 800; }
 
 /* Hero Section Styling */
