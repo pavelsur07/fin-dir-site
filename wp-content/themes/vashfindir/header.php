@@ -49,7 +49,7 @@
                    href="https://app.vashfindir.ru/login"
                    target="_blank" rel="noopener">Войти</a>
 
-                <a class="vf-btn btn-brand"
+                <a class="vf-btn vf-btn--primary"
                    href="https://app.vashfindir.ru/register"
                    target="_blank" rel="noopener">Регистрация</a>
             </div>
@@ -78,7 +78,7 @@
                        href="https://app.vashfindir.ru/login"
                        target="_blank" rel="noopener">Войти</a>
 
-                    <a class="vf-btn btn-brand vf-btn--block"
+                    <a class="vf-btn vf-btn--primary vf-btn--block"
                        href="https://app.vashfindir.ru/register"
                        target="_blank" rel="noopener">Регистрация</a>
                 </div>

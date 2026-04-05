@@ -40,7 +40,7 @@ if (!defined('ABSPATH')) {
                             <input class="vf-field" type="email" name="email" autocomplete="email" placeholder="E-mail" required>
                         </div>
 
-                        <button class="vf-btn btn btn-cta w-100 vf-btn--block" type="submit">Отправить</button>
+                        <button class="vf-cta-btn-secondary vf-btn--block" type="submit">Отправить</button>
 
                         <label class="vf-consent">
                             <input type="checkbox" name="consent" checked>
