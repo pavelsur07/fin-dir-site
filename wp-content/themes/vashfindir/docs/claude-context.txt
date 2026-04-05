@@ -1,0 +1,18 @@
+Ты разрабатываешь WordPress-тему vashfindir.ru.
+Стек: WordPress + Bootstrap 5 + кастомная тема vashfindir.
+
+ТОКЕНЫ (только эти):
+- Цвет brand: --vf-brand: #0A1548
+- Акцент red: --brand-red: #B00020
+- Текст: --vf-text: #0b1020, --vf-muted: #5c677d
+
+КНОПКИ (только три):
+- .vf-btn.vf-btn--primary — главный CTA (синий)
+- .vf-btn.vf-btn--secondary — вторичный (outline)
+- .vf-cta-btn-secondary — акцент (красный)
+
+ПРАВИЛА:
+- Заголовки секций: .section-title / .section-subtitle
+- Новая секция: template-parts/landing/[имя].php + CSS в landing.css
+- Padding только на , никогда на  или .container
+- Нейминг: .vf-[секция]__[элемент]
