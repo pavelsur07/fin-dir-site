@@ -20,10 +20,10 @@ if (!defined('ABSPATH')) {
                     <div class="vf-lead__note">
                         Мы ответим в рабочее время. Обычно — в течение 1 рабочего дня.
                     </div>
-                    <div class="d-flex gap-2 flex-wrap mt-3">
-                        <span class="badge text-bg-light"><i class="bi bi-clock me-1"></i>45 минут</span>
-                        <span class="badge text-bg-light"><i class="bi bi-shield-check me-1"></i>без продаж</span>
-                        <span class="badge text-bg-light"><i class="bi bi-hand-thumbs-up me-1"></i>без обязательств</span>
+                    <div class="vf-lead__badges">
+                        <span class="vf-lead__badge"><i class="bi bi-clock"></i>45 минут</span>
+                        <span class="vf-lead__badge"><i class="bi bi-shield-check"></i>без продаж</span>
+                        <span class="vf-lead__badge"><i class="bi bi-hand-thumbs-up"></i>без обязательств</span>
                     </div>
 
                 </div>

@@ -794,6 +794,27 @@
     line-height: 1.55;
 }
 
+.vf-lead__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.vf-lead__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    color: rgba(255,255,255,.9);
+    font-size: var(--vf-fs-small);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
 /* Tariffs-2 (VF) */
 .vf-pr2-head{ display:flex; flex-direction:column; gap:12px; align-items:center; text-align:center; }
 .vf-pr2-sub{ max-width: 70ch; color: var(--vf-muted); margin: 0; }
@@ -891,6 +912,7 @@
 }
 .vf-plan__list{ margin:0; padding-left: 1.1rem; color: var(--vf-text); }
 .vf-plan__list li{ margin: 6px 0; color: var(--vf-text); }
+.feature-list { list-style: none; padding: 0; margin: 0 0 16px; }
 .feature-list li{ margin-bottom: .55rem; }
 .feature-list .bi{ color: #198754; margin-right: .5rem; }
 .vf-plan__cta{ margin-top: auto; display:flex; flex-direction:column; gap: 10px; }
