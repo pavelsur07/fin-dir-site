@@ -1,0 +1,30 @@
+{
+  "name": "vashfindir/site",
+  "type": "project",
+  "require": {
+    "php": ">=8.3",
+    "symfony/framework-bundle": "7.4.*",
+    "symfony/twig-bundle": "7.4.*",
+    "symfony/runtime": "7.4.*",
+    "symfony/yaml": "7.4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  },
+  "extra": {
+    "public-dir": "public"
+  }
+}

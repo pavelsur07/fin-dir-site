@@ -32,6 +32,15 @@ services:
       # Монтируем только wp-content, ядро WP живёт внутри контейнера
       - ./wp-content:/var/www/html/wp-content
 
+
+  site:
+    container_name: fin_dir_site
+    build:
+      context: ./site
+    restart: always
+    ports:
+      - "8001:80"
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: fin_dir_pma

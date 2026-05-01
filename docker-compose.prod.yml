@@ -58,6 +58,28 @@ services:
       - web
       - internal
 
+  site:
+    container_name: vashfindir_site
+    build:
+      context: ./site
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+
+      - "traefik.http.routers.vf-new.rule=Host(`newversion.vashfindir.ru`)"
+      - "traefik.http.routers.vf-new.entrypoints=websecure"
+      - "traefik.http.routers.vf-new.tls.certresolver=le"
+
+      - "traefik.http.routers.vf-new-http.rule=Host(`newversion.vashfindir.ru`)"
+      - "traefik.http.routers.vf-new-http.entrypoints=web"
+      - "traefik.http.routers.vf-new-http.middlewares=vf-new-https-redirect"
+      - "traefik.http.middlewares.vf-new-https-redirect.redirectscheme.scheme=https"
+
+      - "traefik.http.services.vf-new.loadbalancer.server.port=80"
+    networks:
+      - web
+
 networks:
   web:
     external: true
