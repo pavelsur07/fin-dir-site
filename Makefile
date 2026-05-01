@@ -39,7 +39,7 @@ logs:
 site-init: site-composer-install site-cache-clear site-cache-warmup site-lint
 
 site-clear:
-	docker run --rm -v $${PWD}/site:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/*'
+	$(SITE_CLI) sh -c 'rm -rf var/cache/* var/log/*'
 
 site-composer-install:
 	$(SITE_CLI) composer install
