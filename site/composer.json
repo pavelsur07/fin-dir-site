@@ -3,10 +3,10 @@
   "type": "project",
   "require": {
     "php": ">=8.3",
-    "symfony/framework-bundle": "7.2.*",
-    "symfony/twig-bundle": "7.2.*",
-    "symfony/runtime": "7.2.*",
-    "symfony/yaml": "7.2.*",
+    "symfony/framework-bundle": "7.4.*",
+    "symfony/twig-bundle": "7.4.*",
+    "symfony/runtime": "7.4.*",
+    "symfony/yaml": "7.4.*",
     "symfony/flex": "^2"
   },
   "autoload": {

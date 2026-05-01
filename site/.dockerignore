@@ -5,3 +5,4 @@ var
 node_modules
 README.md
 .DS_Store
+.env.local

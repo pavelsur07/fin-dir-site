@@ -39,9 +39,9 @@ services:
       context: ./site
     restart: always
     environment:
-      APP_ENV: prod
-      APP_DEBUG: "0"
-      APP_SECRET: change-me
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: dev-site-secret
     ports:
       - "8001:80"
 

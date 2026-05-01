@@ -66,7 +66,7 @@ services:
     environment:
       APP_ENV: prod
       APP_DEBUG: "0"
-      APP_SECRET: change-me
+      APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_web"
