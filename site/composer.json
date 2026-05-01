@@ -16,5 +16,11 @@
   },
   "extra": {
     "public-dir": "public"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/flex": true,
+      "symfony/runtime": true
+    }
   }
 }
