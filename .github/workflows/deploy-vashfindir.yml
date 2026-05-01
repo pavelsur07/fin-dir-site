@@ -33,20 +33,25 @@ jobs:
             git reset --hard origin/master
             git clean -fd
 
-            echo "==> export DB secrets (from GitHub Secrets)"
+            echo "==> export secrets (from GitHub Secrets)"
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
+            export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
 
             echo "==> sanity: render docker-compose config"
             docker-compose -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
-            # Печатаем верх конфига для контроля, что файл тот и сервисы есть
-            sed -n '1,120p' /tmp/vashfindir.compose.rendered.yml
+
+            echo "==> services in rendered compose"
+            docker-compose -f "${COMPOSE_FILE}" config --services
+
+            echo "==> build Symfony site image"
+            docker-compose -f "${COMPOSE_FILE}" build --pull site
 
             echo "==> stop stack (ignore errors)"
             docker-compose -f "${COMPOSE_FILE}" down || true
 
             echo "==> remove orphan containers (ignore errors)"
-            docker rm -f vashfindir_wp vashfindir_db 2>/dev/null || true
+            docker rm -f vashfindir_wp vashfindir_db vashfindir_site vashfindir_site_php_cli 2>/dev/null || true
 
             echo "==> start stack"
             docker-compose -f "${COMPOSE_FILE}" up -d --remove-orphans
@@ -59,3 +64,6 @@ jobs:
 
             echo "==> logs: wordpress (tail)"
             docker-compose -f "${COMPOSE_FILE}" logs --tail=120 wordpress || true
+
+            echo "==> logs: site (tail)"
+            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site || true
