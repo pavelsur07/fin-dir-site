@@ -84,6 +84,20 @@ services:
     networks:
       - web
 
+  site-php-cli:
+    profiles:
+      - cli
+    container_name: vashfindir_site_php_cli
+    build:
+      context: ./site
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
+    networks:
+      - web
+
 networks:
   web:
     external: true

@@ -32,7 +32,6 @@ services:
       # Монтируем только wp-content, ядро WP живёт внутри контейнера
       - ./wp-content:/var/www/html/wp-content
 
-
   site:
     container_name: fin_dir_site
     build:
@@ -42,8 +41,28 @@ services:
       APP_ENV: dev
       APP_DEBUG: "1"
       APP_SECRET: dev-site-secret
+    volumes:
+      - ./site:/var/www/html
+      - site_vendor:/var/www/html/vendor
+      - site_var:/var/www/html/var
     ports:
       - "8001:80"
+
+  site-php-cli:
+    profiles:
+      - cli
+    container_name: fin_dir_site_php_cli
+    build:
+      context: ./site
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: dev-site-secret
+    volumes:
+      - ./site:/var/www/html
+      - site_vendor:/var/www/html/vendor
+      - site_var:/var/www/html/var
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -60,3 +79,5 @@ services:
 
 volumes:
   db_data:
+  site_vendor:
+  site_var:
