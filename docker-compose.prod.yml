@@ -63,6 +63,10 @@ services:
     build:
       context: ./site
     restart: always
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      APP_SECRET: change-me
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_web"

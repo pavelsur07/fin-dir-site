@@ -1,0 +1,7 @@
+.git
+.gitignore
+vendor
+var
+node_modules
+README.md
+.DS_Store
