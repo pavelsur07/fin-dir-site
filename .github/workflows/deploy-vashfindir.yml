@@ -40,8 +40,9 @@ jobs:
 
             echo "==> sanity: render docker-compose config"
             docker-compose -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
-            # Печатаем верх конфига для контроля, что файл тот и сервисы есть
-            sed -n '1,160p' /tmp/vashfindir.compose.rendered.yml
+
+            echo "==> services in rendered compose"
+            docker-compose -f "${COMPOSE_FILE}" config --services
 
             echo "==> build Symfony site image"
             docker-compose -f "${COMPOSE_FILE}" build --pull site
