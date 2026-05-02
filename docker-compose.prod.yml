@@ -67,6 +67,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
+      DEFAULT_URI: https://newversion.vashfindir.ru
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_web"
@@ -95,6 +96,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
+      DEFAULT_URI: https://newversion.vashfindir.ru
     networks:
       - web
 
