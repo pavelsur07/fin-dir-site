@@ -5,7 +5,7 @@ SITE_CLI := $(DC) run --rm site-php-cli
 PROD_DC := docker compose -f docker-compose.prod.yml
 PROD_SITE_CLI := $(PROD_DC) run --rm site-php-cli
 
-.PHONY: init up down down-clear pull build ps logs \
+.PHONY: init up down down-clear pull build build-pull ps logs \
         site-init site-clear site-composer-install site-composer-update site-composer-validate \
         site-console site-cache-clear site-cache-warmup site-router site-lint site-lint-twig site-lint-container \
         site-shell site-logs site-health wp-health check \
@@ -28,6 +28,9 @@ pull:
 	$(DC) pull
 
 build:
+	$(DC) build
+
+build-pull:
 	$(DC) build --pull
 
 ps:

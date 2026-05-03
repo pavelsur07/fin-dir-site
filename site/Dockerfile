@@ -1,9 +1,12 @@
-FROM php:8.3-apache
+FROM php:8.3-apache-bookworm
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev \
-    && docker-php-ext-install intl opcache zip \
-    && rm -rf /var/lib/apt/lists/*
+RUN set -eux; \
+    echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries; \
+    echo 'Acquire::http::Timeout "30";' >> /etc/apt/apt.conf.d/80-retries; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev; \
+    docker-php-ext-install intl opcache zip; \
+    rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
 
