@@ -29,5 +29,7 @@
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"
     }
-  }
+  },
+  "description": "Vashfindir Symfony site application",
+  "license": "proprietary"
 }
