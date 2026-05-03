@@ -21,6 +21,10 @@ env:
 jobs:
   symfony-checks:
     runs-on: ubuntu-latest
+    env:
+      APP_ENV: test
+      APP_SECRET: ci-secret
+      DEFAULT_URI: https://example.test
     defaults:
       run:
         working-directory: site
