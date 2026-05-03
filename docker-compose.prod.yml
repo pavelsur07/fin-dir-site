@@ -60,7 +60,7 @@ services:
 
   site:
     container_name: vashfindir_site
-    image: ghcr.io/${GHCR_OWNER:-vashfindir}/vashfindir-site:${IMAGE_TAG:-latest}
+    image: ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site:${IMAGE_TAG:-latest}
     restart: always
     environment:
       APP_ENV: prod
@@ -88,7 +88,7 @@ services:
     profiles:
       - cli
     container_name: vashfindir_site_php_cli
-    image: ghcr.io/${GHCR_OWNER:-vashfindir}/vashfindir-site:${IMAGE_TAG:-latest}
+    image: ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site:${IMAGE_TAG:-latest}
     working_dir: /var/www/html
     environment:
       APP_ENV: prod
