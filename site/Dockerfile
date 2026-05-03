@@ -1,23 +1,23 @@
-FROM php:8.3-apache-bookworm
+ARG SITE_BASE_IMAGE=vashfindir-site-php-apache-base:8.3-bookworm
 
-RUN set -eux; \
-    echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries; \
-    echo 'Acquire::http::Timeout "30";' >> /etc/apt/apt.conf.d/80-retries; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev; \
-    docker-php-ext-install intl opcache zip; \
-    rm -rf /var/lib/apt/lists/*
+FROM composer:2 AS vendor
 
-RUN a2enmod rewrite
+WORKDIR /app
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf /etc/apache2/apache2.conf
+COPY composer.json composer.lock ./
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-interaction \
+    --no-progress \
+    --optimize-autoloader
+
+FROM ${SITE_BASE_IMAGE}
 
 WORKDIR /var/www/html
-COPY . .
 
-RUN composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
+COPY . .
+COPY --from=vendor /app/vendor ./vendor
 
 EXPOSE 80
