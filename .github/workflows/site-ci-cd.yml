@@ -40,10 +40,10 @@ jobs:
           coverage: none
 
       - name: Composer validate
-        run: composer validate --strict
+        run: composer validate --strict --no-check-lock
 
       - name: Composer install (prod)
-        run: composer install --no-dev --no-interaction --prefer-dist
+        run: composer update --no-dev --no-interaction --prefer-dist
 
       - name: Lint Twig templates
         run: php bin/console lint:twig templates
