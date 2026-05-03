@@ -4,16 +4,18 @@ DC := docker compose
 SITE_CLI := $(DC) run --rm site-php-cli
 PROD_DC := docker compose -f docker-compose.prod.yml
 PROD_SITE_CLI := $(PROD_DC) run --rm site-php-cli
+SITE_BASE_IMAGE := vashfindir-site-php-apache-base:8.3-bookworm
+SITE_BASE_DOCKERFILE := site/docker/base/Dockerfile
 
-.PHONY: init up down down-clear pull build build-pull ps logs \
+.PHONY: init up down down-clear pull build build-pull ps logs site-base-build site-base-rebuild \
         site-init site-clear site-composer-install site-composer-update site-composer-validate \
         site-console site-cache-clear site-cache-warmup site-router site-lint site-lint-twig site-lint-container \
         site-shell site-logs site-health wp-health check \
-        prod-config prod-build prod-up prod-down prod-ps prod-logs \
+        prod-config prod-site-base-build prod-site-base-rebuild prod-build prod-build-pull prod-up prod-down prod-ps prod-logs \
         prod-site-console prod-site-cache-clear prod-site-cache-warmup prod-site-router \
         prod-site-lint-container prod-site-composer-validate prod-site-composer-show
 
-init: down-clear build site-init up site-health wp-health
+init: down-clear site-base-build build site-init up site-health wp-health
 
 up:
 	$(DC) up -d
@@ -26,6 +28,12 @@ down-clear:
 
 pull:
 	$(DC) pull
+
+site-base-build:
+	docker build --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
+
+site-base-rebuild:
+	docker build --pull --no-cache --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
 
 build:
 	$(DC) build
@@ -92,7 +100,16 @@ check: site-lint site-health wp-health
 prod-config:
 	$(PROD_DC) config
 
+prod-site-base-build:
+	docker build --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
+
+prod-site-base-rebuild:
+	docker build --pull --no-cache --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
+
 prod-build:
+	$(PROD_DC) build
+
+prod-build-pull:
 	$(PROD_DC) build --pull
 
 prod-up:

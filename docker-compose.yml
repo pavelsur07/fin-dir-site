@@ -36,6 +36,8 @@ services:
     container_name: fin_dir_site
     build:
       context: ./site
+      args:
+        SITE_BASE_IMAGE: vashfindir-site-php-apache-base:8.3-bookworm
     restart: always
     environment:
       APP_ENV: dev
@@ -55,6 +57,8 @@ services:
     container_name: fin_dir_site_php_cli
     build:
       context: ./site
+      args:
+        SITE_BASE_IMAGE: vashfindir-site-php-apache-base:8.3-bookworm
     working_dir: /var/www/html
     environment:
       APP_ENV: dev
