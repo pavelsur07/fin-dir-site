@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY composer.json composer.lock ./
 
-RUN composer install \
+RUN composer update \
     --no-dev \
     --prefer-dist \
     --no-interaction \
