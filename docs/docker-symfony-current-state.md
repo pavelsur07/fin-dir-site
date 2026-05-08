@@ -173,3 +173,13 @@
 - `site/docker/production/php/conf.d/production.ini`
 - `site/docker/production/php/conf.d/opcache.ini`
 - `site/docker/production/php/fpm/www.conf`
+
+## Подготовлены отдельные Dockerfile для будущих Symfony PHP images
+
+Добавлены:
+- `site/docker/development/php-cli/Dockerfile`
+- `site/docker/development/php-fpm/Dockerfile`
+- `site/docker/production/php-cli/Dockerfile`
+- `site/docker/production/php-fpm/Dockerfile`
+
+Старый `site/Dockerfile` временно оставлен в legacy Apache runtime до миграции `docker-compose`/CI.
