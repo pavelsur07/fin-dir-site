@@ -159,3 +159,17 @@
 - `wp-content/**`.
 
 При последующей миграции Symfony эти блоки должны оставаться без изменений.
+
+## Подготовлена новая структура Symfony Docker configs
+
+Добавлены подготовительные конфиги для будущей миграции Symfony на `nginx + php-fpm` (без подключения к текущим compose/Dockerfile runtime):
+
+- `site/docker/common/php/conf.d/common.ini`
+- `site/docker/common/php/fpm/www.conf`
+- `site/docker/common/nginx/default.conf`
+- `site/docker/development/php/conf.d/development.ini`
+- `site/docker/development/php/conf.d/xdebug.ini`
+- `site/docker/development/php/fpm/www.conf`
+- `site/docker/production/php/conf.d/production.ini`
+- `site/docker/production/php/conf.d/opcache.ini`
+- `site/docker/production/php/fpm/www.conf`
