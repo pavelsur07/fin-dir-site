@@ -183,3 +183,35 @@
 - `site/docker/production/php-fpm/Dockerfile`
 
 Старый `site/Dockerfile` временно оставлен в legacy Apache runtime до миграции `docker-compose`/CI.
+
+## 10) Ревизия минимальных PHP extensions и apk packages для PHP 8.4 Alpine
+
+Проверка platform requirements выполнена командой:
+
+- `cd site && composer check-platform-reqs`
+
+Результат для lock-файла без `vendor`: требуются `php`, `ext-iconv`, `ext-xml`.
+`ext-xml` обязателен для Symfony-стека, поэтому добавлен в новые Dockerfile. `ext-iconv` в `php:8.4-alpine` уже доступен и отдельно не устанавливается.
+
+| Extension / package | Зачем нужен | Где нужен | Источник требования |
+|---|---|---|---|
+| `pdo_pgsql`, `pgsql` | Подключение Symfony-приложения к PostgreSQL | dev-cli, dev-fpm, prod-cli, prod-fpm | Текущая архитектура Symfony-контейнеров и runtime DB в проекте (`libpq`/`postgresql-dev` уже были базовыми в Dockerfile) |
+| `opcache` | Производительность и предзагрузка байткода | dev-cli, dev-fpm, prod-cli, prod-fpm | Production-safe практика + `site/docker/production/php/conf.d/opcache.ini` |
+| `intl` | Локализация/строковые операции Symfony | dev-cli, dev-fpm, prod-cli, prod-fpm | Symfony зависимости (`symfony/string`, framework stack) |
+| `zip` | Работа с zip-архивами пакетов/артефактов | dev-cli, dev-fpm, prod-cli, prod-fpm | Composer dist-поток и стандартный Symfony toolchain |
+| `xml` | Требование Symfony/platform check | dev-cli, dev-fpm, prod-cli, prod-fpm | `composer check-platform-reqs` (`ext-xml`) |
+| `bcmath` | Доменное требование финансового проекта (decimal-safe вычисления) | dev-cli, dev-fpm, prod-cli, prod-fpm | Архитектурное runtime-требование (зафиксировано в задаче 2.3) |
+| `xdebug` | Отладка в CLI разработке | только dev-cli | Требование dev-удобства; в production не нужен |
+| `composer` | Установка зависимостей и консольные операции | dev-cli, prod-cli, prod-fpm (только в стадии `vendor`) | Процесс сборки и эксплуатации CLI |
+| `libpq` / `postgresql-dev` | Runtime и сборка `pdo_pgsql`/`pgsql` | runtime: все 4 образа; build: все 4 образа | Нужно для PostgreSQL extensions |
+| `icu-libs` / `icu-dev` | Runtime и сборка `intl` | runtime: все 4 образа; build: все 4 образа | Нужно для `intl` |
+| `libzip` / `libzip-dev` | Runtime и сборка `zip` | runtime: все 4 образа; build: все 4 образа | Нужно для `zip` |
+| `libxml2-dev` | Сборка `xml` | build: все 4 образа | Нужно для `ext-xml` |
+| `tzdata` | Корректная TZ (`Europe/Moscow`) | dev-cli, dev-fpm, prod-cli, prod-fpm | `ENV TZ=Europe/Moscow` в Dockerfile |
+
+### Итог по минимизации
+- `prod-fpm`: не содержит `composer/git/unzip/bash/coreutils/xdebug`.
+- `prod-cli`: переведён в multi-stage; `composer` используется только в build stage `vendor`, в runtime stage `composer` не остаётся.
+- `dev-fpm`: без `composer/git/unzip/bash/coreutils`, без `xdebug` (HTTP debug через FPM не включали).
+- `dev-cli`: оставлены `composer` и `xdebug`, а также dev-утилиты (`bash/coreutils/git/unzip`) для локальной работы.
+- `gd/redis/mysql/node` не добавлялись, т.к. в platform requirements/конфигах Symfony этого требования нет.
