@@ -60,7 +60,7 @@ services:
 
   site:
     container_name: vashfindir_site
-    image: ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site-nginx:${IMAGE_TAG:-latest}
+    image: nginx:1.27-alpine
     restart: always
     labels:
       - "traefik.enable=true"
@@ -76,6 +76,9 @@ services:
       - "traefik.http.middlewares.vf-new-https-redirect.redirectscheme.scheme=https"
 
       - "traefik.http.services.vf-new.loadbalancer.server.port=80"
+    volumes:
+      - ./site/public:/app/public:ro
+      - ./site/docker/common/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - site-php-fpm
     networks:
