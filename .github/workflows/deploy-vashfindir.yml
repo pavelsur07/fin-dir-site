@@ -3,6 +3,10 @@ name: Deploy vashfindir to production
 on:
     push:
         branches: ["master", "main"]
+        paths:
+            - "site/**"
+            - "docker-compose.prod.yml"
+            - ".github/workflows/deploy-vashfindir.yml"
     workflow_dispatch:
 
 env:
@@ -19,6 +23,11 @@ jobs:
             contents: read
             packages: write
 
+        env:
+            APP_ENV: test
+            APP_SECRET: ci-secret
+            DEFAULT_URI: https://example.test
+
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -28,7 +37,7 @@ jobs:
               with:
                   php-version: "8.4"
                   tools: composer:v2
-                  extensions: pdo_pgsql, pgsql, zip, bcmath
+                  extensions: pdo_pgsql, pgsql, zip, bcmath, xml
                   coverage: none
 
             - name: Composer validate
@@ -95,7 +104,6 @@ jobs:
                       echo "==> git sync"
                       git fetch --all --prune
                       git reset --hard origin/${{ github.ref_name }}
-                      git clean -fd
                       
                       echo "==> export env"
                       export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
@@ -113,7 +121,7 @@ jobs:
                       echo "==> pull Symfony images"
                       docker-compose -f "${COMPOSE_FILE}" pull site-php-fpm site-php-cli
                       
-                      echo "==> stop Symfony services"
+                      echo "==> stop Symfony only"
                       docker-compose -f "${COMPOSE_FILE}" stop site site-php-fpm 2>/dev/null || true
                       
                       echo "==> start Symfony FPM"
@@ -124,6 +132,12 @@ jobs:
                       
                       echo "==> status"
                       docker-compose -f "${COMPOSE_FILE}" ps site site-php-fpm
+                      
+                      echo "==> logs: site"
+                      docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site || true
+                      
+                      echo "==> logs: site-php-fpm"
+                      docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site-php-fpm || true
                       
                       echo "==> Symfony health"
                       curl -fsS https://newversion.vashfindir.ru/health
