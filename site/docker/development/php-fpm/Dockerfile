@@ -6,8 +6,8 @@ WORKDIR /app
 
 RUN set -eux; \
     apk add --no-cache tzdata icu-libs libzip libpq; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev postgresql-dev; \
-    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql opcache intl zip bcmath; \
+    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev libpq-dev libxml2-dev; \
+    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql intl zip xml bcmath; \
     apk del .build-deps
 
 COPY docker/common/php/conf.d/common.ini /usr/local/etc/php/conf.d/zz-common.ini
