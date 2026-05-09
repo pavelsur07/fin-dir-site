@@ -16,7 +16,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/vashfindir-site
+  IMAGE_NGINX: ${{ github.repository_owner }}/vashfindir-site-nginx
+  IMAGE_PHP_FPM: ${{ github.repository_owner }}/vashfindir-site-php-fpm
+  IMAGE_PHP_CLI: ${{ github.repository_owner }}/vashfindir-site-php-cli
 
 jobs:
   symfony-checks:
@@ -47,7 +49,7 @@ jobs:
         run: composer validate --strict --no-check-lock
 
       - name: Composer install (prod)
-        run: composer update --no-dev --no-interaction --prefer-dist
+        run: composer install --no-dev --prefer-dist --no-interaction --no-progress --no-scripts
 
       - name: Lint Twig templates
         run: php bin/console lint:twig templates
@@ -55,7 +57,8 @@ jobs:
       - name: Lint Symfony container
         run: php bin/console lint:container
 
-  build-and-push-site-image:
+  build-and-push-site-images:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     needs: symfony-checks
     permissions:
@@ -78,20 +81,56 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
-        id: meta
+      - name: Extract Docker metadata (nginx)
+        id: meta-nginx
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NGINX }}
           tags: |
-            type=sha,format=long
             type=raw,value=latest
+            type=sha,prefix=sha-,format=long
 
-      - name: Build and push site image
+      - name: Build and push nginx image
         uses: docker/build-push-action@v6
         with:
           context: ./site
-          file: ./site/Dockerfile
+          file: ./site/docker/production/nginx/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-nginx.outputs.tags }}
+          labels: ${{ steps.meta-nginx.outputs.labels }}
+
+      - name: Extract Docker metadata (php-fpm)
+        id: meta-php-fpm
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=sha-,format=long
+
+      - name: Build and push php-fpm image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./site
+          file: ./site/docker/production/php-fpm/Dockerfile
+          push: true
+          tags: ${{ steps.meta-php-fpm.outputs.tags }}
+          labels: ${{ steps.meta-php-fpm.outputs.labels }}
+
+      - name: Extract Docker metadata (php-cli)
+        id: meta-php-cli
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=sha-,format=long
+
+      - name: Build and push php-cli image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./site
+          file: ./site/docker/production/php-cli/Dockerfile
+          push: true
+          tags: ${{ steps.meta-php-cli.outputs.tags }}
+          labels: ${{ steps.meta-php-cli.outputs.labels }}
