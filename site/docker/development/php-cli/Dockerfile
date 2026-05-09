@@ -6,8 +6,8 @@ WORKDIR /app
 
 RUN set -eux; \
     apk add --no-cache bash coreutils git unzip tzdata icu-libs libzip libpq; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev postgresql-dev libxml2-dev; \
-    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql opcache intl zip xml bcmath; \
+    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev libpq-dev libxml2-dev; \
+    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql intl zip xml bcmath; \
     pecl install xdebug; \
     docker-php-ext-enable xdebug; \
     apk del .build-deps

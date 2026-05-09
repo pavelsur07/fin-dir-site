@@ -8,9 +8,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 WORKDIR /app
 
 RUN set -eux; \
-    apk add --no-cache tzdata icu-libs libzip libpq; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev postgresql-dev libxml2-dev; \
-    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql opcache intl zip xml bcmath; \
+    apk add --no-cache git unzip tzdata icu-libs libzip libpq; \
+    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev libpq-dev libxml2-dev; \
+    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql intl zip xml bcmath; \
     apk del .build-deps
 
 COPY --from=composer:2.8.5 /usr/bin/composer /usr/local/bin/composer
@@ -43,13 +43,12 @@ WORKDIR /app
 
 RUN set -eux; \
     apk add --no-cache tzdata icu-libs libzip libpq; \
-    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev postgresql-dev libxml2-dev; \
-    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql opcache intl zip xml bcmath; \
+    apk add --no-cache --virtual .build-deps $PHPIZE_DEPS icu-dev libzip-dev libpq-dev libxml2-dev; \
+    docker-php-ext-install -j"$(nproc)" pdo_pgsql pgsql intl zip xml bcmath; \
     apk del .build-deps
 
 COPY docker/common/php/conf.d/common.ini /usr/local/etc/php/conf.d/zz-common.ini
 COPY docker/production/php/conf.d/production.ini /usr/local/etc/php/conf.d/zz-production.ini
-COPY docker/production/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/zz-opcache.ini
 
 RUN addgroup -g 1000 -S app && adduser -u 1000 -S -G app app
 

@@ -195,8 +195,8 @@
 
 | Extension / package | Зачем нужен | Где нужен | Источник требования |
 |---|---|---|---|
-| `pdo_pgsql`, `pgsql` | Подключение Symfony-приложения к PostgreSQL | dev-cli, dev-fpm, prod-cli, prod-fpm | Текущая архитектура Symfony-контейнеров и runtime DB в проекте (`libpq`/`postgresql-dev` уже были базовыми в Dockerfile) |
-| `opcache` | Производительность и предзагрузка байткода | dev-cli, dev-fpm, prod-cli, prod-fpm | Production-safe практика + `site/docker/production/php/conf.d/opcache.ini` |
+| `pdo_pgsql`, `pgsql` | Подключение Symfony-приложения к PostgreSQL | dev-cli, dev-fpm, prod-cli, prod-fpm | Текущая архитектура Symfony-контейнеров и runtime DB в проекте (`libpq`/`libpq-dev` уже были базовыми в Dockerfile) |
+| `opcache` | Производительность PHP runtime в HTTP production | только prod-fpm runtime | Production-safe практика + `site/docker/production/php/conf.d/opcache.ini` |
 | `intl` | Локализация/строковые операции Symfony | dev-cli, dev-fpm, prod-cli, prod-fpm | Symfony зависимости (`symfony/string`, framework stack) |
 | `zip` | Работа с zip-архивами пакетов/артефактов | dev-cli, dev-fpm, prod-cli, prod-fpm | Composer dist-поток и стандартный Symfony toolchain |
 | `xml` | Требование Symfony/platform check | dev-cli, dev-fpm, prod-cli, prod-fpm | `composer check-platform-reqs` (`ext-xml`) |
@@ -215,3 +215,12 @@
 - `dev-fpm`: без `composer/git/unzip/bash/coreutils`, без `xdebug` (HTTP debug через FPM не включали).
 - `dev-cli`: оставлены `composer` и `xdebug`, а также dev-утилиты (`bash/coreutils/git/unzip`) для локальной работы.
 - `gd/redis/mysql/node` не добавлялись, т.к. в platform requirements/конфигах Symfony этого требования нет.
+
+## 11) Оптимизация времени сборки (задача 2.4)
+
+- В `prod` vendor stages (`php-cli`, `php-fpm`) оставлены `git` и `unzip` только для надёжного `composer install` (runtime image это не утяжеляет из-за multi-stage).
+- В `prod php-cli` не подключается `opcache.ini`, т.к. `opcache` в CLI-образе не устанавливается.
+- Build dependency для PostgreSQL extensions заменён с `postgresql-dev` на `libpq-dev` во всех новых PHP 8.4 Alpine Dockerfile.
+- Причина: `postgresql-dev` на Alpine тянул тяжёлые зависимости (`postgresql18-dev`, `clang`, `llvm`), что резко замедляло сборку dev CLI образа.
+- `dev php-cli` остаётся инструментальным (composer + xdebug), но без `opcache` для ускорения сборки и уменьшения лишних compile steps.
+- `opcache` оставлен только в `production php-fpm`; для него добавлен `docker-php-ext-configure opcache --disable-opcache-jit` перед установкой.
