@@ -16,7 +16,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NGINX: ${{ github.repository_owner }}/vashfindir-site-nginx
   IMAGE_PHP_FPM: ${{ github.repository_owner }}/vashfindir-site-php-fpm
   IMAGE_PHP_CLI: ${{ github.repository_owner }}/vashfindir-site-php-cli
 
@@ -80,24 +79,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract Docker metadata (nginx)
-        id: meta-nginx
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NGINX }}
-          tags: |
-            type=raw,value=latest
-            type=sha,prefix=sha-,format=long
-
-      - name: Build and push nginx image
-        uses: docker/build-push-action@v6
-        with:
-          context: ./site
-          file: ./site/docker/production/nginx/Dockerfile
-          push: true
-          tags: ${{ steps.meta-nginx.outputs.tags }}
-          labels: ${{ steps.meta-nginx.outputs.labels }}
 
       - name: Extract Docker metadata (php-fpm)
         id: meta-php-fpm
