@@ -1,12 +1,20 @@
 name: Deploy vashfindir to production
 
 on:
-  push:
-    branches: [ "master", "main" ]
+  workflow_run:
+    workflows: ["Site CI/CD"]
+    types:
+      - completed
+    branches:
+      - master
+      - main
   workflow_dispatch:
 
 jobs:
   deploy:
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
 
     steps:
@@ -37,11 +45,26 @@ jobs:
             export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
             export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
             export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
-            export GHCR_OWNER='${{ secrets.GHCR_USERNAME }}'
-            export IMAGE_TAG='latest'
+            export GHCR_OWNER='${{ github.repository_owner }}'
+            export GHCR_TOKEN='${{ secrets.GHCR_TOKEN }}'
+            if [ '${{ github.event_name }}' = 'workflow_run' ]; then
+              export IMAGE_TAG='sha-${{ github.event.workflow_run.head_sha }}'
+            else
+              export IMAGE_TAG='latest'
+            fi
+
+            if [ -z "${GHCR_OWNER}" ]; then
+              echo "ERROR: GHCR_OWNER is empty"
+              exit 1
+            fi
+
+            if [ -z "${GHCR_TOKEN}" ]; then
+              echo "ERROR: GHCR_TOKEN is empty"
+              exit 1
+            fi
 
             echo "==> docker login to GHCR"
-            echo '${{ secrets.GHCR_TOKEN }}' | docker login ghcr.io -u '${{ secrets.GHCR_USERNAME }}' --password-stdin
+            echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_OWNER}" --password-stdin
 
             echo "==> sanity: render docker-compose config"
             docker-compose -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
@@ -49,26 +72,27 @@ jobs:
             echo "==> services in rendered compose"
             docker-compose -f "${COMPOSE_FILE}" config --services
 
-            echo "==> stop stack (ignore errors)"
-            docker-compose -f "${COMPOSE_FILE}" down || true
+            echo "==> stop Symfony services (ignore errors)"
+            docker-compose -f "${COMPOSE_FILE}" stop site site-php-fpm 2>/dev/null || true
 
-            echo "==> remove orphan containers (ignore errors)"
-            docker rm -f vashfindir_wp vashfindir_db vashfindir_site vashfindir_site_php_cli 2>/dev/null || true
+            echo "==> pull Symfony images"
+            docker-compose -f "${COMPOSE_FILE}" pull site-php-fpm site-php-cli
 
-            echo "==> pull production images"
-            docker-compose -f "${COMPOSE_FILE}" pull
+            echo "==> start Symfony services"
+            docker-compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site-php-fpm
+            docker-compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site
 
-            echo "==> start stack"
-            docker-compose -f "${COMPOSE_FILE}" up -d --remove-orphans
-
-            echo "==> status"
-            docker-compose -f "${COMPOSE_FILE}" ps
-
-            echo "==> logs: db (tail)"
-            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 db || true
-
-            echo "==> logs: wordpress (tail)"
-            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 wordpress || true
+            echo "==> status (Symfony services)"
+            docker-compose -f "${COMPOSE_FILE}" ps site site-php-fpm
 
             echo "==> logs: site (tail)"
             docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site || true
+
+            echo "==> logs: site-php-fpm (tail)"
+            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site-php-fpm || true
+
+            echo "==> health check (Symfony)"
+            curl -fsS https://newversion.vashfindir.ru/health
+
+            echo "==> health check (WordPress HTTP only)"
+            curl -I https://vashfindir.ru/ || true
