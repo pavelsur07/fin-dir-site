@@ -1,98 +1,132 @@
 name: Deploy vashfindir to production
 
 on:
-  workflow_run:
-    workflows: ["Site CI/CD"]
-    types:
-      - completed
-    branches:
-      - master
-      - main
-  workflow_dispatch:
+    push:
+        branches: ["master", "main"]
+    workflow_dispatch:
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_PHP_FPM: ${{ github.repository_owner }}/vashfindir-site-php-fpm
+    IMAGE_PHP_CLI: ${{ github.repository_owner }}/vashfindir-site-php-cli
+    IMAGE_TAG: sha-${{ github.sha }}
 
 jobs:
-  deploy:
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
-    runs-on: ubuntu-latest
+    deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Deploy over SSH to vashfindir server
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            set -euo pipefail
+        permissions:
+            contents: read
+            packages: write
 
-            DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
-            COMPOSE_FILE="${DEPLOY_PATH}/docker-compose.prod.yml"
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-            echo "==> cd ${DEPLOY_PATH}"
-            cd "${DEPLOY_PATH}"
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.4"
+                  tools: composer:v2
+                  extensions: pdo_pgsql, pgsql, zip, bcmath
+                  coverage: none
 
-            sudo /usr/local/sbin/vashfindir-fix-wp-perms || true
-            echo "==> git sync (hard reset to origin/master)"
-            git fetch --all --prune
-            # Если у тебя основная ветка main, поменяй origin/master на origin/main
-            git reset --hard origin/master
-            git clean -fd
+            - name: Composer validate
+              working-directory: site
+              run: composer validate --strict --no-check-lock
 
-            echo "==> export secrets (from GitHub Secrets)"
-            export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
-            export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
-            export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
-            export GHCR_OWNER='${{ github.repository_owner }}'
-            export GHCR_TOKEN='${{ secrets.GHCR_TOKEN }}'
-            if [ '${{ github.event_name }}' = 'workflow_run' ]; then
-              export IMAGE_TAG='sha-${{ github.event.workflow_run.head_sha }}'
-            else
-              export IMAGE_TAG='latest'
-            fi
+            - name: Composer install
+              working-directory: site
+              run: composer install --no-dev --prefer-dist --no-interaction --no-progress --no-scripts
 
-            if [ -z "${GHCR_OWNER}" ]; then
-              echo "ERROR: GHCR_OWNER is empty"
-              exit 1
-            fi
+            - name: Lint Twig templates
+              working-directory: site
+              run: php bin/console lint:twig templates
 
-            if [ -z "${GHCR_TOKEN}" ]; then
-              echo "ERROR: GHCR_TOKEN is empty"
-              exit 1
-            fi
+            - name: Lint Symfony container
+              working-directory: site
+              run: php bin/console lint:container
 
-            echo "==> docker login to GHCR"
-            echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_OWNER}" --password-stdin
+            - name: Login to GHCR
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u "${{ github.actor }}" --password-stdin
 
-            echo "==> sanity: render docker-compose config"
-            docker-compose -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
+            - name: Build PHP-FPM image
+              run: |
+                  docker build \
+                    -f site/docker/production/php-fpm/Dockerfile \
+                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest \
+                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:${{ env.IMAGE_TAG }} \
+                    site
 
-            echo "==> services in rendered compose"
-            docker-compose -f "${COMPOSE_FILE}" config --services
+            - name: Push PHP-FPM image
+              run: |
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:${{ env.IMAGE_TAG }}
 
-            echo "==> stop Symfony services (ignore errors)"
-            docker-compose -f "${COMPOSE_FILE}" stop site site-php-fpm 2>/dev/null || true
+            - name: Build PHP-CLI image
+              run: |
+                  docker build \
+                    -f site/docker/production/php-cli/Dockerfile \
+                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest \
+                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:${{ env.IMAGE_TAG }} \
+                    site
 
-            echo "==> pull Symfony images"
-            docker-compose -f "${COMPOSE_FILE}" pull site-php-fpm site-php-cli
+            - name: Push PHP-CLI image
+              run: |
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:${{ env.IMAGE_TAG }}
 
-            echo "==> start Symfony services"
-            docker-compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site-php-fpm
-            docker-compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site
-
-            echo "==> status (Symfony services)"
-            docker-compose -f "${COMPOSE_FILE}" ps site site-php-fpm
-
-            echo "==> logs: site (tail)"
-            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site || true
-
-            echo "==> logs: site-php-fpm (tail)"
-            docker-compose -f "${COMPOSE_FILE}" logs --tail=120 site-php-fpm || true
-
-            echo "==> health check (Symfony)"
-            curl -fsS https://newversion.vashfindir.ru/health
-
-            echo "==> health check (WordPress HTTP only)"
-            curl -I https://vashfindir.ru/ || true
+            - name: Deploy Symfony over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+                      
+                      DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+                      COMPOSE_FILE="${DEPLOY_PATH}/docker-compose.prod.yml"
+                      
+                      echo "==> cd ${DEPLOY_PATH}"
+                      cd "${DEPLOY_PATH}"
+                      
+                      echo "==> git sync"
+                      git fetch --all --prune
+                      git reset --hard origin/${{ github.ref_name }}
+                      git clean -fd
+                      
+                      echo "==> export env"
+                      export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
+                      export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
+                      export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
+                      export GHCR_OWNER='${{ github.repository_owner }}'
+                      export IMAGE_TAG='${{ env.IMAGE_TAG }}'
+                      
+                      echo "==> docker login to GHCR"
+                      echo '${{ secrets.GHCR_TOKEN }}' | docker login ghcr.io -u '${{ github.repository_owner }}' --password-stdin
+                      
+                      echo "==> render compose config"
+                      docker-compose -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
+                      
+                      echo "==> pull Symfony images"
+                      docker-compose -f "${COMPOSE_FILE}" pull site-php-fpm site-php-cli
+                      
+                      echo "==> stop Symfony services"
+                      docker-compose -f "${COMPOSE_FILE}" stop site site-php-fpm 2>/dev/null || true
+                      
+                      echo "==> start Symfony FPM"
+                      docker-compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site-php-fpm
+                      
+                      echo "==> start Symfony Nginx"
+                      docker-compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site
+                      
+                      echo "==> status"
+                      docker-compose -f "${COMPOSE_FILE}" ps site site-php-fpm
+                      
+                      echo "==> Symfony health"
+                      curl -fsS https://newversion.vashfindir.ru/health
+                      
+                      echo "==> WordPress HTTP check only"
+                      curl -I https://vashfindir.ru/ || true
