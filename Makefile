@@ -1,146 +1,80 @@
-SHELL := /bin/sh
+DC=docker compose
+CLI=$(DC) --profile cli run --rm site-php-cli
 
-DC := docker compose
-SITE_CLI := $(DC) run --rm site-php-cli
-PROD_DC := docker compose -f docker-compose.prod.yml
-PROD_SITE_CLI := $(PROD_DC) run --rm site-php-cli
-SITE_BASE_IMAGE := vashfindir-site-php-apache-base:8.3-bookworm
-SITE_BASE_DOCKERFILE := site/docker/base/Dockerfile
+UID := $(shell id -u)
+GID := $(shell id -g)
 
-.PHONY: init up down down-clear pull build build-pull ps logs site-base-build site-base-rebuild \
-        site-init site-clear site-composer-install site-composer-update site-composer-validate \
-        site-console site-cache-clear site-cache-warmup site-router site-lint site-lint-twig site-lint-container \
-        site-shell site-logs site-health wp-health check \
-        prod-config prod-site-base-build prod-site-base-rebuild prod-build prod-build-pull prod-up prod-down prod-ps prod-logs \
-        prod-site-console prod-site-cache-clear prod-site-cache-warmup prod-site-router \
-        prod-site-lint-container prod-site-composer-validate prod-site-composer-show
+.PHONY: init prepare build rebuild install update up down restart check console shell logs cache-clear clean-cache clean-local wp-up wp-down wp-logs ps
 
-init: down-clear site-base-build build site-init up site-health wp-health
+# Первый запуск Symfony dev после clone
+init: prepare build install cache-clear up check
 
+# Подготовка локальных папок под bind mount ./site:/app
+prepare:
+	mkdir -p site/vendor site/var 2>/dev/null || sudo mkdir -p site/vendor site/var
+	sudo chown -R $(UID):$(GID) site/vendor site/var
+	chmod -R u+rwX site/vendor site/var
+	mkdir -p site/vendor site/var/cache site/var/log
+
+# Сборка только Symfony dev PHP images
+build:
+	$(DC) build site-php-cli site-php-fpm
+
+# Полная пересборка, только если менялись Dockerfile или сломался Docker cache
+rebuild:
+	$(DC) build --no-cache site-php-cli site-php-fpm
+
+# Composer install внутри dev CLI
+install:
+	$(CLI) composer install
+
+# Composer update. Можно передать CMD="vendor/package --with-dependencies"
+update:
+	$(CLI) composer update $(CMD)
+
+# DEV по умолчанию: только Symfony nginx + fpm
 up:
-	$(DC) up -d
+	$(DC) up -d --remove-orphans site-php-fpm site-nginx
 
 down:
-	$(DC) down --remove-orphans
+	$(DC) down
 
-down-clear:
-	$(DC) down -v --remove-orphans
+restart:
+	$(DC) restart site-nginx site-php-fpm
 
-pull:
-	$(DC) pull
+check:
+	$(CLI) php bin/console about
+	$(DC) exec site-php-fpm php-fpm -t
+	curl -i http://localhost:8001/health
+	curl -I http://localhost:8001/
 
-site-base-build:
-	docker build --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
+console:
+	$(CLI) php bin/console $(CMD)
 
-site-base-rebuild:
-	docker build --pull --no-cache --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
+shell:
+	$(CLI) sh
 
-build:
-	$(DC) build
+logs:
+	$(DC) logs -f site-nginx site-php-fpm
 
-build-pull:
-	$(DC) build --pull
+cache-clear:
+	$(CLI) php bin/console cache:clear
+
+clean-cache:
+	rm -rf site/var/cache site/var/log
+
+clean-local:
+	rm -rf site/vendor site/var/cache site/var/log
 
 ps:
 	$(DC) ps
 
-logs:
-	$(DC) logs -f
+# WordPress / MariaDB / phpMyAdmin — только когда явно нужны
+wp-up:
+	$(DC) --profile wp up -d db wordpress phpmyadmin
 
-site-init: site-composer-install site-cache-clear site-cache-warmup site-lint
+wp-down:
+	$(DC) stop db wordpress phpmyadmin
 
-site-clear:
-	$(SITE_CLI) sh -c 'rm -rf var/cache/* var/log/*'
-
-site-composer-install:
-	$(SITE_CLI) composer install
-
-site-composer-update:
-	$(SITE_CLI) composer update --with-all-dependencies
-
-site-composer-validate:
-	$(SITE_CLI) composer validate
-
-site-console:
-	$(SITE_CLI) php bin/console
-
-site-cache-clear:
-	$(SITE_CLI) php bin/console cache:clear
-
-site-cache-warmup:
-	$(SITE_CLI) php bin/console cache:warmup
-
-site-router:
-	$(SITE_CLI) php bin/console debug:router
-
-site-lint: site-composer-validate site-lint-twig site-lint-container
-
-site-lint-twig:
-	$(SITE_CLI) php bin/console lint:twig templates
-
-site-lint-container:
-	$(SITE_CLI) php bin/console lint:container
-
-site-shell:
-	$(DC) run --rm site-php-cli sh
-
-site-logs:
-	$(DC) logs -f site
-
-site-health:
-	curl -fsS http://localhost:8001 | grep -q "Ваш Финдир"
-	@echo "✓ Symfony site is available at http://localhost:8001"
-
-wp-health:
-	curl -fsSI http://localhost:8000 > /dev/null
-	@echo "✓ WordPress is available at http://localhost:8000"
-
-check: site-lint site-health wp-health
-
-prod-config:
-	$(PROD_DC) config
-
-prod-site-base-build:
-	docker build --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
-
-prod-site-base-rebuild:
-	docker build --pull --no-cache --file $(SITE_BASE_DOCKERFILE) --tag $(SITE_BASE_IMAGE) site
-
-prod-build:
-	$(PROD_DC) build
-
-prod-build-pull:
-	$(PROD_DC) build --pull
-
-prod-up:
-	$(PROD_DC) up -d
-
-prod-down:
-	$(PROD_DC) down --remove-orphans
-
-prod-ps:
-	$(PROD_DC) ps
-
-prod-logs:
-	$(PROD_DC) logs -f
-
-prod-site-console:
-	$(PROD_SITE_CLI) php bin/console
-
-prod-site-cache-clear:
-	$(PROD_SITE_CLI) php bin/console cache:clear --env=prod --no-debug
-
-prod-site-cache-warmup:
-	$(PROD_SITE_CLI) php bin/console cache:warmup --env=prod --no-debug
-
-prod-site-router:
-	$(PROD_SITE_CLI) php bin/console debug:router --env=prod --no-debug
-
-prod-site-lint-container:
-	$(PROD_SITE_CLI) php bin/console lint:container --env=prod --no-debug
-
-prod-site-composer-validate:
-	$(PROD_SITE_CLI) composer validate
-
-prod-site-composer-show:
-	$(PROD_SITE_CLI) composer show
+wp-logs:
+	$(DC) logs -f db wordpress phpmyadmin

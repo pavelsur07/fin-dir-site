@@ -1,103 +1,100 @@
-version: "3.9"
-
 services:
-  db:
-    image: mariadb:11
-    container_name: fin_dir_db
-    restart: always
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wp_user
-      MYSQL_PASSWORD: wp_pass
-      MYSQL_ROOT_PASSWORD: root_pass
-    volumes:
-      - db_data:/var/lib/mysql
-    ports:
-      - "3307:3306" # чтобы не конфликтовать с локальным MySQL (если есть)
+    db:
+        image: mysql:8.0
+        container_name: fin_dir_db
+        profiles:
+            - wp
+        restart: always
+        environment:
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: wp_user
+            MYSQL_PASSWORD: wp_pass
+            MYSQL_ROOT_PASSWORD: root_pass
+        volumes:
+            - db_data:/var/lib/mysql
+        ports:
+            - "3307:3306"
 
-  wordpress:
-    image: wordpress:php8.2-apache
-    container_name: fin_dir_wp
-    depends_on:
-      - db
-    restart: always
-    ports:
-      - "8000:80"   # сайт будет доступен на http://localhost:8000
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wp_user
-      WORDPRESS_DB_PASSWORD: wp_pass
-    volumes:
-      # Монтируем только wp-content, ядро WP живёт внутри контейнера
-      - ./wp-content:/var/www/html/wp-content
+    wordpress:
+        image: wordpress:php8.2-apache
+        container_name: fin_dir_wp
+        profiles:
+            - wp
+        depends_on:
+            - db
+        restart: always
+        ports:
+            - "8000:80"
+        environment:
+            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_NAME: wordpress
+            WORDPRESS_DB_USER: wp_user
+            WORDPRESS_DB_PASSWORD: wp_pass
+        volumes:
+            - ./wp-content:/var/www/html/wp-content
 
-  site-nginx:
-    image: nginx:1.27-alpine
-    container_name: fin_dir_site_nginx
-    restart: always
-    depends_on:
-      - site-php-fpm
-    ports:
-      - "8001:80"
-    volumes:
-      - ./site:/app
-      - ./site/docker/common/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: fin_dir_pma
+        profiles:
+            - wp
+        depends_on:
+            - db
+        restart: always
+        ports:
+            - "8080:80"
+        environment:
+            PMA_HOST: db
+            PMA_USER: root
+            PMA_PASSWORD: root_pass
 
-  site-php-fpm:
-    image: vashfindir-site-php-fpm:dev
-    container_name: fin_dir_site_php_fpm
-    build:
-      context: ./site
-      dockerfile: docker/development/php-fpm/Dockerfile
-    restart: always
-    working_dir: /app
-    environment:
-      APP_ENV: dev
-      APP_DEBUG: "1"
-      APP_SECRET: dev-site-secret
-      DEFAULT_URI: http://localhost:8001
-    volumes:
-      - ./site:/app
-      - site_vendor:/app/vendor
-      - site_var:/app/var
-    expose:
-      - "9000"
+    site-nginx:
+        image: nginx:1.27-alpine
+        container_name: fin_dir_site_nginx
+        restart: always
+        depends_on:
+            - site-php-fpm
+        ports:
+            - "8001:80"
+        volumes:
+            - ./site:/app
+            - ./site/docker/common/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
-  site-php-cli:
-    profiles:
-      - cli
-    image: vashfindir-site-php-cli:dev
-    container_name: fin_dir_site_php_cli
-    build:
-      context: ./site
-      dockerfile: docker/development/php-cli/Dockerfile
-    working_dir: /app
-    environment:
-      APP_ENV: dev
-      APP_DEBUG: "1"
-      APP_SECRET: dev-site-secret
-      DEFAULT_URI: http://localhost:8001
-    volumes:
-      - ./site:/app
-      - site_vendor:/app/vendor
-      - site_var:/app/var
-    command: ["sh"]
+    site-php-fpm:
+        image: vashfindir-site-php-fpm:dev
+        container_name: fin_dir_site_php_fpm
+        build:
+            context: ./site
+            dockerfile: docker/development/php-fpm/Dockerfile
+        restart: always
+        working_dir: /app
+        environment:
+            APP_ENV: dev
+            APP_DEBUG: "1"
+            APP_SECRET: dev-site-secret
+            DEFAULT_URI: http://localhost:8001
+        volumes:
+            - ./site:/app
+        expose:
+            - "9000"
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: fin_dir_pma
-    depends_on:
-      - db
-    restart: always
-    ports:
-      - "8080:80"   # phpMyAdmin будет на http://localhost:8080
-    environment:
-      PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: root_pass
+    site-php-cli:
+        profiles:
+            - cli
+        image: vashfindir-site-php-cli:dev
+        container_name: fin_dir_site_php_cli
+        build:
+            context: ./site
+            dockerfile: docker/development/php-cli/Dockerfile
+        working_dir: /app
+        environment:
+            APP_ENV: dev
+            APP_DEBUG: "1"
+            APP_SECRET: dev-site-secret
+            DEFAULT_URI: http://localhost:8001
+        volumes:
+            - ./site:/app
+        command: ["sh"]
 
 volumes:
-  db_data:
-  site_vendor:
-  site_var:
+    db_data:
