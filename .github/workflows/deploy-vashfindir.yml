@@ -46,7 +46,7 @@ jobs:
 
             - name: Composer install
               working-directory: site
-              run: composer install --no-dev --prefer-dist --no-interaction --no-progress --no-scripts --optimize-autoloader
+              run: composer install --no-dev --prefer-dist --no-interaction --no-progress --no-scripts
 
             - name: Lint Twig templates
               working-directory: site
