@@ -133,11 +133,14 @@ jobs:
                       echo "==> stop Symfony only"
                       "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" stop site site-php-fpm 2>/dev/null || true
                       
+                      echo "==> remove old Symfony containers"
+                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" rm -f site site-php-fpm 2>/dev/null || true
+                      
                       echo "==> start Symfony FPM"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site-php-fpm
+                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" up -d --no-deps site-php-fpm
                       
                       echo "==> start Symfony Nginx"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate site
+                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" up -d --no-deps site
                       
                       echo "==> status"
                       "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" ps site site-php-fpm
