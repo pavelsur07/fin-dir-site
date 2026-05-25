@@ -90,7 +90,7 @@ services:
     image: ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site-php-fpm:${IMAGE_TAG:-latest}
     restart: always
     environment:
-      APP_ENV: dev
+      APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
       DEFAULT_URI: https://vashfindir.ru
@@ -106,7 +106,7 @@ services:
     image: ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site-php-cli:${IMAGE_TAG:-latest}
     working_dir: /app
     environment:
-      APP_ENV: dev
+      APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
       DEFAULT_URI: https://vashfindir.ru
