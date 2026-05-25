@@ -41,12 +41,12 @@ services:
       - "traefik.docker.network=traefik_web"
 
       # HTTPS
-      - "traefik.http.routers.vf.rule=Host(`vashfindir.ru`)"
+      - "traefik.http.routers.vf.rule=Host(`newversion.vashfindir.ru`)"
       - "traefik.http.routers.vf.entrypoints=websecure"
       - "traefik.http.routers.vf.tls.certresolver=le"
 
       # HTTP -> HTTPS
-      - "traefik.http.routers.vf-http.rule=Host(`vashfindir.ru`)"
+      - "traefik.http.routers.vf-http.rule=Host(`newversion.vashfindir.ru`)"
       - "traefik.http.routers.vf-http.entrypoints=web"
       - "traefik.http.routers.vf-http.middlewares=vf-https-redirect"
       - "traefik.http.middlewares.vf-https-redirect.redirectscheme.scheme=https"
@@ -66,11 +66,11 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_web"
 
-      - "traefik.http.routers.vf-new.rule=Host(`newversion.vashfindir.ru`)"
+      - "traefik.http.routers.vf-new.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf-new.entrypoints=websecure"
       - "traefik.http.routers.vf-new.tls.certresolver=le"
 
-      - "traefik.http.routers.vf-new-http.rule=Host(`newversion.vashfindir.ru`)"
+      - "traefik.http.routers.vf-new-http.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf-new-http.entrypoints=web"
       - "traefik.http.routers.vf-new-http.middlewares=vf-new-https-redirect"
       - "traefik.http.middlewares.vf-new-https-redirect.redirectscheme.scheme=https"
@@ -93,7 +93,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
-      DEFAULT_URI: https://newversion.vashfindir.ru
+      DEFAULT_URI: https://vashfindir.ru
     expose:
       - "9000"
     networks:
@@ -109,7 +109,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
-      DEFAULT_URI: https://newversion.vashfindir.ru
+      DEFAULT_URI: https://vashfindir.ru
     networks:
       - internal
     command: ["sh"]
