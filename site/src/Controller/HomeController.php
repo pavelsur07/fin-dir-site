@@ -13,4 +13,11 @@ class HomeController extends AbstractController
     {
         return $this->render('base.html.twig');
     }
+
+    #[Route('/', name: 'privacy')]
+    public function privacy(): Response
+    {
+        return $this->render('home/privacy.html.twig');
+    }
+
 }
