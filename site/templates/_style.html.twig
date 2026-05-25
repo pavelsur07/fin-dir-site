@@ -24,7 +24,7 @@
         --white-faint: rgba(255,255,255,.08);
         --brand-light-bg: color-mix(in srgb, var(--brand) 8%, var(--white));
         --ink-light-bg: color-mix(in srgb, var(--ink) 5%, var(--white));
-        --header-height: 5.375rem;
+        --header-height: 4.5rem;
         --header-anchor-offset: calc(var(--header-height) + 1rem);
     }
 
@@ -96,7 +96,16 @@
         color: var(--ink-soft) !important;
     }
 
+    .site-header {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+
     .navbar-wrap {
+        min-height: var(--header-height);
         background: color-mix(in srgb, var(--white) 92%, transparent);
         border-bottom: 1px solid var(--line);
         backdrop-filter: blur(16px);
@@ -185,8 +194,10 @@
     }
 
     .hero-section {
-        min-height: calc(100vh - var(--header-height));
-        min-height: calc(100svh - var(--header-height));
+        min-height: 100vh;
+        min-height: 100svh;
+        margin-top: calc(-1 * var(--header-height));
+        padding-top: calc(var(--header-height) + 3rem) !important;
         display: flex;
         align-items: center;
         background:
@@ -614,7 +625,7 @@
 
     @media (max-width: 767.98px) {
         :root {
-            --header-height: 4.75rem;
+            --header-height: 4.25rem;
             --header-anchor-offset: calc(var(--header-height) + .75rem);
         }
 
@@ -636,8 +647,9 @@
         }
 
         .hero-section {
-            min-height: calc(80vh - var(--header-height));
-            min-height: calc(80svh - var(--header-height));
+            min-height: 80vh;
+            min-height: 80svh;
+            padding-top: calc(var(--header-height) + 2rem) !important;
         }
 
         .hero-actions .btn {
