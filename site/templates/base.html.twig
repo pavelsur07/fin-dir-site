@@ -1,23 +1,1102 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ваш Финдир — финансовый учёт для селлеров маркетплейсов</title>
+    <meta name="description" content="ДДС, ОПиУ, Баланс, планирование и unit-экономика для селлеров Wildberries и Ozon. Управляйте бизнесом по цифрам, а не по ощущениям.">
 
-        {% block javascripts %}
-        {% endblock %}
+    <!-- Fonts: один Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    <!-- Bootstrap 5 + Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!--
+      Analytics placeholders.
+      Замените YM_COUNTER_ID и VK_PIXEL_ID на реальные значения перед публикацией.
+      Цели: cta_click, lead_form_submit, telegram_click.
+    -->
+    <script>
+        window.VF_ANALYTICS = {
+            ymCounterId: 'YM_COUNTER_ID',
+            vkPixelId: 'VK_PIXEL_ID'
+        };
+    </script>
+    <!-- Yandex.Metrika counter placeholder -->
+    <script>
+        (function () {
+            const id = window.VF_ANALYTICS.ymCounterId;
+            if (!id || id === 'YM_COUNTER_ID') return;
+            (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+            (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+            ym(id, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+        })();
+    </script>
+    <!-- VK Pixel placeholder -->
+    <script>
+        (function () {
+            const id = window.VF_ANALYTICS.vkPixelId;
+            if (!id || id === 'VK_PIXEL_ID') return;
+            window._tmr = window._tmr || [];
+            window._tmr.push({ id: id, type: 'pageView', start: (new Date()).getTime() });
+            const s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://top-fwz1.mail.ru/js/code.js';
+            document.head.appendChild(s);
+        })();
+    </script>
+
+    <style>
+        :root {
+            /* Brand colors */
+            --brand-red: #B00020;
+            --brand-dark: #8A0019;
+            --brand: var(--brand-red);
+
+            /* Text colors */
+            --ink: #0B1020;
+            --ink-soft: #1A2033;
+            --muted: #5C677D;
+
+            /* Surface colors */
+            --bg: #F5F6F8;
+            --bg-soft: #ECEEF2;
+            --white: #FFFFFF;
+            --line: rgba(10,21,72,.14);
+
+            /* Additional derived tokens */
+            --shadow-soft: 0 18px 60px rgba(10,21,72,.08);
+            --shadow-strong: 0 24px 70px rgba(10,21,72,.14);
+            --white-soft-line: rgba(255,255,255,.14);
+            --white-muted: rgba(255,255,255,.76);
+            --white-faint: rgba(255,255,255,.08);
+            --brand-light-bg: color-mix(in srgb, var(--brand) 8%, var(--white));
+            --ink-light-bg: color-mix(in srgb, var(--ink) 5%, var(--white));
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 86px;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--ink);
+            background: var(--bg);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: 1rem;
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .section-eyebrow::before {
+            content: '';
+            width: .5rem;
+            height: .5rem;
+            border-radius: 50%;
+            background: var(--brand);
+            flex: 0 0 auto;
+        }
+
+        .section-title {
+            color: var(--ink);
+            font-weight: 800;
+            letter-spacing: -.035em;
+            line-height: 1.08;
+        }
+
+        .section-subtitle {
+            color: var(--ink-soft);
+            max-width: 720px;
+        }
+
+        .text-muted-brand {
+            color: var(--muted) !important;
+        }
+
+        .text-ink-soft {
+            color: var(--ink-soft) !important;
+        }
+
+        .navbar-wrap {
+            background: color-mix(in srgb, var(--white) 92%, transparent);
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(16px);
+        }
+
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: .65rem;
+            color: var(--ink);
+            font-size: 1.08rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: .9rem;
+            color: var(--white);
+            background: var(--ink);
+            font-size: .9rem;
+            font-weight: 800;
+            letter-spacing: -.04em;
+        }
+
+        .btn {
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: -.01em;
+            transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary,
+        .btn-primary:focus {
+            color: var(--white);
+            background-color: var(--ink);
+            border-color: var(--ink);
+            box-shadow: none;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:active {
+            color: var(--white) !important;
+            background-color: var(--brand) !important;
+            border-color: var(--brand) !important;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-outline-secondary,
+        .btn-outline-secondary:focus {
+            color: var(--ink);
+            background: transparent;
+            border-color: var(--ink);
+            box-shadow: none;
+        }
+
+        .btn-outline-secondary:hover,
+        .btn-outline-secondary:active {
+            color: var(--white) !important;
+            background-color: var(--ink) !important;
+            border-color: var(--ink) !important;
+        }
+
+        .btn-light-ink,
+        .btn-light-ink:focus {
+            color: var(--white);
+            background-color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        .btn-light-ink:hover,
+        .btn-light-ink:active {
+            color: var(--ink) !important;
+            background-color: var(--white) !important;
+            border-color: var(--white) !important;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 6.5rem;
+            background:
+                radial-gradient(circle at top right, var(--brand-light-bg), transparent 34rem),
+                var(--bg);
+        }
+
+        .hero-title {
+            max-width: 920px;
+            color: var(--ink);
+            font-size: clamp(2.55rem, 6vw, 5.55rem);
+            font-weight: 800;
+            letter-spacing: -.065em;
+            line-height: .96;
+        }
+
+        .hero-title em {
+            color: var(--brand);
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .hero-lead {
+            max-width: 680px;
+            color: var(--ink-soft);
+            font-size: clamp(1.08rem, 2vw, 1.35rem);
+            font-weight: 500;
+        }
+
+        .hero-card {
+            position: relative;
+            border: 1px solid var(--line);
+            border-radius: 2rem;
+            background: var(--white);
+            box-shadow: var(--shadow-strong);
+            overflow: hidden;
+        }
+
+        .hero-card-header {
+            border-bottom: 1px solid var(--line);
+            background: var(--ink-light-bg);
+        }
+
+        .hero-dot {
+            width: .62rem;
+            height: .62rem;
+            border-radius: 50%;
+            background: var(--brand);
+        }
+
+        .metric-card {
+            border: 1px solid var(--line);
+            border-radius: 1.35rem;
+            background: var(--white);
+            height: 100%;
+        }
+
+        .metric-label {
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            color: var(--ink);
+            font-size: 1.65rem;
+            font-weight: 800;
+            letter-spacing: -.04em;
+        }
+
+        .card-ui {
+            height: 100%;
+            border: 1px solid var(--line);
+            border-radius: 1.5rem;
+            background: var(--white);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .icon-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 1rem;
+            color: var(--brand);
+            background: var(--brand-light-bg);
+            font-size: 1.35rem;
+        }
+
+        .service-card-main {
+            color: var(--white);
+            background: var(--ink);
+            border-color: var(--ink);
+        }
+
+        .service-card-main .icon-pill {
+            color: var(--white);
+            background: var(--white-faint);
+        }
+
+        .service-card-main p,
+        .service-card-main .service-caption {
+            color: var(--white-muted);
+        }
+
+        .service-card-accent {
+            color: var(--white);
+            background: var(--brand);
+            border-color: var(--brand);
+        }
+
+        .service-card-accent .icon-pill {
+            color: var(--white);
+            background: var(--white-faint);
+        }
+
+        .service-card-accent p,
+        .service-card-accent .service-caption {
+            color: var(--white-muted);
+        }
+
+        .dark-section {
+            color: var(--white);
+            background: var(--ink);
+        }
+
+        .dark-section .section-title,
+        .dark-section h5,
+        .dark-section p {
+            color: var(--white);
+        }
+
+        .dark-section .section-eyebrow {
+            color: var(--white-muted);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            color: var(--white);
+            background: var(--brand);
+            font-size: 1.45rem;
+            font-weight: 800;
+            box-shadow: 0 0 0 .7rem var(--white-faint);
+        }
+
+        .step-card {
+            height: 100%;
+            border: 1px solid var(--white-soft-line);
+            border-radius: 1.5rem;
+            background: var(--white-faint);
+        }
+
+        .case-section {
+            background: var(--bg-soft);
+        }
+
+        .case-card {
+            border: 1px solid var(--line);
+            border-radius: 2rem;
+            background: var(--white);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .case-label {
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        .result-number {
+            color: var(--brand);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -.06em;
+            line-height: 1;
+        }
+
+        .quote-card {
+            border-left: 4px solid var(--brand);
+            border-radius: 1rem;
+            background: var(--bg);
+        }
+
+        .telegram-card {
+            border: 1px solid var(--line);
+            border-radius: 2rem;
+            background: var(--white);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .contact-section {
+            color: var(--white);
+            background: var(--brand);
+        }
+
+        .contact-section .section-eyebrow,
+        .contact-section .section-title,
+        .contact-section .section-subtitle {
+            color: var(--white);
+        }
+
+        .contact-section .section-eyebrow::before {
+            background: var(--white);
+        }
+
+        .contact-card {
+            border: 1px solid var(--white-soft-line);
+            border-radius: 2rem;
+            color: var(--ink);
+            background: var(--white);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .form-label {
+            color: var(--ink-soft);
+            font-weight: 700;
+        }
+
+        .form-control {
+            min-height: 3.35rem;
+            color: var(--ink);
+            border-color: var(--line);
+            border-radius: 1rem;
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            color: var(--ink);
+            border-color: var(--ink);
+            box-shadow: 0 0 0 .25rem var(--brand-light-bg);
+        }
+
+        .success-message {
+            display: none;
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            color: var(--ink);
+            background: var(--brand-light-bg);
+        }
+
+        .success-message.is-visible {
+            display: block;
+        }
+
+        .footer-section {
+            color: var(--white);
+            background: var(--ink);
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color .2s ease, opacity .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+            opacity: .9;
+        }
+
+        .footer-muted {
+            color: var(--white-muted);
+        }
+
+        .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: .9rem;
+            margin-bottom: 1.6rem;
+            color: var(--white);
+            font-size: clamp(1.65rem, 2vw, 2rem);
+            font-weight: 800;
+            letter-spacing: -.05em;
+            line-height: 1;
+        }
+
+        .footer-brand:hover {
+            color: var(--white);
+            opacity: 1;
+        }
+
+        .footer-brand .brand-mark {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: .55rem;
+            color: var(--white);
+            background: var(--brand);
+            font-size: 1.05rem;
+        }
+
+        .footer-brand-text {
+            color: var(--white);
+        }
+
+        .footer-description {
+            max-width: 25rem;
+            color: var(--white-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .footer-socials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+            margin-top: 2rem;
+        }
+
+        .footer-social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.1rem;
+            height: 3.1rem;
+            border: 1px solid var(--white-soft-line);
+            border-radius: .7rem;
+            color: var(--white);
+            background: var(--white-faint);
+            font-size: 1.1rem;
+        }
+
+        .footer-social-link:hover {
+            color: var(--white);
+            background: color-mix(in srgb, var(--white) 10%, transparent);
+            border-color: color-mix(in srgb, var(--white) 22%, transparent);
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .footer-title {
+            margin-bottom: 1.85rem;
+            color: var(--white-muted);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .28em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .footer-contact-list,
+        .footer-docs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .footer-contact-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.55rem;
+            height: 2.55rem;
+            flex: 0 0 auto;
+            border: 1px solid var(--white-soft-line);
+            border-radius: .65rem;
+            color: var(--white-muted);
+            background: var(--white-faint);
+            font-size: 1rem;
+        }
+
+        .footer-kicker {
+            margin-bottom: .35rem;
+            color: var(--white-muted);
+            font-size: .74rem;
+            font-weight: 600;
+            letter-spacing: .24em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+
+        .footer-contact-link {
+            color: var(--white);
+            font-size: clamp(1.05rem, 1.15vw, 1.28rem);
+            font-weight: 600;
+            letter-spacing: -.03em;
+            line-height: 1.2;
+        }
+
+        .footer-docs-list a {
+            color: var(--white-muted);
+            font-size: clamp(1rem, 1.05vw, 1.14rem);
+            font-weight: 400;
+            letter-spacing: -.025em;
+            line-height: 1.35;
+        }
+
+        .footer-docs-list a:hover {
+            color: var(--white);
+        }
+
+        .footer-divider {
+            height: 1px;
+            margin-top: 3.4rem;
+            margin-bottom: 2rem;
+            background: var(--white-soft-line);
+        }
+
+        .footer-bottom {
+            color: var(--white-muted);
+            font-size: .98rem;
+        }
+
+        .footer-legal {
+            font-size: .9rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 767.98px) {
+            html {
+                scroll-padding-top: 76px;
+            }
+
+            .brand-logo {
+                gap: .45rem;
+                font-size: .95rem;
+            }
+
+            .brand-mark {
+                width: 2rem;
+                height: 2rem;
+                border-radius: .7rem;
+                font-size: .76rem;
+            }
+
+            .navbar .btn {
+                padding: .58rem .85rem;
+                font-size: .88rem;
+            }
+
+            .hero-section {
+                min-height: 80vh;
+                padding-top: 5.5rem;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .section-title {
+                letter-spacing: -.045em;
+            }
+
+            .step-card {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .footer-description {
+                max-width: none;
+            }
+
+            .footer-divider {
+                margin-top: 2.6rem;
+            }
+
+            .footer-legal {
+                white-space: normal;
+                display: inline-block;
+                line-height: 1.8;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .footer-brand {
+                justify-content: center;
+            }
+
+            .footer-socials,
+            .footer-contact-item {
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero-actions .btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+{% include '_header.html.twig' %}
+
+<!-- Section 2: Hero -->
+<section id="hero" class="section hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <div class="section-eyebrow">Финансовый директор + SaaS-платформа</div>
+                <h1 class="hero-title mb-4">Финансовый учёт для селлеров <em>маркетплейсов</em></h1>
+                <p class="lead hero-lead mb-4">ДДС, ОПиУ, Баланс, планирование и unit-экономика — управляйте бизнесом по цифрам, а не по ощущениям.</p>
+                <div class="hero-actions d-flex flex-column flex-md-row gap-2 gap-md-3">
+                    <a href="#contact" class="btn btn-primary btn-lg js-cta-click">Получить консультацию</a>
+                    <a href="https://t.me/your_channel" class="btn btn-outline-secondary btn-lg js-telegram-click" target="_blank" rel="noopener">Читать канал</a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="hero-card">
+                    <div class="hero-card-header d-flex align-items-center justify-content-between px-4 py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="hero-dot"></span>
+                            <span class="hero-dot"></span>
+                            <span class="hero-dot"></span>
+                        </div>
+                        <span class="metric-label">Dashboard</span>
+                    </div>
+                    <div class="p-4 p-lg-5">
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <div class="metric-card p-3">
+                                    <div class="metric-label mb-2">Выручка</div>
+                                    <div class="metric-value">5,8 млн</div>
+                                    <div class="text-muted-brand small">+18% MoM</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="metric-card p-3">
+                                    <div class="metric-label mb-2">EBITDA</div>
+                                    <div class="metric-value">14,2%</div>
+                                    <div class="text-muted-brand small">после расходов</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="metric-card p-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="metric-label">Unit-экономика</span>
+                                <span class="badge rounded-pill text-bg-light">WB / Ozon</span>
+                            </div>
+                            <div class="progress mb-3" role="progressbar" aria-label="Доля прибыльных SKU" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" style="width: 72%; background: var(--ink);"></div>
+                            </div>
+                            <div class="d-flex justify-content-between small text-muted-brand">
+                                <span>72% SKU прибыльные</span>
+                                <span>18 SKU требуют решения</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-3">
+                            <span class="icon-pill"><i class="bi bi-shield-check"></i></span>
+                            <p class="mb-0 text-ink-soft">Единая система: интеграции, отчёты, контроль кассового разрыва и управленческие решения.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 3: Problems -->
+<section id="problems" class="section py-5 bg-white">
+    <div class="container">
+        <div class="row justify-content-between align-items-end mb-4 mb-lg-5">
+            <div class="col-lg-7">
+                <div class="section-eyebrow">Боли собственника</div>
+                <h2 class="section-title display-5 mb-3">Знакомо?</h2>
+                <p class="section-subtitle mb-0">Когда цифры живут в разных таблицах, бизнес растёт вслепую: оборот есть, а управляемости нет.</p>
+            </div>
+        </div>
+        <div class="row g-3 g-lg-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card-ui p-4">
+                    <span class="icon-pill mb-4"><i class="bi bi-question-circle"></i></span>
+                    <p class="h5 mb-0">Не понимаю, зарабатываю я или нет</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card-ui p-4">
+                    <span class="icon-pill mb-4"><i class="bi bi-cash-stack"></i></span>
+                    <p class="h5 mb-0">Выручка растёт, а денег нет</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card-ui p-4">
+                    <span class="icon-pill mb-4"><i class="bi bi-calculator"></i></span>
+                    <p class="h5 mb-0">Unit-экономику считаю на глаз</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card-ui p-4">
+                    <span class="icon-pill mb-4"><i class="bi bi-compass"></i></span>
+                    <p class="h5 mb-0">Решения принимаю по ощущениям, а не по цифрам</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 4: Services -->
+<section id="services" class="section py-5" style="background: var(--bg);">
+    <div class="container">
+        <div class="text-center mx-auto mb-4 mb-lg-5" style="max-width: 760px;">
+            <div class="section-eyebrow">Система управления финансами</div>
+            <h2 class="section-title display-5 mb-3">Что вы получите</h2>
+            <p class="section-subtitle mx-auto mb-0">Не набор отчётов ради отчётов, а рабочую систему, которая помогает видеть прибыль, деньги, риски и решения.</p>
+        </div>
+        <div class="row g-3 g-lg-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card-ui service-card-main p-4 p-lg-5">
+                    <span class="icon-pill mb-4"><i class="bi bi-wallet2"></i></span>
+                    <h5 class="mb-3">ДДС</h5>
+                    <p class="mb-0">Движение денежных средств: видно, куда уходят деньги и где возникает кассовый разрыв.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card-ui p-4 p-lg-5">
+                    <span class="icon-pill mb-4"><i class="bi bi-graph-up-arrow"></i></span>
+                    <h5 class="mb-3">ОПиУ</h5>
+                    <p class="mb-0 text-muted-brand">Отчёт о прибылях и убытках: реальная прибыль, а не оборот в личном кабинете маркетплейса.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card-ui p-4 p-lg-5">
+                    <span class="icon-pill mb-4"><i class="bi bi-columns-gap"></i></span>
+                    <h5 class="mb-3">Баланс</h5>
+                    <p class="mb-0 text-muted-brand">Полная картина активов, обязательств, запасов, денег и капитала собственника.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card-ui p-4 p-lg-5">
+                    <span class="icon-pill mb-4"><i class="bi bi-calendar3"></i></span>
+                    <h5 class="mb-3">Планирование</h5>
+                    <p class="mb-0 text-muted-brand">Финансовые планы, бюджеты, платежный календарь и прогноз денег на ближайшие периоды.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card-ui service-card-accent p-4 p-lg-5">
+                    <span class="icon-pill mb-4"><i class="bi bi-box-seam"></i></span>
+                    <h5 class="mb-3">Unit-экономика</h5>
+                    <p class="mb-0">Прибыльность каждого товара, направления и канала с учётом комиссий, логистики и себестоимости.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card-ui p-4 p-lg-5">
+                    <span class="icon-pill mb-4"><i class="bi bi-plug"></i></span>
+                    <h5 class="mb-3">Интеграция с маркетплейсами</h5>
+                    <p class="mb-0 text-muted-brand">Автоматический сбор данных с Wildberries и Ozon, меньше ручного труда и ошибок в таблицах.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 5: How it works -->
+<section id="how-it-works" class="section dark-section py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-4 mb-lg-5" style="max-width: 720px;">
+            <div class="section-eyebrow">Процесс</div>
+            <h2 class="section-title display-5 mb-3">Как это работает</h2>
+            <p class="mb-0" style="color: var(--white-muted);">Внедряем финансовую систему без лишней бюрократии: подключаем данные, строим отчёты, превращаем цифры в управленческие решения.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-card p-4 p-lg-5">
+                    <div class="step-number mb-4">1</div>
+                    <h5 class="mb-3">Подключаемся</h5>
+                    <p class="mb-0" style="color: var(--white-muted);">Настраиваем интеграцию с вашим маркетплейсом и банком, собираем исходные данные.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card p-4 p-lg-5">
+                    <div class="step-number mb-4">2</div>
+                    <h5 class="mb-3">Строим учёт</h5>
+                    <p class="mb-0" style="color: var(--white-muted);">Формируем ДДС, ОПиУ, Баланс, настраиваем аналитику и правила распределения.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card p-4 p-lg-5">
+                    <div class="step-number mb-4">3</div>
+                    <h5 class="mb-3">Вы управляете</h5>
+                    <p class="mb-0" style="color: var(--white-muted);">Принимаете решения на основе цифр, моделируете последствия и контролируете прибыль.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 6: Case -->
+<section id="case" class="section case-section py-5">
+    <div class="container">
+        <div class="row align-items-center g-4 g-lg-5">
+            <div class="col-lg-5">
+                <div class="section-eyebrow">Кейс</div>
+                <h2 class="section-title display-5 mb-3">Результат клиента</h2>
+                <p class="section-subtitle mb-0">Пример, как финансовая система превращает разрозненные цифры маркетплейса в понятную картину бизнеса.</p>
+            </div>
+            <div class="col-lg-7">
+                <div class="case-card p-4 p-lg-5">
+                    <h3 class="h4 mb-4">Селлер на Wildberries, оборот 5 млн/мес</h3>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="case-label mb-2">Проблема</div>
+                            <p class="mb-0 text-ink-soft">Оборот рос, но собственник не видел реальную прибыль, кассовые разрывы и товары с отрицательной маржинальностью.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="case-label mb-2">Что сделали</div>
+                            <p class="mb-0 text-ink-soft">Собрали ДДС, ОПиУ, баланс, unit-экономику SKU и правила контроля платежей.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="case-label mb-2">Результат</div>
+                            <p class="mb-0 text-ink-soft">Нашли слабые SKU, пересобрали закупки и сделали прогноз денег на 30 дней.</p>
+                        </div>
+                    </div>
+                    <div class="row g-3 align-items-stretch mb-4">
+                        <div class="col-sm-4">
+                            <div class="metric-card p-3">
+                                <div class="result-number">30</div>
+                                <div class="text-muted-brand small">дней прогноза денег</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="metric-card p-3">
+                                <div class="result-number">18</div>
+                                <div class="text-muted-brand small">SKU на пересмотр</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="metric-card p-3">
+                                <div class="result-number">1</div>
+                                <div class="text-muted-brand small">единый источник правды</div>
+                            </div>
+                        </div>
+                    </div>
+                    <blockquote class="quote-card p-4 mb-0">
+                        <p class="mb-2">«Стало понятно, какие решения дают деньги, а какие просто увеличивают оборот».</p>
+                        <footer class="text-muted-brand small">Собственник e-commerce бизнеса</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 7: Telegram -->
+<section id="telegram" class="section py-5 bg-white">
+    <div class="container">
+        <div class="telegram-card p-4 p-lg-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <div class="section-eyebrow">Telegram-канал</div>
+                    <h2 class="section-title display-6 mb-3">Разбираю реальные кейсы финучёта</h2>
+                    <p class="section-subtitle mb-0">Показываю, как читать ДДС, ОПиУ, Баланс и unit-экономику без сложной теории. Практические разборы для собственников маркетплейс-бизнеса.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="https://t.me/your_channel" class="btn btn-primary btn-lg w-100 w-lg-auto js-telegram-click" target="_blank" rel="noopener">
+                        <i class="bi bi-telegram me-2"></i>Подписаться на канал
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 8: Contact -->
+<section id="contact" class="section contact-section py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-4 mb-lg-5" style="max-width: 720px;">
+            <div class="section-eyebrow">Заявка</div>
+            <h2 class="section-title display-5 mb-3">Получить консультацию</h2>
+            <p class="section-subtitle mx-auto mb-0">Обсудим, как навести порядок в финансах вашего бизнеса и какие отчёты нужны в первую очередь.</p>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-lg-6 mx-auto">
+                <div class="contact-card p-4 p-lg-5">
+                    <form id="leadForm" action="/landing/contact" method="post" novalidate>
+                        <div class="mb-3">
+                            <label for="leadName" class="form-label">Имя</label>
+                            <input type="text" class="form-control" id="leadName" name="name" placeholder="Как к вам обращаться" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="leadContact" class="form-label">Telegram или телефон</label>
+                            <input type="text" class="form-control" id="leadContact" name="contact" placeholder="@username или номер телефона" required>
+                        </div>
+                        <button type="submit" class="btn btn-light-ink btn-lg w-100">Отправить</button>
+                        <div id="leadSuccess" class="success-message mt-4 p-3" role="status" aria-live="polite">
+                            Спасибо! Свяжусь с вами в ближайшее время.
+                        </div>
+                        <p class="small text-muted-brand mt-3 mb-0">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include '_footer.html.twig' %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function trackGoal(goalName) {
+        const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
+
+        if (typeof window.ym === 'function' && ymId && ymId !== 'YM_COUNTER_ID') {
+            window.ym(ymId, 'reachGoal', goalName);
+        }
+
+        if (window._tmr && Array.isArray(window._tmr)) {
+            window._tmr.push({ type: 'reachGoal', id: window.VF_ANALYTICS.vkPixelId, goal: goalName });
+        }
+    }
+
+    document.querySelectorAll('.js-cta-click').forEach(function (element) {
+        element.addEventListener('click', function () {
+            trackGoal('cta_click');
+        });
+    });
+
+    document.querySelectorAll('.js-telegram-click').forEach(function (element) {
+        element.addEventListener('click', function () {
+            trackGoal('telegram_click');
+        });
+    });
+
+    const leadForm = document.getElementById('leadForm');
+    const successMessage = document.getElementById('leadSuccess');
+
+    leadForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const name = leadForm.elements.name.value.trim();
+        const contact = leadForm.elements.contact.value.trim();
+
+        if (!name || !contact) {
+            leadForm.classList.add('was-validated');
+            return;
+        }
+
+        trackGoal('lead_form_submit');
+
+        try {
+            const response = await fetch(leadForm.action, {
+                method: 'POST',
+                body: new FormData(leadForm),
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+
+            if (!response.ok) {
+                throw new Error('Form submit failed');
+            }
+        } catch (error) {
+            console.warn('Форма не отправлена на сервер. Подключите Symfony-контроллер /landing/contact.', error);
+        } finally {
+            successMessage.classList.add('is-visible');
+            leadForm.reset();
+            leadForm.classList.remove('was-validated');
+        }
+    });
+</script>
+</body>
 </html>
