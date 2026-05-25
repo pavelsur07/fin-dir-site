@@ -34,6 +34,7 @@
     }
 
     body {
+        padding-top: var(--header-height);
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         color: var(--ink);
         background: var(--bg);
@@ -49,7 +50,7 @@
         overflow: hidden;
     }
 
-    .section[id]:not(#hero) {
+    .section[id] {
         scroll-margin-top: var(--header-anchor-offset);
     }
 
@@ -184,10 +185,10 @@
     }
 
     .hero-section {
-        min-height: 100vh;
+        min-height: calc(100vh - var(--header-height));
+        min-height: calc(100svh - var(--header-height));
         display: flex;
         align-items: center;
-        padding-top: 6.5rem;
         background:
             radial-gradient(circle at top right, var(--brand-light-bg), transparent 34rem),
             var(--bg);
@@ -635,8 +636,8 @@
         }
 
         .hero-section {
-            min-height: 80vh;
-            padding-top: 5.5rem;
+            min-height: calc(80vh - var(--header-height));
+            min-height: calc(80svh - var(--header-height));
         }
 
         .hero-actions .btn {
