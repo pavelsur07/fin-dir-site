@@ -14,10 +14,22 @@ class HomeController extends AbstractController
         return $this->render('base.html.twig');
     }
 
-    #[Route('/', name: 'privacy')]
+    #[Route('/privacy', name: 'privacy')]
     public function privacy(): Response
     {
         return $this->render('home/privacy.html.twig');
+    }
+
+    #[Route('/offer', name: 'offer')]
+    public function offer(): Response
+    {
+        return $this->render('home/offer.html.twig');
+    }
+
+    #[Route('/consent', name: 'consent')]
+    public function consent(): Response
+    {
+        return $this->render('home/consent.html.twig');
     }
 
 }
