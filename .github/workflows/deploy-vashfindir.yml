@@ -151,8 +151,8 @@ jobs:
                       echo "==> logs: site-php-fpm"
                       "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" logs --tail=120 site-php-fpm || true
                       
-                      echo "==> Symfony health"
-                      curl -fsS https://newversion.vashfindir.ru/health
+                      echo "==> Symfony health (inside container)"
+                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" exec -T site sh -lc 'wget -qO- http://127.0.0.1/health | grep -qx "alive"'
                       
                       echo "==> WordPress HTTP check only"
                       curl -I https://vashfindir.ru/ || true
