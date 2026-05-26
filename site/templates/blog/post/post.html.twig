@@ -1,362 +1,365 @@
-<main>
-    <section class="section blog-hero py-5" id="blog-hero">
-        <div class="container">
-            <nav aria-label="Хлебные крошки" class="breadcrumbs-wrap">
-                <ol class="breadcrumb vf-breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Главная</a></li>
-                    <li class="breadcrumb-item"><a href="/blog">Блог</a></li>
-                    <li class="breadcrumb-item"><a href="/blog/money-profit">Деньги и прибыль</a></li>
-                    <li aria-current="page" class="breadcrumb-item active">Маркетплейс или интернет-магазин</li>
-                </ol>
-            </nav>
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-7">
-                    <div class="blog-meta-row">
-                        <span class="blog-category-pill">Деньги и прибыль</span>
-                        <span class="blog-meta-item"><i class="bi bi-calendar3"></i> 27.05.2026</span>
-                        <span class="blog-meta-item"><i class="bi bi-eye"></i> 3 428</span>
-                    </div>
-                    <h1 class="blog-title">Маркетплейс или интернет-магазин: где больше <em>прибыли</em> и меньше рисков</h1>
-                    <p class="blog-lead mt-4">Разбираем два канала продаж через финансы: стартовые вложения, комиссии, рекламу, cash flow, контроль клиента и управленческие решения.</p>
-                    <div class="blog-author-row">
-                        <div class="blog-author-card">
-                            <span class="blog-author-avatar">АК</span>
-                            <div>
-                                <p class="blog-author-name">Александр Кумар</p>
-                                <p class="blog-author-role">Эксперт по маркетплейсам</p>
-                            </div>
+{% extends 'base.html.twig' %}
+{% block body %}
+    <main>
+        <section class="section blog-hero py-5" id="blog-hero">
+            <div class="container">
+                <nav aria-label="Хлебные крошки" class="breadcrumbs-wrap">
+                    <ol class="breadcrumb vf-breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                        <li class="breadcrumb-item"><a href="/blog">Блог</a></li>
+                        <li class="breadcrumb-item"><a href="/blog/money-profit">Деньги и прибыль</a></li>
+                        <li aria-current="page" class="breadcrumb-item active">Маркетплейс или интернет-магазин</li>
+                    </ol>
+                </nav>
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-7">
+                        <div class="blog-meta-row">
+                            <span class="blog-category-pill">Деньги и прибыль</span>
+                            <span class="blog-meta-item"><i class="bi bi-calendar3"></i> 27.05.2026</span>
+                            <span class="blog-meta-item"><i class="bi bi-eye"></i> 3 428</span>
                         </div>
-                        <div class="blog-author-card">
-                            <span class="blog-author-avatar">ВФ</span>
-                            <div>
-                                <p class="blog-author-name">Редакция Ваш Финдир</p>
-                                <p class="blog-author-role">Финансовый учёт и аналитика</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="blog-hero-visual" aria-label="Иллюстрация сравнения маркетплейса и интернет-магазина">
-                        <div class="blog-visual-topbar">
-                            <div class="blog-visual-dots"><span class="blog-visual-dot"></span><span class="blog-visual-dot"></span><span class="blog-visual-dot"></span></div>
-                            <div class="blog-visual-label">Channel dashboard</div>
-                        </div>
-                        <div class="blog-visual-body">
-                            <div class="blog-market-grid">
-                                <div class="blog-market-card">
-                                    <h3>Маркетплейс</h3>
-                                    <ul>
-                                        <li>Быстрый старт</li>
-                                        <li>Комиссии и логистика</li>
-                                        <li>Зависимость от правил площадки</li>
-                                    </ul>
-                                </div>
-                                <div class="blog-market-card">
-                                    <h3>Интернет-магазин</h3>
-                                    <ul>
-                                        <li>Больше контроля</li>
-                                        <li>Расходы на трафик</li>
-                                        <li>Собственная клиентская база</li>
-                                    </ul>
+                        <h1 class="blog-title">Маркетплейс или интернет-магазин: где больше <em>прибыли</em> и меньше рисков</h1>
+                        <p class="blog-lead mt-4">Разбираем два канала продаж через финансы: стартовые вложения, комиссии, рекламу, cash flow, контроль клиента и управленческие решения.</p>
+                        <div class="blog-author-row">
+                            <div class="blog-author-card">
+                                <span class="blog-author-avatar">АК</span>
+                                <div>
+                                    <p class="blog-author-name">Александр Кумар</p>
+                                    <p class="blog-author-role">Эксперт по маркетплейсам</p>
                                 </div>
                             </div>
-                            <div class="blog-mini-chart">
-                                <div class="blog-chart-row"><span>Контроль</span><div class="blog-chart-track"><div class="blog-chart-fill blog-fill-52"></div></div><strong>MP</strong></div>
-                                <div class="blog-chart-row"><span>Маржа</span><div class="blog-chart-track"><div class="blog-chart-fill blog-chart-fill-accent blog-fill-74"></div></div><strong>Сайт</strong></div>
-                                <div class="blog-chart-row"><span>Скорость</span><div class="blog-chart-track"><div class="blog-chart-fill blog-fill-86"></div></div><strong>MP</strong></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row g-4 mt-4 align-items-stretch">
-                <div class="col-lg-5">
-                    <div class="blog-share-card p-4 h-100">
-                        <div class="section-eyebrow mb-3">Поделиться</div>
-                        <div class="blog-chip-row">
-                            <a class="blog-chip js-telegram-click" href="https://t.me/share/url?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener"><i class="bi bi-telegram"></i> Telegram</a>
-                            <a class="blog-chip" href="https://vk.com/share.php?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener"><i class="bi bi-vk"></i> VK</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-7">
-                    <div class="blog-ai-card p-4 h-100">
-                        <div class="section-eyebrow mb-3">Пересказ статьи в ИИ</div>
-                        <div class="blog-chip-row">
-                            <a class="blog-chip" href="https://chat.openai.com/" target="_blank" rel="noopener"><i class="bi bi-stars"></i> ChatGPT</a>
-                            <a class="blog-chip" href="https://perplexity.ai/" target="_blank" rel="noopener"><i class="bi bi-search"></i> Perplexity</a>
-                            <a class="blog-chip" href="https://claude.ai/" target="_blank" rel="noopener"><i class="bi bi-braces"></i> Claude</a>
-                            <a class="blog-chip" href="https://yandex.ru/" target="_blank" rel="noopener"><i class="bi bi-circle-fill"></i> Yandex</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section blog-layout py-5" id="article">
-        <div class="container">
-            <div class="row g-5 align-items-start">
-                <div class="col-lg-3 order-2 order-lg-1">
-                    <aside class="blog-sidebar">
-                        <div class="blog-toc-card p-4 mb-4">
-                            <h2 class="blog-toc-title">Содержание</h2>
-                            <ul class="blog-toc-list">
-                                <li><a href="#intro">Коротко: что выбрать</a></li>
-                                <li><a href="#costs">Сравнение затрат</a></li>
-                                <li><a href="#unit">Unit-экономика</a></li>
-                                <li><a href="#cashflow">Деньги и кассовый разрыв</a></li>
-                                <li><a href="#when">Когда выбирать канал</a></li>
-                                <li><a href="#strategy">Мультиканальность</a></li>
-                                <li><a href="#faq">Частые вопросы</a></li>
-                            </ul>
-                        </div>
-                        <div class="blog-side-cta p-4 mb-4">
-                            <div class="blog-side-cta-content">
-                                <div class="section-eyebrow mb-3">Финансовая диагностика</div>
-                                <h3 class="h5 fw-bold mb-3">Покажем, где канал продаж съедает прибыль</h3>
-                                <p class="mb-4">Разберём ДДС, ОПиУ, юнит-экономику и точки роста по WB, Ozon и сайту.</p>
-                                <div class="blog-side-cta-figure" aria-hidden="true">
-                                    <img src="vf-diagnostic-person.png" alt="">
+                            <div class="blog-author-card">
+                                <span class="blog-author-avatar">ВФ</span>
+                                <div>
+                                    <p class="blog-author-name">Редакция Ваш Финдир</p>
+                                    <p class="blog-author-role">Финансовый учёт и аналитика</p>
                                 </div>
-                                <a class="btn btn-lg w-100 js-cta-click" href="#blog-contact">Записаться</a>
                             </div>
                         </div>
-                        <div class="blog-side-note p-4">
-                            <div class="section-eyebrow mb-3">Важно</div>
-                            <p class="text-ink-soft mb-0">Не выбирайте канал только по обороту. Сравнивайте чистую прибыль, скорость возврата денег и управляемость расходов.</p>
-                        </div>
-                    </aside>
-                </div>
-                <div class="col-lg-9 order-1 order-lg-2">
-                    <article class="blog-article">
-                        <figure class="blog-article-cover">
-                            <img alt="Финансовый учёт для выбора канала продаж" loading="eager" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&amp;fit=crop&amp;w=1600&amp;q=80">
-                        </figure>
-                        <div class="blog-intro-card p-4" id="intro">
-                            <p class="mb-0"><strong>Короткий вывод:</strong> маркетплейс часто быстрее запускается и даёт поток заказов, но забирает контроль через комиссии, логистику, штрафы и правила площадки. Интернет-магазин требует больше системной работы на старте, зато даёт больше контроля над клиентом, ценой, повторными продажами и маржинальностью.</p>
-                        </div>
-
-                        <p class="mt-4">Маркетплейсы кажутся простым решением: загрузили карточки, запустили рекламу, получили первые продажи. Но за удобством скрывается финансовая механика, которую собственник часто видит слишком поздно: комиссии, логистика, хранение, возвраты, штрафы, продвижение и зависимость от алгоритмов.</p>
-                        <p>Собственный интернет-магазин работает иначе. Здесь больше ответственности за трафик, сайт, аналитику и клиентский сервис. Но вместе с этим появляется больше управляемости: вы видите клиента, можете работать с повторными продажами, контролировать витрину и постепенно снижать стоимость привлечения.</p>
-
-                        <div class="blog-callout">
-                            <strong>Главный вопрос не “где больше оборот”, а “где бизнес оставляет больше денег после всех расходов”.</strong>
-                            <p class="mb-0 mt-2">Для ответа нужно сравнивать каналы через ДДС, ОПиУ, Баланс и unit-экономику, а не только через выручку.</p>
-                        </div>
-
-                        <h2 id="costs">Сравнение затрат: маркетплейс против интернет-магазина</h2>
-                        <p>У маркетплейса ниже входной порог: не нужно проектировать сайт, подключать корзину, платежи и личный кабинет. Но переменные расходы возникают почти сразу и растут вместе с продажами.</p>
-                        <p>У интернет-магазина наоборот: больше расходов на запуск и трафик, зато часть затрат можно оптимизировать и превращать в актив — например, клиентскую базу, контент, SEO, CRM и аналитику.</p>
-
-                        <div class="blog-table-wrap">
-                            <table class="table blog-table align-middle">
-                                <thead><tr><th>Критерий</th><th>Маркетплейс</th><th>Интернет-магазин</th></tr></thead>
-                                <tbody>
-                                <tr><td>Старт</td><td>Быстрее: регистрация, карточки, остатки, реклама внутри площадки.</td><td>Дольше: сайт, каталог, платежи, доставка, аналитика, трафик.</td></tr>
-                                <tr><td>Расходы</td><td>Комиссии, логистика, хранение, возвраты, штрафы, реклама.</td><td>Разработка, поддержка, реклама, CRM, контент, сервис.</td></tr>
-                                <tr><td>Контроль цены</td><td>Ограничен конкуренцией, акциями и правилами площадки.</td><td>Выше: можно управлять ценой, пакетами, допродажами.</td></tr>
-                                <tr><td>Клиентская база</td><td>Обычно остаётся у площадки.</td><td>Остаётся у бизнеса и может работать на повторные продажи.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h2 id="unit">Unit-экономика: где товар реально прибыльный</h2>
-                        <p>Один и тот же товар может быть прибыльным на сайте и убыточным на маркетплейсе. Причина — разные правила расчёта: комиссия, логистика, скидки, реклама, возвраты и операционные расходы.</p>
-                        <p>Для сравнения каналов нужно считать не “продали на 1 млн”, а маржу после всех прямых расходов. Минимальная формула для SKU:</p>
-                        <ul class="blog-content-list">
-                            <li>выручка по товару;</li>
-                            <li>минус себестоимость;</li>
-                            <li>минус комиссия площадки или платёжные расходы;</li>
-                            <li>минус логистика, хранение, эквайринг, возвраты;</li>
-                            <li>минус реклама и скидки;</li>
-                            <li>итог — вклад товара в прибыль.</li>
-                        </ul>
-
-                        <div class="blog-callout">
-                            <strong>Best practice:</strong> сравнивать каналы по CM1/CM2/CM3 и смотреть прибыльность в разрезе SKU, категории и рекламной кампании. Иначе прибыльные товары будут смешиваться с убыточными.
-                        </div>
-
-                        <h2 id="cashflow">Деньги и кассовый разрыв</h2>
-                        <p>Прибыль на бумаге не означает, что деньги есть на счёте. На маркетплейсах деньги могут приходить с задержкой, часть средств удерживается, возвраты и штрафы появляются позже, а поставщику платить нужно раньше.</p>
-                        <p>У интернет-магазина cash flow тоже требует контроля: реклама оплачивается заранее, товар закупается до продажи, доставка и сервис создают кассовую нагрузку. Поэтому оба канала нужно планировать через платёжный календарь.</p>
-
-                        <h3>Что отслеживать еженедельно</h3>
-                        <ul class="blog-content-list">
-                            <li>остаток денег сейчас и прогноз на 30 дней;</li>
-                            <li>обязательства перед поставщиками, подрядчиками и налогами;</li>
-                            <li>ожидаемые выплаты от маркетплейсов;</li>
-                            <li>план закупок и рекламный бюджет;</li>
-                            <li>товары, которые замораживают деньги в остатках.</li>
-                        </ul>
-
-                        <section class="blog-cta-inline" id="blog-contact">
-                            <div class="row g-4 align-items-center">
-                                <div class="col-lg-6 blog-cta-copy">
-                                    <div class="blog-cta-copy-content">
-                                        <div class="section-eyebrow mb-3">Финансовая диагностика</div>
-                                        <h2 class="h3 fw-bold mb-3 text-white">Хотите понять, какой канал продаж выгоднее именно вам?</h2>
-                                        <p class="mb-0">Оставьте контакты — разберём ДДС, ОПиУ, Баланс, unit-экономику и покажем, где бизнес теряет прибыль.</p>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="blog-hero-visual" aria-label="Иллюстрация сравнения маркетплейса и интернет-магазина">
+                            <div class="blog-visual-topbar">
+                                <div class="blog-visual-dots"><span class="blog-visual-dot"></span><span class="blog-visual-dot"></span><span class="blog-visual-dot"></span></div>
+                                <div class="blog-visual-label">Channel dashboard</div>
+                            </div>
+                            <div class="blog-visual-body">
+                                <div class="blog-market-grid">
+                                    <div class="blog-market-card">
+                                        <h3>Маркетплейс</h3>
+                                        <ul>
+                                            <li>Быстрый старт</li>
+                                            <li>Комиссии и логистика</li>
+                                            <li>Зависимость от правил площадки</li>
+                                        </ul>
                                     </div>
-                                    <div class="blog-cta-person" aria-hidden="true">
+                                    <div class="blog-market-card">
+                                        <h3>Интернет-магазин</h3>
+                                        <ul>
+                                            <li>Больше контроля</li>
+                                            <li>Расходы на трафик</li>
+                                            <li>Собственная клиентская база</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="blog-mini-chart">
+                                    <div class="blog-chart-row"><span>Контроль</span><div class="blog-chart-track"><div class="blog-chart-fill blog-fill-52"></div></div><strong>MP</strong></div>
+                                    <div class="blog-chart-row"><span>Маржа</span><div class="blog-chart-track"><div class="blog-chart-fill blog-chart-fill-accent blog-fill-74"></div></div><strong>Сайт</strong></div>
+                                    <div class="blog-chart-row"><span>Скорость</span><div class="blog-chart-track"><div class="blog-chart-fill blog-fill-86"></div></div><strong>MP</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 mt-4 align-items-stretch">
+                    <div class="col-lg-5">
+                        <div class="blog-share-card p-4 h-100">
+                            <div class="section-eyebrow mb-3">Поделиться</div>
+                            <div class="blog-chip-row">
+                                <a class="blog-chip js-telegram-click" href="https://t.me/share/url?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener"><i class="bi bi-telegram"></i> Telegram</a>
+                                <a class="blog-chip" href="https://vk.com/share.php?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener"><i class="bi bi-vk"></i> VK</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="blog-ai-card p-4 h-100">
+                            <div class="section-eyebrow mb-3">Пересказ статьи в ИИ</div>
+                            <div class="blog-chip-row">
+                                <a class="blog-chip" href="https://chat.openai.com/" target="_blank" rel="noopener"><i class="bi bi-stars"></i> ChatGPT</a>
+                                <a class="blog-chip" href="https://perplexity.ai/" target="_blank" rel="noopener"><i class="bi bi-search"></i> Perplexity</a>
+                                <a class="blog-chip" href="https://claude.ai/" target="_blank" rel="noopener"><i class="bi bi-braces"></i> Claude</a>
+                                <a class="blog-chip" href="https://yandex.ru/" target="_blank" rel="noopener"><i class="bi bi-circle-fill"></i> Yandex</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section blog-layout py-5" id="article">
+            <div class="container">
+                <div class="row g-5 align-items-start">
+                    <div class="col-lg-3 order-2 order-lg-1">
+                        <aside class="blog-sidebar">
+                            <div class="blog-toc-card p-4 mb-4">
+                                <h2 class="blog-toc-title">Содержание</h2>
+                                <ul class="blog-toc-list">
+                                    <li><a href="#intro">Коротко: что выбрать</a></li>
+                                    <li><a href="#costs">Сравнение затрат</a></li>
+                                    <li><a href="#unit">Unit-экономика</a></li>
+                                    <li><a href="#cashflow">Деньги и кассовый разрыв</a></li>
+                                    <li><a href="#when">Когда выбирать канал</a></li>
+                                    <li><a href="#strategy">Мультиканальность</a></li>
+                                    <li><a href="#faq">Частые вопросы</a></li>
+                                </ul>
+                            </div>
+                            <div class="blog-side-cta p-4 mb-4">
+                                <div class="blog-side-cta-content">
+                                    <div class="section-eyebrow mb-3">Финансовая диагностика</div>
+                                    <h3 class="h5 fw-bold mb-3">Покажем, где канал продаж съедает прибыль</h3>
+                                    <p class="mb-4">Разберём ДДС, ОПиУ, юнит-экономику и точки роста по WB, Ozon и сайту.</p>
+                                    <div class="blog-side-cta-figure" aria-hidden="true">
                                         <img src="vf-diagnostic-person.png" alt="">
                                     </div>
+                                    <a class="btn btn-lg w-100 js-cta-click" href="#blog-contact">Записаться</a>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="contact-card p-4 p-md-5">
-                                        <form action="/landing/contact" class="needs-validation js-lead-form" id="blogLeadForm" method="post" novalidate>
-                                            <input name="source" type="hidden" value="blog_article">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="blogLeadName">Ваше имя</label>
-                                                <input class="form-control" id="blogLeadName" name="name" placeholder="Александр" required type="text">
-                                                <div class="invalid-feedback">Укажите имя.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label" for="blogLeadContact">Telegram или телефон</label>
-                                                <input class="form-control" id="blogLeadContact" name="contact" placeholder="@username или +7 999 000-00-00" required type="text">
-                                                <div class="invalid-feedback">Укажите Telegram или телефон.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label" for="blogLeadEmail">Email</label>
-                                                <input class="form-control" id="blogLeadEmail" name="email" placeholder="hello@example.ru" type="email">
-                                            </div>
-                                            <div class="form-check mb-4">
-                                                <input class="form-check-input" id="blogLeadConsent" required type="checkbox">
-                                                <label class="form-check-label small text-muted-brand" for="blogLeadConsent">Даю согласие на обработку персональных данных и принимаю <a href="/privacy">политику конфиденциальности</a>.</label>
-                                                <div class="invalid-feedback">Необходимо согласие на обработку данных.</div>
-                                            </div>
-                                            <button class="btn btn-lg w-100 js-cta-click" type="submit">Получить консультацию</button>
-                                            <div class="success-message mt-3 p-3" id="blogLeadSuccess">Спасибо! Свяжусь с вами в ближайшее время.</div>
-                                        </form>
+                            </div>
+                            <div class="blog-side-note p-4">
+                                <div class="section-eyebrow mb-3">Важно</div>
+                                <p class="text-ink-soft mb-0">Не выбирайте канал только по обороту. Сравнивайте чистую прибыль, скорость возврата денег и управляемость расходов.</p>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="col-lg-9 order-1 order-lg-2">
+                        <article class="blog-article">
+                            <figure class="blog-article-cover">
+                                <img alt="Финансовый учёт для выбора канала продаж" loading="eager" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&amp;fit=crop&amp;w=1600&amp;q=80">
+                            </figure>
+                            <div class="blog-intro-card p-4" id="intro">
+                                <p class="mb-0"><strong>Короткий вывод:</strong> маркетплейс часто быстрее запускается и даёт поток заказов, но забирает контроль через комиссии, логистику, штрафы и правила площадки. Интернет-магазин требует больше системной работы на старте, зато даёт больше контроля над клиентом, ценой, повторными продажами и маржинальностью.</p>
+                            </div>
+
+                            <p class="mt-4">Маркетплейсы кажутся простым решением: загрузили карточки, запустили рекламу, получили первые продажи. Но за удобством скрывается финансовая механика, которую собственник часто видит слишком поздно: комиссии, логистика, хранение, возвраты, штрафы, продвижение и зависимость от алгоритмов.</p>
+                            <p>Собственный интернет-магазин работает иначе. Здесь больше ответственности за трафик, сайт, аналитику и клиентский сервис. Но вместе с этим появляется больше управляемости: вы видите клиента, можете работать с повторными продажами, контролировать витрину и постепенно снижать стоимость привлечения.</p>
+
+                            <div class="blog-callout">
+                                <strong>Главный вопрос не “где больше оборот”, а “где бизнес оставляет больше денег после всех расходов”.</strong>
+                                <p class="mb-0 mt-2">Для ответа нужно сравнивать каналы через ДДС, ОПиУ, Баланс и unit-экономику, а не только через выручку.</p>
+                            </div>
+
+                            <h2 id="costs">Сравнение затрат: маркетплейс против интернет-магазина</h2>
+                            <p>У маркетплейса ниже входной порог: не нужно проектировать сайт, подключать корзину, платежи и личный кабинет. Но переменные расходы возникают почти сразу и растут вместе с продажами.</p>
+                            <p>У интернет-магазина наоборот: больше расходов на запуск и трафик, зато часть затрат можно оптимизировать и превращать в актив — например, клиентскую базу, контент, SEO, CRM и аналитику.</p>
+
+                            <div class="blog-table-wrap">
+                                <table class="table blog-table align-middle">
+                                    <thead><tr><th>Критерий</th><th>Маркетплейс</th><th>Интернет-магазин</th></tr></thead>
+                                    <tbody>
+                                    <tr><td>Старт</td><td>Быстрее: регистрация, карточки, остатки, реклама внутри площадки.</td><td>Дольше: сайт, каталог, платежи, доставка, аналитика, трафик.</td></tr>
+                                    <tr><td>Расходы</td><td>Комиссии, логистика, хранение, возвраты, штрафы, реклама.</td><td>Разработка, поддержка, реклама, CRM, контент, сервис.</td></tr>
+                                    <tr><td>Контроль цены</td><td>Ограничен конкуренцией, акциями и правилами площадки.</td><td>Выше: можно управлять ценой, пакетами, допродажами.</td></tr>
+                                    <tr><td>Клиентская база</td><td>Обычно остаётся у площадки.</td><td>Остаётся у бизнеса и может работать на повторные продажи.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h2 id="unit">Unit-экономика: где товар реально прибыльный</h2>
+                            <p>Один и тот же товар может быть прибыльным на сайте и убыточным на маркетплейсе. Причина — разные правила расчёта: комиссия, логистика, скидки, реклама, возвраты и операционные расходы.</p>
+                            <p>Для сравнения каналов нужно считать не “продали на 1 млн”, а маржу после всех прямых расходов. Минимальная формула для SKU:</p>
+                            <ul class="blog-content-list">
+                                <li>выручка по товару;</li>
+                                <li>минус себестоимость;</li>
+                                <li>минус комиссия площадки или платёжные расходы;</li>
+                                <li>минус логистика, хранение, эквайринг, возвраты;</li>
+                                <li>минус реклама и скидки;</li>
+                                <li>итог — вклад товара в прибыль.</li>
+                            </ul>
+
+                            <div class="blog-callout">
+                                <strong>Best practice:</strong> сравнивать каналы по CM1/CM2/CM3 и смотреть прибыльность в разрезе SKU, категории и рекламной кампании. Иначе прибыльные товары будут смешиваться с убыточными.
+                            </div>
+
+                            <h2 id="cashflow">Деньги и кассовый разрыв</h2>
+                            <p>Прибыль на бумаге не означает, что деньги есть на счёте. На маркетплейсах деньги могут приходить с задержкой, часть средств удерживается, возвраты и штрафы появляются позже, а поставщику платить нужно раньше.</p>
+                            <p>У интернет-магазина cash flow тоже требует контроля: реклама оплачивается заранее, товар закупается до продажи, доставка и сервис создают кассовую нагрузку. Поэтому оба канала нужно планировать через платёжный календарь.</p>
+
+                            <h3>Что отслеживать еженедельно</h3>
+                            <ul class="blog-content-list">
+                                <li>остаток денег сейчас и прогноз на 30 дней;</li>
+                                <li>обязательства перед поставщиками, подрядчиками и налогами;</li>
+                                <li>ожидаемые выплаты от маркетплейсов;</li>
+                                <li>план закупок и рекламный бюджет;</li>
+                                <li>товары, которые замораживают деньги в остатках.</li>
+                            </ul>
+
+                            <section class="blog-cta-inline" id="blog-contact">
+                                <div class="row g-4 align-items-center">
+                                    <div class="col-lg-6 blog-cta-copy">
+                                        <div class="blog-cta-copy-content">
+                                            <div class="section-eyebrow mb-3">Финансовая диагностика</div>
+                                            <h2 class="h3 fw-bold mb-3 text-white">Хотите понять, какой канал продаж выгоднее именно вам?</h2>
+                                            <p class="mb-0">Оставьте контакты — разберём ДДС, ОПиУ, Баланс, unit-экономику и покажем, где бизнес теряет прибыль.</p>
+                                        </div>
+                                        <div class="blog-cta-person" aria-hidden="true">
+                                            <img src="vf-diagnostic-person.png" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="contact-card p-4 p-md-5">
+                                            <form action="/landing/contact" class="needs-validation js-lead-form" id="blogLeadForm" method="post" novalidate>
+                                                <input name="source" type="hidden" value="blog_article">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="blogLeadName">Ваше имя</label>
+                                                    <input class="form-control" id="blogLeadName" name="name" placeholder="Александр" required type="text">
+                                                    <div class="invalid-feedback">Укажите имя.</div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="blogLeadContact">Telegram или телефон</label>
+                                                    <input class="form-control" id="blogLeadContact" name="contact" placeholder="@username или +7 999 000-00-00" required type="text">
+                                                    <div class="invalid-feedback">Укажите Telegram или телефон.</div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="blogLeadEmail">Email</label>
+                                                    <input class="form-control" id="blogLeadEmail" name="email" placeholder="hello@example.ru" type="email">
+                                                </div>
+                                                <div class="form-check mb-4">
+                                                    <input class="form-check-input" id="blogLeadConsent" required type="checkbox">
+                                                    <label class="form-check-label small text-muted-brand" for="blogLeadConsent">Даю согласие на обработку персональных данных и принимаю <a href="/privacy">политику конфиденциальности</a>.</label>
+                                                    <div class="invalid-feedback">Необходимо согласие на обработку данных.</div>
+                                                </div>
+                                                <button class="btn btn-lg w-100 js-cta-click" type="submit">Получить консультацию</button>
+                                                <div class="success-message mt-3 p-3" id="blogLeadSuccess">Спасибо! Свяжусь с вами в ближайшее время.</div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </section>
+                            </section>
 
-                        <section aria-label="Рубрики блога" class="py-4" id="blog-rubrics">
-                            <div class="blog-chip-row">
-                                <a class="blog-chip" href="/blog/top">Топовый топ!</a>
-                                <a class="blog-chip" href="/blog/business-processes">Бизнес-процессы</a>
-                                <a class="blog-chip" href="/blog/qa">Вопрос-ответ</a>
-                                <a class="blog-chip" href="/blog/glossary">Глоссарий</a>
-                                <a class="blog-chip" href="/blog/money-profit">Деньги и прибыль</a>
-                                <a class="blog-chip" href="/blog/law-tax">Законы и налоги</a>
-                                <a class="blog-chip" href="/blog/career">Карьера в НФ</a>
-                                <a class="blog-chip" href="/blog/team">Команда</a>
-                                <a class="blog-chip" href="/blog/training">Обучалка</a>
-                                <a class="blog-chip" href="/blog/metrics">Показатели</a>
-                                <a class="blog-chip" href="/blog/consulting">Практика консалтинга</a>
-                                <a class="blog-chip" href="/blog/development">Развитие бизнеса</a>
-                                <a class="blog-chip" href="/blog/strategy">Стратегия</a>
-                                <a class="blog-chip" href="/blog/reports">Финансовые отчеты</a>
-                            </div>
-                        </section>
+                            <section aria-label="Рубрики блога" class="py-4" id="blog-rubrics">
+                                <div class="blog-chip-row">
+                                    <a class="blog-chip" href="/blog/top">Топовый топ!</a>
+                                    <a class="blog-chip" href="/blog/business-processes">Бизнес-процессы</a>
+                                    <a class="blog-chip" href="/blog/qa">Вопрос-ответ</a>
+                                    <a class="blog-chip" href="/blog/glossary">Глоссарий</a>
+                                    <a class="blog-chip" href="/blog/money-profit">Деньги и прибыль</a>
+                                    <a class="blog-chip" href="/blog/law-tax">Законы и налоги</a>
+                                    <a class="blog-chip" href="/blog/career">Карьера в НФ</a>
+                                    <a class="blog-chip" href="/blog/team">Команда</a>
+                                    <a class="blog-chip" href="/blog/training">Обучалка</a>
+                                    <a class="blog-chip" href="/blog/metrics">Показатели</a>
+                                    <a class="blog-chip" href="/blog/consulting">Практика консалтинга</a>
+                                    <a class="blog-chip" href="/blog/development">Развитие бизнеса</a>
+                                    <a class="blog-chip" href="/blog/strategy">Стратегия</a>
+                                    <a class="blog-chip" href="/blog/reports">Финансовые отчеты</a>
+                                </div>
+                            </section>
 
-                        <h2 id="when">Когда выгоднее маркетплейс, а когда сайт</h2>
-                        <p>Маркетплейс подходит, если нужно быстро проверить спрос, выйти на широкую аудиторию и протестировать ассортимент. Но он требует дисциплины в учёте, потому что мелкие удержания и комиссии быстро съедают маржу.</p>
-                        <p>Интернет-магазин выгоднее, когда у бизнеса есть повторные продажи, бренд, контент, сильная ниша или возможность строить долгосрочные отношения с клиентом. Но без системы трафика и аналитики он может стать дорогим экспериментом.</p>
+                            <h2 id="when">Когда выгоднее маркетплейс, а когда сайт</h2>
+                            <p>Маркетплейс подходит, если нужно быстро проверить спрос, выйти на широкую аудиторию и протестировать ассортимент. Но он требует дисциплины в учёте, потому что мелкие удержания и комиссии быстро съедают маржу.</p>
+                            <p>Интернет-магазин выгоднее, когда у бизнеса есть повторные продажи, бренд, контент, сильная ниша или возможность строить долгосрочные отношения с клиентом. Но без системы трафика и аналитики он может стать дорогим экспериментом.</p>
 
-                        <h3>Маркетплейс чаще выбирают, когда:</h3>
-                        <ul class="blog-content-list">
-                            <li>нужно быстро получить первые продажи;</li>
-                            <li>товар уже понятен рынку;</li>
-                            <li>есть готовность играть по правилам площадки;</li>
-                            <li>важна скорость запуска, а не полный контроль.</li>
-                        </ul>
-
-                        <h3>Интернет-магазин чаще выбирают, когда:</h3>
-                        <ul class="blog-content-list">
-                            <li>есть бренд и понятная аудитория;</li>
-                            <li>важны повторные продажи и клиентская база;</li>
-                            <li>можно управлять трафиком и CRM;</li>
-                            <li>нужен контроль над ценой, ассортиментом и коммуникацией.</li>
-                        </ul>
-
-                        <h2 id="strategy">Мультиканальность как рабочая стратегия</h2>
-                        <p>На практике сильное решение — не выбирать один канал навсегда, а выстроить управляемую систему продаж. Маркетплейсы могут давать быстрый спрос и тест гипотез, а сайт — повторные продажи, бренд и базу клиентов.</p>
-                        <p>Но мультиканальность работает только при нормальном учёте. Без единой системы собственник видит много отчётов, но не понимает, какой канал действительно приносит прибыль.</p>
-
-                        <div class="blog-callout">
-                            <strong>Финансовая система должна отвечать на три вопроса:</strong>
-                            <ul class="blog-content-list mt-3">
-                                <li>какой канал приносит прибыль, а какой только оборот;</li>
-                                <li>какие SKU нужно масштабировать, а какие замораживают деньги;</li>
-                                <li>сколько денег понадобится на закупки, рекламу и рост.</li>
+                            <h3>Маркетплейс чаще выбирают, когда:</h3>
+                            <ul class="blog-content-list">
+                                <li>нужно быстро получить первые продажи;</li>
+                                <li>товар уже понятен рынку;</li>
+                                <li>есть готовность играть по правилам площадки;</li>
+                                <li>важна скорость запуска, а не полный контроль.</li>
                             </ul>
-                        </div>
 
-                        <h2 id="faq">Интернет-магазин или маркетплейс: частые вопросы</h2>
-                        <div class="blog-faq-item">
-                            <h3>Какой канал выгоднее для старта?</h3>
-                            <p>Для быстрого теста спроса чаще проще маркетплейс. Но решение зависит от категории, маржи, конкуренции, логистики и рекламных расходов.</p>
-                        </div>
-                        <div class="blog-faq-item">
-                            <h3>Почему при росте выручки может не быть денег?</h3>
-                            <p>Потому что деньги могут быть в остатках, дебиторке, рекламе, задержках выплат, возвратах и обязательствах перед поставщиками. Поэтому нужен ДДС и платёжный календарь.</p>
-                        </div>
-                        <div class="blog-faq-item">
-                            <h3>Что считать главным показателем?</h3>
-                            <p>Не один показатель, а связку: валовая прибыль, вклад SKU в маржу, рекламная эффективность, остатки, cash flow и EBITDA.</p>
-                        </div>
-                        <div class="blog-faq-item">
-                            <h3>Можно ли совмещать маркетплейс и интернет-магазин?</h3>
-                            <p>Да, но важно разделять экономику каналов и не смешивать расходы. Иначе невозможно понять, где бизнес зарабатывает, а где теряет.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
+                            <h3>Интернет-магазин чаще выбирают, когда:</h3>
+                            <ul class="blog-content-list">
+                                <li>есть бренд и понятная аудитория;</li>
+                                <li>важны повторные продажи и клиентская база;</li>
+                                <li>можно управлять трафиком и CRM;</li>
+                                <li>нужен контроль над ценой, ассортиментом и коммуникацией.</li>
+                            </ul>
 
-    <section class="section py-5 case-section" id="related">
-        <div class="container">
-            <div class="row mb-4 align-items-end">
-                <div class="col-lg-7">
-                    <div class="section-eyebrow">Читайте также</div>
-                    <h2 class="section-title h1 mb-0">Ещё статьи по финансовому учёту</h2>
+                            <h2 id="strategy">Мультиканальность как рабочая стратегия</h2>
+                            <p>На практике сильное решение — не выбирать один канал навсегда, а выстроить управляемую систему продаж. Маркетплейсы могут давать быстрый спрос и тест гипотез, а сайт — повторные продажи, бренд и базу клиентов.</p>
+                            <p>Но мультиканальность работает только при нормальном учёте. Без единой системы собственник видит много отчётов, но не понимает, какой канал действительно приносит прибыль.</p>
+
+                            <div class="blog-callout">
+                                <strong>Финансовая система должна отвечать на три вопроса:</strong>
+                                <ul class="blog-content-list mt-3">
+                                    <li>какой канал приносит прибыль, а какой только оборот;</li>
+                                    <li>какие SKU нужно масштабировать, а какие замораживают деньги;</li>
+                                    <li>сколько денег понадобится на закупки, рекламу и рост.</li>
+                                </ul>
+                            </div>
+
+                            <h2 id="faq">Интернет-магазин или маркетплейс: частые вопросы</h2>
+                            <div class="blog-faq-item">
+                                <h3>Какой канал выгоднее для старта?</h3>
+                                <p>Для быстрого теста спроса чаще проще маркетплейс. Но решение зависит от категории, маржи, конкуренции, логистики и рекламных расходов.</p>
+                            </div>
+                            <div class="blog-faq-item">
+                                <h3>Почему при росте выручки может не быть денег?</h3>
+                                <p>Потому что деньги могут быть в остатках, дебиторке, рекламе, задержках выплат, возвратах и обязательствах перед поставщиками. Поэтому нужен ДДС и платёжный календарь.</p>
+                            </div>
+                            <div class="blog-faq-item">
+                                <h3>Что считать главным показателем?</h3>
+                                <p>Не один показатель, а связку: валовая прибыль, вклад SKU в маржу, рекламная эффективность, остатки, cash flow и EBITDA.</p>
+                            </div>
+                            <div class="blog-faq-item">
+                                <h3>Можно ли совмещать маркетплейс и интернет-магазин?</h3>
+                                <p>Да, но важно разделять экономику каналов и не смешивать расходы. Иначе невозможно понять, где бизнес зарабатывает, а где теряет.</p>
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <a class="blog-related-card d-flex flex-column" href="#">
-                        <div class="blog-related-image">
-                            <img alt="Финансовая аналитика SKU" loading="lazy" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
-                        </div>
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <div class="blog-related-tag mb-3">Unit-экономика</div>
-                            <h3 class="h5 fw-bold mb-3">Как понять прибыльность SKU на маркетплейсе</h3>
-                            <p class="text-muted-brand mb-4">Формула, частые ошибки и управленческий отчёт для собственника.</p>
-                            <span class="btn btn-primary">Читать</span>
-                        </div>
-                    </a>
+        </section>
+
+        <section class="section py-5 case-section" id="related">
+            <div class="container">
+                <div class="row mb-4 align-items-end">
+                    <div class="col-lg-7">
+                        <div class="section-eyebrow">Читайте также</div>
+                        <h2 class="section-title h1 mb-0">Ещё статьи по финансовому учёту</h2>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <a class="blog-related-card d-flex flex-column" href="#">
-                        <div class="blog-related-image">
-                            <img alt="Планирование денежных потоков" loading="lazy" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
-                        </div>
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <div class="blog-related-tag mb-3">ДДС</div>
-                            <h3 class="h5 fw-bold mb-3">Почему прибыльный бизнес попадает в кассовый разрыв</h3>
-                            <p class="text-muted-brand mb-4">Как прогнозировать деньги на 30 дней и не сорвать закупки.</p>
-                            <span class="btn btn-primary">Читать</span>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a class="blog-related-card d-flex flex-column" href="#">
-                        <div class="blog-related-image">
-                            <img alt="Отчёт о прибылях и убытках" loading="lazy" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
-                        </div>
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <div class="blog-related-tag mb-3">ОПиУ</div>
-                            <h3 class="h5 fw-bold mb-3">Оборот растёт, а прибыль нет: где искать причину</h3>
-                            <p class="text-muted-brand mb-4">Разбираем комиссии, рекламу, себестоимость и постоянные расходы.</p>
-                            <span class="btn btn-primary">Читать</span>
-                        </div>
-                    </a>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <a class="blog-related-card d-flex flex-column" href="#">
+                            <div class="blog-related-image">
+                                <img alt="Финансовая аналитика SKU" loading="lazy" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
+                            </div>
+                            <div class="p-4 d-flex flex-column flex-grow-1">
+                                <div class="blog-related-tag mb-3">Unit-экономика</div>
+                                <h3 class="h5 fw-bold mb-3">Как понять прибыльность SKU на маркетплейсе</h3>
+                                <p class="text-muted-brand mb-4">Формула, частые ошибки и управленческий отчёт для собственника.</p>
+                                <span class="btn btn-primary">Читать</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="blog-related-card d-flex flex-column" href="#">
+                            <div class="blog-related-image">
+                                <img alt="Планирование денежных потоков" loading="lazy" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
+                            </div>
+                            <div class="p-4 d-flex flex-column flex-grow-1">
+                                <div class="blog-related-tag mb-3">ДДС</div>
+                                <h3 class="h5 fw-bold mb-3">Почему прибыльный бизнес попадает в кассовый разрыв</h3>
+                                <p class="text-muted-brand mb-4">Как прогнозировать деньги на 30 дней и не сорвать закупки.</p>
+                                <span class="btn btn-primary">Читать</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="blog-related-card d-flex flex-column" href="#">
+                            <div class="blog-related-image">
+                                <img alt="Отчёт о прибылях и убытках" loading="lazy" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
+                            </div>
+                            <div class="p-4 d-flex flex-column flex-grow-1">
+                                <div class="blog-related-tag mb-3">ОПиУ</div>
+                                <h3 class="h5 fw-bold mb-3">Оборот растёт, а прибыль нет: где искать причину</h3>
+                                <p class="text-muted-brand mb-4">Разбираем комиссии, рекламу, себестоимость и постоянные расходы.</p>
+                                <span class="btn btn-primary">Читать</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
+{% endblock %}
