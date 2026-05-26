@@ -801,6 +801,59 @@
             leadForm.classList.remove('was-validated');
         }
     });
+
+    const cookieNotice = document.getElementById('cookieNotice');
+    const cookieAccept = document.getElementById('cookieAccept');
+    const cookieClose = document.getElementById('cookieClose');
+    const cookieStorageKey = 'vf_cookie_notice_accepted';
+
+    function hasAcceptedCookies() {
+        try {
+            return window.localStorage.getItem(cookieStorageKey) === '1';
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function saveCookieAcceptance() {
+        try {
+            window.localStorage.setItem(cookieStorageKey, '1');
+        } catch (error) {
+            console.warn('Не удалось сохранить согласие cookie в localStorage.', error);
+        }
+    }
+
+    function showCookieNotice() {
+        if (!cookieNotice || hasAcceptedCookies()) return;
+        cookieNotice.hidden = false;
+        window.requestAnimationFrame(function () {
+            cookieNotice.classList.add('is-visible');
+        });
+    }
+
+    function hideCookieNotice() {
+        if (!cookieNotice) return;
+        cookieNotice.classList.remove('is-visible');
+        window.setTimeout(function () {
+            cookieNotice.hidden = true;
+        }, 250);
+    }
+
+    function acceptCookies() {
+        saveCookieAcceptance();
+        hideCookieNotice();
+    }
+
+    if (cookieAccept) {
+        cookieAccept.addEventListener('click', acceptCookies);
+    }
+
+    if (cookieClose) {
+        cookieClose.addEventListener('click', hideCookieNotice);
+    }
+
+    showCookieNotice();
+
 </script>
 </body>
 </html>
