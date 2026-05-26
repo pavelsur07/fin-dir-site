@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Политика конфиденциальности — Ваш Финдир</title>
+<meta content="Политика конфиденциальности и обработки персональных данных пользователей сайта Ваш Финдир." name="description"/>
+<!-- Fonts: используется тот же шрифт, что и на основной странице -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Bootstrap 5 + Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<!--
+    Analytics placeholders.
+    Замените YM_COUNTER_ID и VK_PIXEL_ID на реальные значения перед публикацией.
+    Цели: cta_click, telegram_click.
+  -->
+<script>
+    window.VF_ANALYTICS = {
+      ymCounterId: 'YM_COUNTER_ID',
+      vkPixelId: 'VK_PIXEL_ID'
+    };
+  </script>
+<!-- Yandex.Metrika counter placeholder -->
+<script>
+    (function () {
+      const id = window.VF_ANALYTICS.ymCounterId;
+      if (!id || id === 'YM_COUNTER_ID') return;
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+      ym(id, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+    })();
+  </script>
+<!-- VK Pixel placeholder -->
+<script>
+    (function () {
+      const id = window.VF_ANALYTICS.vkPixelId;
+      if (!id || id === 'VK_PIXEL_ID') return;
+      window._tmr = window._tmr || [];
+      window._tmr.push({ id: id, type: 'pageView', start: (new Date()).getTime() });
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://top-fwz1.mail.ru/js/code.js';
+      document.head.appendChild(s);
+    })();
+  </script>
+<style>
+    :root {
+      /* Brand colors */
+      --brand-red: #B00020;
+      --brand-dark: #8A0019;
+      --brand: var(--brand-red);
+
+      /* Text colors */
+      --ink: #0B1020;
+      --ink-soft: #1A2033;
+      --muted: #5C677D;
+
+      /* Surface colors */
+      --bg: #F5F6F8;
+      --bg-soft: #ECEEF2;
+      --white: #FFFFFF;
+      --line: rgba(10,21,72,.14);
+
+      /* Additional derived tokens */
+      --shadow-soft: 0 18px 60px rgba(10,21,72,.08);
+      --shadow-strong: 0 24px 70px rgba(10,21,72,.14);
+      --white-soft-line: rgba(255,255,255,.14);
+      --white-muted: rgba(255,255,255,.76);
+      --white-faint: rgba(255,255,255,.08);
+      --brand-light-bg: color-mix(in srgb, var(--brand) 8%, var(--white));
+      --ink-light-bg: color-mix(in srgb, var(--ink) 5%, var(--white));
+      --header-height: 4.5rem;
+      --header-anchor-offset: calc(var(--header-height) + 1rem);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--header-anchor-offset);
+    }
+
+    body {
+      padding-top: var(--header-height);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section[id] {
+      scroll-margin-top: var(--header-anchor-offset);
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 1rem;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      width: .5rem;
+      height: .5rem;
+      border-radius: 50%;
+      background: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .section-title {
+      color: var(--ink);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.08;
+    }
+
+    .section-subtitle {
+      color: var(--ink-soft);
+      max-width: 720px;
+    }
+
+    .text-muted-brand {
+      color: var(--muted) !important;
+    }
+
+    .text-ink-soft {
+      color: var(--ink-soft) !important;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1030;
+    }
+
+    .navbar-wrap {
+      min-height: var(--header-height);
+      background: color-mix(in srgb, var(--white) 92%, transparent);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      color: var(--ink);
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: .55rem;
+      color: var(--white);
+      background: var(--ink);
+      font-size: .9rem;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .btn {
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary,
+    .btn-primary:focus {
+      color: var(--white);
+      background-color: var(--ink);
+      border-color: var(--ink);
+      box-shadow: none;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:active {
+      color: var(--white) !important;
+      background-color: var(--brand) !important;
+      border-color: var(--brand) !important;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-outline-secondary,
+    .btn-outline-secondary:focus {
+      color: var(--ink);
+      background: transparent;
+      border-color: var(--ink);
+      box-shadow: none;
+    }
+
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary:active {
+      color: var(--white) !important;
+      background-color: var(--ink) !important;
+      border-color: var(--ink) !important;
+    }
+
+    .btn-light-ink,
+    .btn-light-ink:focus {
+      color: var(--white);
+      background-color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .btn-light-ink:hover,
+    .btn-light-ink:active {
+      color: var(--ink) !important;
+      background-color: var(--white) !important;
+      border-color: var(--white) !important;
+    }
+
+    .hero-section {
+      min-height: 100vh;
+      min-height: 100svh;
+      margin-top: calc(-1 * var(--header-height));
+      padding-top: calc(var(--header-height) + 3rem) !important;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(circle at top right, var(--brand-light-bg), transparent 34rem),
+        var(--bg);
+    }
+
+    .hero-title {
+      max-width: 920px;
+      color: var(--ink);
+      font-size: clamp(2.55rem, 6vw, 5.55rem);
+      font-weight: 800;
+      letter-spacing: -.065em;
+      line-height: .96;
+    }
+
+    .hero-title em {
+      color: var(--brand);
+      font-style: italic;
+      white-space: nowrap;
+    }
+
+    .hero-lead {
+      max-width: 680px;
+      color: var(--ink-soft);
+      font-size: clamp(1.08rem, 2vw, 1.35rem);
+      font-weight: 500;
+    }
+
+    .hero-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 2rem;
+      background: var(--white);
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      border-bottom: 1px solid var(--line);
+      background: var(--ink-light-bg);
+    }
+
+    .hero-dot {
+      width: .62rem;
+      height: .62rem;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .metric-card {
+      border: 1px solid var(--line);
+      border-radius: 1.35rem;
+      background: var(--white);
+      height: 100%;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      color: var(--ink);
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .card-ui {
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 1.5rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .icon-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 1rem;
+      color: var(--brand);
+      background: var(--brand-light-bg);
+      font-size: 1.35rem;
+    }
+
+    .service-card-main {
+      color: var(--white);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .service-card-main .icon-pill {
+      color: var(--white);
+      background: var(--white-faint);
+    }
+
+    .service-card-main p,
+    .service-card-main .service-caption {
+      color: var(--white-muted);
+    }
+
+    .service-card-accent {
+      color: var(--white);
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .service-card-accent .icon-pill {
+      color: var(--white);
+      background: var(--white-faint);
+    }
+
+    .service-card-accent p,
+    .service-card-accent .service-caption {
+      color: var(--white-muted);
+    }
+
+    .dark-section {
+      color: var(--white);
+      background: var(--ink);
+    }
+
+    .dark-section .section-title,
+    .dark-section h5,
+    .dark-section p {
+      color: var(--white);
+    }
+
+    .dark-section .section-eyebrow {
+      color: var(--white-muted);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--brand);
+      font-size: 1.45rem;
+      font-weight: 800;
+      box-shadow: 0 0 0 .7rem var(--white-faint);
+    }
+
+    .step-card {
+      height: 100%;
+      border: 1px solid var(--white-soft-line);
+      border-radius: 1.5rem;
+      background: var(--white-faint);
+    }
+
+    .case-section {
+      background: var(--bg-soft);
+    }
+
+    .case-card {
+      border: 1px solid var(--line);
+      border-radius: 2rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .case-label {
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .result-number {
+      color: var(--brand);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -.06em;
+      line-height: 1;
+    }
+
+    .quote-card {
+      border-left: 4px solid var(--brand);
+      border-radius: 1rem;
+      background: var(--bg);
+    }
+
+    .telegram-card {
+      border: 1px solid var(--line);
+      border-radius: 2rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .contact-section {
+      color: var(--white);
+      background: var(--brand);
+    }
+
+    .contact-section .section-eyebrow,
+    .contact-section .section-title,
+    .contact-section .section-subtitle {
+      color: var(--white);
+    }
+
+    .contact-section .section-eyebrow::before {
+      background: var(--white);
+    }
+
+    .contact-card {
+      border: 1px solid var(--white-soft-line);
+      border-radius: 2rem;
+      color: var(--ink);
+      background: var(--white);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .form-label {
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+
+    .form-control {
+      min-height: 3.35rem;
+      color: var(--ink);
+      border-color: var(--line);
+      border-radius: 1rem;
+      background: var(--white);
+    }
+
+    .form-control:focus {
+      color: var(--ink);
+      border-color: var(--ink);
+      box-shadow: 0 0 0 .25rem var(--brand-light-bg);
+    }
+
+    .success-message {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      color: var(--ink);
+      background: var(--brand-light-bg);
+    }
+
+    .success-message.is-visible {
+      display: block;
+    }
+
+    .footer-section {
+      color: var(--white);
+      background: var(--ink);
+    }
+
+    .footer-section a {
+      color: var(--white);
+      text-decoration: none;
+      transition: color .2s ease, opacity .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease;
+    }
+
+    .footer-section a:hover {
+      color: var(--white);
+      opacity: .9;
+    }
+
+    .footer-muted {
+      color: var(--white-muted);
+    }
+
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .9rem;
+      margin-bottom: 1.6rem;
+      color: var(--white);
+      font-size: clamp(1.65rem, 2vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -.05em;
+      line-height: 1;
+    }
+
+    .footer-brand:hover {
+      color: var(--white);
+      opacity: 1;
+    }
+
+    .footer-brand .brand-mark {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: .55rem;
+      color: var(--white);
+      background: var(--brand);
+      font-size: 1.05rem;
+    }
+
+    .footer-brand-text {
+      color: var(--white);
+    }
+
+    .footer-description {
+      max-width: 25rem;
+      color: var(--white-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .footer-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .8rem;
+      margin-top: 2rem;
+    }
+
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.1rem;
+      height: 3.1rem;
+      border: 1px solid var(--white-soft-line);
+      border-radius: .7rem;
+      color: var(--white);
+      background: var(--white-faint);
+      font-size: 1.1rem;
+    }
+
+    .footer-social-link:hover {
+      color: var(--white);
+      background: color-mix(in srgb, var(--white) 10%, transparent);
+      border-color: color-mix(in srgb, var(--white) 22%, transparent);
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .footer-title {
+      margin-bottom: 1.85rem;
+      color: var(--white-muted);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .28em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .footer-contact-list,
+    .footer-docs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .footer-contact-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.55rem;
+      height: 2.55rem;
+      flex: 0 0 auto;
+      border: 1px solid var(--white-soft-line);
+      border-radius: .65rem;
+      color: var(--white-muted);
+      background: var(--white-faint);
+      font-size: 1rem;
+    }
+
+    .footer-kicker {
+      margin-bottom: .35rem;
+      color: var(--white-muted);
+      font-size: .74rem;
+      font-weight: 600;
+      letter-spacing: .24em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .footer-contact-link {
+      color: var(--white);
+      font-size: clamp(1.05rem, 1.15vw, 1.28rem);
+      font-weight: 600;
+      letter-spacing: -.03em;
+      line-height: 1.2;
+    }
+
+    .footer-docs-list a {
+      color: var(--white-muted);
+      font-size: clamp(1rem, 1.05vw, 1.14rem);
+      font-weight: 400;
+      letter-spacing: -.025em;
+      line-height: 1.35;
+    }
+
+    .footer-docs-list a:hover {
+      color: var(--white);
+    }
+
+    .footer-divider {
+      height: 1px;
+      margin-top: 3.4rem;
+      margin-bottom: 2rem;
+      background: var(--white-soft-line);
+    }
+
+    .footer-bottom {
+      color: var(--white-muted);
+      font-size: .98rem;
+    }
+
+    .footer-legal {
+      font-size: .9rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+
+    .cookie-notice {
+      position: fixed;
+      right: 0;
+      bottom: 1.25rem;
+      left: 0;
+      z-index: 1080;
+      padding-right: 1rem;
+      padding-left: 1rem;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(1rem);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .cookie-notice.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .cookie-card {
+      position: relative;
+      max-width: 58rem;
+      margin-right: auto;
+      margin-left: auto;
+      padding: 1.75rem;
+      border: 1px solid var(--line);
+      border-radius: 1.5rem;
+      color: var(--ink);
+      background: var(--white);
+      box-shadow: var(--shadow-strong);
+      pointer-events: auto;
+    }
+
+    .cookie-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink-soft);
+      background: var(--white);
+      transition: color .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease;
+    }
+
+    .cookie-close:hover {
+      color: var(--white);
+      border-color: var(--ink);
+      background: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .cookie-title {
+      max-width: 42rem;
+      margin-bottom: .65rem;
+      padding-right: 2.5rem;
+      color: var(--ink);
+      font-size: clamp(1.35rem, 2vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.15;
+    }
+
+    .cookie-text {
+      max-width: 43rem;
+      margin-bottom: 0;
+      color: var(--ink-soft);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .cookie-text a {
+      color: var(--brand);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .cookie-text a:hover {
+      color: var(--brand-dark);
+      text-decoration: underline;
+    }
+
+    .cookie-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+    }
+
+    @media (max-width: 767.98px) {
+      :root {
+        --header-height: 4.25rem;
+        --header-anchor-offset: calc(var(--header-height) + .75rem);
+      }
+
+
+      .cookie-notice {
+        bottom: 1rem;
+      }
+
+      .cookie-card {
+        padding: 1.35rem;
+        border-radius: 1.25rem;
+      }
+
+      .cookie-actions {
+        justify-content: stretch;
+      }
+
+      .cookie-actions .btn {
+        width: 100%;
+      }
+
+      .brand-logo {
+        gap: .45rem;
+        font-size: .95rem;
+      }
+
+      .brand-mark {
+        width: 2rem;
+        height: 2rem;
+        border-radius: .55rem;
+        font-size: .76rem;
+      }
+
+      .navbar .btn {
+        padding: .58rem .85rem;
+        font-size: .88rem;
+      }
+
+      .hero-section {
+        min-height: 80vh;
+        min-height: 80svh;
+        padding-top: calc(var(--header-height) + 2rem) !important;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .section-title {
+        letter-spacing: -.045em;
+      }
+
+      .step-card {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .footer-description {
+        max-width: none;
+      }
+
+      .footer-divider {
+        margin-top: 2.6rem;
+      }
+
+      .footer-legal {
+        white-space: normal;
+        display: inline-block;
+        line-height: 1.8;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .footer-brand {
+        justify-content: center;
+      }
+
+      .footer-socials,
+      .footer-contact-item {
+        justify-content: center;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-actions .btn {
+        width: auto;
+      }
+    }
+  
+
+    /* Informational pages */
+    .info-hero {
+      background:
+        radial-gradient(circle at top right, var(--brand-light-bg), transparent 32rem),
+        var(--white);
+    }
+
+    .info-hero-card {
+      border: 1px solid var(--line);
+      border-radius: 1.75rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-summary-card {
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 1.35rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-summary-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: .9rem;
+      color: var(--brand);
+      background: var(--brand-light-bg);
+      font-size: 1.2rem;
+      flex: 0 0 auto;
+    }
+
+    .info-layout {
+      background: var(--bg);
+    }
+
+    .info-sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + 1.25rem);
+    }
+
+    .info-toc {
+      border: 1px solid var(--line);
+      border-radius: 1.35rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .info-toc-head {
+      padding: 1.15rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .info-toc-list {
+      max-height: calc(100svh - var(--header-height) - 6rem);
+      overflow: auto;
+      padding: .6rem;
+    }
+
+    .info-toc-link {
+      display: block;
+      padding: .7rem .75rem;
+      border-radius: .8rem;
+      color: var(--ink-soft);
+      font-size: .92rem;
+      font-weight: 600;
+      line-height: 1.28;
+      text-decoration: none;
+    }
+
+    .info-toc-link:hover {
+      color: var(--brand);
+      background: var(--brand-light-bg);
+    }
+
+    .info-content {
+      max-width: 58rem;
+    }
+
+    .info-card {
+      scroll-margin-top: var(--header-anchor-offset);
+      border: 1px solid var(--line);
+      border-radius: 1.5rem;
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-card + .info-card {
+      margin-top: 1rem;
+    }
+
+    .info-card-head {
+      padding: clamp(1.4rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2.25rem) 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .info-card-body {
+      padding: clamp(1.4rem, 3vw, 2.25rem);
+    }
+
+    .info-section-number {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: .85rem;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .info-card h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.45rem, 2.2vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.12;
+    }
+
+    .info-card h3 {
+      margin-top: 1.6rem;
+      margin-bottom: .85rem;
+      color: var(--ink);
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.25;
+    }
+
+    .info-card h3:first-child {
+      margin-top: 0;
+    }
+
+    .info-card p {
+      max-width: 74ch;
+      margin-bottom: 1rem;
+      color: var(--ink-soft);
+      font-size: 1rem;
+      line-height: 1.78;
+    }
+
+    .info-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-card a {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration-color: var(--line);
+      text-underline-offset: .18em;
+    }
+
+    .info-card a:hover {
+      color: var(--brand);
+      text-decoration-color: var(--brand);
+    }
+
+    .info-card .quote-card {
+      max-width: none;
+      margin-top: 1rem;
+    }
+
+    .info-alert {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--brand);
+      border-radius: 1rem;
+      background: var(--brand-light-bg);
+    }
+
+    .info-requisites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .info-requisite-item {
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: var(--bg);
+    }
+
+    .info-requisite-label {
+      margin-bottom: .35rem;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .info-requisite-value {
+      margin: 0;
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 991.98px) {
+      .info-sidebar {
+        position: static;
+      }
+
+      .info-toc-list {
+        max-height: none;
+      }
+
+      .info-content {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .info-requisites-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-toc-link {
+        font-size: .9rem;
+      }
+
+      .info-card p {
+        font-size: .97rem;
+        line-height: 1.72;
+      }
+    }
+</style>
+</head>
+<body>
+<!-- Header -->
+<section class="site-header" id="header">
+<nav class="navbar navbar-expand navbar-wrap py-3">
+<div class="container d-flex align-items-center justify-content-between gap-3">
+<a aria-label="Ваш Финдир — на главную страницу" class="brand-logo" href="/">
+<span class="brand-mark">ВФ</span>
+<span>Ваш Финдир</span>
+</a>
+<a class="btn btn-primary js-cta-click" href="/#contact">Записаться на встречу</a>
+</div>
+</nav>
+</section>
+<main>
+<section class="section info-hero py-5" id="privacy-intro">
+<div class="container">
+<div class="row align-items-center g-4">
+<div class="col-lg-8">
+<div class="section-eyebrow">Документы</div>
+<h1 class="section-title display-4 mb-4">Политика конфиденциальности</h1>
+<p class="section-subtitle lead mb-0">Полный текст политики обработки персональных данных пользователей сайта «Ваш Финдир». Документ описывает состав данных, цели обработки, порядок хранения, cookie-файлы, права пользователя и обязанности оператора.</p>
+</div>
+<div class="col-lg-4">
+<div class="info-hero-card p-4">
+<div class="case-label mb-2">Версия документа</div>
+<div class="metric-value mb-1">v1.2</div>
+<p class="text-muted-brand mb-0">Дата публикации: 26 мая 2026 года</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section py-5" id="privacy-summary">
+<div class="container">
+<div class="row g-4 mb-4">
+<div class="col-lg-4">
+<div class="section-eyebrow">Коротко</div>
+<h2 class="section-title h1 mb-3">Что важно знать</h2>
+</div>
+<div class="col-lg-8">
+<p class="section-subtitle mb-0">В начале страницы вынесены ключевые сведения, а полный юридический текст ниже разбит на читаемые карточки с навигацией.</p>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-md-4">
+<div class="info-summary-card p-4">
+<span class="info-summary-icon mb-3"><i class="bi bi-person-lines-fill"></i></span>
+<h3 class="h5 fw-bold mb-2">Какие данные</h3>
+<p class="text-ink-soft mb-0">Имя, контакт для связи, технические данные сайта и cookie-файлы.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="info-summary-card p-4">
+<span class="info-summary-icon mb-3"><i class="bi bi-chat-dots"></i></span>
+<h3 class="h5 fw-bold mb-2">Зачем обрабатываем</h3>
+<p class="text-ink-soft mb-0">Чтобы ответить на заявку, провести консультацию, улучшать сайт и аналитику.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="info-summary-card p-4">
+<span class="info-summary-icon mb-3"><i class="bi bi-envelope-check"></i></span>
+<h3 class="h5 fw-bold mb-2">Как обратиться</h3>
+<p class="text-ink-soft mb-0">По вопросам персональных данных: <a href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section py-5 bg-white" id="privacy-operator">
+<div class="container">
+<div class="row g-4 align-items-start">
+<div class="col-lg-4">
+<div class="section-eyebrow">Оператор</div>
+<h2 class="section-title h1 mb-3">Реквизиты и контакты</h2>
+<p class="section-subtitle mb-0">Эти данные используются в тексте политики, в футере сайта и для обращений пользователей по вопросам персональных данных.</p>
+</div>
+<div class="col-lg-8">
+<div class="case-card p-4 p-lg-5">
+<div class="info-requisites-grid">
+<div class="info-requisite-item"><div class="info-requisite-label">Оператор</div><p class="info-requisite-value">ООО «Ваш Финдир»</p></div>
+<div class="info-requisite-item"><div class="info-requisite-label">Сайт</div><p class="info-requisite-value">https://vashfindir.ru</p></div>
+<div class="info-requisite-item"><div class="info-requisite-label">ИНН</div><p class="info-requisite-value">6140000234</p></div>
+<div class="info-requisite-item"><div class="info-requisite-label">ОГРН</div><p class="info-requisite-value">1156188000176</p></div>
+<div class="info-requisite-item"><div class="info-requisite-label">Email</div><p class="info-requisite-value"><a href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a></p></div>
+<div class="info-requisite-item"><div class="info-requisite-label">Telegram</div><p class="info-requisite-value"><a class="js-telegram-click" href="https://t.me/vashfindir" rel="noopener" target="_blank">@vashfindir</a></p></div>
+</div>
+<div class="info-alert p-4 mt-4">
+<p class="mb-0 text-ink-soft"><strong>Важно перед публикацией:</strong> юридический адрес оператора не был предоставлен. Его нужно добавить в этот блок, в текст политики и при необходимости в футер.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section info-layout py-5" id="privacy-document">
+<div class="container">
+<div class="row g-4 align-items-start">
+<div class="col-lg-3">
+<aside class="info-sidebar">
+<nav aria-label="Навигация по политике конфиденциальности" class="info-toc">
+<div class="info-toc-head">Содержание</div>
+<div class="info-toc-list">
+<a class="info-toc-link" href="#privacy-preamble">Общие сведения о политике</a>
+<a class="info-toc-link" href="#privacy-definitions">Определения и термины</a>
+<a class="info-toc-link" href="#privacy-general">Общие положения</a>
+<a class="info-toc-link" href="#privacy-subject">Предмет политики</a>
+<a class="info-toc-link" href="#privacy-purposes">Цели сбора персональных данных пользователя</a>
+<a class="info-toc-link" href="#privacy-categories">Объем и категории обрабатываемых персональных данных</a>
+<a class="info-toc-link" href="#privacy-legal-basis">Правовые основания, порядок и условия обработки персональных данных</a>
+<a class="info-toc-link" href="#privacy-terms">Способы и сроки обработки персональных данных</a>
+<a class="info-toc-link" href="#privacy-rights">Права и обязанности сторон</a>
+<a class="info-toc-link" href="#privacy-liability">Ответственность за нарушение норм обработки данных</a>
+<a class="info-toc-link" href="#privacy-disputes">Разрешение споров</a>
+<a class="info-toc-link" href="#privacy-final">Заключительные положения</a>
+<a class="info-toc-link" href="#privacy-requisites">Реквизиты оператора</a>
+</div>
+</nav>
+</aside>
+</div>
+<div class="col-lg-9">
+<article class="info-content">
+<section class="info-card" id="privacy-preamble">
+<div class="info-card-head">
+<div class="info-section-number">Преамбула</div>
+<h2>Общие сведения о политике</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-2 ps-3">— Политика конфиденциальности сайта Ваш Финдир</p>
+<p class="text-ink-soft mb-3">Настоящая политика ООО «Ваш Финдир» (ОГРН: 1156188000176, ИНН: 6140000234) в отношении обработки персональных данных (далее – Политика) разработана в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» (далее — Закон о персональных данных) в целях обеспечения защиты прав и свобод человека и гражданина при обработке его персональных данных, оператором которых является ООО «Ваш Финдир», в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну, и действует в отношении всей информации, которую ООО «Ваш Финдир» может получить о Пользователе в связи с использованием Пользователем сайта ООО «Ваш Финдир» с доменным именем https://vashfindir.ru, в информационно-телекоммуникационной сети «Интернет» (далее – сеть Интернет).</p>
+<p class="text-ink-soft mb-3">Настоящая Политика применяется ко всем Пользователям Сайта. Все термины и определения, встречающиеся в тексте Политики, толкуются в соответствии с действующим законодательством Российской Федерации (в частности, Законом о персональных данных). Пользователи прямо соглашаются на обработку своих персональных данных, как это описано в настоящей Политике.</p>
+<p class="text-ink-soft mb-3">Использование Сайта либо предоставление персональных данных Пользователем через форму обратной связи Сайта «Получить консультацию» означает выражение Пользователем безоговорочного согласия с настоящей Политикой и указанными в Политике условиями обработки персональных данных, а также со сбором и использованием Администратором куки-файлы. Пользователь обязан воздержаться от использования Сайта, если Пользователь не согласен с условиями настоящей Политики.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-definitions">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 1</div>
+<h2>Определения и термины</h2>
+</div>
+<div class="info-card-body">
+<h3 class="h5 fw-bold mt-4 mb-3">В Политике используются следующие определения и термины:</h3>
+<p class="text-ink-soft mb-3">Администратор – ООО «Ваш Финдир» (ОГРН: 1156188000176, ИНН: 6140000234) (далее также – Оператор).</p>
+<p class="text-ink-soft mb-3">Сайт — сайт, расположенный в сети Интернет с доменным именем https://vashfindir.ru, содержащий информацию об услугах Администратора, позволяющий Пользователю оформить Заявку на консультацию посредством заполнения соответствующей формы обратной связи «Записаться» и/или «Записаться на консультацию» или «Получить консультацию» (далее – форма обратной связи). Правообладателем Сайта является Администратор.</p>
+<p class="text-ink-soft mb-3">Администрация Сайта – уполномоченные работники Администратора на управление Сайтом, действующие от имени Администратора, которые организуют и (или) осуществляют обработку персональных данных, а также определяют цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными.</p>
+<p class="text-ink-soft mb-3">Персональные данные — любая информация, относящаяся к прямо или косвенно определенному или определяемому физическому лицу (субъекту персональных данных).</p>
+<p class="text-ink-soft mb-3">Обработка персональных данных — любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
+<p class="text-ink-soft mb-3">Конфиденциальность персональных данных — обязательное для соблюдения Оператором (Администратором Сайта) или иным получившим доступ к персональным данным лицом требование не допускать их распространения без согласия субъекта персональных данных или наличия иного законного основания.</p>
+<p class="text-ink-soft mb-3">Общедоступные персональные данные – персональные данные, доступ неограниченного круга лиц к которым предоставлен с согласия субъекта персональных данных или на которые в соответствии с федеральными законами не распространяется требование соблюдения конфиденциальности;</p>
+<p class="text-ink-soft mb-3">Пользователь Сайта (далее — Пользователь) – физическое лицо, субъект персональных данных, добровольно предоставивший персональные данные посредством формы обратной связи Сайта или посредством куки-файлов.</p>
+<p class="text-ink-soft mb-3">Техническая информация – информация, не являющаяся персональными данными. Администратор использует куки-файлы (небольшие текстовые файлы на компьютерах Пользователей, в которых хранится информация об их предыдущих действиях на Сайте), которые позволяют идентифицировать Пользователя. куки-файлы — это небольшой фрагмент данных, отправленный веб-сервером и хранимый на компьютере Пользователя, который веб-клиент или веб-браузер пересылает каждый раз веб-серверу в HTTP-запросе при попытке открыть страницу соответствующего сайта. куки-файлы – это также текстовые файлы, доступные Администратору, для обработки информации об активности Пользователя, включая информацию о том, какие страницы посещал Пользователь и о времени, которое Пользователь провел на странице. Пользователь может отключить возможность использования куки-файлов в настройках браузера. Также под технической информацией понимается информация, которая автоматически передается Администратору в процессе использования Сайта с помощью установленного на устройстве Пользователя программного обеспечения.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-general">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 2</div>
+<h2>Общие положения</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Сайт собирает, получает доступ и использует в определенных Политикой целях предоставленные Пользователями их Персональные данные, а также Техническую информацию, связанную с Пользователями.</p>
+<p class="text-ink-soft mb-3">Политика применяется только к Сайту. Администрация Сайта не контролирует и не несет ответственность за сайты третьих лиц, на которые Пользователь может перейти по ссылкам, доступным на Сайте.</p>
+<p class="text-ink-soft mb-3">Администрация Сайта не проверяет достоверность Персональных данных и Технической информации, предоставляемой Пользователем Сайта.</p>
+<p class="text-ink-soft mb-3">Политика является общедоступной и подлежит публикации в сети «Интернет» на Сайте Администратора.</p>
+<p class="text-ink-soft mb-3">Политика действует в отношении Технической информации, обрабатываемой Администрацией Сайта с использованием средств автоматизации, а также без использования таких средств.</p>
+<p class="text-ink-soft mb-3">Политика распространяется на отношения в области обработки персональных данных, возникшие у Администратора как до, так и после утверждения Политики.</p>
+<p class="text-ink-soft mb-3">Персональные данные пользователей Сайта являются конфиденциальной информацией и не могут быть использованы администрацией Сайта или любым иным лицом в личных целях. При этом в отношении персональных данных Пользователя Администратором сохраняется ее конфиденциальность, кроме случаев добровольного предоставления Пользователем информации о себе для общего доступа неограниченному кругу лиц.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-subject">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 3</div>
+<h2>Предмет политики</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Настоящая Политика устанавливает порядок получения, защиты, хранения, обработки и передачи персональных данных Пользователей Сайта, действует в отношении всей информации, которую Администрация Сайта может получить о Пользователях во время использования ими Сайта.</p>
+<p class="text-ink-soft mb-3">Настоящая Политика также устанавливает обязательства Администрации Сайта по обработке, неразглашению и обеспечению режима защиты персональных данных, которые Пользователь предоставляет по запросу Администрации Сайта при оформлении Заявки посредством направления запроса (далее – запрос) на электронную почту Администратора hello@vashfindir.ru (далее – электронная почта Администратора) либо посредством заполнения формы обратной связи на Сайте.</p>
+<p class="text-ink-soft mb-3">Персональные данные, разрешённые к обработке в рамках настоящей Политики, предоставляются веб-браузером Пользователя при открытии Пользователем Сайта, включают в себя следующую информацию: куки-файлы. Также разрешены к обработке такие Персональные данные Пользователей, как фамилия имя отчество, e-mail и/или контактный номер телефона Пользователей, предоставляемые Пользователями при направления Пользователем персональных данных на электронную почту Администратора либо при оформлении Заявки либо посредством заполнения формы обратной связи.</p>
+<p class="text-ink-soft mb-3">Администратор защищает персональные данные Пользователя, которые автоматически передаются в процессе использования Пользователем Сайта.</p>
+<p class="text-ink-soft mb-3">Отключение куки-файлов может повлечь невозможность доступа к частям Сайта.</p>
+<p class="text-ink-soft mb-3">Любая иная персональная информация, неоговоренная выше (история покупок, используемые браузеры и операционные системы и т.д.) подлежит надежному хранению и нераспространению, за исключением случаев, предусмотренных в п.п. 5.2., 5.3. настоящей Политики.</p>
+<p class="text-ink-soft mb-3">Администратор (Оператор) обрабатывает персональные данные Пользователя (фамилия имя отчество, e-mail и/или контактный номер телефона), чтобы отвечать на обращения Пользователя, предоставлять услуги и отправлять сообщения через мессенджеры, включая WhatsApp, Telegram или иные указанные Пользователем каналы связи. Предоставляя свои данные, Пользователь подтверждает согласие на получение от Администратора (Оператора) информационных и рекламных сообщений. Пользователь может отказаться от сообщений в любой момент — через кнопку «Отписаться» или может написать на hello@vashfindir.ru с темой «Отказ от уведомлений». Администратор (Оператор) соблюдает требования законодательства Российской Федерации и правила соответствующих сервисов коммуникации в части обработки данных.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-purposes">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 4</div>
+<h2>Цели сбора персональных данных пользователя</h2>
+</div>
+<div class="info-card-body">
+<h3 class="h5 fw-bold mt-4 mb-3">Персональные данные Пользователя Администрация Сайта может использовать в целях:</h3>
+<p class="text-ink-soft mb-3">Предоставления Пользователю доступа к персонализированным ресурсам Сайта.</p>
+<p class="text-ink-soft mb-3">Предоставления Пользователю возможности оформления Заявки на консультацию или получение услуги.</p>
+<p class="text-ink-soft mb-3">Предоставление информации, консультаций Пользователям по вопросам использования Сайта, а также деятельности Администратора, оформления Заявки, разрешение иных вопросов Пользователей, связанных с оказанием консультации или услуги.</p>
+<p class="text-ink-soft mb-3">Установления с Пользователем обратной связи, включая направление уведомлений, запросов, касающихся использования Сайта, оказания консультации или услуги, обработку запросов и заявок от Пользователя.</p>
+<p class="text-ink-soft mb-3">Определения места нахождения Пользователя для обеспечения безопасности, предотвращения мошенничества.</p>
+<p class="text-ink-soft mb-3">Подтверждения достоверности и полноты персональных данных, предоставленных Пользователем.</p>
+<p class="text-ink-soft mb-3">Предоставления Пользователю эффективной клиентской и технической поддержки при возникновении проблем, связанных с использованием Сайта.</p>
+<p class="text-ink-soft mb-3">Предоставления Пользователю с его согласия, обновлений продукции, специальных предложений, информации о ценах, новостной рассылки и иных сведений от имени Администратора.</p>
+<p class="text-ink-soft mb-3">Осуществления рекламной деятельности с согласия Пользователя.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-categories">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 5</div>
+<h2>Объем и категории обрабатываемых персональных данных</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Содержание и объем обрабатываемых персональных данных должны соответствовать заявленным целям обработки, предусмотренным в разделе 4 настоящей Политики. Обрабатываемые персональные данные не должны быть избыточными по отношению к заявленным целям их обработки.</p>
+<h3 class="h5 fw-bold mt-4 mb-3">Администрация Сайта вправе обрабатывать персональные данные следующих категорий субъектов персональных данных:</h3>
+<p class="text-ink-soft mb-3">Пользователи Сайта.</p>
+<p class="text-ink-soft mb-3">К категориям персональных данных, обрабатываемых Администрацией Сайта, относятся общие персональные данные, а именно: фамилия, имя, отчество Пользователя Сайта, e-mail, номер контактного телефона Пользователя Сайта, предоставляемые Пользователями при оформлении Заявки или заполнения формы обратной связи, а также куки-файлы Пользователей Сайта, указанные в пункте 3.3. настоящей Политики.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-legal-basis">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 6</div>
+<h2>Правовые основания, порядок и условия обработки персональных данных</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Администратор осуществляет обработку персональных данных с согласия субъекта персональных данных на обработку его персональных данных, если иное не предусмотрено законодательством Российской Федерации в области персональных данных, следующими способами:</p>
+<p class="text-ink-soft mb-3">автоматизированная обработка персональных данных с передачей полученной информации по информационно-телекоммуникационным сетям или без таковой.</p>
+<p class="text-ink-soft mb-3">Пользователь дает согласие на обработку своих персональных данных посредством открытия Пользователем Сайта с использование веб-браузера, направления Заявки, заполнения формы обратной связи.</p>
+<p class="text-ink-soft mb-3">Пользователь ознакомлен и согласен с тем, что, открывая Сайт с использование веб-браузера, в том числе направляя Заявку, заполняя форму обратной связи, Пользователь предоставляет свое согласие Администратору на обработку, то есть на совершение действий, предусмотренных п. 3 ст. 3 Закона о персональных данных. Обработка персональных данных будет осуществляться в соответствии с целями, указанными в разделе 4 настоящей Политики. Условием прекращения обработки персональных данных является прекращение использования Пользователем Сайта и получение Администратором письменного уведомления об отзыве настоящего Согласия на обработку персональных данных. Согласие на обработку персональных данных действует со дня направления Пользователем персональных данных на электронную почту Администратора либо заполнения формы обратной связи, направления Заявки до дня отзыва Пользователем такого согласия в письменной форме. Пользователь вправе отозвать согласие на обработку персональных данных путем направления такого отказа на электронную почту Администратора.</p>
+<p class="text-ink-soft mb-3">Обработка персональных данных Администратором ограничивается достижением конкретных, заранее определенных и законных целей. Обработке подлежат только персональные данные, которые отвечают целям их обработки.</p>
+<p class="text-ink-soft mb-3">К обработке персональных данных допускаются только уполномоченные работники Администратора (Администрация Сайта), в должностные обязанности которых входит обработка персональных данных. Перечень работников Сайта, имеющих доступ к персональным данным пользователей Сайта, утверждается приказом Администратора.</p>
+<p class="text-ink-soft mb-3">Персональные данные Пользователей Сайта хранятся в электронном виде в информационной системе персональных данных Сайта, а также в архивных копиях баз данных Сайта.</p>
+<p class="text-ink-soft mb-3">При хранении персональных данных Пользователей Сайта соблюдаются организационные и технические меры, обеспечивающие их сохранность и исключающие несанкционированный доступ к ним.</p>
+<p class="text-ink-soft mb-3">К обработке персональных данных Пользователей Сайта могут иметь доступ только работники Администрации Сайта, допущенные к работе с персональными данными Пользователей Сайта и подписавшие соглашение о неразглашении персональных данных Пользователей Сайта.</p>
+<p class="text-ink-soft mb-3">Хранение персональных данных осуществляется в форме, позволяющей определить местоположение субъекта персональных данных и информацию о его действиях на Сайте, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных.</p>
+<p class="text-ink-soft mb-2 ps-3">— Персональные данные на бумажных носителях хранятся в течение сроков хранения документов, для которых эти сроки предусмотрены законодательством об архивном деле</p>
+<p class="text-ink-soft mb-3">в Российской Федерации.</p>
+<p class="text-ink-soft mb-3">Срок хранения персональных данных, обрабатываемых в информационных системах персональных данных, соответствует сроку хранения персональных данных на бумажных носителях.</p>
+<p class="text-ink-soft mb-3">Обрабатываемые персональные данные подлежат уничтожению либо обезличиванию по достижении целей обработки или в случае утраты необходимости в достижении этих целей, если иное не предусмотрено федеральным законом.</p>
+<p class="text-ink-soft mb-3">Условием прекращения обработки персональных данных может являться достижение целей обработки персональных данных, истечение срока действия согласия или отзыв согласия субъекта персональных данных на обработку его персональных данных, а также выявление неправомерной обработки персональных данных.</p>
+<p class="text-ink-soft mb-3">Работники Администратора, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и не распространять персональные данные без согласия субъекта персональных данных, если иное не предусмотрено федеральным законом.</p>
+<p class="text-ink-soft mb-3">Администратор обязан принимать меры, необходимые и достаточные для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, в том числе такие меры включают:</p>
+<p class="text-ink-soft mb-3">назначение лица, ответственного за организацию обработки персональных данных;</p>
+<p class="text-ink-soft mb-3">принятие локальных нормативных актов и иных документов в области обработки и защиты персональных данных;</p>
+<p class="text-ink-soft mb-3">соблюдение условий, обеспечивающих сохранность персональных данных и исключающих несанкционированный доступ к ним;</p>
+<p class="text-ink-soft mb-3">обнаружение фактов несанкционированного доступа к персональным данным и принятие мер;</p>
+<p class="text-ink-soft mb-3">организацию обучения и проведение методической работы с работниками Администратора, допущенными к работе с персональными данными, в том числе посредством информационных систем;</p>
+<p class="text-ink-soft mb-3">получение согласий субъектов персональных данных на обработку их персональных данных, за исключением случаев, предусмотренных законодательством Российской Федерации;</p>
+<p class="text-ink-soft mb-3">обособление персональных данных, обрабатываемых без использования средств автоматизации, от иной информации, в частности путем их фиксации на отдельных материальных носителях персональных данных, в специальных разделах;</p>
+<p class="text-ink-soft mb-3">обеспечение раздельного хранения персональных данных и их материальных носителей, обработка которых осуществляется в разных целях и которые содержат разные категории персональных данных;</p>
+<p class="text-ink-soft mb-3">обеспечение безопасности персональных данных при их передаче по открытым каналам связи;</p>
+<p class="text-ink-soft mb-3">применение сертифицированного антивирусного программного обеспечения с регулярно обновляемыми базами;</p>
+<p class="text-ink-soft mb-3">хранение материальных носителей персональных данных с соблюдением условий, обеспечивающих сохранность персональных данных и исключающих несанкционированный доступ к ним;</p>
+<p class="text-ink-soft mb-3">осуществление внутреннего контроля соответствия обработки персональных данных Закону о персональных данных и принятым в соответствии с ним нормативным правовым актам, требованиям к защите персональных данных, настоящей Политике, локальным нормативным актам Администратора;</p>
+<p class="text-ink-soft mb-3">иные меры, предусмотренные законодательством Российской Федерации в области персональных данных.</p>
+<p class="text-ink-soft mb-3">Все сведения о передаче персональных данных Пользователей Сайта учитываются для контроля правомерности использования данной информации лицами, ее получившими.</p>
+<p class="text-ink-soft mb-3">В целях повышения качества сервиса и обеспечения возможности правовой защиты Администрация Сайта вправе хранить лог-файлы о действиях, совершенных Пользователями в рамках использования Сайта.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-terms">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 7</div>
+<h2>Способы и сроки обработки персональных данных</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Обработка персональных данных Пользователя осуществляется без ограничения срока, любым законным способом, в том числе в информационных системах персональных данных с использованием средств автоматизации или без использования таких средств.</p>
+<p class="text-ink-soft mb-3">Пользователь соглашается с тем, что Администрация Сайта вправе использовать персональные данные, в том числе для определения статистики действий Пользователей.</p>
+<p class="text-ink-soft mb-3">Персональные данные Пользователя могут быть переданы уполномоченным органам государственной власти Российской Федерации только по основаниям и в порядке, установленным законодательством Российской Федерации.</p>
+<p class="text-ink-soft mb-3">При утрате или разглашении персональных данных Администрация Сайта не позднее 5 (пяти) рабочих дней информирует Пользователя о факте утраты или разглашения персональных данных.</p>
+<p class="text-ink-soft mb-3">Администрация Сайта принимает необходимые организационные и технические меры для защиты персональных данных Пользователя от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также от иных неправомерных действий третьих лиц.</p>
+<p class="text-ink-soft mb-3">Администрация Сайта совместно с Пользователем принимает все необходимые меры по предотвращению убытков или иных отрицательных последствий, вызванных утратой или разглашением персональных данных Пользователя.</p>
+<p class="text-ink-soft mb-3">Подтверждение факта обработки персональных данных, правовые основания и цели обработки персональных данных, а также иные сведения, указанные в ч. 7 ст. 14 Закона о персональных данных, предоставляются субъекту персональных данных или его представителю в течение 10 (десяти) рабочих дней с момента обращения либо получения запроса субъекта персональных данных или его представителя. Данный срок может быть продлен, но не более чем на 5 (пять) рабочих дней. Для этого Администратор направляет субъекту персональных данных мотивированное уведомление с указанием причин продления срока предоставления запрашиваемой информации.</p>
+<p class="text-ink-soft mb-3">В предоставляемые сведения не включаются персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных.</p>
+<p class="text-ink-soft mb-3">Администратор предоставляет сведения, указанные в ч. 7 ст. 14 Закона о персональных данных, субъекту персональных данных или его представителю в той форме, в которой направлены соответствующие обращение либо запрос, если иное не указано в обращении или запросе.</p>
+<p class="text-ink-soft mb-3">Если в обращении (запросе) субъекта персональных данных не отражены в соответствии с требованиями Закона о персональных данных все необходимые сведения или субъект не обладает правами доступа к запрашиваемой информации, то ему направляется мотивированный отказ.</p>
+<p class="text-ink-soft mb-3">В случае выявления неточных персональных данных при обращении субъекта персональных данных или его представителя либо по их запросу или по запросу Роскомнадзора Администратор осуществляет блокирование персональных данных, относящихся к этому субъекту персональных данных, с момента такого обращения или получения указанного запроса на период проверки, если блокирование персональных данных не нарушает права и законные интересы субъекта персональных данных или третьих лиц.</p>
+<p class="text-ink-soft mb-3">В случае подтверждения факта неточности персональных данных Администратор на основании сведений, представленных субъектом персональных данных или его представителем либо Роскомнадзором, или иных необходимых документов уточняет (актуализирует, исправляет) персональные данные в течение 7 (семи) рабочих дней со дня представления таких сведений и снимает блокирование персональных данных.</p>
+<p class="text-ink-soft mb-3">В случае выявления неправомерной обработки персональных данных при обращении (запросе) субъекта персональных данных или его представителя либо Роскомнадзора Администратор осуществляет блокирование неправомерно обрабатываемых персональных данных, относящихся к этому субъекту персональных данных, с момента такого обращения или получения запроса.</p>
+<h3 class="h5 fw-bold mt-4 mb-3">Условия и сроки уничтожения персональных данных Администратором:</h3>
+<p class="text-ink-soft mb-3">Достижение цели обработки персональных данных либо утрата необходимости достигать эту цель - в течение 30 (тридцати) дней;</p>
+<p class="text-ink-soft mb-3">Достижение максимальных сроков хранения документов, содержащих персональные данные, - в течение 30 (тридцати) дней;</p>
+<p class="text-ink-soft mb-3">Предоставление субъектом персональных данных (его представителем) подтверждения того, что персональные данные получены незаконно или не являются необходимыми для заявленной цели обработки, - в течение семи рабочих дней;</p>
+<p class="text-ink-soft mb-3">Отзыв субъектом персональных данных согласия на обработку его персональных данных, если их сохранение для цели их обработки более не требуется, - в течение 30 (тридцати) дней.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-rights">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 8</div>
+<h2>Права и обязанности сторон</h2>
+</div>
+<div class="info-card-body">
+<h3 class="h5 fw-bold mt-4 mb-3">Пользователь обязан:</h3>
+<p class="text-ink-soft mb-3">Предоставить Техническую информацию о персональных данных, необходимую для пользования Сайтом, в случае если нормальное функционирование Сайта невозможно без использования такой Технической информации, а также предоставить достоверные Персональных данные в целях направления Заявки либо заполнения формы обратной связи.</p>
+<p class="text-ink-soft mb-3">Обновить, дополнить предоставленную Администратору информацию о персональных данных в случае изменения такой информации.</p>
+<h3 class="h5 fw-bold mt-4 mb-3">Администрация Сайта обязана:</h3>
+<p class="text-ink-soft mb-3">Использовать полученную информацию исключительно для целей, указанных в разделе 4 настоящей Политики.</p>
+<p class="text-ink-soft mb-3">Предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных.</p>
+<p class="text-ink-soft mb-3">Организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ.</p>
+<p class="text-ink-soft mb-3">Сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 (десяти) календарных дней с даты получения такого запроса.</p>
+<p class="text-ink-soft mb-3">Соблюдать принципы и правила обработки персональных данных, предусмотренные Законом о персональных данных, соблюдать конфиденциальность персональных данных, принимать необходимые меры, направленные на обеспечение выполнения обязанностей, предусмотренных Законом о персональных данных.</p>
+<p class="text-ink-soft mb-3">Обеспечить конфиденциальность персональных данных, не разглашать их без предварительного письменного разрешения Пользователя, а также не осуществлять продажу, обмен, опубликование, либо разглашение иными возможными способами переданных персональных данных Пользователя, за исключением п.п. 5.2. и 5.3. настоящей Политики.</p>
+<p class="text-ink-soft mb-3">Принимать меры предосторожности для защиты персональных данных Пользователя согласно порядку, обычно используемого для защиты такого рода информации в существующем деловом обороте.</p>
+<p class="text-ink-soft mb-3">Осуществить блокирование персональных данных, относящихся к соответствующему Пользователю, с момента обращения или запроса Пользователя или его законного представителя либо уполномоченного органа по защите прав субъектов персональных данных на период проверки, в случае выявления недостоверных персональных данных или неправомерных действий.</p>
+<p class="text-ink-soft mb-3">Публиковать или иным образом обеспечивать неограниченный доступ Пользователей к настоящей Политике в отношении обработки персональных данных.</p>
+<h3 class="h5 fw-bold mt-4 mb-3">Пользователь вправе:</h3>
+<p class="text-ink-soft mb-3">Получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами.</p>
+<p class="text-ink-soft mb-3">Требовать от Администратора уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав.</p>
+<p class="text-ink-soft mb-3">Отозвать согласие на обработку персональных данных, а также, направить требование о прекращении обработки персональных данных;</p>
+<p class="text-ink-soft mb-3">Обжаловать в Роскомнадзоре или в судебном порядке неправомерные действия или бездействие Администратора при обработке его персональных данных.</p>
+<h3 class="h5 fw-bold mt-4 mb-3">Администрация Сайта вправе:</h3>
+<p class="text-ink-soft mb-3">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
+<p class="text-ink-soft mb-3">Получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные.</p>
+<p class="text-ink-soft mb-3">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами;</p>
+<p class="text-ink-soft mb-3">Поручить обработку персональных данных другому лицу с согласия субъекта персональных данных, если иное не предусмотрено федеральным законом, на основании заключаемого с этим лицом договора, лицо, осуществляющее обработку персональных данных по поручению Администратора, обязано соблюдать принципы и правила обработки персональных данных, предусмотренные Законом о персональных данных;</p>
+<p class="text-ink-soft mb-3">В случае отзыва субъектом персональных данных согласия на обработку персональных данных Администратор вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-liability">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 9</div>
+<h2>Ответственность за нарушение норм обработки данных</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Лица, виновные в нарушении норм, регулирующих получение, обработку и защиту персональных данных пользователей сайта, привлекаются к дисциплинарной, материальной, гражданско-правовой, административной и уголовной ответственности в порядке, установленном действующим законодательством Российской Федерации.</p>
+<p class="text-ink-soft mb-3">Моральный вред, причиненный пользователю сайта вследствие нарушения его прав, нарушения правил обработки персональных данных, установленных Законом о персональных данных, а также требований к защите персональных данных, установленных в соответствии с названным Федеральным законом, подлежит возмещению в соответствии с законодательством Российской Федерации. Возмещение морального вреда осуществляется независимо от возмещения имущественного вреда и понесенных пользователем сайта убытков.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-disputes">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 10</div>
+<h2>Разрешение споров</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">До обращения в суд с иском по спорам, возникающим из отношений между Пользователем Сайта и Администрацией Сайта, обязательным является направление претензии (письменного предложения о добровольном урегулировании спора).</p>
+<p class="text-ink-soft mb-3">Получатель претензии в течение 30 (тридцати) календарных дней со дня получения претензии, письменно уведомляет заявителя претензии о результатах рассмотрения претензии.</p>
+<p class="text-ink-soft mb-3">При недостижении соглашения, спор будет передан на рассмотрение в судебный орган в соответствии с действующим законодательством Российской Федерации.</p>
+<p class="text-ink-soft mb-3">К настоящей Политике и отношениям между Пользователем и Администрацией Сайта применяется действующее законодательство Российской Федерации.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-final">
+<div class="info-card-head">
+<div class="info-section-number">Раздел 11</div>
+<h2>Заключительные положения</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-3">Администратор имеет право вносить изменения в настоящую Политику. При внесении изменений в актуальной редакции указывается дата последнего обновления. Новая редакция Политики вступает в силу с момента ее размещения на Сайте, если иное не предусмотрено новой редакцией Политики. Действующая редакция постоянно доступна на Сайте. Администратор обеспечивает неограниченный доступ к настоящей Политике.</p>
+<p class="text-ink-soft mb-3">Политика подлежит внеплановому пересмотру в случае существенных изменений законодательства в области защиты персональных данных.</p>
+<p class="text-ink-soft mb-3">Политика подлежит внеплановому пересмотру в случае изменения перечня персональных данных Пользователя, обрабатываемых Администратором, при использовании Пользователем Сайта, целей обработки персональных данных и др.</p>
+</div>
+</section>
+<section class="info-card" id="privacy-requisites">
+<div class="info-card-head">
+<div class="info-section-number">Реквизиты</div>
+<h2>Реквизиты оператора</h2>
+</div>
+<div class="info-card-body">
+<p class="text-ink-soft mb-2"><strong>Полное наименование:</strong> Общество с ограниченной ответственностью «Ваш Финдир»</p>
+<p class="text-ink-soft mb-2"><strong>Сокращённое наименование:</strong> ООО «Ваш Финдир»</p>
+<p class="text-ink-soft mb-2"><strong>ИНН:</strong> 6140000234</p>
+<p class="text-ink-soft mb-2"><strong>ОГРН:</strong> 1156188000176</p>
+<p class="text-ink-soft mb-2"><strong>Юридический адрес:</strong> необходимо добавить фактический юридический адрес перед публикацией.</p>
+<p class="text-ink-soft mb-2"><strong>Email:</strong> <a href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a></p>
+<p class="text-ink-soft mb-0"><strong>Telegram:</strong> <a class="js-telegram-click" href="https://t.me/vashfindir" rel="noopener" target="_blank">@vashfindir</a></p>
+</div>
+</section>
+</article>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="section footer-section pt-5 pb-4" id="footer">
+<div class="container">
+<div class="row g-5 align-items-start">
+<div class="col-lg-4 text-center text-md-start">
+<a aria-label="Ваш Финдир — на главную страницу" class="footer-brand" href="/">
+<span class="brand-mark">ВФ</span>
+<span class="footer-brand-text">Ваш Финдир</span>
+</a>
+<p class="footer-description mb-0 mx-auto mx-md-0">Финансовый навигатор для e-commerce бизнеса. Строим системы учёта, которые помогают принимать прибыльные решения на маркетплейсах.</p>
+<div class="footer-socials justify-content-center justify-content-md-start">
+<a aria-label="Telegram" class="footer-social-link js-telegram-click" href="https://t.me/vashfindir" rel="noopener" target="_blank">
+<i class="bi bi-telegram"></i>
+</a>
+<a aria-label="YouTube" class="footer-social-link" href="https://www.youtube.com/" rel="noopener" target="_blank">
+<i class="bi bi-youtube"></i>
+</a>
+<a aria-label="VK" class="footer-social-link" href="https://vk.com/" rel="noopener" target="_blank">
+<i class="bi bi-vk"></i>
+</a>
+</div>
+</div>
+<div class="col-md-6 col-lg-4 text-center text-md-start">
+<div class="footer-title">Контакты</div>
+<div class="footer-contact-list">
+<div class="footer-contact-item justify-content-center justify-content-md-start">
+<span class="footer-contact-icon"><i class="bi bi-telephone"></i></span>
+<div>
+<div class="footer-kicker">Телефон</div>
+<a class="footer-contact-link" href="tel:+78005551234">+7 (800) 555-12-34</a>
+</div>
+</div>
+<div class="footer-contact-item justify-content-center justify-content-md-start">
+<span class="footer-contact-icon"><i class="bi bi-envelope"></i></span>
+<div>
+<div class="footer-kicker">Email</div>
+<a class="footer-contact-link" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>
+</div>
+</div>
+<div class="footer-contact-item justify-content-center justify-content-md-start">
+<span class="footer-contact-icon"><i class="bi bi-telegram"></i></span>
+<div>
+<div class="footer-kicker">Telegram</div>
+<a class="footer-contact-link js-telegram-click" href="https://t.me/vashfindir" rel="noopener" target="_blank">@vashfindir</a>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-6 col-lg-3 offset-lg-1 text-center text-md-start">
+<div class="footer-title">Документы</div>
+<div class="footer-docs-list">
+<a href="/privacy">Политика конфиденциальности</a>
+<a href="/offer">Договор оферты</a>
+<a href="/consent">Согласие на обработку данных</a>
+</div>
+</div>
+</div>
+<div class="footer-divider"></div>
+<div class="row g-3 align-items-center footer-bottom text-center text-md-start">
+<div class="col-md-7">
+          © 2026 Общество с ограниченной ответственностью «Ваш Финдир»
+        </div>
+<div class="col-md-5 text-center text-md-end">
+<span class="footer-legal">ИНН: 6140000234    ОГРН: 1156188000176</span>
+</div>
+</div>
+</div>
+</footer>
+<div aria-describedby="cookieText" aria-labelledby="cookieTitle" aria-live="polite" class="cookie-notice" hidden="" id="cookieNotice" role="dialog">
+<div class="cookie-card">
+<button aria-label="Закрыть уведомление о cookie" class="cookie-close" id="cookieNoticeClose" type="button">
+<i class="bi bi-x-lg"></i>
+</button>
+<div class="row g-4 align-items-center">
+<div class="col-lg">
+<div class="section-eyebrow mb-3">Cookie</div>
+<h2 class="cookie-title" id="cookieTitle">На сайте используются cookie-файлы</h2>
+<p class="cookie-text" id="cookieText">Мы используем cookie для корректной работы сайта, аналитики посещений и улучшения сервиса. Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/privacy">политикой конфиденциальности</a>.</p>
+</div>
+<div class="col-lg-auto">
+<div class="cookie-actions">
+<button class="btn btn-primary btn-lg" id="cookieNoticeAccept" type="button">Принять</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function trackGoal(goalName) {
+      const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
+
+      if (typeof window.ym === 'function' && ymId && ymId !== 'YM_COUNTER_ID') {
+        window.ym(ymId, 'reachGoal', goalName);
+      }
+
+      if (window._tmr && Array.isArray(window._tmr)) {
+        window._tmr.push({ type: 'reachGoal', id: window.VF_ANALYTICS.vkPixelId, goal: goalName });
+      }
+    }
+
+    document.querySelectorAll('.js-cta-click').forEach(function (element) {
+      element.addEventListener('click', function () {
+        trackGoal('cta_click');
+      });
+    });
+
+    document.querySelectorAll('.js-telegram-click').forEach(function (element) {
+      element.addEventListener('click', function () {
+        trackGoal('telegram_click');
+      });
+    });
+
+    const cookieNotice = document.getElementById('cookieNotice');
+    const cookieNoticeAccept = document.getElementById('cookieNoticeAccept');
+    const cookieNoticeClose = document.getElementById('cookieNoticeClose');
+    const cookieStorageKey = 'vf_cookie_notice_accepted';
+
+    function hasAcceptedCookies() {
+      try {
+        return window.localStorage.getItem(cookieStorageKey) === '1';
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function showCookieNotice() {
+      if (!cookieNotice) return;
+      cookieNotice.hidden = false;
+      requestAnimationFrame(function () {
+        cookieNotice.classList.add('is-visible');
+      });
+    }
+
+    function hideCookieNotice() {
+      if (!cookieNotice) return;
+      cookieNotice.classList.remove('is-visible');
+      setTimeout(function () {
+        cookieNotice.hidden = true;
+      }, 240);
+    }
+
+    function saveCookieAcceptance() {
+      try {
+        window.localStorage.setItem(cookieStorageKey, '1');
+      } catch (error) {
+        console.warn('Не удалось сохранить согласие cookie в localStorage.', error);
+      }
+    }
+
+    function acceptCookies() {
+      saveCookieAcceptance();
+      hideCookieNotice();
+    }
+
+    if (!hasAcceptedCookies()) {
+      showCookieNotice();
+    }
+
+    if (cookieNoticeAccept) {
+      cookieNoticeAccept.addEventListener('click', acceptCookies);
+    }
+
+    if (cookieNoticeClose) {
+      cookieNoticeClose.addEventListener('click', acceptCookies);
+    }
+  </script>
+</body>
+</html>
