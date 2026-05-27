@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <main class="tech-page">
+        <section class="section tech-hero py-5" id="error-500">
+            <div class="container">
+                <nav aria-label="Хлебные крошки" class="breadcrumbs-wrap">
+                    <ol class="breadcrumb vf-breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                        <li aria-current="page" class="breadcrumb-item active">Временная ошибка</li>
+                    </ol>
+                </nav>
+                <div class="tech-shell p-4 p-md-5">
+                    <div class="row g-5 align-items-center">
+                        <div class="col-lg-7">
+                            <div class="tech-kicker">Ошибка 500</div>
+                            <h1 class="tech-title mb-4">Сервис временно <em>не отвечает</em></h1>
+                            <p class="tech-lead mb-4">Это техническая ошибка на нашей стороне. Мы уже знаем, что такие ситуации критичны для доверия, поэтому интерфейс должен честно объяснить проблему и дать понятные действия.</p>
+                            <div class="d-flex flex-column flex-sm-row gap-3 mb-4">
+                                <a class="btn btn-primary btn-lg" href="">Обновить страницу</a>
+                                <a class="btn btn-outline-secondary btn-lg" href="/">На главную</a>
+                            </div>
+                            <p class="tech-meta mb-0"><strong>Что делать:</strong> попробуйте обновить страницу через 1–2 минуты. Если ошибка повторяется, напишите нам в Telegram или на email из футера.</p>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="tech-panel p-4 p-md-5 text-center">
+                                <div class="tech-code mb-4">500</div>
+                                <div class="row g-3 text-start">
+                                    <div class="col-12">
+                                        <a class="tech-action-card" href="https://t.me/vashfindir" target="_blank" rel="noopener">
+                                            <span class="tech-panel-icon"><i class="bi bi-telegram"></i></span>
+                                            <span><h2>Написать в Telegram</h2><p>Сообщите, на каком действии появилась ошибка.</p></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-12">
+                                        <a class="tech-action-card" href="mailto:hello@vashfindir.ru">
+                                            <span class="tech-panel-icon"><i class="bi bi-envelope"></i></span>
+                                            <span><h2>Написать на email</h2><p>Опишите проблему и приложите скриншот.</p></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-12">
+                                        <a class="tech-action-card" href="/blog">
+                                            <span class="tech-panel-icon"><i class="bi bi-newspaper"></i></span>
+                                            <span><h2>Перейти в газету</h2><p>Почитать материалы, пока мы восстанавливаем страницу.</p></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
