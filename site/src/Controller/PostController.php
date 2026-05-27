@@ -8,6 +8,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PostController extends AbstractController
 {
+    #[Route('/gazeta', name: 'gazeta_index')]
+    public function index(): Response
+    {
+        return $this->render('blog/index.html.twig');
+    }
+
     #[Route('/gazeta/post-1', name: 'gazeta_post_1')]
     public function privacy(): Response
     {
