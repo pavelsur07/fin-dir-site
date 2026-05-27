@@ -189,6 +189,127 @@
         text-align: center;
     }
 
+    .header-menu {
+        align-items: center;
+        justify-content: center;
+        gap: 1.6rem;
+        flex: 1 1 auto;
+        margin: 0 1.5rem;
+    }
+
+    .header-menu-link {
+        position: relative;
+        color: var(--ink-soft);
+        font-size: .96rem;
+        font-weight: 700;
+        letter-spacing: -.015em;
+        line-height: 1.2;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color .2s ease;
+    }
+
+    .header-menu-link::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: -.45rem;
+        left: 0;
+        height: 2px;
+        border-radius: var(--radius-brand);
+        background: var(--brand);
+        opacity: 0;
+        transform: scaleX(.4);
+        transform-origin: center;
+        transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .header-menu-link:hover,
+    .header-menu-link:focus {
+        color: var(--brand);
+    }
+
+    .header-menu-link:hover::after,
+    .header-menu-link:focus::after {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .45rem;
+        min-height: 2.75rem;
+        padding: .65rem .95rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-brand);
+        color: var(--ink);
+        background: var(--white);
+        font-weight: 800;
+        letter-spacing: -.015em;
+        line-height: 1;
+        transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
+    }
+
+    .mobile-menu-toggle:hover,
+    .mobile-menu-toggle:focus {
+        color: var(--white);
+        background: var(--ink);
+        border-color: var(--ink);
+        transform: translateY(-1px);
+    }
+
+    .mobile-menu-toggle i {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .vf-mobile-menu {
+        width: min(22.5rem, calc(100vw - 1rem));
+        color: var(--ink);
+        background: var(--white);
+        border-left: 1px solid var(--line);
+    }
+
+    .vf-mobile-menu-header {
+        min-height: var(--header-height);
+        padding: 1rem;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .vf-mobile-menu-body {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .vf-mobile-menu-nav {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .vf-mobile-menu-link {
+        display: flex;
+        align-items: center;
+        min-height: 3.25rem;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink-soft);
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: -.025em;
+        line-height: 1.2;
+        text-decoration: none;
+        transition: color .2s ease, background-color .2s ease, padding-left .2s ease;
+    }
+
+    .vf-mobile-menu-link:hover,
+    .vf-mobile-menu-link:focus {
+        color: var(--brand);
+        background: var(--brand-light-bg);
+        padding-left: .75rem;
+    }
+
     .btn {
         border-radius: var(--radius-brand);
         font-weight: 700;

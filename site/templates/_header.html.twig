@@ -1,12 +1,23 @@
 <!-- Section 1: Header -->
-<section id="header" class="site-header">
-    <nav class="navbar navbar-expand navbar-wrap fixed-top py-3">
+<section class="site-header" id="header">
+    <nav class="navbar navbar-expand navbar-wrap py-3">
         <div class="container d-flex align-items-center justify-content-between gap-3">
-            <a class="brand-logo" href="#hero" aria-label="Ваш Финдир — на главный экран">
+            <a aria-label="Ваш Финдир — на главную страницу" class="brand-logo" href="/">
                 <span class="brand-mark">ВФ</span>
                 <span>Ваш Финдир</span>
             </a>
-            <a href="#contact" class="btn btn-primary js-cta-click">Записаться на встречу</a>
+            <nav class="header-menu d-none d-lg-flex" aria-label="Основное меню">
+                <a class="header-menu-link" href="/services">Услуги</a>
+                <a class="header-menu-link" href="/cases">Кейсы</a>
+                <a class="header-menu-link" href="/about">О компании</a>
+                <a class="header-menu-link" href="/blog">Газета</a>
+                <a class="header-menu-link" href="/partners">Партнерам</a>
+            </nav>
+            <a class="btn btn-primary js-cta-click d-none d-lg-inline-flex" href="#blog-contact">Записаться на встречу</a>
+            <button aria-controls="mobileMenu" aria-label="Открыть меню" class="mobile-menu-toggle d-lg-none" data-bs-target="#mobileMenu" data-bs-toggle="offcanvas" type="button">
+                <i class="bi bi-list"></i>
+                <span>Меню</span>
+            </button>
         </div>
     </nav>
 </section>

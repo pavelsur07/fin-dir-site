@@ -1,57 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ваш Финдир — финансовый учёт для селлеров маркетплейсов</title>
-  <meta name="description" content="ДДС, ОПиУ, Баланс, планирование и unit-экономика для селлеров Wildberries и Ozon. Управляйте бизнесом по цифрам, а не по ощущениям.">
-
-  <!-- Fonts: один Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap 5 + Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-  <!--
-    Analytics placeholders.
-    Замените YM_COUNTER_ID и VK_PIXEL_ID на реальные значения перед публикацией.
-    Цели: cta_click, lead_form_submit, telegram_click.
-  -->
-  <script>
-    window.VF_ANALYTICS = {
-      ymCounterId: 'YM_COUNTER_ID',
-      vkPixelId: 'VK_PIXEL_ID'
-    };
-  </script>
-  <!-- Yandex.Metrika counter placeholder -->
-  <script>
-    (function () {
-      const id = window.VF_ANALYTICS.ymCounterId;
-      if (!id || id === 'YM_COUNTER_ID') return;
-      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Маркетплейс или интернет-магазин: где больше прибыли и меньше рисков — Ваш Финдир</title>
+<meta content="Блог Ваш Финдир: сравниваем маркетплейсы и интернет-магазин с точки зрения прибыли, затрат, рисков, cash flow и управленческого учёта." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<script>
+  window.VF_ANALYTICS = {
+    ymCounterId: 'YM_COUNTER_ID',
+    vkPixelId: 'VK_PIXEL_ID'
+  };
+</script>
+<script>
+  (function () {
+    const id = window.VF_ANALYTICS.ymCounterId;
+    if (!id || id === 'YM_COUNTER_ID') return;
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
       m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-      (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
-      ym(id, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
-    })();
-  </script>
-  <!-- VK Pixel placeholder -->
-  <script>
-    (function () {
-      const id = window.VF_ANALYTICS.vkPixelId;
-      if (!id || id === 'VK_PIXEL_ID') return;
-      window._tmr = window._tmr || [];
-      window._tmr.push({ id: id, type: 'pageView', start: (new Date()).getTime() });
-      const s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://top-fwz1.mail.ru/js/code.js';
-      document.head.appendChild(s);
-    })();
-  </script>
-
-  <style>
+    (window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+    ym(id, 'init', { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+  })();
+</script>
+<script>
+  (function () {
+    const id = window.VF_ANALYTICS.vkPixelId;
+    if (!id || id === 'VK_PIXEL_ID') return;
+    window._tmr = window._tmr || [];
+    window._tmr.push({ id: id, type: 'pageView', start: (new Date()).getTime() });
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://top-fwz1.mail.ru/js/code.js';
+    document.head.appendChild(s);
+  })();
+</script>
+<style>
     :root {
       /* Brand colors */
       --brand-red: #B00020;
@@ -68,6 +55,25 @@
       --bg-soft: #ECEEF2;
       --white: #FFFFFF;
       --line: rgba(10,21,72,.14);
+
+      /* Radius system */
+      --radius-brand: .625rem;
+
+      /* Bootstrap radius bridge */
+      --bs-border-radius: var(--radius-brand);
+      --bs-border-radius-sm: var(--radius-brand);
+      --bs-border-radius-lg: var(--radius-brand);
+      --bs-border-radius-xl: var(--radius-brand);
+      --bs-border-radius-xxl: var(--radius-brand);
+      --bs-border-radius-pill: var(--radius-brand);
+
+      /* Bootstrap base bridge */
+      --bs-body-color: var(--ink);
+      --bs-body-bg: var(--bg);
+      --bs-primary: var(--ink);
+      --bs-primary-rgb: 11, 16, 32;
+      --bs-link-color: var(--ink);
+      --bs-link-hover-color: var(--brand);
 
       /* Additional derived tokens */
       --shadow-soft: 0 18px 60px rgba(10,21,72,.08);
@@ -124,7 +130,7 @@
       content: '';
       width: .5rem;
       height: .5rem;
-      border-radius: 50%;
+      border-radius: var(--radius-brand);
       background: var(--brand);
       flex: 0 0 auto;
     }
@@ -147,6 +153,37 @@
 
     .text-ink-soft {
       color: var(--ink-soft) !important;
+    }
+
+    /* Reusable UI primitives for base template */
+    .vf-radius,
+    .vf-card,
+    .vf-chip,
+    .vf-control,
+    .brand-mark,
+    .btn,
+    .card,
+    .form-control,
+    .form-check-input,
+    .cookie-notice-card,
+    .footer-social-link {
+      border-radius: var(--radius-brand);
+    }
+
+    .vf-card {
+      border: 1px solid var(--line);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .vf-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      background: var(--white);
+      text-decoration: none;
     }
 
     .site-header {
@@ -182,16 +219,139 @@
       justify-content: center;
       width: 2.4rem;
       height: 2.4rem;
-      border-radius: .9rem;
+      border-radius: var(--radius-brand);
       color: var(--white);
       background: var(--ink);
       font-size: .9rem;
       font-weight: 800;
       letter-spacing: -.04em;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .header-menu {
+      align-items: center;
+      justify-content: center;
+      gap: 1.6rem;
+      flex: 1 1 auto;
+      margin: 0 1.5rem;
+    }
+
+    .header-menu-link {
+      position: relative;
+      color: var(--ink-soft);
+      font-size: .96rem;
+      font-weight: 700;
+      letter-spacing: -.015em;
+      line-height: 1.2;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color .2s ease;
+    }
+
+    .header-menu-link::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: -.45rem;
+      left: 0;
+      height: 2px;
+      border-radius: var(--radius-brand);
+      background: var(--brand);
+      opacity: 0;
+      transform: scaleX(.4);
+      transform-origin: center;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .header-menu-link:hover,
+    .header-menu-link:focus {
+      color: var(--brand);
+    }
+
+    .header-menu-link:hover::after,
+    .header-menu-link:focus::after {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    .mobile-menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      min-height: 2.75rem;
+      padding: .65rem .95rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      color: var(--ink);
+      background: var(--white);
+      font-weight: 800;
+      letter-spacing: -.015em;
+      line-height: 1;
+      transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
+    }
+
+    .mobile-menu-toggle:hover,
+    .mobile-menu-toggle:focus {
+      color: var(--white);
+      background: var(--ink);
+      border-color: var(--ink);
+      transform: translateY(-1px);
+    }
+
+    .mobile-menu-toggle i {
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    .vf-mobile-menu {
+      width: min(22.5rem, calc(100vw - 1rem));
+      color: var(--ink);
+      background: var(--white);
+      border-left: 1px solid var(--line);
+    }
+
+    .vf-mobile-menu-header {
+      min-height: var(--header-height);
+      padding: 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .vf-mobile-menu-body {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .vf-mobile-menu-nav {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vf-mobile-menu-link {
+      display: flex;
+      align-items: center;
+      min-height: 3.25rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-soft);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.2;
+      text-decoration: none;
+      transition: color .2s ease, background-color .2s ease, padding-left .2s ease;
+    }
+
+    .vf-mobile-menu-link:hover,
+    .vf-mobile-menu-link:focus {
+      color: var(--brand);
+      background: var(--brand-light-bg);
+      padding-left: .75rem;
     }
 
     .btn {
-      border-radius: 999px;
+      border-radius: var(--radius-brand);
       font-weight: 700;
       letter-spacing: -.01em;
       transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease, border-color .2s ease;
@@ -283,7 +443,7 @@
     .hero-card {
       position: relative;
       border: 1px solid var(--line);
-      border-radius: 2rem;
+      border-radius: var(--radius-brand);
       background: var(--white);
       box-shadow: var(--shadow-strong);
       overflow: hidden;
@@ -297,13 +457,13 @@
     .hero-dot {
       width: .62rem;
       height: .62rem;
-      border-radius: 50%;
+      border-radius: var(--radius-brand);
       background: var(--brand);
     }
 
     .metric-card {
       border: 1px solid var(--line);
-      border-radius: 1.35rem;
+      border-radius: var(--radius-brand);
       background: var(--white);
       height: 100%;
     }
@@ -326,7 +486,7 @@
     .card-ui {
       height: 100%;
       border: 1px solid var(--line);
-      border-radius: 1.5rem;
+      border-radius: var(--radius-brand);
       background: var(--white);
       box-shadow: var(--shadow-soft);
     }
@@ -337,7 +497,7 @@
       justify-content: center;
       width: 3rem;
       height: 3rem;
-      border-radius: 1rem;
+      border-radius: var(--radius-brand);
       color: var(--brand);
       background: var(--brand-light-bg);
       font-size: 1.35rem;
@@ -396,7 +556,7 @@
       justify-content: center;
       width: 4rem;
       height: 4rem;
-      border-radius: 50%;
+      border-radius: var(--radius-brand);
       color: var(--white);
       background: var(--brand);
       font-size: 1.45rem;
@@ -407,7 +567,7 @@
     .step-card {
       height: 100%;
       border: 1px solid var(--white-soft-line);
-      border-radius: 1.5rem;
+      border-radius: var(--radius-brand);
       background: var(--white-faint);
     }
 
@@ -417,7 +577,7 @@
 
     .case-card {
       border: 1px solid var(--line);
-      border-radius: 2rem;
+      border-radius: var(--radius-brand);
       background: var(--white);
       box-shadow: var(--shadow-soft);
     }
@@ -440,13 +600,13 @@
 
     .quote-card {
       border-left: 4px solid var(--brand);
-      border-radius: 1rem;
+      border-radius: var(--radius-brand);
       background: var(--bg);
     }
 
     .telegram-card {
       border: 1px solid var(--line);
-      border-radius: 2rem;
+      border-radius: var(--radius-brand);
       background: var(--white);
       box-shadow: var(--shadow-soft);
     }
@@ -468,7 +628,7 @@
 
     .contact-card {
       border: 1px solid var(--white-soft-line);
-      border-radius: 2rem;
+      border-radius: var(--radius-brand);
       color: var(--ink);
       background: var(--white);
       box-shadow: var(--shadow-strong);
@@ -483,7 +643,7 @@
       min-height: 3.35rem;
       color: var(--ink);
       border-color: var(--line);
-      border-radius: 1rem;
+      border-radius: var(--radius-brand);
       background: var(--white);
     }
 
@@ -496,7 +656,7 @@
     .success-message {
       display: none;
       border: 1px solid var(--line);
-      border-radius: 1rem;
+      border-radius: var(--radius-brand);
       color: var(--ink);
       background: var(--brand-light-bg);
     }
@@ -545,7 +705,7 @@
     .footer-brand .brand-mark {
       width: 2.75rem;
       height: 2.75rem;
-      border-radius: .55rem;
+      border-radius: var(--radius-brand);
       color: var(--white);
       background: var(--brand);
       font-size: 1.05rem;
@@ -576,7 +736,7 @@
       width: 3.1rem;
       height: 3.1rem;
       border: 1px solid var(--white-soft-line);
-      border-radius: .7rem;
+      border-radius: var(--radius-brand);
       color: var(--white);
       background: var(--white-faint);
       font-size: 1.1rem;
@@ -621,7 +781,7 @@
       height: 2.55rem;
       flex: 0 0 auto;
       border: 1px solid var(--white-soft-line);
-      border-radius: .65rem;
+      border-radius: var(--radius-brand);
       color: var(--white-muted);
       background: var(--white-faint);
       font-size: 1rem;
@@ -703,7 +863,7 @@
       margin-left: auto;
       padding: 1.75rem;
       border: 1px solid var(--line);
-      border-radius: 1.5rem;
+      border-radius: var(--radius-brand);
       color: var(--ink);
       background: var(--white);
       box-shadow: var(--shadow-strong);
@@ -720,7 +880,7 @@
       width: 2.25rem;
       height: 2.25rem;
       border: 1px solid var(--line);
-      border-radius: 50%;
+      border-radius: var(--radius-brand);
       color: var(--ink-soft);
       background: var(--white);
       transition: color .2s ease, border-color .2s ease, background-color .2s ease, transform .2s ease;
@@ -783,7 +943,7 @@
 
       .cookie-card {
         padding: 1.35rem;
-        border-radius: 1.25rem;
+        border-radius: var(--radius-brand);
       }
 
       .cookie-actions {
@@ -802,7 +962,7 @@
       .brand-mark {
         width: 2rem;
         height: 2rem;
-        border-radius: .7rem;
+        border-radius: var(--radius-brand);
         font-size: .76rem;
       }
 
@@ -862,415 +1022,1518 @@
         width: auto;
       }
     }
-  </style>
+  
+
+    /* Informational pages */
+    .info-hero {
+      background:
+        radial-gradient(circle at top right, var(--brand-light-bg), transparent 32rem),
+        var(--white);
+    }
+
+    .info-hero-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-summary-card {
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-summary-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: var(--radius-brand);
+      color: var(--brand);
+      background: var(--brand-light-bg);
+      font-size: 1.2rem;
+      flex: 0 0 auto;
+    }
+
+    .info-layout {
+      background: var(--bg);
+    }
+
+    .info-sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + 1.25rem);
+    }
+
+    .info-toc {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .info-toc-head {
+      padding: 1.15rem 1.25rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .info-toc-list {
+      max-height: calc(100svh - var(--header-height) - 6rem);
+      overflow: auto;
+      padding: .6rem;
+    }
+
+    .info-toc-link {
+      display: block;
+      padding: .7rem .75rem;
+      border-radius: var(--radius-brand);
+      color: var(--ink-soft);
+      font-size: .92rem;
+      font-weight: 600;
+      line-height: 1.28;
+      text-decoration: none;
+    }
+
+    .info-toc-link:hover {
+      color: var(--brand);
+      background: var(--brand-light-bg);
+    }
+
+    .info-content {
+      max-width: 58rem;
+    }
+
+    .info-card {
+      scroll-margin-top: var(--header-anchor-offset);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-card + .info-card {
+      margin-top: 1rem;
+    }
+
+    .info-card-head {
+      padding: clamp(1.4rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2.25rem) 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .info-card-body {
+      padding: clamp(1.4rem, 3vw, 2.25rem);
+    }
+
+    .info-section-number {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: .85rem;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .info-card h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.45rem, 2.2vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.12;
+    }
+
+    .info-card h3 {
+      margin-top: 1.6rem;
+      margin-bottom: .85rem;
+      color: var(--ink);
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.25;
+    }
+
+    .info-card h3:first-child {
+      margin-top: 0;
+    }
+
+    .info-card p {
+      max-width: 74ch;
+      margin-bottom: 1rem;
+      color: var(--ink-soft);
+      font-size: 1rem;
+      line-height: 1.78;
+    }
+
+    .info-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-card a {
+      color: var(--ink);
+      font-weight: 700;
+      text-decoration-color: var(--line);
+      text-underline-offset: .18em;
+    }
+
+    .info-card a:hover {
+      color: var(--brand);
+      text-decoration-color: var(--brand);
+    }
+
+    .info-card .quote-card {
+      max-width: none;
+      margin-top: 1rem;
+    }
+
+    .info-alert {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--brand);
+      border-radius: var(--radius-brand);
+      background: var(--brand-light-bg);
+    }
+
+    .info-requisites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .info-requisite-item {
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--bg);
+    }
+
+    .info-requisite-label {
+      margin-bottom: .35rem;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .info-requisite-value {
+      margin: 0;
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 991.98px) {
+      .info-sidebar {
+        position: static;
+      }
+
+      .info-toc-list {
+        max-height: none;
+      }
+
+      .info-content {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .info-requisites-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-toc-link {
+        font-size: .9rem;
+      }
+
+      .info-card p {
+        font-size: .97rem;
+        line-height: 1.72;
+      }
+    }
+
+
+    /* Blog page styles */
+    .blog-hero {
+      background:
+        radial-gradient(circle at top right, var(--brand-light-bg), transparent 34rem),
+        var(--bg);
+    }
+
+    .breadcrumbs-wrap {
+      margin-bottom: 2.5rem;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.3;
+    }
+
+    .vf-breadcrumb {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .55rem;
+      margin: 0;
+      padding: 0;
+      color: var(--muted);
+    }
+
+    .vf-breadcrumb .breadcrumb-item {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding-left: 0;
+      color: var(--muted);
+    }
+
+    .vf-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+      content: "\F285";
+      padding: 0;
+      color: var(--muted);
+      font-family: "bootstrap-icons";
+      font-size: .8rem;
+      line-height: 1;
+    }
+
+    .vf-breadcrumb a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .vf-breadcrumb a:hover {
+      color: var(--brand);
+    }
+
+    .vf-breadcrumb .active {
+      color: var(--ink);
+    }
+
+    .blog-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+      color: var(--muted);
+      font-size: .98rem;
+    }
+
+    .blog-category-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: .42rem .85rem;
+      border-radius: var(--radius-brand);
+      color: var(--brand);
+      background: var(--white);
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .blog-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .blog-title {
+      max-width: 920px;
+      color: var(--ink);
+      font-size: clamp(2.4rem, 5.2vw, 5.15rem);
+      font-weight: 800;
+      letter-spacing: -.065em;
+      line-height: .98;
+    }
+
+    .blog-title em {
+      color: var(--brand);
+      font-style: italic;
+    }
+
+    .blog-lead {
+      max-width: 780px;
+      color: var(--ink-soft);
+      font-size: clamp(1.08rem, 1.7vw, 1.3rem);
+      font-weight: 500;
+    }
+
+    .blog-author-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2.2rem;
+    }
+
+    .blog-author-card {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      min-width: min(100%, 19rem);
+      padding: .9rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .blog-author-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.5rem;
+      height: 3.5rem;
+      flex: 0 0 auto;
+      border-radius: var(--radius-brand);
+      color: var(--white);
+      background: var(--ink);
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .blog-author-name {
+      margin: 0;
+      color: var(--ink);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.2;
+    }
+
+    .blog-author-role {
+      margin: .15rem 0 0;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.35;
+    }
+
+    .blog-hero-visual {
+      position: relative;
+      min-height: 26rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+    }
+
+    .blog-visual-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 1.35rem;
+      border-bottom: 1px solid var(--line);
+      background: var(--ink-light-bg);
+    }
+
+    .blog-visual-dots {
+      display: inline-flex;
+      gap: .45rem;
+    }
+
+    .blog-visual-dot {
+      width: .75rem;
+      height: .75rem;
+      border-radius: var(--radius-brand);
+      background: var(--brand);
+    }
+
+    .blog-visual-label {
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .blog-visual-body {
+      padding: 2rem;
+    }
+
+    .blog-market-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .blog-market-card {
+      min-height: 12rem;
+      padding: 1.2rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--bg);
+    }
+
+    .blog-market-card h3 {
+      margin: 0 0 .8rem;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -.025em;
+    }
+
+    .blog-market-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--ink-soft);
+      font-size: .95rem;
+    }
+
+    .blog-market-card li + li {
+      margin-top: .45rem;
+    }
+
+    .blog-mini-chart {
+      padding: 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+    }
+
+    .blog-chart-row {
+      display: grid;
+      grid-template-columns: 7rem 1fr auto;
+      align-items: center;
+      gap: .85rem;
+      color: var(--ink-soft);
+      font-size: .95rem;
+    }
+
+    .blog-chart-row + .blog-chart-row {
+      margin-top: .9rem;
+    }
+
+    .blog-chart-track {
+      height: .7rem;
+      border-radius: var(--radius-brand);
+      background: var(--bg-soft);
+      overflow: hidden;
+    }
+
+    .blog-chart-fill {
+      height: 100%;
+      border-radius: var(--radius-brand);
+      background: var(--ink);
+    }
+
+    .blog-chart-fill-accent {
+      background: var(--brand);
+    }
+
+    .blog-share-card,
+    .blog-ai-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .blog-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+    }
+
+    .blog-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .62rem .9rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      color: var(--ink);
+      background: var(--white);
+      font-weight: 700;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .blog-chip:hover {
+      color: var(--white);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .blog-layout {
+      background: var(--white);
+    }
+
+    .blog-sidebar {
+      position: sticky;
+      top: calc(var(--header-height) + 1.25rem);
+    }
+
+    .blog-toc-card,
+    .blog-side-cta,
+    .blog-side-note {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .blog-toc-title {
+      margin: 0 0 1rem;
+      color: var(--ink);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .blog-toc-list {
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .blog-toc-list a {
+      display: block;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.35;
+      text-decoration: none;
+    }
+
+    .blog-toc-list a:hover {
+      color: var(--brand);
+    }
+
+    .blog-side-cta {
+      color: var(--white);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .blog-side-cta p {
+      color: var(--white-muted);
+    }
+
+    .blog-side-cta .btn {
+      color: var(--ink);
+      background: var(--white);
+      border-color: var(--white);
+    }
+
+    .blog-side-cta .btn:hover {
+      color: var(--white) !important;
+      background: var(--brand) !important;
+      border-color: var(--brand) !important;
+    }
+
+    .blog-side-cta {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-side-cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: none;
+    }
+
+    .blog-side-cta-figure {
+      position: relative;
+      z-index: 1;
+      width: min(11rem, 76%);
+      margin: .75rem auto 1.25rem;
+      pointer-events: none;
+    }
+
+    .blog-side-cta-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .blog-article {
+      width: 100%;
+      max-width: none;
+    }
+
+    .blog-article p,
+    .blog-article li {
+      color: var(--ink-soft);
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+
+    .blog-article p + p {
+      margin-top: 1rem;
+    }
+
+    .blog-article h2 {
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      font-size: clamp(1.85rem, 3vw, 2.55rem);
+      font-weight: 800;
+      letter-spacing: -.045em;
+      line-height: 1.12;
+    }
+
+    .blog-article h3 {
+      margin-top: 2rem;
+      margin-bottom: .8rem;
+      color: var(--ink);
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.2;
+    }
+
+    .blog-article a {
+      color: var(--brand);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .blog-article a:hover {
+      color: var(--brand-dark);
+    }
+
+    .blog-article .blog-chip:hover {
+      color: var(--white);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .blog-article-cover {
+      margin-bottom: 2rem;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .blog-article-cover img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      object-fit: cover;
+    }
+
+    .blog-intro-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--bg);
+    }
+
+    .blog-content-list {
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .blog-content-list li {
+      position: relative;
+      padding-left: 1.4rem;
+    }
+
+    .blog-content-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: .78rem;
+      width: .45rem;
+      height: .45rem;
+      border-radius: var(--radius-brand);
+      background: var(--brand);
+    }
+
+    .blog-callout {
+      margin: 2rem 0;
+      padding: 1.4rem;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--brand);
+      border-radius: var(--radius-brand);
+      background: var(--bg);
+    }
+
+    .blog-callout strong {
+      color: var(--ink);
+    }
+
+    .blog-table-wrap {
+      margin: 1.5rem 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .blog-table {
+      margin: 0;
+      --bs-table-bg: transparent;
+      --bs-table-striped-bg: transparent;
+      --bs-table-hover-bg: transparent;
+    }
+
+    .blog-table th {
+      padding: 1rem 1.15rem;
+      color: var(--white);
+      background: var(--ink);
+      font-weight: 800;
+      line-height: 1.25;
+      border-color: var(--white-soft-line);
+      vertical-align: top;
+    }
+
+    .blog-table td {
+      padding: 1rem 1.15rem;
+      color: var(--ink-soft);
+      border-color: var(--line);
+      vertical-align: top;
+    }
+
+    .blog-table tbody tr:nth-child(odd) td {
+      background: var(--white);
+    }
+
+    .blog-table tbody tr:nth-child(even) td {
+      background: var(--bg);
+    }
+
+    .blog-table tbody tr:hover td {
+      background: var(--brand-light-bg);
+    }
+
+    .blog-table tbody tr:last-child td {
+      border-bottom-width: 0;
+    }
+
+    .blog-table td:first-child {
+      color: var(--ink);
+      font-weight: 800;
+      width: 16%;
+    }
+
+    .blog-cta-inline {
+      margin: 2.5rem 0;
+      padding: 1.5rem;
+      border-radius: var(--radius-brand);
+      color: var(--white);
+      background: var(--brand);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .blog-cta-inline p {
+      color: var(--white-muted);
+    }
+
+    .blog-cta-inline .contact-card p,
+    .blog-cta-inline .contact-card .form-check-label {
+      color: var(--muted) !important;
+    }
+
+    .blog-cta-inline .contact-card a:not(.btn) {
+      color: var(--brand);
+    }
+
+    .blog-cta-inline .form-check-input:checked {
+      background-color: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .blog-cta-inline .btn {
+      color: var(--white);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .blog-cta-inline .btn:hover {
+      color: var(--ink) !important;
+      background: var(--white) !important;
+      border-color: var(--white) !important;
+    }
+
+    .blog-cta-inline .section-eyebrow {
+      color: var(--white-muted);
+    }
+
+    .blog-cta-inline .section-eyebrow::before {
+      background: var(--white);
+    }
+
+    .blog-cta-inline .contact-card .form-check-label {
+      color: var(--ink-soft) !important;
+      font-size: .95rem;
+      line-height: 1.45;
+    }
+
+    .blog-cta-inline .contact-card .form-check-label a {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .blog-cta-inline .form-check-input {
+      width: 1.15rem;
+      height: 1.15rem;
+      margin-top: .2rem;
+    }
+
+    .blog-cta-copy {
+      position: relative;
+      min-height: 31rem;
+      overflow: hidden;
+    }
+
+    .blog-cta-copy-content {
+      position: relative;
+      z-index: 2;
+      max-width: 33rem;
+    }
+
+    .blog-cta-person {
+      position: absolute;
+      right: 0;
+      bottom: -1.5rem;
+      width: min(21rem, 56%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .blog-cta-person img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 1.5rem 2.5rem rgba(11, 16, 32, .22));
+    }
+
+    @media (max-width: 991.98px) {
+      .blog-cta-copy {
+        min-height: auto;
+      }
+
+      .blog-cta-copy-content {
+        max-width: none;
+      }
+
+      .blog-cta-person {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: min(16rem, 72%);
+        margin: 1.5rem auto -1.5rem;
+      }
+    }
+
+    .blog-faq-item {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .blog-faq-item:last-child {
+      border-bottom: 0;
+    }
+
+    .blog-related-card {
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-brand);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+      text-decoration: none;
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .blog-related-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .blog-related-image {
+      aspect-ratio: 16 / 10;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-soft);
+      overflow: hidden;
+    }
+
+    .blog-related-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .blog-related-tag {
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .blog-related-card .btn {
+      align-self: flex-start;
+      margin-top: auto;
+      pointer-events: none;
+    }
+
+    @media (max-width: 991.98px) {
+      .blog-sidebar {
+        position: static;
+      }
+
+      .blog-hero-visual {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .blog-breadcrumbs {
+        margin-bottom: 1.6rem;
+        font-size: .88rem;
+      }
+
+      .blog-author-card {
+        width: 100%;
+      }
+
+      .blog-market-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .blog-visual-body {
+        padding: 1.25rem;
+      }
+
+      .blog-chart-row {
+        grid-template-columns: 1fr;
+        gap: .4rem;
+      }
+
+      .blog-article p,
+      .blog-article li {
+        font-size: 1rem;
+        line-height: 1.7;
+      }
+
+      .blog-chip {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .blog-fill-52 { width: 52%; }
+    .blog-fill-74 { width: 74%; }
+    .blog-fill-86 { width: 86%; }
+</style>
 </head>
 <body>
-  <!-- Section 1: Header -->
-  <section id="header" class="site-header">
-    <nav class="navbar navbar-expand navbar-wrap py-3">
-      <div class="container d-flex align-items-center justify-content-between gap-3">
-        <a class="brand-logo" href="#hero" aria-label="Ваш Финдир — на главный экран">
-          <span class="brand-mark">ВФ</span>
-          <span>Ваш Финдир</span>
-        </a>
-        <a href="#contact" class="btn btn-primary js-cta-click">Оставить заявку</a>
-      </div>
-    </nav>
-  </section>
+<section class="site-header" id="header">
+<nav class="navbar navbar-expand navbar-wrap py-3">
+<div class="container d-flex align-items-center justify-content-between gap-3">
+<a aria-label="Ваш Финдир — на главную страницу" class="brand-logo" href="/">
+<span class="brand-mark">ВФ</span>
+<span>Ваш Финдир</span>
+</a>
+<nav class="header-menu d-none d-lg-flex" aria-label="Основное меню">
+<a class="header-menu-link" href="/services">Услуги</a>
+<a class="header-menu-link" href="/cases">Кейсы</a>
+<a class="header-menu-link" href="/about">О компании</a>
+<a class="header-menu-link" href="/blog">Газета</a>
+<a class="header-menu-link" href="/partners">Партнерам</a>
+</nav>
+<a class="btn btn-primary js-cta-click d-none d-lg-inline-flex" href="#blog-contact">Записаться на встречу</a>
+<button aria-controls="mobileMenu" aria-label="Открыть меню" class="mobile-menu-toggle d-lg-none" data-bs-target="#mobileMenu" data-bs-toggle="offcanvas" type="button">
+<i class="bi bi-list"></i>
+<span>Меню</span>
+</button>
+</div>
+</nav>
+</section>
 
-  <!-- Section 2: Hero -->
-  <section id="hero" class="section hero-section py-5">
-    <div class="container">
-      <div class="row align-items-center g-5">
-        <div class="col-lg-7">
-          <div class="section-eyebrow">Финансовый директор + SaaS-платформа</div>
-          <h1 class="hero-title mb-4">Финансовый учёт для селлеров <em>маркетплейсов</em></h1>
-          <p class="lead hero-lead mb-4">ДДС, ОПиУ, Баланс, планирование и unit-экономика — управляйте бизнесом по цифрам, а не по ощущениям.</p>
-          <div class="hero-actions d-flex flex-column flex-md-row gap-2 gap-md-3">
-            <a href="#contact" class="btn btn-primary btn-lg js-cta-click">Получить консультацию</a>
-            <a href="https://t.me/your_channel" class="btn btn-outline-secondary btn-lg js-telegram-click" target="_blank" rel="noopener">Читать канал</a>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="hero-card">
-            <div class="hero-card-header d-flex align-items-center justify-content-between px-4 py-3">
-              <div class="d-flex align-items-center gap-2">
-                <span class="hero-dot"></span>
-                <span class="hero-dot"></span>
-                <span class="hero-dot"></span>
-              </div>
-              <span class="metric-label">Dashboard</span>
-            </div>
-            <div class="p-4 p-lg-5">
-              <div class="row g-3 mb-3">
-                <div class="col-6">
-                  <div class="metric-card p-3">
-                    <div class="metric-label mb-2">Выручка</div>
-                    <div class="metric-value">5,8 млн</div>
-                    <div class="text-muted-brand small">+18% MoM</div>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="metric-card p-3">
-                    <div class="metric-label mb-2">EBITDA</div>
-                    <div class="metric-value">14,2%</div>
-                    <div class="text-muted-brand small">после расходов</div>
-                  </div>
-                </div>
-              </div>
-              <div class="metric-card p-4 mb-3">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span class="metric-label">Unit-экономика</span>
-                  <span class="badge rounded-pill text-bg-light">WB / Ozon</span>
-                </div>
-                <div class="progress mb-3" role="progressbar" aria-label="Доля прибыльных SKU" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar" style="width: 72%; background: var(--ink);"></div>
-                </div>
-                <div class="d-flex justify-content-between small text-muted-brand">
-                  <span>72% SKU прибыльные</span>
-                  <span>18 SKU требуют решения</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-start gap-3">
-                <span class="icon-pill"><i class="bi bi-shield-check"></i></span>
-                <p class="mb-0 text-ink-soft">Единая система: интеграции, отчёты, контроль кассового разрыва и управленческие решения.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div aria-labelledby="mobileMenuLabel" class="offcanvas offcanvas-end vf-mobile-menu" id="mobileMenu" tabindex="-1">
+<div class="offcanvas-header vf-mobile-menu-header">
+<a aria-label="Ваш Финдир — на главную страницу" class="brand-logo" href="/">
+<span class="brand-mark">ВФ</span>
+<span id="mobileMenuLabel">Ваш Финдир</span>
+</a>
+<button aria-label="Закрыть меню" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
+</div>
+<div class="offcanvas-body vf-mobile-menu-body">
+<nav aria-label="Мобильное меню" class="vf-mobile-menu-nav">
+<a class="vf-mobile-menu-link" data-bs-dismiss="offcanvas" href="/services">Услуги</a>
+<a class="vf-mobile-menu-link" data-bs-dismiss="offcanvas" href="/cases">Кейсы</a>
+<a class="vf-mobile-menu-link" data-bs-dismiss="offcanvas" href="/about">О компании</a>
+<a class="vf-mobile-menu-link" data-bs-dismiss="offcanvas" href="/blog">Газета</a>
+<a class="vf-mobile-menu-link" data-bs-dismiss="offcanvas" href="/partners">Партнерам</a>
+</nav>
+<a class="btn btn-primary btn-lg w-100 mt-4 js-cta-click" data-bs-dismiss="offcanvas" href="#blog-contact">Записаться на встречу</a>
+</div>
+</div>
 
-  <!-- Section 3: Problems -->
-  <section id="problems" class="section py-5 bg-white">
-    <div class="container">
-      <div class="row justify-content-between align-items-end mb-4 mb-lg-5">
-        <div class="col-lg-7">
-          <div class="section-eyebrow">Боли собственника</div>
-          <h2 class="section-title display-5 mb-3">Знакомо?</h2>
-          <p class="section-subtitle mb-0">Когда цифры живут в разных таблицах, бизнес растёт вслепую: оборот есть, а управляемости нет.</p>
-        </div>
-      </div>
-      <div class="row g-3 g-lg-4">
-        <div class="col-md-6 col-lg-3">
-          <div class="card-ui p-4">
-            <span class="icon-pill mb-4"><i class="bi bi-question-circle"></i></span>
-            <p class="h5 mb-0">Не понимаю, зарабатываю я или нет</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="card-ui p-4">
-            <span class="icon-pill mb-4"><i class="bi bi-cash-stack"></i></span>
-            <p class="h5 mb-0">Выручка растёт, а денег нет</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="card-ui p-4">
-            <span class="icon-pill mb-4"><i class="bi bi-calculator"></i></span>
-            <p class="h5 mb-0">Unit-экономику считаю на глаз</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3">
-          <div class="card-ui p-4">
-            <span class="icon-pill mb-4"><i class="bi bi-compass"></i></span>
-            <p class="h5 mb-0">Решения принимаю по ощущениям, а не по цифрам</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<main>
+<section class="section blog-hero py-5" id="blog-hero">
+<div class="container">
+<nav aria-label="Хлебные крошки" class="breadcrumbs-wrap">
+<ol class="breadcrumb vf-breadcrumb">
+<li class="breadcrumb-item"><a href="/">Главная</a></li>
+<li class="breadcrumb-item"><a href="/blog">Блог</a></li>
+<li class="breadcrumb-item"><a href="/blog/money-profit">Деньги и прибыль</a></li>
+<li aria-current="page" class="breadcrumb-item active">Маркетплейс или интернет-магазин</li>
+</ol>
+</nav>
+<div class="row g-5 align-items-center">
+<div class="col-lg-7">
+<div class="blog-meta-row">
+<span class="blog-category-pill">Деньги и прибыль</span>
+<span class="blog-meta-item"><i class="bi bi-calendar3"></i> 27.05.2026</span>
+<span class="blog-meta-item"><i class="bi bi-eye"></i> 3 428</span>
+</div>
+<h1 class="blog-title">Маркетплейс или интернет-магазин: где больше <em>прибыли</em> и меньше рисков</h1>
+<p class="blog-lead mt-4">Разбираем два канала продаж через финансы: стартовые вложения, комиссии, рекламу, cash flow, контроль клиента и управленческие решения.</p>
+<div class="blog-author-row">
+<div class="blog-author-card">
+<span class="blog-author-avatar">АК</span>
+<div>
+<p class="blog-author-name">Александр Кумар</p>
+<p class="blog-author-role">Эксперт по маркетплейсам</p>
+</div>
+</div>
+<div class="blog-author-card">
+<span class="blog-author-avatar">ВФ</span>
+<div>
+<p class="blog-author-name">Редакция Ваш Финдир</p>
+<p class="blog-author-role">Финансовый учёт и аналитика</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-lg-5">
+<div class="blog-hero-visual" aria-label="Иллюстрация сравнения маркетплейса и интернет-магазина">
+<div class="blog-visual-topbar">
+<div class="blog-visual-dots"><span class="blog-visual-dot"></span><span class="blog-visual-dot"></span><span class="blog-visual-dot"></span></div>
+<div class="blog-visual-label">Channel dashboard</div>
+</div>
+<div class="blog-visual-body">
+<div class="blog-market-grid">
+<div class="blog-market-card">
+<h3>Маркетплейс</h3>
+<ul>
+<li>Быстрый старт</li>
+<li>Комиссии и логистика</li>
+<li>Зависимость от правил площадки</li>
+</ul>
+</div>
+<div class="blog-market-card">
+<h3>Интернет-магазин</h3>
+<ul>
+<li>Больше контроля</li>
+<li>Расходы на трафик</li>
+<li>Собственная клиентская база</li>
+</ul>
+</div>
+</div>
+<div class="blog-mini-chart">
+<div class="blog-chart-row"><span>Контроль</span><div class="blog-chart-track"><div class="blog-chart-fill blog-fill-52"></div></div><strong>MP</strong></div>
+<div class="blog-chart-row"><span>Маржа</span><div class="blog-chart-track"><div class="blog-chart-fill blog-chart-fill-accent blog-fill-74"></div></div><strong>Сайт</strong></div>
+<div class="blog-chart-row"><span>Скорость</span><div class="blog-chart-track"><div class="blog-chart-fill blog-fill-86"></div></div><strong>MP</strong></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row g-4 mt-4 align-items-stretch">
+<div class="col-lg-5">
+<div class="blog-share-card p-4 h-100">
+<div class="section-eyebrow mb-3">Поделиться</div>
+<div class="blog-chip-row">
+<a class="blog-chip js-telegram-click" href="https://t.me/share/url?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener"><i class="bi bi-telegram"></i> Telegram</a>
+<a class="blog-chip" href="https://vk.com/share.php?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener"><i class="bi bi-vk"></i> VK</a>
+</div>
+</div>
+</div>
+<div class="col-lg-7">
+<div class="blog-ai-card p-4 h-100">
+<div class="section-eyebrow mb-3">Пересказ статьи в ИИ</div>
+<div class="blog-chip-row">
+<a class="blog-chip" href="https://chat.openai.com/" target="_blank" rel="noopener"><i class="bi bi-stars"></i> ChatGPT</a>
+<a class="blog-chip" href="https://perplexity.ai/" target="_blank" rel="noopener"><i class="bi bi-search"></i> Perplexity</a>
+<a class="blog-chip" href="https://claude.ai/" target="_blank" rel="noopener"><i class="bi bi-braces"></i> Claude</a>
+<a class="blog-chip" href="https://yandex.ru/" target="_blank" rel="noopener"><i class="bi bi-circle-fill"></i> Yandex</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 
-  <!-- Section 4: Services -->
-  <section id="services" class="section py-5" style="background: var(--bg);">
-    <div class="container">
-      <div class="text-center mx-auto mb-4 mb-lg-5" style="max-width: 760px;">
-        <div class="section-eyebrow">Система управления финансами</div>
-        <h2 class="section-title display-5 mb-3">Что вы получите</h2>
-        <p class="section-subtitle mx-auto mb-0">Не набор отчётов ради отчётов, а рабочую систему, которая помогает видеть прибыль, деньги, риски и решения.</p>
-      </div>
-      <div class="row g-3 g-lg-4">
-        <div class="col-md-6 col-lg-4">
-          <div class="card-ui service-card-main p-4 p-lg-5">
-            <span class="icon-pill mb-4"><i class="bi bi-wallet2"></i></span>
-            <h5 class="mb-3">ДДС</h5>
-            <p class="mb-0">Движение денежных средств: видно, куда уходят деньги и где возникает кассовый разрыв.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card-ui p-4 p-lg-5">
-            <span class="icon-pill mb-4"><i class="bi bi-graph-up-arrow"></i></span>
-            <h5 class="mb-3">ОПиУ</h5>
-            <p class="mb-0 text-muted-brand">Отчёт о прибылях и убытках: реальная прибыль, а не оборот в личном кабинете маркетплейса.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card-ui p-4 p-lg-5">
-            <span class="icon-pill mb-4"><i class="bi bi-columns-gap"></i></span>
-            <h5 class="mb-3">Баланс</h5>
-            <p class="mb-0 text-muted-brand">Полная картина активов, обязательств, запасов, денег и капитала собственника.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card-ui p-4 p-lg-5">
-            <span class="icon-pill mb-4"><i class="bi bi-calendar3"></i></span>
-            <h5 class="mb-3">Планирование</h5>
-            <p class="mb-0 text-muted-brand">Финансовые планы, бюджеты, платежный календарь и прогноз денег на ближайшие периоды.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card-ui service-card-accent p-4 p-lg-5">
-            <span class="icon-pill mb-4"><i class="bi bi-box-seam"></i></span>
-            <h5 class="mb-3">Unit-экономика</h5>
-            <p class="mb-0">Прибыльность каждого товара, направления и канала с учётом комиссий, логистики и себестоимости.</p>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card-ui p-4 p-lg-5">
-            <span class="icon-pill mb-4"><i class="bi bi-plug"></i></span>
-            <h5 class="mb-3">Интеграция с маркетплейсами</h5>
-            <p class="mb-0 text-muted-brand">Автоматический сбор данных с Wildberries и Ozon, меньше ручного труда и ошибок в таблицах.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<section class="section blog-layout py-5" id="article">
+<div class="container">
+<div class="row g-5 align-items-start">
+<div class="col-lg-3 order-2 order-lg-1">
+<aside class="blog-sidebar">
+<div class="blog-toc-card p-4 mb-4">
+<h2 class="blog-toc-title">Содержание</h2>
+<ul class="blog-toc-list">
+<li><a href="#intro">Коротко: что выбрать</a></li>
+<li><a href="#costs">Сравнение затрат</a></li>
+<li><a href="#unit">Unit-экономика</a></li>
+<li><a href="#cashflow">Деньги и кассовый разрыв</a></li>
+<li><a href="#when">Когда выбирать канал</a></li>
+<li><a href="#strategy">Мультиканальность</a></li>
+<li><a href="#faq">Частые вопросы</a></li>
+</ul>
+</div>
+<div class="blog-side-cta p-4 mb-4">
+<div class="blog-side-cta-content">
+<div class="section-eyebrow mb-3">Финансовая диагностика</div>
+<h3 class="h5 fw-bold mb-3">Покажем, где канал продаж съедает прибыль</h3>
+<p class="mb-4">Разберём ДДС, ОПиУ, юнит-экономику и точки роста по WB, Ozon и сайту.</p>
+<div class="blog-side-cta-figure" aria-hidden="true">
+<img src="vf-diagnostic-person.png" alt="">
+</div>
+<a class="btn btn-lg w-100 js-cta-click" href="#blog-contact">Записаться</a>
+</div>
+</div>
+<div class="blog-side-note p-4">
+<div class="section-eyebrow mb-3">Важно</div>
+<p class="text-ink-soft mb-0">Не выбирайте канал только по обороту. Сравнивайте чистую прибыль, скорость возврата денег и управляемость расходов.</p>
+</div>
+</aside>
+</div>
+<div class="col-lg-9 order-1 order-lg-2">
+<article class="blog-article">
+<figure class="blog-article-cover">
+<img alt="Финансовый учёт для выбора канала продаж" loading="eager" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&amp;fit=crop&amp;w=1600&amp;q=80">
+</figure>
+<div class="blog-intro-card p-4" id="intro">
+<p class="mb-0"><strong>Короткий вывод:</strong> маркетплейс часто быстрее запускается и даёт поток заказов, но забирает контроль через комиссии, логистику, штрафы и правила площадки. Интернет-магазин требует больше системной работы на старте, зато даёт больше контроля над клиентом, ценой, повторными продажами и маржинальностью.</p>
+</div>
 
-  <!-- Section 5: How it works -->
-  <section id="how-it-works" class="section dark-section py-5">
-    <div class="container">
-      <div class="text-center mx-auto mb-4 mb-lg-5" style="max-width: 720px;">
-        <div class="section-eyebrow">Процесс</div>
-        <h2 class="section-title display-5 mb-3">Как это работает</h2>
-        <p class="mb-0" style="color: var(--white-muted);">Внедряем финансовую систему без лишней бюрократии: подключаем данные, строим отчёты, превращаем цифры в управленческие решения.</p>
-      </div>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="step-card p-4 p-lg-5">
-            <div class="step-number mb-4">1</div>
-            <h5 class="mb-3">Подключаемся</h5>
-            <p class="mb-0" style="color: var(--white-muted);">Настраиваем интеграцию с вашим маркетплейсом и банком, собираем исходные данные.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="step-card p-4 p-lg-5">
-            <div class="step-number mb-4">2</div>
-            <h5 class="mb-3">Строим учёт</h5>
-            <p class="mb-0" style="color: var(--white-muted);">Формируем ДДС, ОПиУ, Баланс, настраиваем аналитику и правила распределения.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="step-card p-4 p-lg-5">
-            <div class="step-number mb-4">3</div>
-            <h5 class="mb-3">Вы управляете</h5>
-            <p class="mb-0" style="color: var(--white-muted);">Принимаете решения на основе цифр, моделируете последствия и контролируете прибыль.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<p class="mt-4">Маркетплейсы кажутся простым решением: загрузили карточки, запустили рекламу, получили первые продажи. Но за удобством скрывается финансовая механика, которую собственник часто видит слишком поздно: комиссии, логистика, хранение, возвраты, штрафы, продвижение и зависимость от алгоритмов.</p>
+<p>Собственный интернет-магазин работает иначе. Здесь больше ответственности за трафик, сайт, аналитику и клиентский сервис. Но вместе с этим появляется больше управляемости: вы видите клиента, можете работать с повторными продажами, контролировать витрину и постепенно снижать стоимость привлечения.</p>
 
-  <!-- Section 6: Case -->
-  <section id="case" class="section case-section py-5">
-    <div class="container">
-      <div class="row align-items-center g-4 g-lg-5">
-        <div class="col-lg-5">
-          <div class="section-eyebrow">Кейс</div>
-          <h2 class="section-title display-5 mb-3">Результат клиента</h2>
-          <p class="section-subtitle mb-0">Пример, как финансовая система превращает разрозненные цифры маркетплейса в понятную картину бизнеса.</p>
-        </div>
-        <div class="col-lg-7">
-          <div class="case-card p-4 p-lg-5">
-            <h3 class="h4 mb-4">Селлер на Wildberries, оборот 5 млн/мес</h3>
-            <div class="row g-4 mb-4">
-              <div class="col-md-4">
-                <div class="case-label mb-2">Проблема</div>
-                <p class="mb-0 text-ink-soft">Оборот рос, но собственник не видел реальную прибыль, кассовые разрывы и товары с отрицательной маржинальностью.</p>
-              </div>
-              <div class="col-md-4">
-                <div class="case-label mb-2">Что сделали</div>
-                <p class="mb-0 text-ink-soft">Собрали ДДС, ОПиУ, баланс, unit-экономику SKU и правила контроля платежей.</p>
-              </div>
-              <div class="col-md-4">
-                <div class="case-label mb-2">Результат</div>
-                <p class="mb-0 text-ink-soft">Нашли слабые SKU, пересобрали закупки и сделали прогноз денег на 30 дней.</p>
-              </div>
-            </div>
-            <div class="row g-3 align-items-stretch mb-4">
-              <div class="col-sm-4">
-                <div class="metric-card p-3">
-                  <div class="result-number">30</div>
-                  <div class="text-muted-brand small">дней прогноза денег</div>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="metric-card p-3">
-                  <div class="result-number">18</div>
-                  <div class="text-muted-brand small">SKU на пересмотр</div>
-                </div>
-              </div>
-              <div class="col-sm-4">
-                <div class="metric-card p-3">
-                  <div class="result-number">1</div>
-                  <div class="text-muted-brand small">единый источник правды</div>
-                </div>
-              </div>
-            </div>
-            <blockquote class="quote-card p-4 mb-0">
-              <p class="mb-2">«Стало понятно, какие решения дают деньги, а какие просто увеличивают оборот».</p>
-              <footer class="text-muted-brand small">Собственник e-commerce бизнеса</footer>
-            </blockquote>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="blog-callout">
+<strong>Главный вопрос не “где больше оборот”, а “где бизнес оставляет больше денег после всех расходов”.</strong>
+<p class="mb-0 mt-2">Для ответа нужно сравнивать каналы через ДДС, ОПиУ, Баланс и unit-экономику, а не только через выручку.</p>
+</div>
 
-  <!-- Section 7: Telegram -->
-  <section id="telegram" class="section py-5 bg-white">
-    <div class="container">
-      <div class="telegram-card p-4 p-lg-5">
-        <div class="row align-items-center g-4">
-          <div class="col-lg-8">
-            <div class="section-eyebrow">Telegram-канал</div>
-            <h2 class="section-title display-6 mb-3">Разбираю реальные кейсы финучёта</h2>
-            <p class="section-subtitle mb-0">Показываю, как читать ДДС, ОПиУ, Баланс и unit-экономику без сложной теории. Практические разборы для собственников маркетплейс-бизнеса.</p>
-          </div>
-          <div class="col-lg-4 text-lg-end">
-            <a href="https://t.me/your_channel" class="btn btn-primary btn-lg w-100 w-lg-auto js-telegram-click" target="_blank" rel="noopener">
-              <i class="bi bi-telegram me-2"></i>Подписаться на канал
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<h2 id="costs">Сравнение затрат: маркетплейс против интернет-магазина</h2>
+<p>У маркетплейса ниже входной порог: не нужно проектировать сайт, подключать корзину, платежи и личный кабинет. Но переменные расходы возникают почти сразу и растут вместе с продажами.</p>
+<p>У интернет-магазина наоборот: больше расходов на запуск и трафик, зато часть затрат можно оптимизировать и превращать в актив — например, клиентскую базу, контент, SEO, CRM и аналитику.</p>
 
-  <!-- Section 8: Contact -->
-  <section id="contact" class="section contact-section py-5">
-    <div class="container">
-      <div class="text-center mx-auto mb-4 mb-lg-5" style="max-width: 720px;">
-        <div class="section-eyebrow">Заявка</div>
-        <h2 class="section-title display-5 mb-3">Получить консультацию</h2>
-        <p class="section-subtitle mx-auto mb-0">Обсудим, как навести порядок в финансах вашего бизнеса и какие отчёты нужны в первую очередь.</p>
-      </div>
-      <div class="row">
-        <div class="col-md-8 col-lg-6 mx-auto">
-          <div class="contact-card p-4 p-lg-5">
-            <form id="leadForm" action="/landing/contact" method="post" novalidate>
-              <div class="mb-3">
-                <label for="leadName" class="form-label">Имя</label>
-                <input type="text" class="form-control" id="leadName" name="name" placeholder="Как к вам обращаться" required>
-              </div>
-              <div class="mb-4">
-                <label for="leadContact" class="form-label">Telegram или телефон</label>
-                <input type="text" class="form-control" id="leadContact" name="contact" placeholder="@username или номер телефона" required>
-              </div>
-              <button type="submit" class="btn btn-light-ink btn-lg w-100">Отправить</button>
-              <div id="leadSuccess" class="success-message mt-4 p-3" role="status" aria-live="polite">
-                Спасибо! Свяжусь с вами в ближайшее время.
-              </div>
-              <p class="small text-muted-brand mt-3 mb-0">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных.</p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="blog-table-wrap">
+<table class="table blog-table align-middle">
+<thead><tr><th>Критерий</th><th>Маркетплейс</th><th>Интернет-магазин</th></tr></thead>
+<tbody>
+<tr><td>Старт</td><td>Быстрее: регистрация, карточки, остатки, реклама внутри площадки.</td><td>Дольше: сайт, каталог, платежи, доставка, аналитика, трафик.</td></tr>
+<tr><td>Расходы</td><td>Комиссии, логистика, хранение, возвраты, штрафы, реклама.</td><td>Разработка, поддержка, реклама, CRM, контент, сервис.</td></tr>
+<tr><td>Контроль цены</td><td>Ограничен конкуренцией, акциями и правилами площадки.</td><td>Выше: можно управлять ценой, пакетами, допродажами.</td></tr>
+<tr><td>Клиентская база</td><td>Обычно остаётся у площадки.</td><td>Остаётся у бизнеса и может работать на повторные продажи.</td></tr>
+</tbody>
+</table>
+</div>
 
-  <!-- Section 9: Footer -->
-  <footer id="footer" class="section footer-section pt-5 pb-4">
-    <div class="container">
-      <div class="row g-5 align-items-start">
-        <div class="col-lg-4 text-center text-md-start">
-          <a class="footer-brand" href="#hero" aria-label="Ваш Финдир — на главный экран">
-            <span class="brand-mark">ВФ</span>
-            <span class="footer-brand-text">Ваш Финдир</span>
-          </a>
-          <p class="footer-description mb-0 mx-auto mx-md-0">Финансовый навигатор для e-commerce бизнеса. Строим системы учёта, которые помогают принимать прибыльные решения на маркетплейсах.</p>
-          <div class="footer-socials justify-content-center justify-content-md-start">
-            <a class="footer-social-link js-telegram-click" href="https://t.me/vashfindir" target="_blank" rel="noopener" aria-label="Telegram">
-              <i class="bi bi-telegram"></i>
-            </a>
-            <a class="footer-social-link" href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
-              <i class="bi bi-youtube"></i>
-            </a>
-            <a class="footer-social-link" href="https://vk.com/" target="_blank" rel="noopener" aria-label="VK">
-              <i class="bi bi-vk"></i>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4 text-center text-md-start">
-          <div class="footer-title">Контакты</div>
-          <div class="footer-contact-list">
-            <div class="footer-contact-item justify-content-center justify-content-md-start">
-              <span class="footer-contact-icon"><i class="bi bi-telephone"></i></span>
-              <div>
-                <div class="footer-kicker">Телефон</div>
-                <a class="footer-contact-link" href="tel:+78005551234">+7 (800) 555-12-34</a>
-              </div>
-            </div>
-            <div class="footer-contact-item justify-content-center justify-content-md-start">
-              <span class="footer-contact-icon"><i class="bi bi-envelope"></i></span>
-              <div>
-                <div class="footer-kicker">Email</div>
-                <a class="footer-contact-link" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>
-              </div>
-            </div>
-            <div class="footer-contact-item justify-content-center justify-content-md-start">
-              <span class="footer-contact-icon"><i class="bi bi-telegram"></i></span>
-              <div>
-                <div class="footer-kicker">Telegram</div>
-                <a class="footer-contact-link js-telegram-click" href="https://t.me/vashfindir" target="_blank" rel="noopener">@vashfindir</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-3 offset-lg-1 text-center text-md-start">
-          <div class="footer-title">Документы</div>
-          <div class="footer-docs-list">
-            <a href="/privacy">Политика конфиденциальности</a>
-            <a href="/offer">Договор оферты</a>
-            <a href="/consent">Согласие на обработку данных</a>
-          </div>
-        </div>
-      </div>
+<h2 id="unit">Unit-экономика: где товар реально прибыльный</h2>
+<p>Один и тот же товар может быть прибыльным на сайте и убыточным на маркетплейсе. Причина — разные правила расчёта: комиссия, логистика, скидки, реклама, возвраты и операционные расходы.</p>
+<p>Для сравнения каналов нужно считать не “продали на 1 млн”, а маржу после всех прямых расходов. Минимальная формула для SKU:</p>
+<ul class="blog-content-list">
+<li>выручка по товару;</li>
+<li>минус себестоимость;</li>
+<li>минус комиссия площадки или платёжные расходы;</li>
+<li>минус логистика, хранение, эквайринг, возвраты;</li>
+<li>минус реклама и скидки;</li>
+<li>итог — вклад товара в прибыль.</li>
+</ul>
 
-      <div class="footer-divider"></div>
+<div class="blog-callout">
+<strong>Best practice:</strong> сравнивать каналы по CM1/CM2/CM3 и смотреть прибыльность в разрезе SKU, категории и рекламной кампании. Иначе прибыльные товары будут смешиваться с убыточными.
+</div>
 
-      <div class="row g-3 align-items-center footer-bottom text-center text-md-start">
-        <div class="col-md-7">
+<h2 id="cashflow">Деньги и кассовый разрыв</h2>
+<p>Прибыль на бумаге не означает, что деньги есть на счёте. На маркетплейсах деньги могут приходить с задержкой, часть средств удерживается, возвраты и штрафы появляются позже, а поставщику платить нужно раньше.</p>
+<p>У интернет-магазина cash flow тоже требует контроля: реклама оплачивается заранее, товар закупается до продажи, доставка и сервис создают кассовую нагрузку. Поэтому оба канала нужно планировать через платёжный календарь.</p>
+
+<h3>Что отслеживать еженедельно</h3>
+<ul class="blog-content-list">
+<li>остаток денег сейчас и прогноз на 30 дней;</li>
+<li>обязательства перед поставщиками, подрядчиками и налогами;</li>
+<li>ожидаемые выплаты от маркетплейсов;</li>
+<li>план закупок и рекламный бюджет;</li>
+<li>товары, которые замораживают деньги в остатках.</li>
+</ul>
+
+<section class="blog-cta-inline" id="blog-contact">
+<div class="row g-4 align-items-center">
+<div class="col-lg-6 blog-cta-copy">
+<div class="blog-cta-copy-content">
+<div class="section-eyebrow mb-3">Финансовая диагностика</div>
+<h2 class="h3 fw-bold mb-3 text-white">Хотите понять, какой канал продаж выгоднее именно вам?</h2>
+<p class="mb-0">Оставьте контакты — разберём ДДС, ОПиУ, Баланс, unit-экономику и покажем, где бизнес теряет прибыль.</p>
+</div>
+<div class="blog-cta-person" aria-hidden="true">
+<img src="vf-diagnostic-person.png" alt="">
+</div>
+</div>
+<div class="col-lg-6">
+<div class="contact-card p-4 p-md-5">
+<form action="/landing/contact" class="needs-validation js-lead-form" id="blogLeadForm" method="post" novalidate>
+<input name="source" type="hidden" value="blog_article">
+<div class="mb-3">
+<label class="form-label" for="blogLeadName">Ваше имя</label>
+<input class="form-control" id="blogLeadName" name="name" placeholder="Александр" required type="text">
+<div class="invalid-feedback">Укажите имя.</div>
+</div>
+<div class="mb-3">
+<label class="form-label" for="blogLeadContact">Telegram или телефон</label>
+<input class="form-control" id="blogLeadContact" name="contact" placeholder="@username или +7 999 000-00-00" required type="text">
+<div class="invalid-feedback">Укажите Telegram или телефон.</div>
+</div>
+<div class="mb-3">
+<label class="form-label" for="blogLeadEmail">Email</label>
+<input class="form-control" id="blogLeadEmail" name="email" placeholder="hello@example.ru" type="email">
+</div>
+<div class="form-check mb-4">
+<input class="form-check-input" id="blogLeadConsent" required type="checkbox">
+<label class="form-check-label small text-muted-brand" for="blogLeadConsent">Даю согласие на обработку персональных данных и принимаю <a href="/privacy">политику конфиденциальности</a>.</label>
+<div class="invalid-feedback">Необходимо согласие на обработку данных.</div>
+</div>
+<button class="btn btn-lg w-100 js-cta-click" type="submit">Получить консультацию</button>
+<div class="success-message mt-3 p-3" id="blogLeadSuccess">Спасибо! Свяжусь с вами в ближайшее время.</div>
+</form>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-label="Рубрики блога" class="py-4" id="blog-rubrics">
+<div class="blog-chip-row">
+<a class="blog-chip" href="/blog/top">Топовый топ!</a>
+<a class="blog-chip" href="/blog/business-processes">Бизнес-процессы</a>
+<a class="blog-chip" href="/blog/qa">Вопрос-ответ</a>
+<a class="blog-chip" href="/blog/glossary">Глоссарий</a>
+<a class="blog-chip" href="/blog/money-profit">Деньги и прибыль</a>
+<a class="blog-chip" href="/blog/law-tax">Законы и налоги</a>
+<a class="blog-chip" href="/blog/career">Карьера в НФ</a>
+<a class="blog-chip" href="/blog/team">Команда</a>
+<a class="blog-chip" href="/blog/training">Обучалка</a>
+<a class="blog-chip" href="/blog/metrics">Показатели</a>
+<a class="blog-chip" href="/blog/consulting">Практика консалтинга</a>
+<a class="blog-chip" href="/blog/development">Развитие бизнеса</a>
+<a class="blog-chip" href="/blog/strategy">Стратегия</a>
+<a class="blog-chip" href="/blog/reports">Финансовые отчеты</a>
+</div>
+</section>
+
+<h2 id="when">Когда выгоднее маркетплейс, а когда сайт</h2>
+<p>Маркетплейс подходит, если нужно быстро проверить спрос, выйти на широкую аудиторию и протестировать ассортимент. Но он требует дисциплины в учёте, потому что мелкие удержания и комиссии быстро съедают маржу.</p>
+<p>Интернет-магазин выгоднее, когда у бизнеса есть повторные продажи, бренд, контент, сильная ниша или возможность строить долгосрочные отношения с клиентом. Но без системы трафика и аналитики он может стать дорогим экспериментом.</p>
+
+<h3>Маркетплейс чаще выбирают, когда:</h3>
+<ul class="blog-content-list">
+<li>нужно быстро получить первые продажи;</li>
+<li>товар уже понятен рынку;</li>
+<li>есть готовность играть по правилам площадки;</li>
+<li>важна скорость запуска, а не полный контроль.</li>
+</ul>
+
+<h3>Интернет-магазин чаще выбирают, когда:</h3>
+<ul class="blog-content-list">
+<li>есть бренд и понятная аудитория;</li>
+<li>важны повторные продажи и клиентская база;</li>
+<li>можно управлять трафиком и CRM;</li>
+<li>нужен контроль над ценой, ассортиментом и коммуникацией.</li>
+</ul>
+
+<h2 id="strategy">Мультиканальность как рабочая стратегия</h2>
+<p>На практике сильное решение — не выбирать один канал навсегда, а выстроить управляемую систему продаж. Маркетплейсы могут давать быстрый спрос и тест гипотез, а сайт — повторные продажи, бренд и базу клиентов.</p>
+<p>Но мультиканальность работает только при нормальном учёте. Без единой системы собственник видит много отчётов, но не понимает, какой канал действительно приносит прибыль.</p>
+
+<div class="blog-callout">
+<strong>Финансовая система должна отвечать на три вопроса:</strong>
+<ul class="blog-content-list mt-3">
+<li>какой канал приносит прибыль, а какой только оборот;</li>
+<li>какие SKU нужно масштабировать, а какие замораживают деньги;</li>
+<li>сколько денег понадобится на закупки, рекламу и рост.</li>
+</ul>
+</div>
+
+<h2 id="faq">Интернет-магазин или маркетплейс: частые вопросы</h2>
+<div class="blog-faq-item">
+<h3>Какой канал выгоднее для старта?</h3>
+<p>Для быстрого теста спроса чаще проще маркетплейс. Но решение зависит от категории, маржи, конкуренции, логистики и рекламных расходов.</p>
+</div>
+<div class="blog-faq-item">
+<h3>Почему при росте выручки может не быть денег?</h3>
+<p>Потому что деньги могут быть в остатках, дебиторке, рекламе, задержках выплат, возвратах и обязательствах перед поставщиками. Поэтому нужен ДДС и платёжный календарь.</p>
+</div>
+<div class="blog-faq-item">
+<h3>Что считать главным показателем?</h3>
+<p>Не один показатель, а связку: валовая прибыль, вклад SKU в маржу, рекламная эффективность, остатки, cash flow и EBITDA.</p>
+</div>
+<div class="blog-faq-item">
+<h3>Можно ли совмещать маркетплейс и интернет-магазин?</h3>
+<p>Да, но важно разделять экономику каналов и не смешивать расходы. Иначе невозможно понять, где бизнес зарабатывает, а где теряет.</p>
+</div>
+</article>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section py-5 case-section" id="related">
+<div class="container">
+<div class="row mb-4 align-items-end">
+<div class="col-lg-7">
+<div class="section-eyebrow">Читайте также</div>
+<h2 class="section-title h1 mb-0">Ещё статьи по финансовому учёту</h2>
+</div>
+</div>
+<div class="row g-4">
+<div class="col-md-4">
+<a class="blog-related-card d-flex flex-column" href="#">
+<div class="blog-related-image">
+<img alt="Финансовая аналитика SKU" loading="lazy" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
+</div>
+<div class="p-4 d-flex flex-column flex-grow-1">
+<div class="blog-related-tag mb-3">Unit-экономика</div>
+<h3 class="h5 fw-bold mb-3">Как понять прибыльность SKU на маркетплейсе</h3>
+<p class="text-muted-brand mb-4">Формула, частые ошибки и управленческий отчёт для собственника.</p>
+<span class="btn btn-primary">Читать</span>
+</div>
+</a>
+</div>
+<div class="col-md-4">
+<a class="blog-related-card d-flex flex-column" href="#">
+<div class="blog-related-image">
+<img alt="Планирование денежных потоков" loading="lazy" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
+</div>
+<div class="p-4 d-flex flex-column flex-grow-1">
+<div class="blog-related-tag mb-3">ДДС</div>
+<h3 class="h5 fw-bold mb-3">Почему прибыльный бизнес попадает в кассовый разрыв</h3>
+<p class="text-muted-brand mb-4">Как прогнозировать деньги на 30 дней и не сорвать закупки.</p>
+<span class="btn btn-primary">Читать</span>
+</div>
+</a>
+</div>
+<div class="col-md-4">
+<a class="blog-related-card d-flex flex-column" href="#">
+<div class="blog-related-image">
+<img alt="Отчёт о прибылях и убытках" loading="lazy" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
+</div>
+<div class="p-4 d-flex flex-column flex-grow-1">
+<div class="blog-related-tag mb-3">ОПиУ</div>
+<h3 class="h5 fw-bold mb-3">Оборот растёт, а прибыль нет: где искать причину</h3>
+<p class="text-muted-brand mb-4">Разбираем комиссии, рекламу, себестоимость и постоянные расходы.</p>
+<span class="btn btn-primary">Читать</span>
+</div>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="section footer-section pt-5 pb-4" id="footer">
+<div class="container">
+<div class="row g-5 align-items-start">
+<div class="col-lg-4 text-center text-md-start">
+<a aria-label="Ваш Финдир — на главную страницу" class="footer-brand" href="/">
+<span class="brand-mark">ВФ</span>
+<span class="footer-brand-text">Ваш Финдир</span>
+</a>
+<p class="footer-description mb-0 mx-auto mx-md-0">Финансовый навигатор для e-commerce бизнеса. Строим системы учёта, которые помогают принимать прибыльные решения на маркетплейсах.</p>
+<div class="footer-socials justify-content-center justify-content-md-start">
+<a aria-label="Telegram" class="footer-social-link js-telegram-click" href="https://t.me/vashfindir" rel="noopener" target="_blank">
+<i class="bi bi-telegram"></i>
+</a>
+<a aria-label="YouTube" class="footer-social-link" href="https://www.youtube.com/" rel="noopener" target="_blank">
+<i class="bi bi-youtube"></i>
+</a>
+<a aria-label="VK" class="footer-social-link" href="https://vk.com/" rel="noopener" target="_blank">
+<i class="bi bi-vk"></i>
+</a>
+</div>
+</div>
+<div class="col-md-6 col-lg-4 text-center text-md-start">
+<div class="footer-title">Контакты</div>
+<div class="footer-contact-list">
+<div class="footer-contact-item justify-content-center justify-content-md-start">
+<span class="footer-contact-icon"><i class="bi bi-telephone"></i></span>
+<div>
+<div class="footer-kicker">Телефон</div>
+<a class="footer-contact-link" href="tel:+78005551234">+7 (800) 555-12-34</a>
+</div>
+</div>
+<div class="footer-contact-item justify-content-center justify-content-md-start">
+<span class="footer-contact-icon"><i class="bi bi-envelope"></i></span>
+<div>
+<div class="footer-kicker">Email</div>
+<a class="footer-contact-link" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>
+</div>
+</div>
+<div class="footer-contact-item justify-content-center justify-content-md-start">
+<span class="footer-contact-icon"><i class="bi bi-telegram"></i></span>
+<div>
+<div class="footer-kicker">Telegram</div>
+<a class="footer-contact-link js-telegram-click" href="https://t.me/vashfindir" rel="noopener" target="_blank">@vashfindir</a>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-6 col-lg-3 offset-lg-1 text-center text-md-start">
+<div class="footer-title">Документы</div>
+<div class="footer-docs-list">
+<a href="/privacy">Политика конфиденциальности</a>
+<a href="/offer">Договор оферты</a>
+<a href="/consent">Согласие на обработку данных</a>
+</div>
+</div>
+</div>
+<div class="footer-divider"></div>
+<div class="row g-3 align-items-center footer-bottom text-center text-md-start">
+<div class="col-md-7">
           © 2026 Общество с ограниченной ответственностью «Ваш Финдир»
         </div>
-        <div class="col-md-5 text-center text-md-end">
-          <span class="footer-legal">ИНН: 6140000234&nbsp;&nbsp;&nbsp;&nbsp;ОГРН: 1156188000176</span>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-
-  <div id="cookieNotice" class="cookie-notice" role="dialog" aria-live="polite" aria-labelledby="cookieTitle" aria-describedby="cookieText" hidden>
-    <div class="cookie-card">
-      <button class="cookie-close" type="button" id="cookieClose" aria-label="Закрыть уведомление о cookie">
-        <i class="bi bi-x-lg"></i>
-      </button>
-      <div class="row g-4 align-items-center">
-        <div class="col-lg-8">
-          <h2 id="cookieTitle" class="cookie-title">На сайте используются файлы cookie</h2>
-          <p id="cookieText" class="cookie-text">Мы используем cookie, чтобы сайт работал корректно, а также для аналитики и улучшения сервиса. Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/privacy">политикой конфиденциальности</a> и <a href="/consent">согласием на обработку данных</a>.</p>
-        </div>
-        <div class="col-lg-4">
-          <div class="cookie-actions">
-            <button class="btn btn-primary btn-lg" type="button" id="cookieAccept">Принять</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
+<div class="col-md-5 text-center text-md-end">
+<span class="footer-legal">ИНН: 6140000234    ОГРН: 1156188000176</span>
+</div>
+</div>
+</div>
+</footer>
+<div aria-describedby="cookieText" aria-labelledby="cookieTitle" aria-live="polite" class="cookie-notice" hidden="" id="cookieNotice" role="dialog">
+<div class="cookie-card">
+<button aria-label="Закрыть уведомление о cookie" class="cookie-close" id="cookieNoticeClose" type="button">
+<i class="bi bi-x-lg"></i>
+</button>
+<div class="row g-4 align-items-center">
+<div class="col-lg">
+<div class="section-eyebrow mb-3">Cookie</div>
+<h2 class="cookie-title" id="cookieTitle">На сайте используются cookie-файлы</h2>
+<p class="cookie-text" id="cookieText">Мы используем cookie для корректной работы сайта, аналитики посещений и улучшения сервиса. Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/privacy">политикой конфиденциальности</a>.</p>
+</div>
+<div class="col-lg-auto">
+<div class="cookie-actions">
+<button class="btn btn-primary btn-lg" id="cookieNoticeAccept" type="button">Принять</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
     function trackGoal(goalName) {
       const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
 
@@ -1295,44 +2558,44 @@
       });
     });
 
-    const leadForm = document.getElementById('leadForm');
-    const successMessage = document.getElementById('leadSuccess');
+    document.querySelectorAll('.js-lead-form').forEach(function (form) {
+      const successMessage = form.querySelector('.success-message');
 
-    leadForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
 
-      const name = leadForm.elements.name.value.trim();
-      const contact = leadForm.elements.contact.value.trim();
-
-      if (!name || !contact) {
-        leadForm.classList.add('was-validated');
-        return;
-      }
-
-      trackGoal('lead_form_submit');
-
-      try {
-        const response = await fetch(leadForm.action, {
-          method: 'POST',
-          body: new FormData(leadForm),
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        });
-
-        if (!response.ok) {
-          throw new Error('Form submit failed');
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated');
+          return;
         }
-      } catch (error) {
-        console.warn('Форма не отправлена на сервер. Подключите Symfony-контроллер /landing/contact.', error);
-      } finally {
-        successMessage.classList.add('is-visible');
-        leadForm.reset();
-        leadForm.classList.remove('was-validated');
-      }
+
+        trackGoal('lead_form_submit');
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+
+          if (!response.ok) {
+            throw new Error('Form submit failed');
+          }
+        } catch (error) {
+          console.warn('Форма не отправлена на сервер. Подключите Symfony-контроллер /landing/contact.', error);
+        } finally {
+          if (successMessage) {
+            successMessage.classList.add('is-visible');
+          }
+          form.reset();
+          form.classList.remove('was-validated');
+        }
+      });
     });
 
     const cookieNotice = document.getElementById('cookieNotice');
-    const cookieAccept = document.getElementById('cookieAccept');
-    const cookieClose = document.getElementById('cookieClose');
+    const cookieNoticeAccept = document.getElementById('cookieNoticeAccept');
+    const cookieNoticeClose = document.getElementById('cookieNoticeClose');
     const cookieStorageKey = 'vf_cookie_notice_accepted';
 
     function hasAcceptedCookies() {
@@ -1343,6 +2606,22 @@
       }
     }
 
+    function showCookieNotice() {
+      if (!cookieNotice) return;
+      cookieNotice.hidden = false;
+      requestAnimationFrame(function () {
+        cookieNotice.classList.add('is-visible');
+      });
+    }
+
+    function hideCookieNotice() {
+      if (!cookieNotice) return;
+      cookieNotice.classList.remove('is-visible');
+      setTimeout(function () {
+        cookieNotice.hidden = true;
+      }, 240);
+    }
+
     function saveCookieAcceptance() {
       try {
         window.localStorage.setItem(cookieStorageKey, '1');
@@ -1351,37 +2630,23 @@
       }
     }
 
-    function showCookieNotice() {
-      if (!cookieNotice || hasAcceptedCookies()) return;
-      cookieNotice.hidden = false;
-      window.requestAnimationFrame(function () {
-        cookieNotice.classList.add('is-visible');
-      });
-    }
-
-    function hideCookieNotice() {
-      if (!cookieNotice) return;
-      cookieNotice.classList.remove('is-visible');
-      window.setTimeout(function () {
-        cookieNotice.hidden = true;
-      }, 250);
-    }
-
     function acceptCookies() {
       saveCookieAcceptance();
       hideCookieNotice();
     }
 
-    if (cookieAccept) {
-      cookieAccept.addEventListener('click', acceptCookies);
+    if (!hasAcceptedCookies()) {
+      showCookieNotice();
     }
 
-    if (cookieClose) {
-      cookieClose.addEventListener('click', hideCookieNotice);
+    if (cookieNoticeAccept) {
+      cookieNoticeAccept.addEventListener('click', acceptCookies);
     }
 
-    showCookieNotice();
-
+    if (cookieNoticeClose) {
+      cookieNoticeClose.addEventListener('click', acceptCookies);
+    }
   </script>
+
 </body>
 </html>
