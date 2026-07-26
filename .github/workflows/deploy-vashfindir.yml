@@ -122,6 +122,21 @@ jobs:
                           exit 1
                       fi
                       
+                      echo "==> ensure Traefik Docker API compatibility"
+                      if docker logs --tail=50 traefik 2>&1 | grep -q "client version 1.24 is too old"; then
+                          TRAEFIK_COMPOSE_FILE="$(docker inspect traefik --format="{{ index .Config.Labels \"com.docker.compose.project.config_files\" }}")"
+                          TRAEFIK_WORKDIR="$(docker inspect traefik --format="{{ index .Config.Labels \"com.docker.compose.project.working_dir\" }}")"
+                          TRAEFIK_SERVICE="$(docker inspect traefik --format="{{ index .Config.Labels \"com.docker.compose.service\" }}")"
+                          test -f "$TRAEFIK_COMPOSE_FILE"
+                          cp "$TRAEFIK_COMPOSE_FILE" "$TRAEFIK_COMPOSE_FILE.bak-pre-v3.6.17"
+                          sed -i "s#traefik:v3.1#traefik:v3.6.17#g" "$TRAEFIK_COMPOSE_FILE"
+                          grep -q "traefik:v3.6.17" "$TRAEFIK_COMPOSE_FILE"
+                          cd "$TRAEFIK_WORKDIR"
+                          "${COMPOSE_CMD[@]}" -f "$TRAEFIK_COMPOSE_FILE" pull "$TRAEFIK_SERVICE"
+                          "${COMPOSE_CMD[@]}" -f "$TRAEFIK_COMPOSE_FILE" up -d --force-recreate "$TRAEFIK_SERVICE"
+                          cd "$DEPLOY_PATH"
+                      fi
+
                       echo "==> render compose config"
                       "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
                       
