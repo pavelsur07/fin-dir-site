@@ -156,6 +156,8 @@ jobs:
                       docker inspect vashfindir_site --format '{{json .Config.Labels}}'
                       docker inspect vashfindir_site --format '{{json .NetworkSettings.Networks}}'
                       docker ps --filter name=traefik --format '{{.Names}} {{.Networks}}'
+                      docker inspect traefik --format '{{json .Config.Image}} {{json .Config.Cmd}}'
+                      docker logs --tail=200 traefik
 
                       echo "==> public HTTP check"
                       curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
