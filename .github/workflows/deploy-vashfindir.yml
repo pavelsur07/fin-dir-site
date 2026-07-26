@@ -121,43 +121,48 @@ jobs:
                           echo "Docker Compose is not available on the deploy host"
                           exit 1
                       fi
+
+                      # Имя проекта закреплено явно. compose v1 и v2 по-разному
+                      # выводят его из имени каталога, и расхождение развело бы
+                      # деплой с уже работающими контейнерами (project=vashfindir).
+                      COMPOSE=("${COMPOSE_CMD[@]}" -p vashfindir -f "${COMPOSE_FILE}")
                       
                       echo "==> render compose config"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" config > /tmp/vashfindir.compose.rendered.yml
+                      "${COMPOSE[@]}" config > /tmp/vashfindir.compose.rendered.yml
                       
                       echo "==> pull Symfony images"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" pull site-php-fpm site-php-cli
+                      "${COMPOSE[@]}" pull site-php-fpm site-php-cli
                       
                       echo "==> stop Symfony only"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" stop site site-php-fpm 2>/dev/null || true
+                      "${COMPOSE[@]}" stop site site-php-fpm 2>/dev/null || true
                       
                       echo "==> remove old Symfony containers"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" rm -f site site-php-fpm 2>/dev/null || true
+                      "${COMPOSE[@]}" rm -f site site-php-fpm 2>/dev/null || true
                       
                       echo "==> start Symfony FPM"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" up -d --no-deps site-php-fpm
+                      "${COMPOSE[@]}" up -d --no-deps site-php-fpm
                       
                       echo "==> start Symfony Nginx"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" up -d --no-deps site
+                      "${COMPOSE[@]}" up -d --no-deps site
                       
                       echo "==> status"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" ps site site-php-fpm
+                      "${COMPOSE[@]}" ps site site-php-fpm
                       
                       echo "==> logs: site"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" logs --tail=120 site || true
+                      "${COMPOSE[@]}" logs --tail=120 site || true
                       
                       echo "==> logs: site-php-fpm"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" logs --tail=120 site-php-fpm || true
+                      "${COMPOSE[@]}" logs --tail=120 site-php-fpm || true
                       
                       echo "==> Symfony health (inside container)"
-                      "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" exec -T site sh -lc 'wget -qO- http://127.0.0.1/health | grep -qx "alive"'
+                      "${COMPOSE[@]}" exec -T site sh -lc 'wget -qO- http://127.0.0.1/health | grep -qx "alive"'
                       
                       echo "==> Traefik diagnostics"
                       docker inspect vashfindir_site --format '{{json .Config.Labels}}'
                       docker inspect vashfindir_site --format '{{json .NetworkSettings.Networks}}'
                       # Status показывает аптайм: если он перекрывает время деплоя, значит
                       # деплой Traefik не трогал. Деплой и не должен -- Traefik это общая
-                      # инфраструктура хоста в /opt/traefik, вне этого репозитория.
+                      # инфраструктура хоста, у неё свой пайплайн deploy-traefik.yml.
                       docker ps --filter name=traefik --format '{{.ID}} {{.Names}} {{.Image}} up_for={{.Status}} {{.Networks}}'
 
                       echo "==> public HTTP check"

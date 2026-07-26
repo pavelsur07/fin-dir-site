@@ -1,0 +1,61 @@
+name: Bootstrap host (Compose v2)
+
+# Разовая подготовка хоста. Ставит Docker Compose v2 для деплой-пользователя.
+#
+# Зачем: на хосте стоит docker-compose 1.29.2 (EOL с 2023), который падает с
+# KeyError: 'ContainerConfig' при пересоздании контейнера поверх существующего,
+# успевая снести старый до падения. Именно так прокси хоста был потерян целиком.
+#
+# Root не нужен: плагин ставится в ~/.docker/cli-plugins, docker ищет его там
+# раньше системного пути.
+#
+# Идемпотентно, можно запускать повторно.
+
+on:
+    workflow_dispatch:
+
+env:
+    COMPOSE_VERSION: v5.3.1
+
+jobs:
+    bootstrap-host:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Install Compose v2 over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      WANT="${{ env.COMPOSE_VERSION }}"
+                      DEST="${HOME}/.docker/cli-plugins"
+
+                      echo "==> до"
+                      docker version --format 'docker={{.Server.Version}} api={{.Server.APIVersion}} min={{.Server.MinAPIVersion}}'
+                      docker compose version 2>/dev/null || echo "compose v2: нет"
+                      docker-compose version 2>/dev/null | head -1 || true
+
+                      if docker compose version --short 2>/dev/null | grep -q "${WANT#v}"; then
+                          echo "==> ${WANT} уже стоит"
+                      else
+                          mkdir -p "$DEST"
+                          URL="https://github.com/docker/compose/releases/download/${WANT}/docker-compose-linux-$(uname -m)"
+                          echo "==> качаем ${URL}"
+                          # во временный файл: недокачанный бинарь не должен
+                          # подменить рабочий
+                          curl -fsSL --retry 3 -o "${DEST}/docker-compose.tmp" "$URL"
+                          chmod +x "${DEST}/docker-compose.tmp"
+                          "${DEST}/docker-compose.tmp" version
+                          mv "${DEST}/docker-compose.tmp" "${DEST}/docker-compose"
+                      fi
+
+                      echo "==> после"
+                      docker compose version
+
+                      echo "==> compose v2 видит существующие проекты"
+                      docker compose ls --all || true
