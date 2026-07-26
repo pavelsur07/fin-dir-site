@@ -1,0 +1,83 @@
+name: Check Traefik comes up from the prod compose file
+
+# Одноразовый инструмент.
+#   mode=check     -- только чтение, ничего не трогает
+#   mode=recreate  -- реально пересоздаёт traefik из /opt/traefik/docker-compose.yml
+# Запуск: gh workflow run check-traefik.yml -f mode=check
+# После проверки этот файл можно удалить.
+
+on:
+    workflow_dispatch:
+        inputs:
+            mode:
+                description: "check (read-only) или recreate (пересоздать контейнер)"
+                required: true
+                default: check
+                type: choice
+                options:
+                    - check
+                    - recreate
+
+jobs:
+    check-traefik:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Check Traefik over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      MODE="${{ inputs.mode }}"
+                      FILE=/opt/traefik/docker-compose.yml
+
+                      if docker compose version >/dev/null 2>&1; then
+                          COMPOSE_CMD=(docker compose)
+                      else
+                          COMPOSE_CMD=(docker-compose)
+                      fi
+                      echo "==> compose: $("${COMPOSE_CMD[@]}" version 2>&1 | head -1)"
+
+                      echo "==> файл на диске"
+                      grep -n 'image:.*traefik' "$FILE"
+
+                      echo "==> compose разбирает файл и резолвит image"
+                      "${COMPOSE_CMD[@]}" -p traefik -f "$FILE" config | grep -E 'image:|container_name:|^\s+- "?[0-9]+:'
+
+                      echo "==> образ уже на хосте (up не будет ждать pull)"
+                      docker image inspect traefik:v3.6.17 --format '{{.Id}} {{.RepoTags}}'
+
+                      echo "==> чем создан текущий контейнер"
+                      docker inspect traefik --format 'image={{.Config.Image}}'
+                      docker inspect traefik --format 'project={{ index .Config.Labels "com.docker.compose.project" }} config_files={{ index .Config.Labels "com.docker.compose.project.config_files" }}'
+
+                      if [ "$MODE" != "recreate" ]; then
+                          echo "==> mode=check, ничего не меняем"
+                          exit 0
+                      fi
+
+                      # compose 1.29.2 падает с KeyError: 'ContainerConfig', если контейнер
+                      # уже существует, и при этом успевает его снести -- поэтому удаляем
+                      # сами и создаём с нуля, а не полагаемся на recreate
+                      echo "==> removing current traefik container"
+                      docker rm -f traefik
+
+                      echo "==> up из настоящего /opt/traefik/docker-compose.yml"
+                      cd /opt/traefik
+                      "${COMPOSE_CMD[@]}" -p traefik -f "$FILE" up -d traefik
+
+                      sleep 15
+                      echo "==> результат"
+                      docker inspect traefik --format 'image={{.Config.Image}} status={{.State.Status}}'
+                      docker inspect traefik --format 'config_files={{ index .Config.Labels "com.docker.compose.project.config_files" }}'
+
+                      echo "==> ошибок Docker API в логах (ожидаем 0)"
+                      docker logs --tail=200 traefik 2>&1 | grep -c "is too old" || true
+
+                      echo "==> сайт"
+                      curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
