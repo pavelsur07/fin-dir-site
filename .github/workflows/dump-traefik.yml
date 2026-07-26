@@ -1,0 +1,63 @@
+name: Dump Traefik infra state (redacted)
+
+# Одноразовый инструмент для переноса инфраструктуры в репозиторий.
+# ВАЖНО: репозиторий ПУБЛИЧНЫЙ, логи Actions видны всем, поэтому файл
+# выводится с замаскированными секретами. Реальные значения останутся
+# на хосте в .env и в git не попадут.
+# Запуск: gh workflow run dump-traefik.yml
+# После переноса этот файл удаляется.
+
+on:
+    workflow_dispatch:
+
+jobs:
+    dump-traefik:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Dump Traefik state over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      echo "==> содержимое /opt/traefik"
+                      ls -la /opt/traefik
+
+                      echo "==> docker / compose"
+                      docker version --format 'server={{.Server.Version}} api={{.Server.APIVersion}} min={{.Server.MinAPIVersion}}'
+                      docker compose version 2>/dev/null || echo "compose v2 plugin: НЕ УСТАНОВЛЕН"
+                      docker-compose version 2>/dev/null | head -1 || echo "compose v1: нет"
+
+                      echo "==> сети"
+                      docker network ls --format '{{.Name}} {{.Driver}}'
+
+                      echo "==> docker-compose.yml (секреты замаскированы)"
+                      sed -E \
+                          -e 's#[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}#<REDACTED_EMAIL>#g' \
+                          -e 's#(([Tt]oken|TOKEN|[Pp]assword|PASSWORD|[Ss]ecret|SECRET|[Aa]pi[Kk]ey|APIKEY|[Aa]uth|AUTH)[^ ]*[=:])[^ ]+#\1<REDACTED>#g' \
+                          -e 's#(\$\{[A-Za-z_][A-Za-z0-9_]*)([^}]*)\}#\1}#g' \
+                          /opt/traefik/docker-compose.yml
+
+                      echo "==> прочие конфиги рядом, если есть"
+                      for f in /opt/traefik/traefik.yml /opt/traefik/traefik.toml /opt/traefik/dynamic.yml; do
+                          [ -f "$f" ] && { echo "--- $f ---"; sed -E \
+                              -e 's#[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}#<REDACTED_EMAIL>#g' \
+                              -e 's#(([Tt]oken|[Pp]assword|[Ss]ecret|[Aa]pi[Kk]ey|[Aa]uth)[^ ]*[=:])[^ ]+#\1<REDACTED>#g' \
+                              "$f"; } || true
+                      done
+
+                      echo "==> есть ли .env рядом (содержимое НЕ печатаем, только имена переменных)"
+                      if [ -f /opt/traefik/.env ]; then
+                          grep -oE '^[A-Za-z_][A-Za-z0-9_]*' /opt/traefik/.env || true
+                      else
+                          echo ".env отсутствует"
+                      fi
+
+                      echo "==> права на каталог и кто мы"
+                      id
+                      stat -c '%n owner=%U:%G mode=%a' /opt/traefik /opt/traefik/docker-compose.yml
