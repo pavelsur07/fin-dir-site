@@ -1,0 +1,80 @@
+name: Fix Traefik Docker API compatibility
+
+# Одноразовый инструмент. Traefik v3.1 жёстко использует Docker API 1.24,
+# Docker Engine 29 поднял минимум до 1.44 -> провайдер docker не видит ни одного
+# контейнера -> Traefik отдаёт 404 на любой хост. Починка в v3.6.1+.
+# Запускать вручную: gh workflow run fix-traefik.yml
+# После успешного запуска этот файл можно удалить.
+
+on:
+    workflow_dispatch:
+
+jobs:
+    fix-traefik:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Upgrade Traefik over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      TARGET_IMAGE="traefik:v3.6.17"
+
+                      if docker compose version >/dev/null 2>&1; then
+                          COMPOSE_CMD=(docker compose)
+                      elif command -v docker-compose >/dev/null 2>&1; then
+                          COMPOSE_CMD=(docker-compose)
+                      else
+                          echo "Docker Compose is not available on the deploy host"
+                          exit 1
+                      fi
+
+                      TRAEFIK_IMAGE="$(docker inspect traefik --format '{{.Config.Image}}')"
+                      echo "==> current Traefik image: ${TRAEFIK_IMAGE}"
+
+                      if [ "$TRAEFIK_IMAGE" = "$TARGET_IMAGE" ]; then
+                          echo "already on ${TARGET_IMAGE}, nothing to do"
+                      else
+                          WORKDIR="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project.working_dir" }}')"
+                          FILE="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project.config_files" }}')"
+                          SERVICE="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.service" }}')"
+
+                          : "${WORKDIR:?traefik is not compose-managed, upgrade it by hand}"
+                          : "${FILE:?traefik has no compose config_files label, upgrade it by hand}"
+
+                          # config_files может быть относительным путём и списком через запятую.
+                          # Резолвим его в рабочей директории Traefik -- именно этого не хватало
+                          # прежнему шагу в deploy-vashfindir.yml, который патчил чужой файл.
+                          FILE="${FILE%%,*}"
+                          cd "$WORKDIR"
+                          echo "==> traefik compose: ${WORKDIR}/${FILE}, service: ${SERVICE}"
+                          test -f "$FILE"
+
+                          cp -n "$FILE" "$FILE.bak-pre-v3.6.17" || true
+                          sed -i "s#${TRAEFIK_IMAGE}#${TARGET_IMAGE}#g" "$FILE"
+                          grep -q "$TARGET_IMAGE" "$FILE"
+
+                          "${COMPOSE_CMD[@]}" -f "$FILE" pull "$SERVICE"
+                          "${COMPOSE_CMD[@]}" -f "$FILE" up -d --force-recreate "$SERVICE"
+                      fi
+
+                      echo "==> убрать мусор от сломанных запусков прежнего шага"
+                      rm -f "${{ secrets.DEPLOY_PATH }}/docker-compose.yml.bak-pre-v3.6.17"
+
+                      echo "==> wait for Traefik to rediscover containers"
+                      sleep 15
+
+                      echo "==> running image"
+                      docker inspect traefik --format '{{.Config.Image}}'
+
+                      echo "==> stale-API errors in the last 100 log lines (expect 0)"
+                      docker logs --tail=100 traefik 2>&1 | grep -c "is too old" || true
+
+                      echo "==> public HTTP check"
+                      curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
