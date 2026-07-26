@@ -155,7 +155,10 @@ jobs:
                       echo "==> Traefik diagnostics"
                       docker inspect vashfindir_site --format '{{json .Config.Labels}}'
                       docker inspect vashfindir_site --format '{{json .NetworkSettings.Networks}}'
-                      docker ps --filter name=traefik --format '{{.Names}} {{.Networks}}'
+                      # Status показывает аптайм: если он перекрывает время деплоя, значит
+                      # деплой Traefik не трогал. Деплой и не должен -- Traefik это общая
+                      # инфраструктура хоста в /opt/traefik, вне этого репозитория.
+                      docker ps --filter name=traefik --format '{{.ID}} {{.Names}} {{.Image}} up_for={{.Status}} {{.Networks}}'
 
                       echo "==> public HTTP check"
                       curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
