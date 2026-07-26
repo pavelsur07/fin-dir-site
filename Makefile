@@ -8,7 +8,7 @@ TRAEFIK=$(DC) -p traefik -f infra/traefik/docker-compose.yml
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-.PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps \
+.PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -72,6 +72,10 @@ logs:
 
 cache-clear:
 	$(CLI) php bin/console cache:clear
+
+# Границы слоёв из docs/architecture/PATTERNS.md. Конфиг: site/deptrac.yaml
+deptrac:
+	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
 
 clean-cache:
 	rm -rf site/var/cache site/var/log
