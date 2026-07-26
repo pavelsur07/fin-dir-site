@@ -44,24 +44,45 @@ jobs:
                           WORKDIR="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project.working_dir" }}')"
                           FILE="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project.config_files" }}')"
                           SERVICE="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.service" }}')"
+                          PROJECT="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project" }}')"
 
                           : "${WORKDIR:?traefik is not compose-managed, upgrade it by hand}"
                           : "${FILE:?traefik has no compose config_files label, upgrade it by hand}"
+                          : "${PROJECT:?traefik has no compose project label, upgrade it by hand}"
 
                           # config_files может быть относительным путём и списком через запятую.
                           # Резолвим его в рабочей директории Traefik -- именно этого не хватало
                           # прежнему шагу в deploy-vashfindir.yml, который патчил чужой файл.
                           FILE="${FILE%%,*}"
                           cd "$WORKDIR"
-                          echo "==> traefik compose: ${WORKDIR}/${FILE}, service: ${SERVICE}"
+                          echo "==> traefik compose: ${WORKDIR}/${FILE}, project: ${PROJECT}, service: ${SERVICE}"
                           test -f "$FILE"
 
-                          cp -n "$FILE" "$FILE.bak-pre-v3.6.17" || true
-                          sed -i "s#${TRAEFIK_IMAGE}#${TARGET_IMAGE}#g" "$FILE"
-                          grep -q "$TARGET_IMAGE" "$FILE"
+                          # /opt/traefik принадлежит root, а деплой-пользователь туда не пишет.
+                          # Правим копию, а относительные пути (bind mounts, .env) резолвим
+                          # через --project-directory в оригинальной директории Traefik.
+                          PATCHED="$(mktemp /tmp/traefik-compose.XXXXXX.yml)"
+                          sed "s#${TRAEFIK_IMAGE}#${TARGET_IMAGE}#g" "$FILE" > "$PATCHED"
+                          grep -q "$TARGET_IMAGE" "$PATCHED"
 
-                          "${COMPOSE_CMD[@]}" -f "$FILE" pull "$SERVICE"
-                          "${COMPOSE_CMD[@]}" -f "$FILE" up -d --force-recreate "$SERVICE"
+                          COMPOSE_ARGS=(-p "$PROJECT" --project-directory "$WORKDIR" -f "$PATCHED")
+                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" pull "$SERVICE"
+                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" up -d --force-recreate "$SERVICE"
+
+                          # Закрепить правку на диске, иначе следующий `up` в /opt/traefik
+                          # откатит Traefik обратно на старый тег.
+                          if [ -w "$FILE" ]; then
+                              cp "$FILE" "$FILE.bak-pre-v3.6.17" && cp "$PATCHED" "$FILE"
+                              echo "==> ${WORKDIR}/${FILE} updated in place"
+                          elif sudo -n true 2>/dev/null; then
+                              sudo cp "$FILE" "$FILE.bak-pre-v3.6.17" && sudo cp "$PATCHED" "$FILE"
+                              echo "==> ${WORKDIR}/${FILE} updated in place (sudo)"
+                          else
+                              echo "WARNING: no write access to ${WORKDIR}/${FILE}; it still pins ${TRAEFIK_IMAGE}."
+                              echo "WARNING: container is upgraded, but update that file by hand or a future"
+                              echo "WARNING: 'docker-compose up' in ${WORKDIR} will downgrade Traefik again."
+                          fi
+                          rm -f "$PATCHED"
                       fi
 
                       echo "==> убрать мусор от сломанных запусков прежнего шага"
