@@ -56,12 +56,12 @@ project/
 │   ├── templates/
 │   ├── tests/
 │   ├── translations/
+│   ├── docker/                   # Dockerfile и конфиги php-fpm/nginx
 │   ├── composer.json
-│   └── Dockerfile
+│   └── deptrac.yaml
 │
-├── docker/                       # Общая Docker-конфигурация
-│   ├── nginx/
-│   └── php/
+├── infra/                        # Инфраструктура хоста
+│   └── traefik/                  # Общий reverse-proxy, свой pipeline
 │
 ├── services/                     # Python/Go-сервисы, только при необходимости
 ├── frontend/                     # Отдельный React SPA, только при необходимости

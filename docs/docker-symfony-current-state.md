@@ -1,5 +1,11 @@
 # Docker/Symfony: текущее состояние инфраструктуры
 
+> **Исторический документ.** Описывает состояние ДО миграции на `nginx + php-fpm`.
+> Миграция завершена: dev и prod собираются из `site/docker/{development,production}/`,
+> legacy `site/Dockerfile` с Apache удалён, workflow `site-ci-cd.yml` заменён на
+> `deploy-vashfindir.yml`. Актуальную схему смотреть в `docker-compose.yml`,
+> `docker-compose.prod.yml` и `.github/workflows/`.
+
 ## 1) Текущие Symfony-сервисы
 
 ### Development (`docker-compose.yml`)
