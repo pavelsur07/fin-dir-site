@@ -1,3 +1,5 @@
+# Автогенерируется при каждом cache:clear -- только для автодополнения в IDE
+/config/reference.php
 
 ###> symfony/framework-bundle ###
 /.env.local

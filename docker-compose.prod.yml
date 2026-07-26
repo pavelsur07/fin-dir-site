@@ -60,6 +60,10 @@ services:
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
       DEFAULT_URI: https://vashfindir.ru
+      DATABASE_URL: "postgresql://site:${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}@site-postgres:5432/site?serverVersion=17&charset=utf8"
+    depends_on:
+      site-postgres:
+        condition: service_healthy
     expose:
       - "9000"
     networks:
@@ -84,9 +88,36 @@ services:
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
       DEFAULT_URI: https://vashfindir.ru
+      DATABASE_URL: "postgresql://site:${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}@site-postgres:5432/site?serverVersion=17&charset=utf8"
     networks:
       - internal
     command: ["sh"]
+
+  site-postgres:
+    container_name: vashfindir_site_postgres
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      TZ: Europe/Moscow
+      POSTGRES_DB: site
+      POSTGRES_USER: site
+      POSTGRES_PASSWORD: ${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # Только internal: наружу база не торчит ни портом, ни через Traefik.
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U site -d site"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  # Данные живут в томе и переживают пересоздание контейнера. Деплой базу
+  # не пересоздаёт: обычный up -d -- no-op, пока конфигурация не менялась.
+  postgres_data:
 
 networks:
   web:

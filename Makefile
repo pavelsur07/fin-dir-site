@@ -8,11 +8,11 @@ TRAEFIK=$(DC) -p traefik -f infra/traefik/docker-compose.yml
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-.PHONY: init prepare build rebuild install update up down restart check console shell logs cache-clear clean-cache clean-local ps \
+.PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
-init: prepare build install cache-clear up check
+init: prepare build install cache-clear up migrate check
 
 # Подготовка локальных папок под bind mount ./site:/app
 prepare:
@@ -49,12 +49,20 @@ restart:
 
 check:
 	$(CLI) php bin/console about
+	$(CLI) php bin/console dbal:run-sql 'select 1'
 	$(DC) exec site-php-fpm php-fpm -t
 	curl -i http://localhost:8001/health
 	curl -I http://localhost:8001/
 
 console:
 	$(CLI) php bin/console $(CMD)
+
+migrate:
+	$(CLI) php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+
+# Сгенерировать миграцию по разнице между сущностями и схемой базы
+diff:
+	$(CLI) php bin/console doctrine:migrations:diff
 
 shell:
 	$(CLI) sh
