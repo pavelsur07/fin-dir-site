@@ -1,11 +1,9 @@
-name: Remove WordPress containers from prod
+name: Remove WordPress leftovers from prod
 
 # Одноразовый инструмент. Сервисы wp/db удалены из docker-compose.prod.yml
-# в 033d0d4, но деплой не вызывает `down`, поэтому контейнеры остались
-# работать на проде осиротевшими. Сносим их.
-#
-# Том vashfindir_db_data НЕ трогаем: удаление контейнера обратимо, удаление
-# тома -- нет. Запускать вручную: gh workflow run remove-wordpress.yml
+# в 033d0d4; контейнеров на проде уже нет, остались только тома с данными.
+# Удаляем их по явному указанию -- отката не будет.
+# Запускать вручную: gh workflow run remove-wordpress.yml
 # После успешного запуска этот файл можно удалить.
 
 on:
@@ -16,7 +14,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Remove WordPress containers over SSH
+            - name: Remove WordPress leftovers over SSH
               uses: appleboy/ssh-action@v1.2.0
               with:
                   host: ${{ secrets.SSH_HOST }}
@@ -26,29 +24,40 @@ jobs:
                   script: |
                       set -euo pipefail
 
+                      VOLUMES="vashfindir_db_data vashfindir_wp_uploads vashfindir_wp_languages"
+
                       echo "==> containers before"
                       docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}'
 
-                      echo "==> volumes before (том с данными WordPress должен остаться)"
-                      docker volume ls --format '{{.Name}}'
-
                       for c in vashfindir_wp vashfindir_db; do
                           if docker inspect "$c" >/dev/null 2>&1; then
-                              echo "==> removing ${c}"
-                              # stop, а не rm -f: MariaDB должна закрыться штатно по SIGTERM,
-                              # чтобы том остался консистентным для возможного восстановления
+                              echo "==> removing container ${c}"
                               docker stop -t 30 "$c"
                               docker rm "$c"
                           else
-                              echo "==> ${c} already gone"
+                              echo "==> container ${c} already gone"
                           fi
                       done
 
+                      echo "==> volume sizes before removal"
+                      docker system df -v 2>/dev/null | grep -E "vashfindir_(db_data|wp_uploads|wp_languages)" || true
+
+                      for v in $VOLUMES; do
+                          if docker volume inspect "$v" >/dev/null 2>&1; then
+                              # если том всё ещё кем-то используется, docker откажет -- и это
+                              # правильно: значит на проде осталось что-то, чего мы не ждали
+                              echo "==> removing volume ${v}"
+                              docker volume rm "$v"
+                          else
+                              echo "==> volume ${v} already gone"
+                          fi
+                      done
+
+                      echo "==> проверка, что томов не осталось (ожидаем пусто)"
+                      docker volume ls --format '{{.Name}}' | grep -E "^vashfindir_(db_data|wp_uploads|wp_languages)$" || echo "none left"
+
                       echo "==> containers after"
                       docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}'
-
-                      echo "==> volumes after (ожидаем vashfindir_db_data на месте)"
-                      docker volume ls --format '{{.Name}}'
 
                       echo "==> сайт должен продолжать работать"
                       curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
