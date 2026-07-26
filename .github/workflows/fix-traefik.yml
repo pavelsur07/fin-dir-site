@@ -25,6 +25,10 @@ jobs:
                       set -euo pipefail
 
                       TARGET_IMAGE="traefik:v3.6.17"
+                      WORKDIR="/opt/traefik"
+                      FILE="docker-compose.yml"
+                      PROJECT="traefik"
+                      SERVICE="traefik"
 
                       if docker compose version >/dev/null 2>&1; then
                           COMPOSE_CMD=(docker compose)
@@ -35,63 +39,58 @@ jobs:
                           exit 1
                       fi
 
-                      TRAEFIK_IMAGE="$(docker inspect traefik --format '{{.Config.Image}}')"
-                      echo "==> current Traefik image: ${TRAEFIK_IMAGE}"
+                      cd "$WORKDIR"
+                      test -f "$FILE"
+                      echo "==> traefik compose: ${WORKDIR}/${FILE}, project: ${PROJECT}, service: ${SERVICE}"
 
-                      if [ "$TRAEFIK_IMAGE" = "$TARGET_IMAGE" ]; then
-                          echo "already on ${TARGET_IMAGE}, nothing to do"
-                      else
-                          WORKDIR="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project.working_dir" }}')"
-                          FILE="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project.config_files" }}')"
-                          SERVICE="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.service" }}')"
-                          PROJECT="$(docker inspect traefik --format '{{ index .Config.Labels "com.docker.compose.project" }}')"
+                      echo "==> existing containers for ${PROJECT}/${SERVICE}"
+                      docker ps -a \
+                          --filter "label=com.docker.compose.project=${PROJECT}" \
+                          --filter "label=com.docker.compose.service=${SERVICE}" \
+                          --format '{{.Names}} {{.Image}} {{.Status}}'
 
-                          : "${WORKDIR:?traefik is not compose-managed, upgrade it by hand}"
-                          : "${FILE:?traefik has no compose config_files label, upgrade it by hand}"
-                          : "${PROJECT:?traefik has no compose project label, upgrade it by hand}"
+                      # /opt/traefik принадлежит root, деплой-пользователь туда не пишет.
+                      # Правим копию, а относительные пути (bind mounts, .env) резолвим через
+                      # --project-directory в оригинальной директории Traefik.
+                      PATCHED="$(mktemp /tmp/traefik-compose.XXXXXX.yml)"
+                      sed -E "s#(image:[[:space:]]*)traefik:[^[:space:]\"']+#\\1${TARGET_IMAGE}#g" "$FILE" > "$PATCHED"
+                      grep -q "$TARGET_IMAGE" "$PATCHED"
+                      echo "==> patched image line:"
+                      grep -n "image:.*traefik" "$PATCHED"
 
-                          # config_files может быть относительным путём и списком через запятую.
-                          # Резолвим его в рабочей директории Traefik -- именно этого не хватало
-                          # прежнему шагу в deploy-vashfindir.yml, который патчил чужой файл.
-                          FILE="${FILE%%,*}"
-                          cd "$WORKDIR"
-                          echo "==> traefik compose: ${WORKDIR}/${FILE}, project: ${PROJECT}, service: ${SERVICE}"
-                          test -f "$FILE"
+                      COMPOSE_ARGS=(-p "$PROJECT" --project-directory "$WORKDIR" -f "$PATCHED")
+                      "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" pull "$SERVICE"
 
-                          # /opt/traefik принадлежит root, а деплой-пользователь туда не пишет.
-                          # Правим копию, а относительные пути (bind mounts, .env) резолвим
-                          # через --project-directory в оригинальной директории Traefik.
-                          PATCHED="$(mktemp /tmp/traefik-compose.XXXXXX.yml)"
-                          sed "s#${TRAEFIK_IMAGE}#${TARGET_IMAGE}#g" "$FILE" > "$PATCHED"
-                          grep -q "$TARGET_IMAGE" "$PATCHED"
-
-                          COMPOSE_ARGS=(-p "$PROJECT" --project-directory "$WORKDIR" -f "$PATCHED")
-                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" pull "$SERVICE"
-
-                          # docker-compose 1.29.2 падает с KeyError: 'ContainerConfig' при
-                          # пересоздании контейнера -- современные образы больше не отдают это
-                          # поле в image inspect. На создании с нуля этот код не вызывается,
-                          # поэтому сносим контейнер и поднимаем заново: ровно тот же приём,
-                          # которым рабочий деплой приложения обновляет site/site-php-fpm.
-                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" stop "$SERVICE" || true
-                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" rm -f "$SERVICE" || true
-                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" up -d "$SERVICE"
-
-                          # Закрепить правку на диске, иначе следующий `up` в /opt/traefik
-                          # откатит Traefik обратно на старый тег.
-                          if [ -w "$FILE" ]; then
-                              cp "$FILE" "$FILE.bak-pre-v3.6.17" && cp "$PATCHED" "$FILE"
-                              echo "==> ${WORKDIR}/${FILE} updated in place"
-                          elif sudo -n true 2>/dev/null; then
-                              sudo cp "$FILE" "$FILE.bak-pre-v3.6.17" && sudo cp "$PATCHED" "$FILE"
-                              echo "==> ${WORKDIR}/${FILE} updated in place (sudo)"
-                          else
-                              echo "WARNING: no write access to ${WORKDIR}/${FILE}; it still pins ${TRAEFIK_IMAGE}."
-                              echo "WARNING: container is upgraded, but update that file by hand or a future"
-                              echo "WARNING: 'docker-compose up' in ${WORKDIR} will downgrade Traefik again."
-                          fi
-                          rm -f "$PATCHED"
+                      # docker-compose 1.29.2 падает с KeyError: 'ContainerConfig', когда
+                      # пересоздаёт контейнер поверх существующего: современные образы больше
+                      # не отдают это поле в image inspect. Этот код вызывается только при
+                      # наличии предыдущего контейнера, поэтому сносим его по меткам (включая
+                      # переименованный огрызок, оставшийся от упавшего --force-recreate) и
+                      # создаём заново. Тот же приём, которым деплой обновляет site/site-php-fpm.
+                      OLD="$(docker ps -aq \
+                          --filter "label=com.docker.compose.project=${PROJECT}" \
+                          --filter "label=com.docker.compose.service=${SERVICE}")"
+                      if [ -n "$OLD" ]; then
+                          echo "==> removing old containers: $OLD"
+                          echo "$OLD" | xargs -r docker rm -f
                       fi
+
+                      "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" up -d "$SERVICE"
+
+                      # Закрепить правку на диске, иначе следующий `up` в /opt/traefik
+                      # откатит Traefik обратно на старый тег.
+                      if [ -w "$FILE" ]; then
+                          cp "$FILE" "$FILE.bak-pre-v3.6.17" && cp "$PATCHED" "$FILE"
+                          echo "==> ${WORKDIR}/${FILE} updated in place"
+                      elif sudo -n true 2>/dev/null; then
+                          sudo cp "$FILE" "$FILE.bak-pre-v3.6.17" && sudo cp "$PATCHED" "$FILE"
+                          echo "==> ${WORKDIR}/${FILE} updated in place (sudo)"
+                      else
+                          echo "WARNING: no write access to ${WORKDIR}/${FILE}; it still pins the old tag."
+                          echo "WARNING: container is upgraded, but update that file by hand or a future"
+                          echo "WARNING: 'docker-compose up' in ${WORKDIR} will downgrade Traefik again."
+                      fi
+                      rm -f "$PATCHED"
 
                       echo "==> убрать мусор от сломанных запусков прежнего шага"
                       rm -f "${{ secrets.DEPLOY_PATH }}/docker-compose.yml.bak-pre-v3.6.17"
