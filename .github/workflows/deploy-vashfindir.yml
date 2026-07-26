@@ -140,6 +140,14 @@ jobs:
                       echo "==> postgres"
                       "${COMPOSE[@]}" up -d --wait site-postgres
 
+                      # Миграции идут ДО раскатки php-fpm и из нового php-cli образа.
+                      # set -e + этот порядок дают нужный режим отказа: упавшая
+                      # миграция валит деплой, старые реплики продолжают обслуживать.
+                      # --allow-no-migration: пустой каталог migrations/ это не ошибка.
+                      echo "==> migrations"
+                      "${COMPOSE[@]}" run --rm site-php-cli \
+                          php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+
                       # Zero-downtime. Раньше здесь было stop + rm + up: Traefik на
                       # время выкатки терял единственный бэкенд и отдавал свой 404.
                       # Теперь новые реплики поднимаются РЯДОМ со старыми, и только
