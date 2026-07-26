@@ -35,5 +35,8 @@
     }
   },
   "description": "Vashfindir Symfony site application",
-  "license": "proprietary"
+  "license": "proprietary",
+  "require-dev": {
+    "deptrac/deptrac": "^4.7"
+  }
 }

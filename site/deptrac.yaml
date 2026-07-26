@@ -1,0 +1,89 @@
+# Машинная проверка границ из docs/architecture/PATTERNS.md.
+# Слои собираются по имени класса: App\<Module>\<Layer>\... и App\<Layer>\...
+#
+# Правило чтения: слой видит только то, что перечислено под ним в ruleset.
+# Зависимость на класс вне слоёв (DTO, Form, Pagerfanta, Twig) считается
+# uncovered и не ломает сборку -- перечисляем только то, что реально ограничиваем.
+deptrac:
+    paths:
+        - ./src
+
+    layers:
+        - name: Controller
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Controller\\#'
+
+        - name: Entity
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Entity\\#'
+
+        - name: Repository
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Repository\\#'
+
+        - name: Query
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Query\\#'
+
+        - name: Service
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Service\\#'
+
+        # Doctrine-атрибуты маппинга и коллекции -- единственное, что разрешено Entity.
+        - name: DoctrineMapping
+          collectors:
+              - type: classNameRegex
+                value: '#^Doctrine\\(ORM\\Mapping|DBAL\\Types|Common\\Collections)\\#'
+
+        # EntityManager, QueryBuilder и всё остальное рабочее API Doctrine.
+        - name: DoctrineOrm
+          collectors:
+              - type: classNameRegex
+                value: '#^Doctrine\\(?!ORM\\Mapping\\|DBAL\\Types\\|Common\\Collections\\)#'
+
+        - name: Symfony
+          collectors:
+              - type: classNameRegex
+                value: '#^Symfony\\#'
+
+    ruleset:
+        # Контроллер: один Query или один Application Service плюс HTTP-обвязка.
+        # Нет Entity, Repository и Doctrine -- PATTERNS.md §6.
+        Controller:
+            - Service
+            - Query
+            - Symfony
+
+        # Query читает через Doctrine и знает Entity только как источник DQL.
+        Query:
+            - Entity
+            - DoctrineOrm
+            - DoctrineMapping
+
+        # Repository загружает и сохраняет Entity, транзакцией не управляет.
+        Repository:
+            - Entity
+            - DoctrineOrm
+            - DoctrineMapping
+
+        # Application Service: сценарий, транзакционная граница, flush.
+        # Нет Query и нет HTTP -- PATTERNS.md §5.1, §8.
+        Service:
+            - Entity
+            - Repository
+            - DoctrineOrm
+            - DoctrineMapping
+
+        # Entity не знает ни инфраструктуры, ни HTTP -- PATTERNS.md §7.
+        Entity:
+            - DoctrineMapping
+
+        # Vendor-слои не анализируются: paths ограничены ./src.
+        DoctrineMapping: []
+        DoctrineOrm: []
+        Symfony: []

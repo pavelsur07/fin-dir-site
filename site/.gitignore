@@ -1,6 +1,9 @@
 # Автогенерируется при каждом cache:clear -- только для автодополнения в IDE
 /config/reference.php
 
+# Кеш deptrac
+/.deptrac.cache
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

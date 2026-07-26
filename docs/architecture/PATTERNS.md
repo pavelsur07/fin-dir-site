@@ -8,6 +8,7 @@
 - путь обработки read- и write-запросов;
 - разрешённые и запрещённые архитектурные паттерны;
 - правила работы с Entity, Query, DTO и Doctrine;
+- транзакционную границу и обработку ошибок;
 - единый подход к пагинации через Pagerfanta.
 
 Главный принцип: применять самое простое решение, которое сохраняет бизнес-
@@ -15,6 +16,9 @@
 
 Полный CQRS, чистая архитектура и микросервисы не являются архитектурной целью
 проекта. Они вводятся только при подтверждённой необходимости.
+
+Примеры в документе используют домен проекта: `Publication` (газета и посты),
+`Partner`, `Service`.
 
 ## 2. Базовая структура модуля
 
@@ -40,13 +44,13 @@ ModuleName/
 Если один сценарий чтения состоит из нескольких классов, их можно сгруппировать:
 
 ```text
-Billing/
+Publication/
 └── Query/
-    └── InvoiceList/
-        ├── InvoiceListQuery.php
-        ├── InvoiceListRequest.php
-        ├── InvoiceListCriteria.php
-        └── InvoiceListItem.php
+    └── PostList/
+        ├── PostListQuery.php
+        ├── PostListRequest.php
+        ├── PostListCriteria.php
+        └── PostListItem.php
 ```
 
 ## 3. Слои и ответственность
@@ -55,7 +59,7 @@ Billing/
 |---|---|---|
 | `Controller` | HTTP-маршрут, получение входа, проверка доступа, вызов одного сценария, Response | Doctrine-запросы, бизнес-логика, `flush()`, создание Pagerfanta |
 | `Request DTO` / `Form` | Преобразование и валидация внешнего ввода | Загружать Entity, выполнять бизнес-сценарий |
-| `Query` | Чтение, фильтры, company scope, сортировка, проекция и пагинация | Менять состояние, выполнять `persist()` или `flush()` |
+| `Query` | Чтение, фильтры, scope видимости, сортировка, проекция и пагинация | Менять состояние, выполнять `persist()` или `flush()` |
 | `Query DTO` / `ViewModel` | Данные строки списка, отчёта или представления | Содержать бизнес-операции и Doctrine lazy associations |
 | `Application Service` | Координация одного write-сценария и его транзакционной границы | Подменять бизнес-правила Entity, формировать HTTP-ответ |
 | `Entity` | Собственные инварианты, бизнес-поведение и переходы состояния | Зависеть от HTTP, Doctrine-сервисов, внешних API |
@@ -87,7 +91,7 @@ GET Request
 3. Symfony Validator проверяет страницу, размер страницы, фильтры и сортировку.
 4. Контроллер проверяет право доступа.
 5. Контроллер вызывает один специализированный Query.
-6. Query применяет company scope, фильтры и разрешённую сортировку.
+6. Query применяет scope видимости, фильтры и разрешённую сортировку.
 7. Query выбирает только нужные поля и формирует DTO-проекцию.
 8. Query создаёт Doctrine `QueryAdapter` и `Pagerfanta`.
 9. Pagerfanta получает количество результатов и данные текущей страницы.
@@ -123,10 +127,39 @@ POST / PUT / PATCH / DELETE Request
 3. Application Service загружает нужные Entity через Repository.
 4. Entity проверяет собственные инварианты и выполняет бизнес-операцию.
 5. Application Service координирует другие разрешённые действия сценария.
-6. Изменения сохраняются в одной явно определённой транзакционной границе.
+6. Изменения сохраняются в одной транзакционной границе.
 7. Контроллер возвращает HTTP-ответ.
 
 Query, list DTO и Pagerfanta в write-сценарии не участвуют.
+
+### 5.1. Транзакционная граница
+
+`flush()` вызывается ровно один раз за сценарий — в Application Service,
+который этот сценарий представляет.
+
+- `Repository::save()` выполняет `persist()`, но не `flush()`;
+- вложенный сервис не открывает собственную транзакцию и не флашит;
+- изменение нескольких агрегатов в одном сценарии сохраняется в одной
+  транзакции через явный `wrapInTransaction()`;
+- Entity, Query, Twig и контроллер транзакциями не управляют;
+- операция, которая должна быть атомарной, не разбивается на несколько `flush()`.
+
+Для агрегата со статусной машиной, доступного нескольким пользователям,
+использовать оптимистичную блокировку `#[Version]`: параллельные переходы
+состояния должны падать, а не молча перезаписывать друг друга. Уникальный
+индекс в БД остаётся последней линией защиты — Validator гонку не ловит.
+
+### 5.2. Побочные эффекты
+
+Письма, вебхуки, вызовы внешних API и постановка сообщений в очередь
+выполняются после успешного коммита, а не внутри транзакции.
+
+- откат транзакции не должен оставлять отправленное письмо или изменённые
+  внешние данные;
+- Entity может зафиксировать доменное событие, но не отправляет его сама;
+- обязательная часть сценария выполняется синхронно и не прячется в listener;
+- повторяемая операция должна быть идемпотентной: повторный POST, повторная
+  доставка сообщения и retry не создают второй объект.
 
 ## 6. Тонкие контроллеры
 
@@ -134,7 +167,7 @@ Query, list DTO и Pagerfanta в write-сценарии не участвуют.
 
 - объявить маршрут и допустимые HTTP-методы;
 - принять типизированный и валидированный вход;
-- получить текущего пользователя и контекст компании;
+- получить текущего пользователя;
 - проверить доступ;
 - вызвать один Query или один Application Service;
 - выбрать шаблон, redirect или тип HTTP-ответа;
@@ -157,16 +190,14 @@ Query, list DTO и Pagerfanta в write-сценарии не участвуют.
 Пример read-контроллера:
 
 ```php
-final class InvoiceListController extends AbstractController
+final class PostListController extends AbstractController
 {
-    #[Route('/invoices', name: 'invoice_list', methods: ['GET'])]
+    #[Route('/gazeta', name: 'gazeta_index', methods: ['GET'])]
     public function __invoke(
-        InvoiceListRequest $request,
-        InvoiceListQuery $query,
+        PostListRequest $request,
+        PostListQuery $query,
     ): Response {
-        $this->denyAccessUnlessGranted('INVOICE_LIST');
-
-        return $this->render('billing/invoice/list.html.twig', [
+        return $this->render('blog/index.html.twig', [
             'pager' => $query->paginate(
                 $request->criteria(),
                 $request->pageRequest(),
@@ -179,19 +210,19 @@ final class InvoiceListController extends AbstractController
 Пример write-контроллера:
 
 ```php
-final class InvoiceCancelController extends AbstractController
+final class PostArchiveController extends AbstractController
 {
-    #[Route('/invoices/{id}/cancel', name: 'invoice_cancel', methods: ['POST'])]
+    #[Route('/admin/gazeta/{id}/archive', name: 'admin_post_archive', methods: ['POST'])]
     public function __invoke(
         string $id,
-        InvoiceCancelRequest $request,
-        InvoiceCanceller $canceller,
+        PostArchiveRequest $request,
+        PostArchiver $archiver,
     ): Response {
-        $this->denyAccessUnlessGranted('INVOICE_CANCEL', $id);
+        $this->denyAccessUnlessGranted('POST_ARCHIVE', $id);
 
-        $canceller->cancel($id, $request->reason());
+        $archiver->archive($id, $request->reason());
 
-        return $this->redirectToRoute('invoice_list');
+        return $this->redirectToRoute('admin_post_list');
     }
 }
 ```
@@ -214,39 +245,40 @@ Entity отвечает за собственное корректное сос�
 Предпочтительны бизнес-методы:
 
 ```text
-approve()
-cancel()
-markAsPaid()
-changeAmount()
-addOperation()
-closePeriod()
+publish()
+archive()
+rename()
+changeCover()
+scheduleFor()
+attachToService()
 ```
 
 Не использовать публичные универсальные сеттеры для обхода бизнес-правил:
 
 ```text
 setStatus()
-setPaid()
-setBalance()
-setClosed()
+setPublished()
+setPublishedAt()
+setSlug()
 ```
+
+Время, случайные значения и идентификаторы Entity получает аргументами.
+Вызов `new \DateTimeImmutable()` внутри бизнес-метода делает поведение
+непроверяемым в тесте.
 
 Пример:
 
 ```php
-final class Invoice
+final class Post
 {
-    public function cancel(
-        CancellationReason $reason,
-        \DateTimeImmutable $cancelledAt,
-    ): void {
-        if (!$this->status->canBeCancelled()) {
-            throw new InvoiceCannotBeCancelled($this->id);
+    public function publish(\DateTimeImmutable $publishedAt): void
+    {
+        if (!$this->status->canBePublished()) {
+            throw new PostCannotBePublished($this->id);
         }
 
-        $this->status = InvoiceStatus::CANCELLED;
-        $this->cancellationReason = $reason;
-        $this->cancelledAt = $cancelledAt;
+        $this->status = PostStatus::PUBLISHED;
+        $this->publishedAt = $publishedAt;
     }
 }
 ```
@@ -273,10 +305,10 @@ Application Service представляет один конкретный по�
 сценарий:
 
 ```text
-InvoiceCreator
-InvoiceCanceller
-PaymentRegistrar
-CompanyMemberInviter
+PostPublisher
+PostArchiver
+PartnerRegistrar
+ServicePriceUpdater
 ```
 
 Он может:
@@ -292,8 +324,6 @@ Domain Service допустим, когда бизнес-правило:
 - использует несколько Entity или Value Object;
 - не принадлежит естественно одной Entity;
 - не является инфраструктурной координацией.
-
-Не создавать `Manager`, `Helper`, `Utils` или универсальный `CommonService`.
 
 Command + Handler добавляются, если:
 
@@ -319,19 +349,24 @@ Query должен:
 
 - выбирать только необходимые поля;
 - возвращать readonly DTO, ViewModel, scalar result или массив проекций;
-- применять обязательный company scope;
+- применять scope видимости;
 - использовать типизированные критерии;
 - проверять сортировку по белому списку;
 - обеспечивать стабильный порядок;
 - учитывать риск N+1 и дублей от joins;
 - не изменять состояние системы.
 
+Scope видимости обязателен для любых данных, у которых есть неопубликованное
+состояние: публичный Query отдаёт только опубликованное, черновики и снятые
+материалы доступны только в отдельном административном Query с проверкой
+доступа. Публичный и административный сценарий не смешиваются в одном Query
+через необязательный флаг.
+
 Запрещено:
 
 - использовать `findAll()` для пользовательских списков;
 - возвращать `Entity[]` из Query;
-- передавать коллекции Entity в Twig или API;
-- сериализовать Doctrine Entity;
+- передавать коллекции Entity в Twig или API и сериализовать Doctrine Entity;
 - загружать все колонки, если нужны отдельные поля;
 - использовать Doctrine partial objects вместо DTO;
 - обращаться к lazy associations внутри цикла или Twig;
@@ -352,13 +387,13 @@ babdev/pagerfanta-bundle
 Query возвращает:
 
 ```text
-Pagerfanta<InvoiceListItem>
+Pagerfanta<PostListItem>
 ```
 
 Запрещено возвращать для пользовательского списка:
 
 ```text
-Pagerfanta<Invoice>
+Pagerfanta<Post>
 ```
 
 Query отвечает за создание Doctrine `QueryAdapter` и Pagerfanta. Controller не
@@ -368,21 +403,21 @@ Query отвечает за создание Doctrine `QueryAdapter` и Pagerfan
 
 ```php
 /**
- * @return PagerfantaInterface<InvoiceListItem>
+ * @return PagerfantaInterface<PostListItem>
  */
 public function paginate(
-    InvoiceListCriteria $criteria,
+    PostListCriteria $criteria,
     PageRequest $page,
 ): PagerfantaInterface {
     $queryBuilder = $this->entityManager
         ->createQueryBuilder()
         ->select(sprintf(
-            'NEW %s(i.id, i.number, i.status, i.totalAmount, i.createdAt)',
-            InvoiceListItem::class,
+            'NEW %s(p.id, p.slug, p.title, p.status, p.publishedAt)',
+            PostListItem::class,
         ))
-        ->from(Invoice::class, 'i')
-        ->andWhere('i.company = :company')
-        ->setParameter('company', $criteria->companyId());
+        ->from(Post::class, 'p')
+        ->andWhere('p.status = :status')
+        ->setParameter('status', PostStatus::PUBLISHED);
 
     $this->applyFilters($queryBuilder, $criteria);
     $this->applySorting($queryBuilder, $criteria);
@@ -413,10 +448,9 @@ Doctrine.
 
 ```php
 private const SORT_FIELDS = [
-    'createdAt' => 'i.createdAt',
-    'number' => 'i.number',
-    'status' => 'i.status',
-    'amount' => 'i.totalAmount',
+    'publishedAt' => 'p.publishedAt',
+    'title' => 'p.title',
+    'status' => 'p.status',
 ];
 ```
 
@@ -425,7 +459,7 @@ private const SORT_FIELDS = [
 Пагинируемый запрос всегда имеет однозначный порядок:
 
 ```sql
-ORDER BY i.createdAt DESC, i.id DESC
+ORDER BY p.publishedAt DESC, p.id DESC
 ```
 
 Уникальное поле добавляется вторым критерием, чтобы строки с одинаковым первым
@@ -469,7 +503,7 @@ Twig получает DTO-проекции:
 
 ```twig
 {% for item in pager.currentPageResults %}
-    {# item — InvoiceListItem, не Entity #}
+    {# item — PostListItem, не Entity #}
 {% endfor %}
 
 {% if pager.haveToPaginate %}
@@ -488,9 +522,9 @@ Repository используется для получения и сохране�
 Допустимы методы с предметным смыслом:
 
 ```text
-get(InvoiceId $id)
-findPendingForCompany(CompanyId $companyId)
-save(Invoice $invoice)
+get(PostId $id)
+findScheduledForPublication(\DateTimeImmutable $now)
+save(Post $post)
 ```
 
 Repository не должен:
@@ -499,12 +533,39 @@ Repository не должен:
 - изменять несколько агрегатов;
 - формировать ViewModel пользовательского списка;
 - возвращать неограниченную коллекцию;
+- выполнять `flush()`;
 - использоваться напрямую из контроллера.
 
 Для сложного read-сценария использовать отдельный Query, даже если технически
 он применяет тот же EntityManager.
 
-## 12. Разрешённые паттерны
+## 12. Ошибки и исключения
+
+Каждый модуль объявляет собственные доменные исключения в `Exception/`.
+Entity и Domain Service бросают доменное исключение, а не HTTP-исключение.
+
+| Ситуация | Пример | HTTP |
+|---|---|---|
+| Объект не найден | `PostNotFound` | `404` |
+| Недопустимый переход состояния | `PostCannotBePublished` | `409` |
+| Невалидный внешний ввод | ошибка Validator | `422` |
+| Нет права на сценарий | отказ Security | `403` |
+
+Преобразование доменного исключения в HTTP-ответ выполняется одним exception
+listener. Контроллеры не повторяют одинаковый `try/catch` и не конвертируют
+исключения вручную.
+
+Правила:
+
+- исключение несёт идентификатор объекта и причину, но не HTTP-код и не готовый
+  текст для пользователя;
+- сообщение пользователю формируется на границе HTTP через переводы;
+- ожидаемая доменная ошибка логируется на уровне `warning`, непредвиденная — на
+  уровне `error` со stack trace;
+- в лог не попадают секреты, персональные данные и тело запроса целиком;
+- не использовать исключения для управления обычным потоком выполнения.
+
+## 13. Разрешённые паттерны
 
 - Entity с бизнес-поведением;
 - Value Object;
@@ -518,7 +579,7 @@ Repository не должен:
 - Domain Event для реакции другого модуля на произошедшее событие;
 - Test Data Builder для подготовки тестовых данных.
 
-## 13. Условно разрешённые паттерны
+## 14. Условно разрешённые паттерны
 
 Применять только при подтверждённой необходимости, указанной в плане:
 
@@ -544,7 +605,7 @@ Repository не должен:
 
 Если польза не подтверждена, использовать более простое решение.
 
-## 14. Запрещённые паттерны и решения
+## 15. Запрещённые паттерны и решения
 
 Запрещено создавать:
 
@@ -564,21 +625,27 @@ Repository не должен:
 - абстракции исключительно «на будущее»;
 - дублирование бизнес-логики в Symfony и отдельном сервисе.
 
-## 15. Тестирование архитектурных границ
+## 16. Тестирование архитектурных границ
 
 | Уровень | Что проверять |
 |---|---|
 | `Unit` | Инварианты Entity, Value Object, PageRequest, Criteria и белый список сортировок |
-| `Integration` | Query на реальной тестовой БД, company scope, фильтры, DTO, count и отсутствие дублей |
+| `Integration` | Query на реальной тестовой БД, scope видимости, фильтры, DTO, count и отсутствие дублей |
 | `Functional` | HTTP-маршрут, валидацию, security, пагинацию и `404` отсутствующей страницы |
 | `E2E` | Переходы по страницам и сохранение фильтров в критичных интерфейсах |
 
 Для интеграционных и функциональных тестов применять Test Data Builder согласно
 `AGENTS.md`.
 
+Границы слоёв проверяются статически: `make deptrac`, конфигурация в
+`site/deptrac.yaml`. Проверка входит в CI и падает при зависимостях
+Controller → Doctrine, Controller → Entity, Entity → Doctrine ORM, Entity →
+Symfony, Service → Query. Новый слой или модуль добавляется в `deptrac.yaml`
+вместе с кодом, иначе его зависимости останутся непроверенными.
+
 Для нового списка минимум проверить:
 
-- изоляцию данных компаний;
+- непопадание черновиков и снятых материалов в публичный список;
 - допустимые и недопустимые фильтры;
 - белый список сортировки;
 - стабильный порядок;
@@ -587,7 +654,7 @@ Repository не должен:
 - корректный count при joins;
 - отсутствие N+1 на критичном списке.
 
-## 16. Краткая схема выбора
+## 17. Краткая схема выбора
 
 ```text
 Нужно показать данные?
@@ -598,6 +665,7 @@ Repository не должен:
 → Application Service
 → Repository загружает Entity
 → Entity выполняет бизнес-метод
+→ один flush() в Application Service
 
 Правило относится только к одной Entity?
 → Entity
@@ -607,10 +675,12 @@ Repository не должен:
 
 Нужно обратиться к внешней системе?
 → Adapter
+→ вызов после успешного коммита
 ```
 
-## 17. Главная архитектурная граница
+## 18. Главная архитектурная граница
 
 > Controller управляет HTTP. Query управляет чтением и пагинацией. Entity
 > управляет собственным состоянием. Application Service управляет бизнес-
-> сценарием. Adapter управляет внешней инфраструктурой.
+> сценарием и транзакционной границей. Adapter управляет внешней
+> инфраструктурой.
