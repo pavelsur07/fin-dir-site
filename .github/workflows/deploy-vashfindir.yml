@@ -133,18 +133,46 @@ jobs:
                       echo "==> pull Symfony images"
                       "${COMPOSE[@]}" pull site-php-fpm site-php-cli
                       
-                      echo "==> stop Symfony only"
-                      "${COMPOSE[@]}" stop site site-php-fpm 2>/dev/null || true
-                      
-                      echo "==> remove old Symfony containers"
-                      "${COMPOSE[@]}" rm -f site site-php-fpm 2>/dev/null || true
-                      
-                      echo "==> start Symfony FPM"
-                      "${COMPOSE[@]}" up -d --no-deps site-php-fpm
-                      
-                      echo "==> start Symfony Nginx"
-                      "${COMPOSE[@]}" up -d --no-deps site
-                      
+                      # Zero-downtime. Раньше здесь было stop + rm + up: Traefik на
+                      # время выкатки терял единственный бэкенд и отдавал свой 404.
+                      # Теперь новые реплики поднимаются РЯДОМ со старыми, и только
+                      # после того, как они здоровы, старые убираются.
+                      FPM_REPLICAS=2
+                      FPM_FILTER=(--filter "label=com.docker.compose.project=vashfindir"
+                                  --filter "label=com.docker.compose.service=site-php-fpm")
+
+                      OLD_FPM="$(docker ps -q "${FPM_FILTER[@]}" | tr '\n' ' ')"
+                      OLD_N="$(echo ${OLD_FPM} | wc -w)"
+                      echo "==> php-fpm сейчас: ${OLD_N} шт."
+
+                      echo "==> поднимаем новые php-fpm рядом со старыми"
+                      # --no-recreate оставляет старые нетронутыми, --wait не отпускает,
+                      # пока новые не пройдут healthcheck
+                      "${COMPOSE[@]}" up -d --no-deps --no-recreate --wait \
+                          --scale "site-php-fpm=$((OLD_N + FPM_REPLICAS))" site-php-fpm
+
+                      if [ -n "${OLD_FPM// /}" ]; then
+                          echo "==> убираем старые php-fpm: ${OLD_FPM}"
+                          docker rm -f ${OLD_FPM}
+                      fi
+
+                      echo "==> приводим число реплик к ${FPM_REPLICAS}"
+                      "${COMPOSE[@]}" up -d --no-deps --no-recreate --wait \
+                          --scale "site-php-fpm=${FPM_REPLICAS}" site-php-fpm
+
+                      # nginx НЕ пересоздаём без нужды: именно он -- бэкенд Traefik,
+                      # и его пересоздание и есть 404. Обычный up это no-op, если
+                      # конфигурация compose не менялась; пересоздаст только когда
+                      # реально поменялись метки или образ.
+                      echo "==> nginx"
+                      "${COMPOSE[@]}" up -d --no-deps --wait site
+
+                      # Конфиг nginx приезжает bind-mount'ом, поэтому compose о его
+                      # изменении не знает -- перечитываем явно. Заодно сбрасывается
+                      # DNS-кеш upstream'а.
+                      echo "==> reload nginx"
+                      "${COMPOSE[@]}" exec -T site sh -lc 'nginx -t && nginx -s reload'
+
                       echo "==> status"
                       "${COMPOSE[@]}" ps site site-php-fpm
                       
