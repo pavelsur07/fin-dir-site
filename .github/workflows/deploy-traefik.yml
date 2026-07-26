@@ -1,0 +1,106 @@
+name: Deploy Traefik
+
+# Общая инфраструктура хоста. Намеренно отделено от deploy-vashfindir.yml:
+# релиз сайта не должен трогать reverse-proxy. Обратное уже приводило к тому,
+# что деплой приложения ронял прокси и весь хост уходил в 404.
+
+on:
+    push:
+        branches: ["master", "main"]
+        paths:
+            - "infra/traefik/**"
+            - ".github/workflows/deploy-traefik.yml"
+    workflow_dispatch:
+
+jobs:
+    deploy-traefik:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Deploy Traefik over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+                      TRAEFIK_DIR="${DEPLOY_PATH}/infra/traefik"
+
+                      echo "==> git sync"
+                      cd "${DEPLOY_PATH}"
+                      git fetch --all --prune
+                      git reset --hard origin/${{ github.ref_name }}
+
+                      cd "${TRAEFIK_DIR}"
+
+                      # Compose v2 обязателен: v1.29.2 падает с KeyError:
+                      # 'ContainerConfig' на пересоздании контейнера поверх
+                      # существующего -- и успевает снести старый до того, как
+                      # упасть, то есть оставляет хост без прокси.
+                      if ! docker compose version >/dev/null 2>&1; then
+                          echo "Docker Compose v2 не установлен. Запустите bootstrap-host.yml"
+                          exit 1
+                      fi
+                      echo "==> $(docker compose version)"
+
+                      # .env не в git (секрет). Порядок источников: секрет
+                      # репозитория -> значение из уже работающего контейнера ->
+                      # явная ошибка с инструкцией.
+                      if [ ! -f .env ]; then
+                          ACME_EMAIL_SECRET='${{ secrets.ACME_EMAIL }}'
+                          if [ -n "$ACME_EMAIL_SECRET" ]; then
+                              echo "==> .env из секрета репозитория"
+                              printf 'ACME_EMAIL=%s\n' "$ACME_EMAIL_SECRET" > .env
+                          elif docker inspect traefik >/dev/null 2>&1; then
+                              echo "==> .env из конфигурации работающего контейнера"
+                              docker inspect traefik \
+                                  --format '{{range .Config.Cmd}}{{println .}}{{end}}' \
+                                  | sed -n 's#^--certificatesresolvers\.le\.acme\.email=##p' \
+                                  | head -1 \
+                                  | sed 's#^#ACME_EMAIL=#' > .env
+                          else
+                              echo "Нет ни secrets.ACME_EMAIL, ни работающего traefik."
+                              echo "Создайте ${TRAEFIK_DIR}/.env по образцу .env.example"
+                              exit 1
+                          fi
+                          chmod 600 .env
+                      fi
+                      # значение не печатаем -- логи публичного репозитория видны всем
+                      grep -q '^ACME_EMAIL=.\+' .env || { echo "ACME_EMAIL пуст в .env"; exit 1; }
+
+                      # Сеть общая и никому не принадлежит, поэтому объявлена
+                      # external с обеих сторон и создаётся отдельно
+                      echo "==> сеть traefik_web"
+                      docker network inspect traefik_web >/dev/null 2>&1 \
+                          || docker network create traefik_web
+
+                      echo "==> валидация конфига"
+                      docker compose -p traefik -f docker-compose.yml config >/dev/null
+                      docker compose -p traefik -f docker-compose.yml config | grep -E 'image:|name:'
+
+                      echo "==> pull"
+                      docker compose -p traefik -f docker-compose.yml pull
+
+                      echo "==> up"
+                      docker compose -p traefik -f docker-compose.yml up -d
+
+                      echo "==> ждём, пока Traefik перечитает контейнеры"
+                      sleep 15
+
+                      echo "==> результат"
+                      docker inspect traefik --format 'image={{.Config.Image}} status={{.State.Status}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}'
+                      docker inspect traefik --format 'config_files={{ index .Config.Labels "com.docker.compose.project.config_files" }}'
+
+                      echo "==> сеть и том на месте"
+                      docker network ls --format '{{.Name}}' | grep -x traefik_web
+                      docker volume ls --format '{{.Name}}' | grep -x traefik_letsencrypt
+
+                      echo "==> ошибок Docker API в логах (ожидаем 0)"
+                      docker logs --tail=200 traefik 2>&1 | grep -c "is too old" || true
+
+                      echo "==> публичная проверка"
+                      curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/

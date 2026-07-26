@@ -1,10 +1,15 @@
 DC=docker compose
 CLI=$(DC) --profile cli run --rm site-php-cli
 
+# -p traefik закрепляет имя проекта, чтобы метаданные контейнера не зависели
+# от имени каталога, из которого запускают make
+TRAEFIK=$(DC) -p traefik -f infra/traefik/docker-compose.yml
+
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-.PHONY: init prepare build rebuild install update up down restart check console shell logs cache-clear clean-cache clean-local ps
+.PHONY: init prepare build rebuild install update up down restart check console shell logs cache-clear clean-cache clean-local ps \
+        traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
 init: prepare build install cache-clear up check
@@ -68,3 +73,23 @@ clean-local:
 
 ps:
 	$(DC) ps
+
+# --- Traefik (общий reverse-proxy хоста, см. infra/traefik/README.md) ---
+
+# Проверить синтаксис и увидеть, что реально развернётся
+traefik-config:
+	$(TRAEFIK) config
+
+# Общая сеть хоста. Никому не принадлежит, поэтому создаётся отдельно
+traefik-network:
+	docker network inspect traefik_web >/dev/null 2>&1 || docker network create traefik_web
+
+# Применить конфиг. Том traefik_letsencrypt создаётся сам
+traefik-up: traefik-network
+	$(TRAEFIK) up -d
+
+traefik-logs:
+	$(TRAEFIK) logs -f traefik
+
+traefik-ps:
+	$(TRAEFIK) ps

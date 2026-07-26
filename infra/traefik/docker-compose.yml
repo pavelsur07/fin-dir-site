@@ -1,0 +1,61 @@
+# Traefik -- общий reverse-proxy хоста. Единственный источник правды:
+# раньше этот файл лежал только в /opt/traefik на сервере, вне git.
+#
+# НЕ ОПУСКАТЬ версию ниже v3.6.1. Traefik до v3.6.1 жёстко использует Docker
+# API 1.24, а Docker Engine 29 требует минимум 1.44. Провайдер docker молча
+# перестаёт видеть контейнеры: роутов не остаётся, и хост отвечает 404 на все
+# домены, продолжая при этом отдавать валидный TLS из acme.json. Выглядит как
+# поломка приложения, а не прокси. Именно это положило vashfindir.ru 26.07.2026.
+#
+# Маршруты здесь НЕ описываются. Они живут в метках самих приложений
+# (см. docker-compose.prod.yml), Traefik подхватывает их через docker-провайдер.
+# Здесь только статическая конфигурация.
+
+services:
+    traefik:
+        image: traefik:v3.6.17
+        container_name: traefik
+        restart: always
+        security_opt:
+            - no-new-privileges:true
+        command:
+            - "--providers.docker=true"
+            # Контейнер попадает в маршрутизацию только с traefik.enable=true --
+            # ничего не публикуется наружу случайно.
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
+            - "--certificatesresolvers.le.acme.tlschallenge=true"
+            - "--certificatesresolvers.le.acme.email=${ACME_EMAIL:?ACME_EMAIL is required, см. .env.example}"
+            - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"
+            - "--ping=true"
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            # Только чтение: Traefik нужно лишь наблюдать за событиями Docker.
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "letsencrypt:/letsencrypt"
+        networks:
+            - web
+        healthcheck:
+            test: ["CMD", "traefik", "healthcheck", "--ping"]
+            interval: 30s
+            timeout: 5s
+            retries: 3
+
+volumes:
+    letsencrypt:
+        # Явное имя обязательно. Без него compose склеивает имя из имени
+        # каталога: развернули из каталога с другим именем -- получили пустой
+        # том, и все сертификаты "исчезли" с перевыпуском по кругу.
+        name: traefik_letsencrypt
+
+networks:
+    web:
+        # Общая шина всех сайтов хоста, поэтому external с обеих сторон:
+        # ни один стек ей не владеет и не может снести её своим `down`,
+        # утащив за собой чужие контейнеры. Создаётся один раз при
+        # разворачивании хоста -- `make traefik-network` (идемпотентно).
+        external: true
+        name: traefik_web
