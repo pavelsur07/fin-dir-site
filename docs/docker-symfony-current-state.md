@@ -3,8 +3,8 @@
 ## 1) Текущие Symfony-сервисы
 
 ### Development (`docker-compose.yml`)
-- `site` (`fin_dir_site`): собирается из `./site`, порт `8001:80`, mounts `./site`, `site_vendor`, `site_var`.
-- `site-php-cli` (`fin_dir_site_php_cli`): профиль `cli`, собирается из `./site`, `working_dir=/var/www/html`, те же mounts.
+- `site-nginx` (`vashfindir_site_nginx`): собирается из `./site`, порт `8001:80`, mounts `./site`, `site_vendor`, `site_var`.
+- `site-php-cli` (`vashfindir_site_php_cli`): профиль `cli`, собирается из `./site`, `working_dir=/var/www/html`, те же mounts.
 - Оба сервиса получают env:
   - `APP_ENV=dev`
   - `APP_DEBUG=1`
@@ -116,22 +116,14 @@
   - `context: ./site`, `file: ./site/Dockerfile`
 
 ### `.github/workflows/deploy-vashfindir.yml`
-Текущий deploy-скрипт делает:
-1. `docker-compose -f ... down || true`
-2. `docker rm -f vashfindir_wp vashfindir_db vashfindir_site vashfindir_site_php_cli || true`
-3. `docker-compose -f ... pull`
-4. `docker-compose -f ... up -d --remove-orphans`
-
-#### Риск (важно)
-- Текущий deploy **явно останавливает** стек и **принудительно удаляет** контейнеры WordPress и MariaDB (`vashfindir_wp`, `vashfindir_db`).
-- Это конфликтует с целевым ограничением “WordPress и MariaDB не трогать” в будущем процессе миграции Symfony.
+Deploy-скрипт обновляет и перезапускает только Symfony-сервисы `site` и
+`site-php-fpm`.
 
 ## 9) Текущие проблемы относительно целевой архитектуры
 
 1. Веб-runtime сейчас Apache/mod_php, а цель — `nginx + php-fpm + php-cli`.
 2. Runtime сейчас на PHP 8.3 и Debian (bookworm), а цель — PHP 8.4 и Alpine-based images.
 3. CI проверка использует `composer update --no-dev`, что менее детерминированно, чем lock-based install.
-4. Deploy workflow затрагивает/перезапускает WordPress и MariaDB (см. риск выше).
 
 ## Какие файлы нужно менять дальше
 
@@ -142,23 +134,7 @@
 - `docker-compose.prod.yml` (только Symfony-сервисы/labels backend для Symfony)
 - `Makefile` (только Symfony-related цели)
 - `.github/workflows/site-ci-cd.yml` (Symfony build/check pipeline)
-- опционально Symfony-части deploy workflow (без изменений поведения WP/DB в рамках отдельных задач и согласований)
-
-## Какие файлы нельзя менять
-
-- Сервисы `wordpress` и `db`.
-- `wp-content/**`.
-- WordPress доменные Traefik настройки (`vashfindir.ru` блоки).
-- Существующие секреты и обязательные env.
-
-## WordPress и MariaDB не трогать
-
-Неприкосновенные области:
-- `docker-compose.yml`: блоки `db`, `wordpress`.
-- `docker-compose.prod.yml`: блоки `db`, `wordpress` (включая healthcheck/labels/volumes).
-- `wp-content/**`.
-
-При последующей миграции Symfony эти блоки должны оставаться без изменений.
+- deploy workflow
 
 ## Подготовлена новая структура Symfony Docker configs
 

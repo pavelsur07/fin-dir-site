@@ -4,7 +4,7 @@ CLI=$(DC) --profile cli run --rm site-php-cli
 UID := $(shell id -u)
 GID := $(shell id -g)
 
-.PHONY: init prepare build rebuild install update up down restart check console shell logs cache-clear clean-cache clean-local wp-up wp-down wp-logs ps
+.PHONY: init prepare build rebuild install update up down restart check console shell logs cache-clear clean-cache clean-local ps
 
 # Первый запуск Symfony dev после clone
 init: prepare build install cache-clear up check
@@ -68,13 +68,3 @@ clean-local:
 
 ps:
 	$(DC) ps
-
-# WordPress / MariaDB / phpMyAdmin — только когда явно нужны
-wp-up:
-	$(DC) --profile wp up -d db wordpress phpmyadmin
-
-wp-down:
-	$(DC) stop db wordpress phpmyadmin
-
-wp-logs:
-	$(DC) logs -f db wordpress phpmyadmin

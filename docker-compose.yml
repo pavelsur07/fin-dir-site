@@ -1,56 +1,7 @@
 services:
-    db:
-        image: mysql:8.0
-        container_name: fin_dir_db
-        profiles:
-            - wp
-        restart: always
-        environment:
-            MYSQL_DATABASE: wordpress
-            MYSQL_USER: wp_user
-            MYSQL_PASSWORD: wp_pass
-            MYSQL_ROOT_PASSWORD: root_pass
-        volumes:
-            - db_data:/var/lib/mysql
-        ports:
-            - "3307:3306"
-
-    wordpress:
-        image: wordpress:php8.2-apache
-        container_name: fin_dir_wp
-        profiles:
-            - wp
-        depends_on:
-            - db
-        restart: always
-        ports:
-            - "8000:80"
-        environment:
-            WORDPRESS_DB_HOST: db:3306
-            WORDPRESS_DB_NAME: wordpress
-            WORDPRESS_DB_USER: wp_user
-            WORDPRESS_DB_PASSWORD: wp_pass
-        volumes:
-            - ./wp-content:/var/www/html/wp-content
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: fin_dir_pma
-        profiles:
-            - wp
-        depends_on:
-            - db
-        restart: always
-        ports:
-            - "8080:80"
-        environment:
-            PMA_HOST: db
-            PMA_USER: root
-            PMA_PASSWORD: root_pass
-
     site-nginx:
         image: nginx:1.27-alpine
-        container_name: fin_dir_site_nginx
+        container_name: vashfindir_site_nginx
         restart: always
         depends_on:
             - site-php-fpm
@@ -62,7 +13,7 @@ services:
 
     site-php-fpm:
         image: vashfindir-site-php-fpm:dev
-        container_name: fin_dir_site_php_fpm
+        container_name: vashfindir_site_php_fpm
         build:
             context: ./site
             dockerfile: docker/development/php-fpm/Dockerfile
@@ -82,7 +33,7 @@ services:
         profiles:
             - cli
         image: vashfindir-site-php-cli:dev
-        container_name: fin_dir_site_php_cli
+        container_name: vashfindir_site_php_cli
         build:
             context: ./site
             dockerfile: docker/development/php-cli/Dockerfile
@@ -95,6 +46,3 @@ services:
         volumes:
             - ./site:/app
         command: ["sh"]
-
-volumes:
-    db_data:

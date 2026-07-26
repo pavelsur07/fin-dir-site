@@ -1,22 +1,5 @@
 # JetBrains IDE
 *.iml
-# Игнорируем всё ядро WP (его тянет docker-образ)
-wp-admin/
-wp-includes/
-index.php
-license.txt
-readme.html
-wp-*.php
-
-# Исключаем только нашу область ответственности
-!wp-content/
-wp-content/*
-!wp-content/themes/
-!wp-content/plugins/
-
-# Загружаемые файлы НЕ храним в репозитории
-wp-content/uploads/
-
 # Логи, кеши и временные файлы
 *.log
 *.tmp
@@ -33,13 +16,3 @@ Thumbs.db
 .env
 .env.*
 docker-data/
-
-# Всё wp-content игнорим
-wp-content/languages/
-wp-content/upgrade/
-wp-content/themes/twentytwentyfive
-wp-content/themes/twentytwentyfour
-wp-content/themes/twentytwentythree
-
-# Например, если тема finplan-theme:
-# (legacy theme removed)

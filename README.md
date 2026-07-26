@@ -1,22 +1,26 @@
-# Fin-dir WordPress theme
+# Ваш ФинДиректор
 
-Проект разворачивает WordPress с кастомной темой `vashfindir`. Чтобы на продакшене тема точно попадала внутрь контейнера, используется собственный образ WordPress с предустановленными `wp-content/themes` и `wp-content/plugins`.
+Сайт на Symfony с Nginx и PHP-FPM.
 
-## Как запустить прод-окружение
+## Локальный запуск
 
-1. Подготовьте `.env` с паролями БД (`VF_DB_PASSWORD`, `VF_DB_ROOT_PASSWORD`).
-2. Соберите кастомный образ (тема окажется внутри контейнера, даже если на сервер не смонтирован `wp-content`).
-   Всегда пересобирайте его без кэша, чтобы не запустить старую версию темы:
-   ```bash
-   docker compose -f docker-compose.prod.yml build --no-cache wordpress
-   ```
-3. Поднимите контейнеры:
-   ```bash
-   docker compose -f docker-compose.prod.yml up -d
-   ```
-4. Данные загрузок и языковые файлы сохраняются в именованных томах `wp_uploads` и `wp_languages`, поэтому они переживут пересборку образа.
+```bash
+make init
+```
 
-Если WordPress не видел тему из-за пустого маунта `wp-content`, пересборка образа и запуск по шагам выше решают проблему: тема уже внутри образа и доступна ядру WordPress.
+После запуска сайт доступен на <http://localhost:8001>.
 
-Для повторных деплоев после изменений кода используйте те же команды (`build --no-cache` + `up -d`) либо `docker compose -f docker-compose.prod.yml up -d --build` — так вы гарантированно поднимете контейнеры с актуальной темой, а не со старой кэшированной сборкой.
-1 2 3
+Основные команды:
+
+```bash
+make up
+make check
+make logs
+make down
+```
+
+## Production
+
+Production-окружение описано в `docker-compose.prod.yml`. Для запуска нужен
+`VF_SITE_APP_SECRET`; PHP-образы публикуются workflow
+`.github/workflows/deploy-vashfindir.yml`.

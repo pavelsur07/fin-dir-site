@@ -1,63 +1,7 @@
+
 version: "3.9"
 
 services:
-  db:
-    image: mariadb:11
-    container_name: vashfindir_db
-    restart: always
-    environment:
-      MARIADB_DATABASE: vashfindir_wp
-      MARIADB_USER: vashfindir_user
-      MARIADB_PASSWORD: ${VF_DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${VF_DB_ROOT_PASSWORD}
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - internal
-    healthcheck:
-      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${VF_DB_ROOT_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  wordpress:
-    image: wordpress:php8.2-apache
-    container_name: vashfindir_wp
-    restart: always
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: vashfindir_wp
-      WORDPRESS_DB_USER: vashfindir_user
-      WORDPRESS_DB_PASSWORD: ${VF_DB_PASSWORD}
-      WORDPRESS_TABLE_PREFIX: wp_
-    volumes:
-      # wp-content из репозитория (темы/плагины/загрузки)
-      - ./wp-content:/var/www/html/wp-content
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=traefik_web"
-
-      # HTTPS
-      - "traefik.http.routers.vf.rule=Host(`newversion.vashfindir.ru`)"
-      - "traefik.http.routers.vf.entrypoints=websecure"
-      - "traefik.http.routers.vf.tls.certresolver=le"
-
-      # HTTP -> HTTPS
-      - "traefik.http.routers.vf-http.rule=Host(`newversion.vashfindir.ru`)"
-      - "traefik.http.routers.vf-http.entrypoints=web"
-      - "traefik.http.routers.vf-http.middlewares=vf-https-redirect"
-      - "traefik.http.middlewares.vf-https-redirect.redirectscheme.scheme=https"
-
-      # ВАЖНО: явно указать порт сервиса внутри контейнера (Apache = 80)
-      - "traefik.http.services.vf.loadbalancer.server.port=80"
-
-    networks:
-      - web
-      - internal
-
   site:
     container_name: vashfindir_site
     image: nginx:1.27-alpine
@@ -120,6 +64,3 @@ networks:
     name: traefik_web
   internal:
     external: false
-
-volumes:
-  db_data:
