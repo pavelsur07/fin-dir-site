@@ -106,8 +106,6 @@ jobs:
                       git reset --hard origin/${{ github.ref_name }}
                       
                       echo "==> export env"
-                      export VF_DB_PASSWORD='${{ secrets.VF_DB_PASSWORD }}'
-                      export VF_DB_ROOT_PASSWORD='${{ secrets.VF_DB_ROOT_PASSWORD }}'
                       export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
                       export GHCR_OWNER='${{ github.repository_owner }}'
                       export IMAGE_TAG='${{ env.IMAGE_TAG }}'
@@ -154,5 +152,10 @@ jobs:
                       echo "==> Symfony health (inside container)"
                       "${COMPOSE_CMD[@]}" -f "${COMPOSE_FILE}" exec -T site sh -lc 'wget -qO- http://127.0.0.1/health | grep -qx "alive"'
                       
-                      echo "==> WordPress HTTP check only"
-                      curl -I https://vashfindir.ru/ || true
+                      echo "==> Traefik diagnostics"
+                      docker inspect vashfindir_site --format '{{json .Config.Labels}}'
+                      docker inspect vashfindir_site --format '{{json .NetworkSettings.Networks}}'
+                      docker ps --filter name=traefik --format '{{.Names}} {{.Networks}}'
+
+                      echo "==> public HTTP check"
+                      curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
