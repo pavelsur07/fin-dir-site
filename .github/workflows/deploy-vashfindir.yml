@@ -107,6 +107,7 @@ jobs:
                       
                       echo "==> export env"
                       export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
+                      export VF_SITE_DB_PASSWORD='${{ secrets.VF_SITE_DB_PASSWORD }}'
                       export GHCR_OWNER='${{ github.repository_owner }}'
                       export IMAGE_TAG='${{ env.IMAGE_TAG }}'
                       
@@ -132,7 +133,13 @@ jobs:
                       
                       echo "==> pull Symfony images"
                       "${COMPOSE[@]}" pull site-php-fpm site-php-cli
-                      
+
+                      # Ниже php-fpm поднимается с --no-deps, а он игнорирует
+                      # depends_on -- поэтому базу поднимаем явно и ждём healthcheck.
+                      # up -d это no-op, если конфигурация базы не менялась.
+                      echo "==> postgres"
+                      "${COMPOSE[@]}" up -d --wait site-postgres
+
                       # Zero-downtime. Раньше здесь было stop + rm + up: Traefik на
                       # время выкатки терял единственный бэкенд и отдавал свой 404.
                       # Теперь новые реплики поднимаются РЯДОМ со старыми, и только
@@ -184,6 +191,9 @@ jobs:
                       
                       echo "==> Symfony health (inside container)"
                       "${COMPOSE[@]}" exec -T site sh -lc 'wget -qO- http://127.0.0.1/health | grep -qx "alive"'
+
+                      echo "==> DB check"
+                      "${COMPOSE[@]}" run --rm site-php-cli php bin/console dbal:run-sql 'select 1'
                       
                       echo "==> Traefik diagnostics"
                       docker inspect vashfindir_site --format '{{json .Config.Labels}}'

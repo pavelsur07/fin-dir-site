@@ -19,11 +19,26 @@ make logs
 make down
 ```
 
+## База данных
+
+PostgreSQL 17, база и пользователь — `site`. Пароль в dev — `secret`
+(в `docker-compose.yml`, локальная база наружу не смотрит). Подключение идёт
+через `DATABASE_URL`, порт на хост не публикуется — `make shell`, дальше
+`psql -h site-postgres -U site site`.
+
+Установлен только Doctrine DBAL: `make console CMD="dbal:run-sql 'select 1'"`.
+ORM и миграции — когда появится первая сущность.
+
 ## Production
 
-Production-окружение описано в `docker-compose.prod.yml`. Для запуска нужен
-`VF_SITE_APP_SECRET`; PHP-образы публикуются workflow
+Production-окружение описано в `docker-compose.prod.yml`. Для запуска нужны
+`VF_SITE_APP_SECRET` и `VF_SITE_DB_PASSWORD`; PHP-образы публикуются workflow
 `.github/workflows/deploy-vashfindir.yml`.
+
+`VF_SITE_DB_PASSWORD` должен быть URL-safe: он подставляется в DSN, и `@`, `/`,
+`%`, `$` в нём сломают либо разбор DSN, либо интерполяцию compose. Генерировать
+`openssl rand -hex 32`. Менять пароль после первого деплоя мало — `POSTGRES_PASSWORD`
+применяется только при инициализации тома, дальше нужен `ALTER USER`.
 
 Reverse-proxy хоста вынесен в `infra/traefik/` — см. README там.
 

@@ -49,6 +49,7 @@ restart:
 
 check:
 	$(CLI) php bin/console about
+	$(CLI) php bin/console dbal:run-sql 'select 1'
 	$(DC) exec site-php-fpm php-fpm -t
 	curl -i http://localhost:8001/health
 	curl -I http://localhost:8001/

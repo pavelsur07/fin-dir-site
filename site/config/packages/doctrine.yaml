@@ -1,0 +1,7 @@
+doctrine:
+    dbal:
+        # ponytail: только DBAL. ORM, миграции и src/Entity — когда появится
+        # первая сущность, сейчас их нечем мапить.
+        # serverVersion и charset приезжают в DSN, отдельным ключом не дублируем.
+        # env() без resolve: пароль с % не должен попадать в разбор параметров.
+        url: '%env(DATABASE_URL)%'

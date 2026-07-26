@@ -24,10 +24,33 @@ services:
             APP_DEBUG: "1"
             APP_SECRET: dev-site-secret
             DEFAULT_URI: http://localhost:8001
+            DATABASE_URL: "postgresql://site:secret@site-postgres:5432/site?serverVersion=17&charset=utf8"
+        depends_on:
+            site-postgres:
+                condition: service_healthy
         volumes:
             - ./site:/app
         expose:
             - "9000"
+
+    site-postgres:
+        image: postgres:17-alpine
+        container_name: vashfindir_site_postgres
+        restart: always
+        environment:
+            TZ: Europe/Moscow
+            POSTGRES_DB: site
+            POSTGRES_USER: site
+            POSTGRES_PASSWORD: secret
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        # ponytail: порт на хост не публикуем -- приложение ходит по сети compose.
+        # Нужен DataGrip/psql с хоста -- добавить ports: ["15432:5432"].
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U site -d site"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
 
     site-php-cli:
         profiles:
@@ -43,6 +66,13 @@ services:
             APP_DEBUG: "1"
             APP_SECRET: dev-site-secret
             DEFAULT_URI: http://localhost:8001
+            DATABASE_URL: "postgresql://site:secret@site-postgres:5432/site?serverVersion=17&charset=utf8"
+        depends_on:
+            site-postgres:
+                condition: service_healthy
         volumes:
             - ./site:/app
         command: ["sh"]
+
+volumes:
+    postgres_data:
