@@ -11,6 +11,7 @@ services:
       - "traefik.http.routers.vf-new.entrypoints=websecure"
       - "traefik.http.routers.vf-new.tls.certresolver=le"
 
+
       - "traefik.http.routers.vf-new-http.rule=Host(`vashfindir.ru`)"
       - "traefik.http.routers.vf-new-http.entrypoints=web"
       - "traefik.http.routers.vf-new-http.middlewares=vf-new-https-redirect"
