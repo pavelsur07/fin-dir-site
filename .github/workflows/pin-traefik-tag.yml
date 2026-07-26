@@ -1,0 +1,60 @@
+name: Pin Traefik tag in prod compose file
+
+# Одноразовый инструмент. Запущенный Traefik уже v3.6.17, но
+# /opt/traefik/docker-compose.yml всё ещё содержит v3.1: любой `docker-compose up`
+# там откатит прокси на версию, несовместимую с Docker 29 API, и весь хост
+# снова уйдёт в 404. Закрепляем тег на диске.
+#
+# /opt/traefik принадлежит root, у деплой-пользователя нет ни записи, ни sudo,
+# поэтому правим через контейнер с bind-mount: демон работает от root.
+# Запускать вручную: gh workflow run pin-traefik-tag.yml
+# После успешного запуска этот файл можно удалить.
+
+on:
+    workflow_dispatch:
+
+jobs:
+    pin-traefik-tag:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Pin Traefik tag over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      echo "==> before"
+                      grep -n 'image:.*traefik' /opt/traefik/docker-compose.yml
+                      ls -l /opt/traefik/docker-compose.yml
+
+                      # cat > file вместо sed -i / mv: пишем в тот же inode, поэтому
+                      # владелец и права исходного root-файла сохраняются как были
+                      docker run --rm -v /opt/traefik:/work -w /work alpine:3 sh -eux -c "
+                          test -f docker-compose.yml
+                          [ -f docker-compose.yml.bak-pre-v3.6.17 ] || cp -a docker-compose.yml docker-compose.yml.bak-pre-v3.6.17
+                          sed -E 's#traefik:v[0-9][0-9.]*#traefik:v3.6.17#g' docker-compose.yml > /tmp/patched
+                          grep -q 'traefik:v3.6.17' /tmp/patched
+                          cat /tmp/patched > docker-compose.yml
+                      "
+
+                      echo "==> after"
+                      grep -n 'image:.*traefik' /opt/traefik/docker-compose.yml
+                      ls -l /opt/traefik/docker-compose.yml /opt/traefik/docker-compose.yml.bak-pre-v3.6.17
+
+                      echo "==> что теперь развернёт compose из этого файла"
+                      if docker compose version >/dev/null 2>&1; then
+                          docker compose -f /opt/traefik/docker-compose.yml config 2>/dev/null | grep -E 'image:.*traefik'
+                      else
+                          docker-compose -f /opt/traefik/docker-compose.yml config 2>/dev/null | grep -E 'image:.*traefik'
+                      fi
+
+                      echo "==> запущенный контейнер не трогали, проверяем"
+                      docker inspect traefik --format '{{.Config.Image}}'
+
+                      echo "==> сайт"
+                      curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
