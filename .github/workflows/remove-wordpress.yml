@@ -1,0 +1,54 @@
+name: Remove WordPress containers from prod
+
+# Одноразовый инструмент. Сервисы wp/db удалены из docker-compose.prod.yml
+# в 033d0d4, но деплой не вызывает `down`, поэтому контейнеры остались
+# работать на проде осиротевшими. Сносим их.
+#
+# Том vashfindir_db_data НЕ трогаем: удаление контейнера обратимо, удаление
+# тома -- нет. Запускать вручную: gh workflow run remove-wordpress.yml
+# После успешного запуска этот файл можно удалить.
+
+on:
+    workflow_dispatch:
+
+jobs:
+    remove-wordpress:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Remove WordPress containers over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      echo "==> containers before"
+                      docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}'
+
+                      echo "==> volumes before (том с данными WordPress должен остаться)"
+                      docker volume ls --format '{{.Name}}'
+
+                      for c in vashfindir_wp vashfindir_db; do
+                          if docker inspect "$c" >/dev/null 2>&1; then
+                              echo "==> removing ${c}"
+                              # stop, а не rm -f: MariaDB должна закрыться штатно по SIGTERM,
+                              # чтобы том остался консистентным для возможного восстановления
+                              docker stop -t 30 "$c"
+                              docker rm "$c"
+                          else
+                              echo "==> ${c} already gone"
+                          fi
+                      done
+
+                      echo "==> containers after"
+                      docker ps -a --format '{{.Names}}\t{{.Image}}\t{{.Status}}'
+
+                      echo "==> volumes after (ожидаем vashfindir_db_data на месте)"
+                      docker volume ls --format '{{.Name}}'
+
+                      echo "==> сайт должен продолжать работать"
+                      curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
