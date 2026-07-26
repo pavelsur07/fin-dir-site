@@ -123,10 +123,12 @@ jobs:
                       fi
                       
                       echo "==> ensure Traefik Docker API compatibility"
-                      if docker logs --tail=50 traefik 2>&1 | grep -q "client version 1.24 is too old"; then
+                      TRAEFIK_IMAGE="$(docker inspect traefik --format="{{.Config.Image}}")"
+                      if [ "$TRAEFIK_IMAGE" = "traefik:v3.1" ]; then
                           TRAEFIK_COMPOSE_FILE="$(docker inspect traefik --format="{{ index .Config.Labels \"com.docker.compose.project.config_files\" }}")"
                           TRAEFIK_WORKDIR="$(docker inspect traefik --format="{{ index .Config.Labels \"com.docker.compose.project.working_dir\" }}")"
                           TRAEFIK_SERVICE="$(docker inspect traefik --format="{{ index .Config.Labels \"com.docker.compose.service\" }}")"
+                          echo "Traefik compose: $TRAEFIK_COMPOSE_FILE; service: $TRAEFIK_SERVICE"
                           test -f "$TRAEFIK_COMPOSE_FILE"
                           cp "$TRAEFIK_COMPOSE_FILE" "$TRAEFIK_COMPOSE_FILE.bak-pre-v3.6.17"
                           sed -i "s#traefik:v3.1#traefik:v3.6.17#g" "$TRAEFIK_COMPOSE_FILE"
