@@ -67,7 +67,15 @@ jobs:
 
                           COMPOSE_ARGS=(-p "$PROJECT" --project-directory "$WORKDIR" -f "$PATCHED")
                           "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" pull "$SERVICE"
-                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" up -d --force-recreate "$SERVICE"
+
+                          # docker-compose 1.29.2 падает с KeyError: 'ContainerConfig' при
+                          # пересоздании контейнера -- современные образы больше не отдают это
+                          # поле в image inspect. На создании с нуля этот код не вызывается,
+                          # поэтому сносим контейнер и поднимаем заново: ровно тот же приём,
+                          # которым рабочий деплой приложения обновляет site/site-php-fpm.
+                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" stop "$SERVICE" || true
+                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" rm -f "$SERVICE" || true
+                          "${COMPOSE_CMD[@]}" "${COMPOSE_ARGS[@]}" up -d "$SERVICE"
 
                           # Закрепить правку на диске, иначе следующий `up` в /opt/traefik
                           # откатит Traefik обратно на старый тег.
