@@ -19,6 +19,23 @@ make logs
 make down
 ```
 
+## Проверки
+
+```bash
+make ci        # весь набор, как в .github/workflows/ci.yml
+```
+
+По отдельности: `make lint` (composer validate и audit, lint:yaml/twig/container),
+`make cs` (стиль, чинится через `make cs-fix`), `make phpstan` (level 8),
+`make deptrac` (границы слоёв), `make test` (PHPUnit).
+
+Тот же набор гоняется на каждом PR и первым шагом деплоя — `deploy-vashfindir.yml`
+вызывает `ci.yml` и раскатывает только после зелёного результата.
+
+`tests/SmokeTest.php` проходит по всем маршрутам без параметров и требует 200.
+Он ловит то, чего не видит статика: ошибки Twig во время рендера и любые 500-е.
+Новый маршрут попадает в него сам, фикстур не требуется.
+
 ## База данных
 
 PostgreSQL 17, база и пользователь — `site`. Пароль в dev — `secret`

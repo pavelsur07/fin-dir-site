@@ -8,6 +8,16 @@ yarn-error.log
 .pnpm-store/
 .phpunit.cache/
 coverage/
+
+# Инструменты разработки: в production-образ не нужны (там composer --no-dev)
+tests/
+phpunit.dist.xml
+phpstan.dist.neon
+.php-cs-fixer.dist.php
+.php-cs-fixer.cache
+deptrac.yaml
+.deptrac.cache
+.editorconfig
 .env.local
 .env.*.local
 .git/

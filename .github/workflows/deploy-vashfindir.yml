@@ -16,51 +16,22 @@ env:
     IMAGE_TAG: sha-${{ github.sha }}
 
 jobs:
+    # Тот же набор проверок, что и на PR. Ни один шаг ниже не начнётся,
+    # пока линтеры, phpstan, deptrac и тесты не станут зелёными.
+    ci:
+        uses: ./.github/workflows/ci.yml
+
     deploy:
+        needs: ci
         runs-on: ubuntu-latest
 
         permissions:
             contents: read
             packages: write
 
-        env:
-            APP_ENV: test
-            APP_SECRET: ci-secret
-            DEFAULT_URI: https://example.test
-
         steps:
             - name: Checkout
               uses: actions/checkout@v5
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: "8.4"
-                  tools: composer:v2
-                  extensions: pdo_pgsql, pgsql, zip, bcmath, xml
-                  coverage: none
-
-            - name: Composer validate
-              working-directory: site
-              run: composer validate --strict --no-check-lock
-
-            # С dev-зависимостями: нужен deptrac. В production-образы они не попадают,
-            # там composer install идёт с --no-dev.
-            - name: Composer install
-              working-directory: site
-              run: composer install --prefer-dist --no-interaction --no-progress --no-scripts --optimize-autoloader
-
-            - name: Lint Twig templates
-              working-directory: site
-              run: php bin/console lint:twig templates
-
-            - name: Lint Symfony container
-              working-directory: site
-              run: php bin/console lint:container
-
-            - name: Check architecture layers
-              working-directory: site
-              run: vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --report-uncovered
 
             - name: Login to GHCR
               run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u "${{ github.actor }}" --password-stdin
