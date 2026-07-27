@@ -1,0 +1,72 @@
+name: CI
+
+# Проверки для PR и как первый шаг деплоя: deploy-vashfindir.yml зовёт этот
+# workflow через `uses:` и раскатывает только после зелёного результата.
+on:
+    pull_request:
+    workflow_call:
+
+jobs:
+    checks:
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: site
+
+        # dev, а не test: phpstan-symfony читает скомпилированный контейнер
+        # из var/cache/dev. Реальные значения секретов здесь не нужны --
+        # ни один шаг не ходит в базу и наружу.
+        env:
+            APP_ENV: dev
+            APP_DEBUG: "1"
+            APP_SECRET: ci-secret
+            DEFAULT_URI: https://example.test
+            DATABASE_URL: postgresql://site:secret@127.0.0.1:5432/site?serverVersion=17&charset=utf8
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v5
+
+            # Версия совпадает с php:8.4 в docker/development и docker/production.
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.4"
+                  tools: composer:v2
+                  extensions: pdo_pgsql, pgsql, zip, bcmath, xml
+                  coverage: none
+
+            # Без --no-check-lock: рассинхрон composer.json и composer.lock
+            # это как раз то, что здесь надо ловить.
+            - name: Composer validate
+              run: composer validate --strict
+
+            - name: Composer install
+              run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
+
+            - name: Composer audit
+              run: composer audit
+
+            - name: Lint YAML
+              run: php bin/console lint:yaml config
+
+            - name: Lint Twig templates
+              run: php bin/console lint:twig templates
+
+            - name: Lint Symfony container
+              run: php bin/console lint:container
+
+            - name: Code style
+              run: vendor/bin/php-cs-fixer check --diff
+
+            - name: Static analysis
+              run: |
+                  php bin/console cache:warmup
+                  vendor/bin/phpstan analyse --no-progress
+
+            - name: Check architecture layers
+              run: vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --report-uncovered
+
+            - name: Tests
+              run: vendor/bin/phpunit

@@ -1,0 +1,14 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
+
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+
+    # Знание о сервисах, параметрах и роутинге берётся из скомпилированного
+    # контейнера -- перед анализом нужен bin/console cache:warmup (см. Makefile).
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml

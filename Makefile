@@ -9,6 +9,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
+        lint cs cs-fix phpstan test ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -76,6 +77,32 @@ cache-clear:
 # Границы слоёв из docs/architecture/PATTERNS.md. Конфиг: site/deptrac.yaml
 deptrac:
 	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
+
+# --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
+
+lint:
+	$(CLI) composer validate --strict
+	$(CLI) composer audit
+	$(CLI) php bin/console lint:yaml config
+	$(CLI) php bin/console lint:twig templates
+	$(CLI) php bin/console lint:container
+
+# Проверить стиль. Починить: make cs-fix
+cs:
+	$(CLI) vendor/bin/php-cs-fixer check --diff
+
+cs-fix:
+	$(CLI) vendor/bin/php-cs-fixer fix
+
+# cache:warmup обязателен: phpstan-symfony читает контейнер из var/cache/dev
+phpstan:
+	$(CLI) sh -lc 'php bin/console cache:warmup && vendor/bin/phpstan analyse --no-progress'
+
+test:
+	$(CLI) vendor/bin/phpunit
+
+# Всё, что гоняет CI
+ci: lint cs phpstan deptrac test
 
 clean-cache:
 	rm -rf site/var/cache site/var/log
