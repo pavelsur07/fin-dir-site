@@ -1,0 +1,69 @@
+.vf-section {
+    padding-block: var(--vf-section-space);
+}
+
+.vf-section--surface {
+    background: var(--vf-color-surface);
+}
+
+.vf-section--muted {
+    background: var(--vf-color-background);
+}
+
+.vf-section--dark {
+    background: var(--vf-color-surface-dark);
+    color: var(--vf-color-text-on-dark);
+}
+
+.vf-section--dark :is(h1, h2, h3, h4) {
+    color: var(--vf-color-text-on-dark);
+}
+
+.vf-section--dark .vf-text-muted {
+    color: var(--vf-color-muted-on-dark);
+}
+
+.vf-section--dark :is(a, code) {
+    color: var(--vf-color-text-on-dark);
+}
+
+.vf-section--dark a:hover {
+    color: var(--vf-color-muted-on-dark);
+}
+
+.vf-section--dark :focus-visible,
+.vf-section--dark .vf-is-focus {
+    outline-color: var(--vf-color-focus-on-dark);
+}
+
+.vf-section__heading {
+    max-width: var(--vf-content-max);
+    margin-bottom: var(--vf-space-8);
+}
+
+.vf-section__heading p:last-child {
+    margin-bottom: 0;
+}
+
+.vf-hero__content {
+    max-width: var(--vf-content-max);
+}
+
+.vf-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--vf-space-3);
+    margin-top: var(--vf-space-8);
+}
+
+.vf-card-grid {
+    --bs-gutter-x: var(--vf-grid-gap);
+    --bs-gutter-y: var(--vf-grid-gap);
+}
+
+@media (max-width: 575.98px) {
+    .vf-hero__actions .btn,
+    .vf-cta__inner .btn {
+        width: 100%;
+    }
+}

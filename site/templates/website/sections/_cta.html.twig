@@ -1,0 +1,15 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'vf-section--surface' %}
+{% set section_id = id|default('vf-cta') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'cta' %}
+
+{% block section_content %}
+    {% include 'website/components/_cta.html.twig' with {
+        heading_id: labelled_by,
+        title: title,
+        text: text,
+        action_label: action_label,
+        action_href: action_href,
+    } only %}
+{% endblock %}

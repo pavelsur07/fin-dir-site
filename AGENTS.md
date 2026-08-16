@@ -1,4 +1,3 @@
-````
 # AGENTS.md
 
 ## 1. Назначение проекта
@@ -168,6 +167,19 @@ site/tests/
 ├── Partner/
 └── Shared/
 ```
+
+## Public Website
+
+Для всех изменений публичного сайта агент обязан полностью прочитать и соблюдать:
+
+- `SITE_RULES.md`.
+
+`SITE_RULES.md` — Source of Truth для design system, design tokens, typography,
+spacing, Twig-структуры, UI components, section architecture, CSS, responsive,
+accessibility baseline и AI-generated UI anti-patterns публичного сайта.
+
+Не создавать новые UI patterns, произвольные стили, дубли компонентов или
+декоративные варианты, противоречащие `SITE_RULES.md`.
 
 ## 6. Правила модульности
 
@@ -689,5 +701,3 @@ make deptrac
 Сначала использовать простое решение внутри Symfony-монолита.
 
 Новый слой, очередь, сервис, язык или frontend-приложение добавляются только тогда, когда существующее решение уже не удовлетворяет конкретной подтверждённой задаче.
-
-````

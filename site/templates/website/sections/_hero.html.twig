@@ -1,0 +1,30 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'vf-section--surface vf-hero' %}
+{% set section_id = id|default('vf-hero') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'hero' %}
+
+{% block section_content %}
+    <div class="vf-hero__content">
+        {% if eyebrow|default(null) %}<p class="vf-caption vf-text-muted">{{ eyebrow }}</p>{% endif %}
+        <h1 id="{{ labelled_by }}">{{ title }}</h1>
+        <p class="vf-lead vf-text-muted">{{ text }}</p>
+        {% if primary_action|default(null) or secondary_action|default(null) %}
+            <div class="vf-hero__actions">
+                {% if primary_action|default(null) %}
+                    {% include 'website/components/_button.html.twig' with {
+                        label: primary_action.label,
+                        href: primary_action.href,
+                    } only %}
+                {% endif %}
+                {% if secondary_action|default(null) %}
+                    {% include 'website/components/_button.html.twig' with {
+                        label: secondary_action.label,
+                        href: secondary_action.href,
+                        variant: 'outline-primary',
+                    } only %}
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

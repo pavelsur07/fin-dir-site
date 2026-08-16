@@ -1,0 +1,2 @@
+{% set tone = tone|default('default') %}
+<span class="badge vf-badge{% if tone != 'default' %} vf-badge--{{ tone }}{% endif %}" data-vf-component="badge">{{ label }}</span>

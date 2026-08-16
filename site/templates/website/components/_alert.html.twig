@@ -1,0 +1,5 @@
+{% set tone = tone|default('default') %}
+<div class="alert vf-alert{% if tone != 'default' %} vf-alert--{{ tone }}{% endif %}"{% if role|default(null) %} role="{{ role }}"{% endif %} data-vf-component="alert">
+    <strong>{{ title }}</strong>
+    <div>{{ text }}</div>
+</div>

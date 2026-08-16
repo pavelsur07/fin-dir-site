@@ -1,5 +1,6 @@
 DC=docker compose
 CLI=$(DC) --profile cli run --rm site-php-cli
+TEST_CLI=$(DC) --profile cli run --rm -v $(CURDIR)/SITE_RULES.md:/workspace/SITE_RULES.md:ro site-php-cli
 
 # -p traefik закрепляет имя проекта, чтобы метаданные контейнера не зависели
 # от имени каталога, из которого запускают make
@@ -9,7 +10,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
-        lint cs cs-fix phpstan test ci \
+        assets asset-version assets-check lint cs cs-fix phpstan test ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -78,9 +79,21 @@ cache-clear:
 deptrac:
 	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
 
+# Публичное зеркало редактируемого CSS source. Nginx раздаёт только site/public.
+assets:
+	rm -rf -- site/public/assets/website
+	mkdir -p site/public/assets/website
+	cp -R site/assets/styles/website/. site/public/assets/website/
+
+asset-version:
+	@find site/assets/styles/website -type f -name '*.css' -print0 | LC_ALL=C sort -z | xargs -0 cat | sha256sum | cut -c1-12
+
+assets-check:
+	diff -ru site/assets/styles/website site/public/assets/website
+
 # --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
 
-lint:
+lint: assets-check
 	$(CLI) composer validate --strict
 	$(CLI) composer audit
 	$(CLI) php bin/console lint:yaml config
@@ -99,7 +112,7 @@ phpstan:
 	$(CLI) sh -lc 'php bin/console cache:warmup && vendor/bin/phpstan analyse --no-progress'
 
 test:
-	$(CLI) vendor/bin/phpunit
+	$(TEST_CLI) vendor/bin/phpunit
 
 # Всё, что гоняет CI
 ci: lint cs phpstan deptrac test

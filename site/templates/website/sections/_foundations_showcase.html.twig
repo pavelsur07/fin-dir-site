@@ -1,0 +1,173 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'vf-section--surface' %}
+{% set section_id = 'foundations' %}
+{% set labelled_by = 'foundations-title' %}
+{% set section_name = 'foundations-showcase' %}
+
+{% block section_content %}
+    <div class="vf-section__heading">
+        <h2 id="foundations-title">Основы</h2>
+        <p class="vf-lead vf-text-muted">Typography, colors и spacing используют реальные design tokens.</p>
+    </div>
+
+    <div class="vf-showcase">
+        <div class="vf-showcase-group" id="typography" data-vf-showcase="typography">
+            <h3>Typography</h3>
+            <p class="vf-caption vf-text-muted">H1 — 40/44 mobile, 56/60 desktop</p>
+            <div class="vf-h1">Финансы без догадок</div>
+            <p class="vf-caption vf-text-muted">H2</p>
+            <div class="vf-h2">Понятная система управления</div>
+            <p class="vf-caption vf-text-muted">H3</p>
+            <div class="vf-h3">Данные для решения</div>
+            <p class="vf-caption vf-text-muted">H4</p>
+            <div class="vf-h4">Единый источник правил</div>
+            <p class="vf-caption vf-text-muted">Lead</p>
+            <p class="vf-lead">Крупный вводный текст для краткого объяснения раздела.</p>
+            <p class="vf-caption vf-text-muted">Body</p>
+            <p>Основной текст предназначен для чтения и использует шкалу 16/24.</p>
+            <p class="vf-caption vf-text-muted">Small</p>
+            <p class="vf-small">Дополнительное пояснение без потери читаемости.</p>
+            <p class="vf-caption vf-text-muted">Caption</p>
+            <p class="vf-caption">Краткая подпись</p>
+            <h4>Font weights</h4>
+            <p class="vf-font-weight-regular">Regular 400</p>
+            <p class="vf-font-weight-medium">Medium 500</p>
+            <p class="vf-font-weight-bold">Bold 700</p>
+        </div>
+
+        <div class="vf-showcase-group" id="colors" data-vf-showcase="colors">
+            <h3>Colors</h3>
+            {% set color_groups = [
+                {
+                    key: 'brand',
+                    label: 'Brand',
+                    colors: [
+                        {key: 'primary', label: 'Brand Red', token: '--vf-color-primary', hex: '#B00020', role: 'Brand accent и action', usage: 'Primary CTA, важная ссылка, selected state'},
+                        {key: 'primary-hover', label: 'Brand Red Hover', token: '--vf-color-primary-hover', hex: '#8A0019', role: 'Hover state', usage: 'Hover primary action'},
+                        {key: 'primary-active', label: 'Brand Red Active', token: '--vf-color-primary-active', hex: '#6C0014', role: 'Pressed state', usage: 'Active primary action'},
+                        {key: 'primary-soft', label: 'Brand Red Soft', token: '--vf-color-primary-soft', hex: '#F7E6E9', role: 'Soft brand context', usage: 'Локальный selected/active context'},
+                        {key: 'focus', label: 'Focus', token: '--vf-color-focus', hex: '#B00020', role: 'Focus indicator', usage: 'Keyboard focus на light surface'},
+                        {key: 'on-primary', label: 'On Primary', token: '--vf-color-on-primary', hex: '#FFFFFF', role: 'Content on Brand Red', usage: 'Текст и focus поверх primary surface'},
+                    ],
+                },
+                {
+                    key: 'dark',
+                    label: 'Dark',
+                    colors: [
+                        {key: 'dark', label: 'Brand Dark / Navy', token: '--vf-color-dark', hex: '#0B1020', role: 'Визуальный фундамент', usage: 'Dark surfaces и основной dark text'},
+                        {key: 'surface-dark', label: 'Dark Surface', token: '--vf-color-surface-dark', hex: '#0B1020', role: 'Key dark surface', usage: 'Dark Hero/Header/Footer variant'},
+                        {key: 'text-on-dark', label: 'Text on Dark', token: '--vf-color-text-on-dark', hex: '#FFFFFF', role: 'Primary text on dark', usage: 'Основной текст на Dark Surface'},
+                        {key: 'muted-on-dark', label: 'Muted on Dark', token: '--vf-color-muted-on-dark', hex: '#8E99AF', role: 'Secondary text on dark', usage: 'Вторичный текст на Dark Surface'},
+                        {key: 'focus-on-dark', label: 'Focus on Dark', token: '--vf-color-focus-on-dark', hex: '#FFFFFF', role: 'Focus indicator on dark', usage: 'Keyboard focus на Dark Surface'},
+                    ],
+                },
+                {
+                    key: 'neutral',
+                    label: 'Neutral',
+                    colors: [
+                        {key: 'background', label: 'Page Background', token: '--vf-color-background', hex: '#F5F6F8', role: 'Light page background', usage: 'Фон публичной страницы'},
+                        {key: 'surface', label: 'Surface', token: '--vf-color-surface', hex: '#FFFFFF', role: 'Light surface', usage: 'Section, Card и control surface'},
+                        {key: 'text', label: 'Primary Text', token: '--vf-color-text', hex: '#0B1020', role: 'Primary text on light', usage: 'Заголовки и основной текст'},
+                        {key: 'muted', label: 'Muted Text', token: '--vf-color-muted', hex: '#5C677D', role: 'Secondary text on light', usage: 'Пояснения и metadata'},
+                        {key: 'border', label: 'Border', token: '--vf-color-border', hex: '#D9DCE4', role: 'Decorative boundary', usage: 'Разделение поверхностей'},
+                        {key: 'border-strong', label: 'Strong Border', token: '--vf-color-border-strong', hex: '#767B85', role: 'Accessible control boundary', usage: 'Forms и interactive controls'},
+                    ],
+                },
+                {
+                    key: 'semantic',
+                    label: 'Semantic',
+                    colors: [
+                        {key: 'success', label: 'Success', token: '--vf-color-success', hex: '#146C43', role: 'Успешное состояние', usage: 'Успешно завершённая операция'},
+                        {key: 'success-soft', label: 'Success Soft', token: '--vf-color-success-soft', hex: '#E9F5EE', role: 'Success surface', usage: 'Фон success feedback'},
+                        {key: 'warning', label: 'Warning', token: '--vf-color-warning', hex: '#805B00', role: 'Предупреждение', usage: 'Ситуация требует внимания'},
+                        {key: 'warning-soft', label: 'Warning Soft', token: '--vf-color-warning-soft', hex: '#FFF3CD', role: 'Warning surface', usage: 'Фон warning feedback'},
+                        {key: 'danger', label: 'Danger', token: '--vf-color-danger', hex: '#B02A37', role: 'Ошибка или опасность', usage: 'Error и dangerous action'},
+                        {key: 'danger-soft', label: 'Danger Soft', token: '--vf-color-danger-soft', hex: '#F8D7DA', role: 'Danger surface', usage: 'Фон error feedback'},
+                        {key: 'info', label: 'Info', token: '--vf-color-info', hex: '#0B5CAD', role: 'Системная информация', usage: 'Нейтральное информационное состояние'},
+                        {key: 'info-soft', label: 'Info Soft', token: '--vf-color-info-soft', hex: '#E8F1FB', role: 'Info surface', usage: 'Фон information feedback'},
+                    ],
+                },
+            ] %}
+
+            <div class="vf-color-groups">
+                {% for group in color_groups %}
+                    <div class="vf-color-group" data-vf-color-group="{{ group.key }}">
+                        <h4>{{ group.label }}</h4>
+                        <div class="vf-swatch-grid">
+                            {% for color in group.colors %}
+                                <div class="vf-swatch" data-vf-color-token="{{ color.token }}">
+                                    <span class="vf-swatch__color vf-swatch__color--{{ color.key }}" aria-hidden="true"></span>
+                                    <div class="vf-swatch__meta">
+                                        <strong>{{ color.label }}</strong>
+                                        <code>{{ color.token }}</code>
+                                        <span class="vf-small">{{ color.hex }}</span>
+                                        <p class="vf-small vf-text-muted"><strong>Role:</strong> {{ color.role }}<br><strong>Usage:</strong> {{ color.usage }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="vf-color-combinations" data-vf-color-combinations>
+                <div>
+                    <h4>Primary CTA states</h4>
+                    <div class="vf-component-row">
+                        {% for button in [
+                            {state: 'default', label: 'Primary'},
+                            {state: 'hover', label: 'Primary Hover'},
+                            {state: 'active', label: 'Primary Active'},
+                        ] %}
+                            {% include 'website/components/_button.html.twig' with {label: button.label, state: button.state} only %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div>
+                    <h4>Text and surfaces</h4>
+                    <div class="vf-color-context-grid">
+                        <div class="vf-color-context vf-color-context--light">
+                            <strong>Light Surface</strong>
+                            <p>Text on Light</p>
+                            <p class="vf-color-context__muted">Muted Text on Light</p>
+                        </div>
+                        <div class="vf-color-context vf-color-context--dark vf-section--dark">
+                            <strong>Dark Surface</strong>
+                            <p>Text on Dark</p>
+                            <p class="vf-color-context__muted">Muted Text on Dark</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4>Semantic states</h4>
+                    <div class="vf-showcase">
+                        {% include 'website/components/_alert.html.twig' with {title: 'Success', text: 'Операция завершена.', tone: 'success'} only %}
+                        {% include 'website/components/_alert.html.twig' with {title: 'Warning', text: 'Требуется внимание.', tone: 'warning'} only %}
+                        {% include 'website/components/_alert.html.twig' with {title: 'Danger', text: 'Обнаружена ошибка.', tone: 'danger'} only %}
+                        {% include 'website/components/_alert.html.twig' with {title: 'Info', text: 'Системная информация.', tone: 'info'} only %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="vf-showcase-group" id="spacing" data-vf-showcase="spacing">
+            <h3>Spacing</h3>
+            <div class="vf-spacing-scale">
+                {% for space in [
+                    {key: 1, label: 4}, {key: 2, label: 8}, {key: 3, label: 12},
+                    {key: 4, label: 16}, {key: 6, label: 24}, {key: 8, label: 32},
+                    {key: 12, label: 48}, {key: 16, label: 64},
+                    {key: 20, label: 80}, {key: 24, label: 96},
+                ] %}
+                    <div class="vf-spacing-scale__item">
+                        <span>{{ space.label }}px</span>
+                        <span class="vf-spacing-scale__bar vf-spacing-scale__bar--{{ space.key }}" aria-hidden="true"></span>
+                    </div>
+                {% endfor %}
+            </div>
+            <p class="vf-small vf-text-muted">Card padding: 16/24px · Form gap: 16px · Grid gap: 24px · Section: 48/64/80px.</p>
+        </div>
+    </div>
+{% endblock %}

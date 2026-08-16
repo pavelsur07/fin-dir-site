@@ -1,0 +1,14 @@
+{% set variant = variant|default('primary') %}
+{% set state = state|default('default') %}
+{% set disabled = disabled|default(false) %}
+{% set classes = variant == 'on-primary' ? 'btn vf-btn-on-primary' : 'btn btn-' ~ variant %}
+{% if state == 'hover' %}{% set classes = classes ~ ' vf-is-hover' %}{% endif %}
+{% if state == 'focus' %}{% set classes = classes ~ ' vf-is-focus' %}{% endif %}
+{% if state == 'active' %}{% set classes = classes ~ ' vf-is-active' %}{% endif %}
+{% if disabled %}{% set classes = classes ~ ' disabled' %}{% endif %}
+
+{% if href|default(null) %}
+    <a class="{{ classes }}"{% if not disabled %} href="{{ href }}"{% else %} aria-disabled="true" tabindex="-1"{% endif %} data-vf-component="button" data-vf-state="{{ state }}">{{ label }}</a>
+{% else %}
+    <button class="{{ classes }}" type="{{ type|default('button') }}"{% if disabled %} disabled{% endif %} data-vf-component="button" data-vf-state="{{ state }}">{{ label }}</button>
+{% endif %}
