@@ -103,12 +103,12 @@ Page-specific CSS допускается только для уникально�
 
 | Token | HEX | Роль | Типичное применение |
 |---|---|---|---|
-| `--vf-color-dark` | `#0B1020` | Brand Dark / Navy, основа | dark surface и основной текст на light surface |
+| `--vf-color-dark` | `#0B1020` | Brand Dark / Navy, ключевой визуальный фундамент | Hero Dark и основной текст на light surface |
 | `--vf-color-primary` | `#B00020` | Brand Red, accent/action | Primary CTA, важная ссылка, selected state, небольшой brand accent |
 | `--vf-color-primary-hover` | `#8A0019` | Hover Brand Red | hover интерактивного primary action |
 | `--vf-color-primary-active` | `#6C0014` | Pressed Brand Red | краткое active/pressed состояние primary action |
 | `--vf-color-primary-soft` | `#F7E6E9` | Мягкая brand surface | локальный selected/active context без большой красной площади |
-| `--vf-color-focus` | `#B00020` | Focus indicator на light surface | keyboard focus; на Brand Red заменяется на on-primary |
+| `--vf-color-focus` | `#005FCC` | Функциональный Focus на light surface | keyboard focus; визуально отделён от Brand Red и Danger |
 | `--vf-color-on-primary` | `#FFFFFF` | Контент на Brand Red | текст, icon и focus indicator поверх primary surface |
 
 Brand Red `#B00020` и Brand Dark `#0B1020` зафиксированы и не заменяются
@@ -127,16 +127,25 @@ Brand Red преимущественно используется для Primary
 каждого заголовка, длинного текста, всех borders или декоративного чередования
 секций.
 
-Brand Dark используется для ключевых dark surfaces, dark-варианта
-Hero/Header/Footer, основного текста на светлой поверхности и элементов с
-высокой визуальной значимостью. Не создавать случайные «почти чёрные» или
-navy-оттенки в компонентах.
+Большой Brand Red background разрешён только для ключевого conversion CTA или
+другого явно обоснованного action block. По умолчанию на странице допускается
+не более одного крупного Brand Red conversion block. Brand Red не используется
+как обычный section background.
+
+Brand Dark — ключевой визуальный фундамент бренда. Он используется для Hero
+Dark, основного текста на светлой поверхности и элементов с высокой визуальной
+значимостью. Не создавать случайные «почти чёрные» или navy-оттенки в
+компонентах. Нейтральный Dark Surface не является третьим brand color.
+
+Focus `#005FCC` — функциональный accessibility color, а не дополнительный
+brand accent. Focus и Danger обязаны различаться не только текстом состояния,
+но и цветом: blue focus ring не заменяется Brand Red или Danger.
 
 #### Neutral Palette
 
 | Token | HEX | Роль |
 |---|---|---|
-| `--vf-color-surface-dark` | `#0B1020` | ключевая dark surface |
+| `--vf-color-surface-dark` | `#1E2331` | нейтральная dark surface для Footer и локальных dark contexts |
 | `--vf-color-background` | `#F5F6F8` | light page background |
 | `--vf-color-surface` | `#FFFFFF` | light component/section surface |
 | `--vf-color-text` | `#0B1020` | основной текст на light surface |
@@ -180,6 +189,10 @@ Semantic Colors передают состояние и не используют
 | White / Brand Dark | `18.93:1` |
 | Muted on Dark / Brand Dark | `6.60:1` |
 | Focus on Dark / Brand Dark | `18.93:1` |
+| White / Dark Surface | `15.67:1` |
+| Muted on Dark / Dark Surface | `5.47:1` |
+| Focus / Light Surface | `5.98:1` |
+| Focus / Light Background | `5.53:1` |
 | Text / Light Background | `17.51:1` |
 | Muted / Light Background | `5.26:1` |
 | Strong Border / Surface | `4.25:1` |
@@ -239,8 +252,11 @@ Font family, size, line-height и weight задаются tokens. Страниц
 `--vf-content-max`.
 
 Файлы TT Norms Pro не подключены, пока право webfont-использования не
-подтверждено. Запрещено копировать шрифт с `tochka.com`, hotlink-ить его или
-иной чужой CDN. До легального подключения работает указанный fallback.
+подтверждено и лицензированные файлы не предоставлены проекту. Запрещено
+копировать шрифт с `tochka.com`, hotlink-ить его или иной чужой CDN. До
+легального подключения работает указанный fallback; fallback не считается
+окончательной визуальной проверкой Typography. Typography scale при подключении
+лицензированного шрифта не меняется автоматически.
 
 ### 4.3. Spacing
 
@@ -348,6 +364,14 @@ Hero не раздувается декоративным пространств
 CTA component. Новая секция сначала комбинирует существующие components и
 общий section pattern; global CSS для каждой новой секции не меняется.
 
+Hero Dark — production variant ключевого Hero на Brand Dark `#0B1020`. Он
+использует `text-on-dark`, `muted-on-dark` и `focus-on-dark` и показывает
+визуальный фундамент бренда. Footer Dark — production variant на нейтральном
+Dark Surface `#1E2331` с теми же on-dark content tokens. Dark не применяется
+автоматически ко всем sections; новый dark context требует конкретной
+иерархической причины. Navbar Dark не вводится, пока для него нет отдельного
+пользовательского сценария.
+
 ## 7. Grid и responsive
 
 Bootstrap container/grid используется последовательно. Mobile — состояние того
@@ -390,9 +414,9 @@ Stage 1 не добавляет изображения и декоративну
 layout и production components/sections, а не демонстрационные копии.
 
 На одной странице показаны Typography, Colors, Spacing, Buttons, Badges,
-Cards, Alerts, Forms, Accordion, Breadcrumbs, Navigation, Hero, Content
-Section и CTA. Основной H1 только один. Состояния компонентов должны быть
-доступны для визуальной и клавиатурной проверки.
+Cards, Alerts, Forms, Accordion, Breadcrumbs, Navigation, Dark Hero, Content
+Section, CTA и Dark Footer. Основной H1 только один. Состояния компонентов
+должны быть доступны для визуальной и клавиатурной проверки.
 
 ## 10. CSS и JavaScript
 
