@@ -49,6 +49,47 @@
     max-width: var(--vf-content-max);
 }
 
+.vf-hero--dark {
+    background: var(--vf-color-dark);
+}
+
+.vf-hero--dark .btn-primary {
+    border-color: var(--vf-color-text-on-dark);
+}
+
+.vf-hero--dark .btn-primary:hover,
+.vf-hero--dark .btn-primary:active,
+.vf-hero--dark .btn-primary.vf-is-hover,
+.vf-hero--dark .btn-primary.vf-is-active {
+    border-color: var(--vf-color-text-on-dark);
+    color: var(--vf-color-on-primary);
+}
+
+.vf-hero--dark .btn-outline-primary {
+    --bs-btn-color: var(--vf-color-text-on-dark);
+    --bs-btn-border-color: var(--vf-color-text-on-dark);
+    --bs-btn-hover-color: var(--vf-color-dark);
+    --bs-btn-hover-bg: var(--vf-color-text-on-dark);
+    --bs-btn-hover-border-color: var(--vf-color-text-on-dark);
+    --bs-btn-active-color: var(--vf-color-dark);
+    --bs-btn-active-bg: var(--vf-color-muted-on-dark);
+    --bs-btn-active-border-color: var(--vf-color-muted-on-dark);
+}
+
+.vf-hero--dark .btn-outline-primary:hover,
+.vf-hero--dark .btn-outline-primary.vf-is-hover {
+    border-color: var(--vf-color-text-on-dark);
+    background: var(--vf-color-text-on-dark);
+    color: var(--vf-color-dark);
+}
+
+.vf-hero--dark .btn-outline-primary:active,
+.vf-hero--dark .btn-outline-primary.vf-is-active {
+    border-color: var(--vf-color-muted-on-dark);
+    background: var(--vf-color-muted-on-dark);
+    color: var(--vf-color-dark);
+}
+
 .vf-hero__actions {
     display: flex;
     flex-wrap: wrap;

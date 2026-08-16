@@ -7,133 +7,160 @@
 {% block section_content %}
     <div class="vf-section__heading">
         <h2 id="forms-title">Forms</h2>
-        <p class="vf-lead vf-text-muted">Каждый control связан с label; Error и Success имеют текстовую обратную связь.</p>
+        <p class="vf-lead vf-text-muted">Состояния сгруппированы по control; Focus визуально отделён от Error, а Error и Success имеют текстовую обратную связь.</p>
     </div>
 
-    <form class="vf-form vf-content-width" aria-label="Пример формы" novalidate>
-        {% include 'website/components/_form_input.html.twig' with {
-            id: 'demo-name',
-            label: 'Default input',
-            placeholder: 'Ваше имя',
-        } only %}
-        {% include 'website/components/_form_input.html.twig' with {
-            id: 'demo-focus',
-            label: 'Focus input',
-            value: 'Фокус виден',
-            state: 'focus',
-        } only %}
-        {% include 'website/components/_form_input.html.twig' with {
-            id: 'demo-disabled',
-            label: 'Disabled input',
-            value: 'Недоступно',
-            disabled: true,
-        } only %}
-        {% include 'website/components/_form_input.html.twig' with {
-            id: 'demo-error',
-            label: 'Error input',
-            value: 'Некорректное значение',
-            state: 'error',
-            feedback: 'Укажите корректное значение.',
-        } only %}
-        {% include 'website/components/_form_input.html.twig' with {
-            id: 'demo-success',
-            label: 'Success input',
-            value: 'Корректное значение',
-            state: 'success',
-            feedback: 'Значение принято.',
-        } only %}
-        {% include 'website/components/_form_select.html.twig' with {
-            id: 'demo-select',
-            label: 'Default select',
-            options: [
-                {value: '', label: 'Выберите вариант'},
-                {value: 'one', label: 'Первый вариант'},
-                {value: 'two', label: 'Второй вариант'},
-            ],
-        } only %}
-        {% include 'website/components/_form_select.html.twig' with {
-            id: 'demo-select-focus',
-            label: 'Focus select',
-            state: 'focus',
-            options: [{value: 'one', label: 'Первый вариант'}],
-        } only %}
-        {% include 'website/components/_form_select.html.twig' with {
-            id: 'demo-select-disabled',
-            label: 'Disabled select',
-            disabled: true,
-            options: [{value: 'one', label: 'Недоступно'}],
-        } only %}
-        {% include 'website/components/_form_select.html.twig' with {
-            id: 'demo-select-error',
-            label: 'Error select',
-            state: 'error',
-            feedback: 'Выберите доступный вариант.',
-            options: [{value: '', label: 'Не выбрано'}],
-        } only %}
-        {% include 'website/components/_form_select.html.twig' with {
-            id: 'demo-select-success',
-            label: 'Success select',
-            state: 'success',
-            feedback: 'Вариант выбран.',
-            options: [{value: 'one', label: 'Первый вариант'}],
-        } only %}
-        {% include 'website/components/_form_textarea.html.twig' with {
-            id: 'demo-textarea',
-            label: 'Default textarea',
-            placeholder: 'Краткое описание',
-        } only %}
-        {% include 'website/components/_form_textarea.html.twig' with {
-            id: 'demo-textarea-focus',
-            label: 'Focus textarea',
-            value: 'Фокус виден',
-            state: 'focus',
-        } only %}
-        {% include 'website/components/_form_textarea.html.twig' with {
-            id: 'demo-textarea-disabled',
-            label: 'Disabled textarea',
-            value: 'Недоступно',
-            disabled: true,
-        } only %}
-        {% include 'website/components/_form_textarea.html.twig' with {
-            id: 'demo-textarea-error',
-            label: 'Error textarea',
-            value: 'Недостаточно данных',
-            state: 'error',
-            feedback: 'Добавьте понятное описание.',
-        } only %}
-        {% include 'website/components/_form_textarea.html.twig' with {
-            id: 'demo-textarea-success',
-            label: 'Success textarea',
-            value: 'Понятное описание',
-            state: 'success',
-            feedback: 'Текст принят.',
-        } only %}
-        {% include 'website/components/_form_checkbox.html.twig' with {
-            id: 'demo-checkbox',
-            label: 'Default checkbox',
-        } only %}
-        {% include 'website/components/_form_checkbox.html.twig' with {
-            id: 'demo-checkbox-focus',
-            label: 'Focus checkbox',
-            state: 'focus',
-        } only %}
-        {% include 'website/components/_form_checkbox.html.twig' with {
-            id: 'demo-checkbox-disabled',
-            label: 'Disabled checkbox',
-            disabled: true,
-        } only %}
-        {% include 'website/components/_form_checkbox.html.twig' with {
-            id: 'demo-checkbox-error',
-            label: 'Error checkbox',
-            state: 'error',
-            feedback: 'Подтвердите выбор.',
-        } only %}
-        {% include 'website/components/_form_checkbox.html.twig' with {
-            id: 'demo-checkbox-success',
-            label: 'Success checkbox',
-            checked: true,
-            state: 'success',
-            feedback: 'Выбор подтверждён.',
-        } only %}
+    <form class="vf-form vf-form-showcase" aria-label="Пример формы" novalidate>
+        <section class="vf-form-showcase__group" aria-labelledby="forms-input-title" data-vf-form-group="input">
+            <h3 id="forms-input-title">Input</h3>
+            <div class="vf-form-showcase__states">
+                {% include 'website/components/_form_input.html.twig' with {
+                    id: 'demo-name',
+                    label: 'Default input',
+                    placeholder: 'Ваше имя',
+                } only %}
+                {% include 'website/components/_form_input.html.twig' with {
+                    id: 'demo-focus',
+                    label: 'Focus input',
+                    value: 'Фокус виден',
+                    state: 'focus',
+                } only %}
+                {% include 'website/components/_form_input.html.twig' with {
+                    id: 'demo-disabled',
+                    label: 'Disabled input',
+                    value: 'Недоступно',
+                    state: 'disabled',
+                    disabled: true,
+                } only %}
+                {% include 'website/components/_form_input.html.twig' with {
+                    id: 'demo-error',
+                    label: 'Error input',
+                    value: 'Некорректное значение',
+                    state: 'error',
+                    feedback: 'Укажите корректное значение.',
+                } only %}
+                {% include 'website/components/_form_input.html.twig' with {
+                    id: 'demo-success',
+                    label: 'Success input',
+                    value: 'Корректное значение',
+                    state: 'success',
+                    feedback: 'Значение принято.',
+                } only %}
+            </div>
+        </section>
+
+        <section class="vf-form-showcase__group" aria-labelledby="forms-select-title" data-vf-form-group="select">
+            <h3 id="forms-select-title">Select</h3>
+            <div class="vf-form-showcase__states">
+                {% include 'website/components/_form_select.html.twig' with {
+                    id: 'demo-select',
+                    label: 'Default select',
+                    options: [
+                        {value: '', label: 'Выберите вариант'},
+                        {value: 'one', label: 'Первый вариант'},
+                        {value: 'two', label: 'Второй вариант'},
+                    ],
+                } only %}
+                {% include 'website/components/_form_select.html.twig' with {
+                    id: 'demo-select-focus',
+                    label: 'Focus select',
+                    state: 'focus',
+                    options: [{value: 'one', label: 'Первый вариант'}],
+                } only %}
+                {% include 'website/components/_form_select.html.twig' with {
+                    id: 'demo-select-disabled',
+                    label: 'Disabled select',
+                    state: 'disabled',
+                    disabled: true,
+                    options: [{value: 'one', label: 'Недоступно'}],
+                } only %}
+                {% include 'website/components/_form_select.html.twig' with {
+                    id: 'demo-select-error',
+                    label: 'Error select',
+                    state: 'error',
+                    feedback: 'Выберите доступный вариант.',
+                    options: [{value: '', label: 'Не выбрано'}],
+                } only %}
+                {% include 'website/components/_form_select.html.twig' with {
+                    id: 'demo-select-success',
+                    label: 'Success select',
+                    state: 'success',
+                    feedback: 'Вариант выбран.',
+                    options: [{value: 'one', label: 'Первый вариант'}],
+                } only %}
+            </div>
+        </section>
+
+        <section class="vf-form-showcase__group" aria-labelledby="forms-textarea-title" data-vf-form-group="textarea">
+            <h3 id="forms-textarea-title">Textarea</h3>
+            <div class="vf-form-showcase__states">
+                {% include 'website/components/_form_textarea.html.twig' with {
+                    id: 'demo-textarea',
+                    label: 'Default textarea',
+                    placeholder: 'Краткое описание',
+                } only %}
+                {% include 'website/components/_form_textarea.html.twig' with {
+                    id: 'demo-textarea-focus',
+                    label: 'Focus textarea',
+                    value: 'Фокус виден',
+                    state: 'focus',
+                } only %}
+                {% include 'website/components/_form_textarea.html.twig' with {
+                    id: 'demo-textarea-disabled',
+                    label: 'Disabled textarea',
+                    value: 'Недоступно',
+                    state: 'disabled',
+                    disabled: true,
+                } only %}
+                {% include 'website/components/_form_textarea.html.twig' with {
+                    id: 'demo-textarea-error',
+                    label: 'Error textarea',
+                    value: 'Недостаточно данных',
+                    state: 'error',
+                    feedback: 'Добавьте понятное описание.',
+                } only %}
+                {% include 'website/components/_form_textarea.html.twig' with {
+                    id: 'demo-textarea-success',
+                    label: 'Success textarea',
+                    value: 'Понятное описание',
+                    state: 'success',
+                    feedback: 'Текст принят.',
+                } only %}
+            </div>
+        </section>
+
+        <section class="vf-form-showcase__group" aria-labelledby="forms-checkbox-title" data-vf-form-group="checkbox">
+            <h3 id="forms-checkbox-title">Checkbox</h3>
+            <div class="vf-form-showcase__states">
+                {% include 'website/components/_form_checkbox.html.twig' with {
+                    id: 'demo-checkbox',
+                    label: 'Default checkbox',
+                } only %}
+                {% include 'website/components/_form_checkbox.html.twig' with {
+                    id: 'demo-checkbox-focus',
+                    label: 'Focus checkbox',
+                    state: 'focus',
+                } only %}
+                {% include 'website/components/_form_checkbox.html.twig' with {
+                    id: 'demo-checkbox-disabled',
+                    label: 'Disabled checkbox',
+                    state: 'disabled',
+                    disabled: true,
+                } only %}
+                {% include 'website/components/_form_checkbox.html.twig' with {
+                    id: 'demo-checkbox-error',
+                    label: 'Error checkbox',
+                    state: 'error',
+                    feedback: 'Подтвердите выбор.',
+                } only %}
+                {% include 'website/components/_form_checkbox.html.twig' with {
+                    id: 'demo-checkbox-success',
+                    label: 'Success checkbox',
+                    checked: true,
+                    state: 'success',
+                    feedback: 'Выбор подтверждён.',
+                } only %}
+            </div>
+        </section>
     </form>
 {% endblock %}

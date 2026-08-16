@@ -25,6 +25,7 @@
         eyebrow: 'Website foundation',
         title: 'UI-kit «Ваш Финдир»',
         text: 'Визуальный Source of Truth: typography, spacing, production components и reusable sections на Bootstrap 5.',
+        variant: 'dark',
         primary_action: {label: 'Смотреть компоненты', href: '#components'},
         secondary_action: {label: 'Правила форм', href: '#forms'},
     } only %}
@@ -49,5 +50,13 @@
         text: 'Общий CTA component использует те же container, spacing и Button rules.',
         action_label: 'Вернуться к началу',
         action_href: '#main-content',
+    } only %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'website/components/_footer.html.twig' with {
+        brand: 'Ваш Финдир',
+        privacy_href: path('privacy'),
+        variant: 'dark',
     } only %}
 {% endblock %}

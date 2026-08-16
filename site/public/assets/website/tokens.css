@@ -11,7 +11,7 @@
 
     /* Brand Dark and dark surfaces. */
     --vf-color-dark: #0b1020;
-    --vf-color-surface-dark: #0b1020;
+    --vf-color-surface-dark: #1e2331;
 
     /* Light surfaces and text. */
     --vf-color-background: #f5f6f8;
@@ -21,7 +21,7 @@
     --vf-color-text-on-dark: #ffffff;
     --vf-color-muted-on-dark: #8e99af;
     --vf-color-on-primary: #ffffff;
-    --vf-color-focus: #b00020;
+    --vf-color-focus: #005fcc;
     --vf-color-focus-on-dark: #ffffff;
 
     /* Borders. */

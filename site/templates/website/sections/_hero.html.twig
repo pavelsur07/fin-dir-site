@@ -1,11 +1,12 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'vf-section--surface vf-hero' %}
+{% set variant = variant|default('light') %}
+{% set section_class = variant == 'dark' ? 'vf-section--dark vf-hero vf-hero--dark' : 'vf-section--surface vf-hero' %}
 {% set section_id = id|default('vf-hero') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'hero' %}
 
 {% block section_content %}
-    <div class="vf-hero__content">
+    <div class="vf-hero__content" data-vf-variant="{{ variant }}">
         {% if eyebrow|default(null) %}<p class="vf-caption vf-text-muted">{{ eyebrow }}</p>{% endif %}
         <h1 id="{{ labelled_by }}">{{ title }}</h1>
         <p class="vf-lead vf-text-muted">{{ text }}</p>

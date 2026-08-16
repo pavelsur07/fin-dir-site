@@ -25,7 +25,6 @@
     --bs-btn-disabled-color: var(--vf-color-on-primary);
     --bs-btn-disabled-bg: var(--vf-color-primary);
     --bs-btn-disabled-border-color: var(--vf-color-primary);
-    --bs-btn-focus-shadow-rgb: var(--vf-color-primary-rgb);
 }
 
 .btn-outline-primary {
@@ -39,7 +38,6 @@
     --bs-btn-active-border-color: var(--vf-color-primary-active);
     --bs-btn-disabled-color: var(--vf-color-primary);
     --bs-btn-disabled-border-color: var(--vf-color-primary);
-    --bs-btn-focus-shadow-rgb: var(--vf-color-primary-rgb);
 }
 
 .vf-btn-on-primary {
@@ -268,6 +266,20 @@ textarea.form-control:not(.form-control-sm):not(.form-control-lg) {
     border-color: var(--vf-color-danger);
 }
 
+.form-control.is-valid:focus,
+.form-select.is-valid:focus,
+.form-check-input.is-valid:focus {
+    border-color: var(--vf-color-success);
+    box-shadow: none;
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus,
+.form-check-input.is-invalid:focus {
+    border-color: var(--vf-color-danger);
+    box-shadow: none;
+}
+
 .form-check-input.is-valid ~ .form-check-label {
     color: var(--vf-color-success);
 }
@@ -403,6 +415,28 @@ textarea.form-control:not(.form-control-sm):not(.form-control-lg) {
 
 .vf-footer p {
     margin: 0;
+}
+
+.vf-footer--dark {
+    border-color: var(--vf-color-surface-dark);
+    background: var(--vf-color-surface-dark);
+    color: var(--vf-color-text-on-dark);
+}
+
+.vf-footer--dark .vf-text-muted {
+    color: var(--vf-color-muted-on-dark);
+}
+
+.vf-footer--dark a {
+    color: var(--vf-color-text-on-dark);
+}
+
+.vf-footer--dark a:hover {
+    color: var(--vf-color-muted-on-dark);
+}
+
+.vf-footer--dark :focus-visible {
+    outline-color: var(--vf-color-focus-on-dark);
 }
 
 .vf-cta {

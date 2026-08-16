@@ -63,21 +63,35 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorExists('[data-vf-color-combinations] .vf-alert--info');
         self::assertSelectorExists('.vf-badge--info');
         self::assertSelectorExists('[data-vf-state="active"].vf-is-active');
+        self::assertSelectorExists('section.vf-hero--dark [data-vf-variant="dark"]');
+        self::assertSelectorExists('footer.vf-footer--dark[data-vf-variant="dark"]');
 
         self::assertSelectorExists('label[for="demo-name"]');
         self::assertSelectorExists('[data-vf-state="error"] [aria-invalid="true"]');
         self::assertSelectorExists('[data-vf-state="success"] .valid-feedback');
 
-        foreach (['select', 'textarea', 'checkbox'] as $component) {
-            foreach (['default', 'focus', 'error', 'success'] as $state) {
+        foreach ([
+            'input' => 'form-input',
+            'select' => 'select',
+            'textarea' => 'textarea',
+            'checkbox' => 'checkbox',
+        ] as $group => $component) {
+            $groupSelector = sprintf('[data-vf-form-group="%s"]', $group);
+            self::assertSelectorCount(5, $groupSelector.' [data-vf-component="'.$component.'"]');
+            foreach (['default', 'focus', 'disabled', 'error', 'success'] as $state) {
                 self::assertSelectorExists(sprintf(
-                    '[data-vf-component="%s"][data-vf-state="%s"]',
+                    '%s [data-vf-component="%s"][data-vf-state="%s"]',
+                    $groupSelector,
                     $component,
                     $state,
                 ));
             }
 
-            self::assertSelectorExists(sprintf('[data-vf-component="%s"] :disabled', $component));
+            self::assertSelectorExists(sprintf(
+                '%s [data-vf-component="%s"][data-vf-state="disabled"] :disabled',
+                $groupSelector,
+                $component,
+            ));
         }
     }
 
@@ -176,7 +190,7 @@ final class WebsiteFoundationTest extends WebTestCase
             '--vf-color-primary-active' => '#6c0014',
             '--vf-color-primary-soft' => '#f7e6e9',
             '--vf-color-dark' => '#0b1020',
-            '--vf-color-surface-dark' => '#0b1020',
+            '--vf-color-surface-dark' => '#1e2331',
             '--vf-color-background' => '#f5f6f8',
             '--vf-color-surface' => '#ffffff',
             '--vf-color-text' => '#0b1020',
@@ -184,7 +198,7 @@ final class WebsiteFoundationTest extends WebTestCase
             '--vf-color-text-on-dark' => '#ffffff',
             '--vf-color-muted-on-dark' => '#8e99af',
             '--vf-color-on-primary' => '#ffffff',
-            '--vf-color-focus' => '#b00020',
+            '--vf-color-focus' => '#005fcc',
             '--vf-color-focus-on-dark' => '#ffffff',
             '--vf-color-border' => '#d9dce4',
             '--vf-color-border-strong' => '#767b85',
@@ -216,10 +230,14 @@ final class WebsiteFoundationTest extends WebTestCase
             ['--vf-color-text-on-dark', '--vf-color-surface-dark', 4.5],
             ['--vf-color-muted-on-dark', '--vf-color-surface-dark', 4.5],
             ['--vf-color-focus-on-dark', '--vf-color-surface-dark', 3.0],
+            ['--vf-color-text-on-dark', '--vf-color-dark', 4.5],
+            ['--vf-color-muted-on-dark', '--vf-color-dark', 4.5],
+            ['--vf-color-focus-on-dark', '--vf-color-dark', 3.0],
             ['--vf-color-on-primary', '--vf-color-primary', 4.5],
             ['--vf-color-on-primary', '--vf-color-primary-hover', 4.5],
             ['--vf-color-on-primary', '--vf-color-primary-active', 4.5],
             ['--vf-color-focus', '--vf-color-surface', 3.0],
+            ['--vf-color-focus', '--vf-color-background', 3.0],
             ['--vf-color-border-strong', '--vf-color-surface', 3.0],
             ['--vf-color-success', '--vf-color-success-soft', 4.5],
             ['--vf-color-warning', '--vf-color-warning-soft', 4.5],
@@ -247,6 +265,8 @@ final class WebsiteFoundationTest extends WebTestCase
             $this->contrastRatio($colors['--vf-color-primary'], $colors['--vf-color-dark']),
             'Brand Red is forbidden as normal text on Brand Dark.',
         );
+        self::assertNotSame($colors['--vf-color-dark'], $colors['--vf-color-surface-dark']);
+        self::assertNotSame($colors['--vf-color-focus'], $colors['--vf-color-danger']);
         self::assertGreaterThan(
             $this->relativeLuminance($colors['--vf-color-primary-hover']),
             $this->relativeLuminance($colors['--vf-color-primary']),
@@ -292,8 +312,28 @@ final class WebsiteFoundationTest extends WebTestCase
             ".vf-btn-on-primary:active,\n.vf-btn-on-primary.vf-is-active {\n    background: var(--vf-color-on-primary);",
             $componentsCss,
         );
+        self::assertStringContainsString(
+            ".form-control.is-valid:focus,\n.form-select.is-valid:focus,\n.form-check-input.is-valid:focus {\n    border-color: var(--vf-color-success);",
+            $componentsCss,
+        );
+        self::assertStringContainsString(
+            ".form-control.is-invalid:focus,\n.form-select.is-invalid:focus,\n.form-check-input.is-invalid:focus {\n    border-color: var(--vf-color-danger);",
+            $componentsCss,
+        );
 
         $sectionsCss = $this->read($this->projectPath('assets/styles/website/sections/index.css'));
+        self::assertStringContainsString(
+            ".vf-hero--dark {\n    background: var(--vf-color-dark);",
+            $sectionsCss,
+        );
+        self::assertStringContainsString(
+            ".vf-hero--dark .btn-primary:hover,\n.vf-hero--dark .btn-primary:active,",
+            $sectionsCss,
+        );
+        self::assertStringContainsString(
+            "    border-color: var(--vf-color-text-on-dark);\n    color: var(--vf-color-on-primary);",
+            $sectionsCss,
+        );
         self::assertStringContainsString(
             ".vf-section--dark :focus-visible,\n.vf-section--dark .vf-is-focus {\n    outline-color: var(--vf-color-focus-on-dark);",
             $sectionsCss,
@@ -305,6 +345,11 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertStringContainsString(
             ".vf-section--dark :is(a, code) {\n    color: var(--vf-color-text-on-dark);",
             $sectionsCss,
+        );
+
+        self::assertStringContainsString(
+            ".vf-footer--dark {\n    border-color: var(--vf-color-surface-dark);",
+            $componentsCss,
         );
 
         self::assertLessThan(
