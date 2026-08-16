@@ -1,0 +1,21 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'vf-section--surface vf-content-section' %}
+{% set section_id = id|default('vf-content') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'content' %}
+
+{% block section_content %}
+    <div class="vf-section__heading">
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        <p class="vf-lead vf-text-muted">{{ text }}</p>
+    </div>
+    {% if cards|default([]) %}
+        <div class="row vf-card-grid">
+            {% for card in cards %}
+                <div class="col-md-6">
+                    {% include 'website/components/_card.html.twig' with card only %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

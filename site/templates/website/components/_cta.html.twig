@@ -1,0 +1,13 @@
+<div class="vf-cta" data-vf-component="cta">
+    <div class="vf-cta__inner">
+        <div class="vf-cta__copy">
+            <h2 id="{{ heading_id }}">{{ title }}</h2>
+            <p>{{ text }}</p>
+        </div>
+        {% include 'website/components/_button.html.twig' with {
+            label: action_label,
+            href: action_href,
+            variant: 'on-primary',
+        } only %}
+    </div>
+</div>

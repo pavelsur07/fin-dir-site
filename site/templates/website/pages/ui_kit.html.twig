@@ -1,0 +1,53 @@
+{% extends 'website/layouts/base.html.twig' %}
+
+{% block title %}UI-kit — Ваш Финдир{% endblock %}
+{% block description %}Design tokens, production components и sections публичного сайта «Ваш Финдир».{% endblock %}
+{% block head %}
+    <meta name="robots" content="noindex, nofollow">
+    <link href="/assets/website/components/showcase.css?v={{ vf_asset_version }}" rel="stylesheet">
+{% endblock %}
+
+{% block navigation %}
+    {% include 'website/components/_navbar.html.twig' with {
+        brand: 'Ваш Финдир',
+        brand_href: path('home'),
+        navigation_id: 'vf-ui-kit-navigation',
+        items: [
+            {label: 'Главная', href: path('home')},
+            {label: 'UI-kit', href: path('ui_kit'), active: true},
+        ],
+    } only %}
+{% endblock %}
+
+{% block body %}
+    {% include 'website/sections/_hero.html.twig' with {
+        id: 'ui-kit-hero',
+        eyebrow: 'Website foundation',
+        title: 'UI-kit «Ваш Финдир»',
+        text: 'Визуальный Source of Truth: typography, spacing, production components и reusable sections на Bootstrap 5.',
+        primary_action: {label: 'Смотреть компоненты', href: '#components'},
+        secondary_action: {label: 'Правила форм', href: '#forms'},
+    } only %}
+
+    {% include 'website/sections/_foundations_showcase.html.twig' only %}
+    {% include 'website/sections/_components_showcase.html.twig' only %}
+    {% include 'website/sections/_forms_showcase.html.twig' only %}
+
+    {% include 'website/sections/_content.html.twig' with {
+        id: 'content-section',
+        title: 'Content Section',
+        text: 'Секция использует общий container, spacing, typography и production Card component.',
+        cards: [
+            {title: 'Page собирает sections', text: 'Страница не копирует markup компонентов и секций.'},
+            {title: 'Section собирает components', text: 'Новый экран использует существующие patterns до создания новых.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_cta.html.twig' with {
+        id: 'cta-section',
+        title: 'CTA Section',
+        text: 'Общий CTA component использует те же container, spacing и Button rules.',
+        action_label: 'Вернуться к началу',
+        action_href: '#main-content',
+    } only %}
+{% endblock %}

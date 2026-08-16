@@ -1,0 +1,15 @@
+<div class="accordion" id="{{ accordion_id }}" data-vf-component="accordion">
+    {% for item in items %}
+        {% set item_id = accordion_id ~ '-item-' ~ loop.index %}
+        <div class="accordion-item">
+            <h3 class="accordion-header">
+                <button class="accordion-button{% if not loop.first %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item_id }}" aria-expanded="{{ loop.first ? 'true' : 'false' }}" aria-controls="{{ item_id }}">
+                    {{ item.title }}
+                </button>
+            </h3>
+            <div class="accordion-collapse collapse{% if loop.first %} show{% endif %}" id="{{ item_id }}" data-bs-parent="#{{ accordion_id }}">
+                <div class="accordion-body">{{ item.text }}</div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,7 @@
+<article class="card vf-card" data-vf-component="card">
+    <div class="card-body">
+        {% if eyebrow|default(null) %}<p class="vf-caption vf-text-muted">{{ eyebrow }}</p>{% endif %}
+        <h3 class="card-title vf-h4">{{ title }}</h3>
+        <p class="card-text vf-text-muted">{{ text }}</p>
+    </div>
+</article>

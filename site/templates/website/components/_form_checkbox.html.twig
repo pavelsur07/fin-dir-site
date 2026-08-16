@@ -1,0 +1,9 @@
+{% set state = state|default('default') %}
+{% set state_class = state == 'error' ? ' is-invalid' : (state == 'success' ? ' is-valid' : (state == 'focus' ? ' vf-is-focus' : '')) %}
+{% set feedback_id = id ~ '-feedback' %}
+<div class="form-check" data-vf-component="checkbox" data-vf-state="{{ state }}">
+    <input class="form-check-input{{ state_class }}" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
+    <label class="form-check-label" for="{{ id }}">{{ label }}</label>
+    {% if state == 'error' %}<div class="invalid-feedback" id="{{ feedback_id }}">{{ feedback|default('Подтвердите выбор.') }}</div>{% endif %}
+    {% if state == 'success' %}<div class="valid-feedback" id="{{ feedback_id }}">{{ feedback|default('Выбор подтверждён.') }}</div>{% endif %}
+</div>

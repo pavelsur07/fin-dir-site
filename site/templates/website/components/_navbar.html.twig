@@ -1,0 +1,18 @@
+{% set navigation_id = navigation_id|default('vf-main-navigation') %}
+<nav class="navbar navbar-expand-lg vf-navbar" aria-label="Основная навигация" data-vf-component="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="{{ brand_href }}">{{ brand }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#{{ navigation_id }}" aria-controls="{{ navigation_id }}" aria-expanded="false" aria-label="Открыть меню">
+            <span class="vf-navbar-toggler-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
+        <div class="collapse navbar-collapse" id="{{ navigation_id }}">
+            <ul class="navbar-nav ms-auto">
+                {% for item in items %}
+                    <li class="nav-item">
+                        <a class="nav-link{% if item.active|default(false) %} active{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>

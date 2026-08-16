@@ -1,0 +1,13 @@
+{% set state = state|default('default') %}
+{% set state_class = state == 'error' ? ' is-invalid' : (state == 'success' ? ' is-valid' : (state == 'focus' ? ' vf-is-focus' : '')) %}
+{% set feedback_id = id ~ '-feedback' %}
+<div data-vf-component="select" data-vf-state="{{ state }}">
+    <label class="form-label" for="{{ id }}">{{ label }}</label>
+    <select class="form-select{{ state_class }}" id="{{ id }}" name="{{ name|default(id) }}"{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
+        {% for option in options %}
+            <option value="{{ option.value }}"{% if option.selected|default(false) %} selected{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+    </select>
+    {% if state == 'error' %}<div class="invalid-feedback" id="{{ feedback_id }}">{{ feedback|default('Выберите значение.') }}</div>{% endif %}
+    {% if state == 'success' %}<div class="valid-feedback" id="{{ feedback_id }}">{{ feedback|default('Значение принято.') }}</div>{% endif %}
+</div>

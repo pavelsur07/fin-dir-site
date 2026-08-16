@@ -1,0 +1,106 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'vf-section--surface' %}
+{% set section_id = 'components' %}
+{% set labelled_by = 'components-title' %}
+{% set section_name = 'components-showcase' %}
+
+{% block section_content %}
+    <div class="vf-section__heading">
+        <h2 id="components-title">Components</h2>
+        <p class="vf-lead vf-text-muted">Состояния ниже рендерятся production partials. Hover и Focus принудительно показаны рядом с интерактивными состояниями.</p>
+    </div>
+
+    <div class="vf-showcase">
+        <div class="vf-showcase-group" id="buttons">
+            <h3>Buttons</h3>
+            <div class="vf-component-row">
+                {% for button in [
+                    {state: 'default', label: 'Default'},
+                    {state: 'hover', label: 'Hover'},
+                    {state: 'focus', label: 'Focus'},
+                    {state: 'active', label: 'Active'},
+                ] %}
+                    <div class="vf-component-state">
+                        <span class="vf-caption">{{ button.label }}</span>
+                        {% include 'website/components/_button.html.twig' with {label: button.label, state: button.state} only %}
+                    </div>
+                {% endfor %}
+                <div class="vf-component-state">
+                    <span class="vf-caption">Disabled</span>
+                    {% include 'website/components/_button.html.twig' with {label: 'Disabled', disabled: true} only %}
+                </div>
+                <div class="vf-component-state">
+                    <span class="vf-caption">Secondary</span>
+                    {% include 'website/components/_button.html.twig' with {label: 'Подробнее', variant: 'outline-primary'} only %}
+                </div>
+            </div>
+        </div>
+
+        <div class="vf-showcase-group" id="cards">
+            <h3>Cards</h3>
+            <div class="row vf-card-grid">
+                <div class="col-md-6">
+                    {% include 'website/components/_card.html.twig' with {
+                        eyebrow: 'Design tokens',
+                        title: 'Единые значения',
+                        text: 'Цвет, типографика и spacing не определяются на уровне страницы.',
+                    } only %}
+                </div>
+                <div class="col-md-6">
+                    {% include 'website/components/_card.html.twig' with {
+                        eyebrow: 'Accessibility',
+                        title: 'Наблюдаемые состояния',
+                        text: 'Фокус, ошибка и успех различимы и сопровождаются текстом.',
+                    } only %}
+                </div>
+            </div>
+        </div>
+
+        <div class="vf-showcase-group" id="badges">
+            <h3>Badges</h3>
+            <div class="vf-component-row">
+                {% include 'website/components/_badge.html.twig' with {label: 'Default'} only %}
+                {% include 'website/components/_badge.html.twig' with {label: 'Success', tone: 'success'} only %}
+                {% include 'website/components/_badge.html.twig' with {label: 'Warning', tone: 'warning'} only %}
+                {% include 'website/components/_badge.html.twig' with {label: 'Error', tone: 'danger'} only %}
+                {% include 'website/components/_badge.html.twig' with {label: 'Info', tone: 'info'} only %}
+            </div>
+        </div>
+
+        <div class="vf-showcase-group" id="alerts">
+            <h3>Alerts</h3>
+            <div class="vf-showcase">
+                {% include 'website/components/_alert.html.twig' with {title: 'Информация', text: 'Нейтральная системная информация.', tone: 'info'} only %}
+                {% include 'website/components/_alert.html.twig' with {title: 'Готово', text: 'Операция завершена успешно.', tone: 'success'} only %}
+                {% include 'website/components/_alert.html.twig' with {title: 'Требуется внимание', text: 'Проверьте данные перед продолжением.', tone: 'warning'} only %}
+                {% include 'website/components/_alert.html.twig' with {title: 'Ошибка', text: 'Исправьте отмеченные поля.', tone: 'danger', role: 'alert'} only %}
+            </div>
+        </div>
+
+        <div class="vf-showcase-group" id="breadcrumbs">
+            <h3>Breadcrumbs</h3>
+            {% include 'website/components/_breadcrumb.html.twig' with {
+                items: [
+                    {label: 'Главная', href: '/'},
+                    {label: 'UI-kit'},
+                ],
+            } only %}
+        </div>
+
+        <div class="vf-showcase-group" id="accordion">
+            <h3>Accordion</h3>
+            {% include 'website/components/_accordion.html.twig' with {
+                accordion_id: 'ui-kit-accordion',
+                items: [
+                    {title: 'Когда использовать Accordion?', text: 'Когда пользователю полезно раскрывать независимые части дополнительной информации.'},
+                    {title: 'Когда не использовать?', text: 'Когда короткий текст проще прочитать целиком без дополнительного действия.'},
+                ],
+            } only %}
+        </div>
+
+        <div class="vf-showcase-group" id="navigation">
+            <h3>Navigation</h3>
+            <p>Production Navbar находится в начале страницы, Footer — после содержимого. На узком viewport Navbar использует Bootstrap collapse.</p>
+        </div>
+    </div>
+{% endblock %}

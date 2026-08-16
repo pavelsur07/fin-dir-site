@@ -1,0 +1,9 @@
+{% set section_class = section_class|default('') %}
+{% set section_id = section_id|default(null) %}
+{% set labelled_by = labelled_by|default(null) %}
+{% set section_name = section_name|default('base') %}
+<section class="vf-section {{ section_class }}"{% if section_id %} id="{{ section_id }}"{% endif %}{% if labelled_by %} aria-labelledby="{{ labelled_by }}"{% endif %} data-vf-section="{{ section_name }}">
+    <div class="container">
+        {% block section_content %}{% endblock %}
+    </div>
+</section>

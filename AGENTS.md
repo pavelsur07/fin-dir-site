@@ -22,7 +22,8 @@
 - PostgreSQL;
 - Twig;
 - Symfony Forms и Validator;
-- Symfony Security.
+- Symfony Security;
+- Bootstrap 5 — базовый UI framework публичного сайта (`Public Website`), разрешён к использованию без отдельного архитектурного согласования в рамках правил `SITE_RULES.md`.
 
 По мере необходимости:
 
@@ -143,6 +144,20 @@ site/templates/
 └── shared/
 ```
 
+Для публичного маркетингового сайта разрешена отдельная структура:
+
+```text
+site/templates/website/
+├── layouts/
+├── pages/
+├── sections/
+└── components/
+```
+
+`site/templates/website/` является согласованным исключением из правила разделения Twig по бизнес-модулям и используется только для Public Website.
+
+Правила дизайна, верстки, компонентов и структуры публичного сайта определяются в `SITE_RULES.md`. Наличие `site/templates/website/` не является архитектурным конфликтом и не требует остановки работы агента, если изменения выполняются в рамках Public Website и соответствуют `SITE_RULES.md`.
+
 Структура тестов должна повторять структуру приложения:
 
 ```text
@@ -152,6 +167,19 @@ site/tests/
 ├── Partner/
 └── Shared/
 ```
+
+## Public Website
+
+Для всех изменений публичного сайта агент обязан полностью прочитать и соблюдать:
+
+- `SITE_RULES.md`.
+
+`SITE_RULES.md` — Source of Truth для design system, design tokens, typography,
+spacing, Twig-структуры, UI components, section architecture, CSS, responsive,
+accessibility baseline и AI-generated UI anti-patterns публичного сайта.
+
+Не создавать новые UI patterns, произвольные стили, дубли компонентов или
+декоративные варианты, противоречащие `SITE_RULES.md`.
 
 ## 6. Правила модульности
 

@@ -1,0 +1,9 @@
+{% set state = state|default('default') %}
+{% set state_class = state == 'error' ? ' is-invalid' : (state == 'success' ? ' is-valid' : (state == 'focus' ? ' vf-is-focus' : '')) %}
+{% set feedback_id = id ~ '-feedback' %}
+<div data-vf-component="form-input" data-vf-state="{{ state }}">
+    <label class="form-label" for="{{ id }}">{{ label }}</label>
+    <input class="form-control{{ state_class }}" id="{{ id }}" name="{{ name|default(id) }}" type="{{ type|default('text') }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if value is defined %} value="{{ value }}"{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
+    {% if state == 'error' %}<div class="invalid-feedback" id="{{ feedback_id }}">{{ feedback|default('Проверьте значение поля.') }}</div>{% endif %}
+    {% if state == 'success' %}<div class="valid-feedback" id="{{ feedback_id }}">{{ feedback|default('Значение принято.') }}</div>{% endif %}
+</div>
