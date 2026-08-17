@@ -82,25 +82,28 @@ cache-clear:
 deptrac:
 	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
 
-# Tailwind работает только во время сборки. Nginx раздаёт compiled app.css.
+# Tailwind работает только во время сборки. Nginx раздаёт compiled website assets.
 assets:
 	rm -rf -- site/public/assets/website
 	mkdir -p site/public/assets/website
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --minify
+	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 
 assets-watch:
 	mkdir -p site/public/assets/website
+	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --watch
 
 asset-version:
-	@sha256sum site/public/assets/website/app.css | cut -c1-12
+	@cat site/public/assets/website/app.css site/public/assets/website/navigation.js | sha256sum | cut -c1-12
 
 assets-check:
-	@temporary=$$(mktemp); \
-	trap 'rm -f "$$temporary"' EXIT HUP INT TERM; \
-	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o "$$temporary" --minify; \
-	cmp --silent "$$temporary" site/public/assets/website/app.css || { \
-		echo 'Compiled Tailwind CSS is stale. Run make assets.' >&2; \
+	@temporary=$$(mktemp -d); \
+	trap 'rm -rf -- "$$temporary"' EXIT HUP INT TERM; \
+	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o "$$temporary/app.css" --minify; \
+	cp site/assets/scripts/website/navigation.js "$$temporary/navigation.js"; \
+	diff --brief --recursive "$$temporary" site/public/assets/website >/dev/null || { \
+		echo 'Compiled website assets are stale. Run make assets.' >&2; \
 		exit 1; \
 	}
 

@@ -1,4 +1,4 @@
-{% set vf_asset_version = 'd8610d22dc07' %}
+{% set vf_asset_version = '06d75dc8ef38' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -34,6 +34,8 @@
         } only %}
     {% endblock %}
 
-    {% block javascripts %}{% endblock %}
+    {% block javascripts %}
+        <script src="/assets/website/navigation.js?v={{ vf_asset_version }}" defer></script>
+    {% endblock %}
 </body>
 </html>

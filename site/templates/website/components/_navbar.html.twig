@@ -1,27 +1,39 @@
 {% set navigation_id = navigation_id|default('vf-main-navigation') %}
-<nav class="border-b border-border-default bg-surface" aria-label="Основная навигация" data-vf-component="navbar">
-    <div class="mx-auto flex w-full max-w-site flex-wrap items-center justify-between gap-4 px-4 py-3 md:px-6">
+{% set drawer_id = navigation_id ~ '-drawer' %}
+<header class="border-b border-border-default bg-surface" data-vf-component="navbar">
+    <nav class="mx-auto flex h-16 w-full max-w-site flex-nowrap items-center justify-between gap-4 px-4 md:px-6" aria-label="Основная навигация">
         <a class="font-bold text-content no-underline" href="{{ brand_href }}">{{ brand }}</a>
-        <details class="group contents lg:hidden">
-            <summary class="flex min-h-control cursor-pointer list-none items-center rounded-md border border-border-strong px-3 text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden" aria-label="Открыть или закрыть меню">
-                <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
-            </summary>
-            <div class="hidden w-full group-open:block" id="{{ navigation_id }}">
-                <ul class="flex flex-col gap-2 pt-3">
+        <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-surface p-0 text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
+            <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
+        </button>
+        <div class="ml-auto hidden lg:block" data-vf-desktop-navigation>
+            <ul class="flex items-center gap-6">
+                {% for item in items %}
+                    <li>
+                        <a class="block py-2 font-medium no-underline hover:text-brand-red focus:text-brand-red{% if item.active|default(false) %} text-brand-red{% else %} text-content{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+
+    <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-content lg:hidden" id="{{ drawer_id }}" aria-label="Меню" data-state="closed" data-vf-menu-dialog>
+        <div class="navigation-drawer-width absolute inset-y-0 right-0 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-surface shadow-card" data-vf-menu-panel>
+            <div class="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border-default px-4">
+                <a class="font-bold text-content no-underline" href="{{ brand_href }}">{{ brand }}</a>
+                <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-surface p-0 text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus" type="button" aria-label="Закрыть меню" data-vf-menu-close>
+                    <span class="text-h3 leading-none" aria-hidden="true">×</span>
+                </button>
+            </div>
+            <nav class="px-4 py-4" aria-label="Мобильная навигация" data-vf-mobile-navigation>
+                <ul class="flex flex-col gap-2">
                     {% for item in items %}
                         <li>
-                            <a class="block py-2 font-medium no-underline hover:text-brand-red focus:text-brand-red{% if item.active|default(false) %} text-brand-red{% else %} text-content{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                            <a class="flex min-h-control items-center py-2 text-left font-medium no-underline hover:text-brand-red focus:text-brand-red{% if item.active|default(false) %} text-brand-red{% else %} text-content{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
                         </li>
                     {% endfor %}
                 </ul>
-            </div>
-        </details>
-        <ul class="ml-auto hidden items-center gap-6 lg:flex">
-            {% for item in items %}
-                <li>
-                    <a class="block py-2 font-medium no-underline hover:text-brand-red focus:text-brand-red{% if item.active|default(false) %} text-brand-red{% else %} text-content{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</nav>
+            </nav>
+        </div>
+    </dialog>
+</header>

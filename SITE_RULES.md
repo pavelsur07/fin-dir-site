@@ -19,6 +19,7 @@ Legacy-шаблоны вне `site/templates/website/` мигрируют по �
 - Twig;
 - Tailwind CSS `4.3.3` — единственный базовый UI framework;
 - CSS — один source entrypoint и один compiled production asset;
+- website JavaScript — отдельные project-owned файлы только для согласованной интерактивности;
 - JavaScript — минимально и только когда native HTML недостаточен.
 
 Правила:
@@ -53,22 +54,27 @@ CSS source и build wrapper:
 site/assets/styles/website/
 └── app.css
 
+site/assets/scripts/website/
+└── navigation.js
+
 scripts/
 └── tailwindcss.sh
 ```
 
 Статические файлы текущего Nginx публикуются из
-`site/public/assets/website/app.css`. Это generated output, его нельзя
-редактировать вручную. `make assets` компилирует и минифицирует source,
-`make assets-watch` запускает watch, `make assets-check` повторяет production
-build во временный файл и ловит drift. Standalone CLI `4.3.3` загружается в
+`site/public/assets/website/`: compiled `app.css` и копия `navigation.js`.
+Это generated output, его нельзя редактировать вручную. `make assets`
+компилирует CSS и копирует project-owned JavaScript, `make assets-watch`
+запускает CSS watch после копирования JavaScript, `make assets-check`
+повторяет production build во временную директорию и ловит drift обоих
+файлов. Standalone CLI `4.3.3` загружается в
 ignored `site/var/tools`, проверяется pinned SHA-256 и не попадает в production
 image/runtime. Node и package manager проекту для website build не нужны.
 
 Release query определяется один раз в website layout и равен первым 12 знакам
-SHA-256 compiled `app.css`. Значение выводит `make asset-version`, а functional
-test проверяет соответствие. Это обязательно, потому что Nginx отдаёт static
-assets с immutable cache.
+SHA-256 конкатенации `app.css` и `navigation.js` в этом порядке. Значение
+выводит `make asset-version`, а functional test проверяет соответствие. Это
+обязательно, потому что Nginx отдаёт static assets с immutable cache.
 
 Page преимущественно собирает sections. Section использует общий section
 pattern и готовые components. Layout не содержит page-specific разметку.
@@ -307,6 +313,7 @@ width constraint или центральный typography token. Stage 2 не п
 - основной website container: `mx-auto w-full max-w-site px-4 md:px-6`,
   максимум `--vf-container-max: 1200px`;
 - ширина чтения: `--vf-content-max: 720px`;
+- максимальная ширина mobile Drawer: `--vf-navigation-drawer-max: 360px`;
 - горизонтальный gutter: `16px` mobile, `24px` начиная с tablet;
 - borders используют Tailwind `border` (`1px`) и `--vf-color-border`;
 - линии функциональных CSS-иконок используют `border-2` (`2px`);
@@ -333,6 +340,28 @@ xl 1200px
 применять в media query. Default breakpoints не принимаются молча. Новый
 breakpoint без отдельного адаптивного сценария запрещён.
 
+### 4.6. Native Browser Scrollbar
+
+> Public Website MUST use the browser/OS native scrollbar for document scrolling. Do not style the main page scrollbar or its track/thumb.
+
+Browser, operating system and user settings fully control the document
+scrollbar on every Public Website page, including `/ui-kit` and
+`/ui-kit/sections`. Local functional scroll areas also use native scrollbars by
+default; any customization requires a separate confirmed UX decision.
+
+Rules:
+
+- NO custom document scrollbar;
+- NO custom scrollbar track color;
+- NO forced scrollbar width;
+- NO fake scrollbar gutter;
+- NO document rules for `::-webkit-scrollbar*`, `scrollbar-color`,
+  `scrollbar-width`, `scrollbar-gutter` or forced `overflow-y: scroll`;
+- NO `padding-right`, `padding-inline-end`, `margin-right` or background strip
+  used to imitate or compensate the document scrollbar.
+- NO forced document `color-scheme` whose purpose or effect is to override the
+  browser/OS scrollbar appearance.
+
 ## 5. Базовые Components
 
 Stage 1 определяет:
@@ -354,8 +383,30 @@ Stage 1 определяет:
 Production Twig partial является единственной реализацией компонента. UI-kit и
 будущие страницы подключают тот же partial. Стили задаются Tailwind utilities
 непосредственно в production Twig partial; варианты используют полные
-статические class strings. Accordion и mobile Navbar используют native
-`details`/`summary`, поэтому JavaScript для них не требуется.
+статические class strings. Accordion использует native `details`/`summary` без
+JavaScript. Mobile Navbar использует native modal `<dialog>` и минимальный
+`navigation.js`, потому что off-canvas lifecycle не является disclosure.
+
+### 5.1. Navbar
+
+- Header на mobile всегда однострочный: внутренняя строка имеет высоту
+  `64px`, а полная высота с нижним border — `65px`;
+- Menu и Close имеют touch target `44×44px`, accessible labels и visible focus;
+- mobile navigation работает до project breakpoint `lg`, desktop navigation — начиная с `lg`;
+- Drawer открывается через `showModal()`, не участвует в document flow,
+  имеет `100dvh`, `width: min(88vw, 360px)` и внутренний vertical scroll;
+- modal backdrop токенизирован через Brand Dark с neutral opacity, но не является
+  новым brand color;
+- backdrop click, Close и `Esc` закрывают Drawer; после закрытия focus
+  возвращается на Menu;
+- пока modal открыта, background inert и не скроллится;
+- scroll lock удерживает document в текущей позиции, не меняя
+  native scrollbar, `html`/`body` overflow и не добавляя fake gutter;
+- пункты Drawer выровнены слева, а active state обозначается Brand Red text
+  и `aria-current="page"` без Card, pill и большого red background;
+- motion короткий (`200ms`, `ease-out`) и отключается при `prefers-reduced-motion`;
+- mobile Drawer и desktop links живут в одном production Navbar partial; отдельный
+  UI-kit menu запрещён.
 
 CTA использует токенизированный Button variant `on-primary`, предназначенный
 только для действия на primary surface и показанный внутри CTA на `/ui-kit`.
@@ -534,7 +585,7 @@ Tailwind `grid`/`flex`, project breakpoints и website container использ�
 последовательно. Mobile — состояние того же компонента, не отдельный template
 или отдельная версия сайта.
 
-Обязательные контрольные ширины: `375px`, `768px`, `1024px`, `1440px`.
+Обязательные контрольные ширины: `320px`, `375px`, `768px`, `1024px`, `1440px`.
 На каждой ширине проверяются:
 
 - отсутствие horizontal overflow;
@@ -593,12 +644,18 @@ Marketing Sections, typography stress cases и layout variants. На каждо�
 - NO desktop-only components;
 - NO second UI framework;
 - NO new component, если существующий решает задачу.
+- NO custom document scrollbar;
+- NO custom scrollbar track color;
+- NO forced scrollbar width;
+- NO fake scrollbar gutter.
 
 Custom CSS допустим для `@font-face`, canonical theme/base foundation,
 accessibility behavior и layout, который utilities выражают существенно хуже.
-Текущие обоснованные custom utilities: auto-fit project Grid и минимальная
-ширина Comparison table. Custom CSS не используется как привычный способ
-писать component stylesheet вместо Tailwind.
+Текущие обоснованные custom utilities: auto-fit project Grid, минимальная
+ширина Comparison table и `min(88vw, 360px)` для off-canvas Drawer. Custom CSS
+допускается для Drawer transform/backdrop transition, потому что это stateful
+behavior native `<dialog>`, а не новый визуальный вариант. Custom CSS не
+используется как привычный способ писать component stylesheet вместо Tailwind.
 
 UI-kit showcase использует те же production partials и обычные Tailwind
 utilities. Принудительные Hover/Focus/Active состояния берутся из статических
@@ -675,7 +732,7 @@ make test
 - static scan `site/templates/website` на inline CSS/JS;
 - static scan на Bootstrap runtime/classes, arbitrary values и dynamic Tailwind fragments;
 - `make assets-check` для повторного Tailwind build и asset drift;
-- browser checks на `375/768/1024/1440`;
+- browser checks на `320/375/768/1024/1440`;
 - keyboard/focus и accessibility audit;
 - visual review по AI anti-patterns.
 
