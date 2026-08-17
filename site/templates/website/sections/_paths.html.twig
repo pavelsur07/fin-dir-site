@@ -1,0 +1,35 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-paths') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = marker|default('paths') %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    <ul class="grid gap-6 md:grid-cols-2" role="list" data-vf-layout="paths">
+        {% for path in paths %}
+            <li class="rounded-lg border border-border-default p-4 md:p-6">
+                <h3>{{ path.title }}</h3>
+                <p class="text-muted">{{ path.text }}</p>
+                {% if path.items|default([]) %}
+                    <ul class="grid gap-3" role="list">
+                        {% for item in path.items %}<li class="flex gap-3"><span class="text-muted" aria-hidden="true">—</span><span>{{ item }}</span></li>{% endfor %}
+                    </ul>
+                {% endif %}
+                {% if path.action|default(null) %}
+                    {% include 'website/components/_button.html.twig' with {
+                        label: path.action.label,
+                        href: path.action.href,
+                        variant: 'outline-primary',
+                        class: 'mt-4',
+                    } only %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

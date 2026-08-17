@@ -1,13 +1,14 @@
-<div class="vf-cta" data-vf-component="cta">
-    <div class="vf-cta__inner">
-        <div class="vf-cta__copy">
-            <h2 id="{{ heading_id }}">{{ title }}</h2>
-            <p>{{ text }}</p>
+<div class="rounded-lg bg-brand-red p-4 text-on-primary md:p-6" data-vf-component="cta">
+    <div class="flex flex-wrap items-center justify-between gap-6">
+        <div class="max-w-content">
+            <h2 class="text-on-primary" id="{{ heading_id }}">{{ title }}</h2>
+            <p class="mb-0">{{ text }}</p>
         </div>
         {% include 'website/components/_button.html.twig' with {
             label: action_label,
             href: action_href,
             variant: 'on-primary',
+            full_mobile: true,
         } only %}
     </div>
 </div>

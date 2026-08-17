@@ -1,5 +1,12 @@
 {% set tone = tone|default('default') %}
-<div class="alert vf-alert{% if tone != 'default' %} vf-alert--{{ tone }}{% endif %}"{% if role|default(null) %} role="{{ role }}"{% endif %} data-vf-component="alert">
+{% set tones = {
+    default: 'border-border-default bg-surface text-content',
+    success: 'border-success bg-success-soft text-content',
+    warning: 'border-warning bg-warning-soft text-content',
+    danger: 'border-danger bg-danger-soft text-content',
+    info: 'border-info bg-info-soft text-content',
+} %}
+<div class="rounded-md border p-4 {{ tones[tone]|default(tones.default) }}"{% if role|default(null) %} role="{{ role }}"{% endif %} data-vf-component="alert" data-vf-tone="{{ tone }}">
     <strong>{{ title }}</strong>
     <div>{{ text }}</div>
 </div>

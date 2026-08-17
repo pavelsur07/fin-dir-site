@@ -1,7 +1,11 @@
 {% set variant = variant|default('light') %}
-<footer class="vf-footer{% if variant == 'dark' %} vf-footer--dark{% endif %}" data-vf-component="footer" data-vf-variant="{{ variant }}">
-    <div class="container vf-footer__inner">
-        <p><strong>{{ brand }}</strong> <span class="vf-text-muted">— финансовое управление на основе данных.</span></p>
-        <a href="{{ privacy_href }}">Политика конфиденциальности</a>
+{% set variants = {
+    light: 'border-border-default bg-surface text-content',
+    dark: 'border-surface-dark bg-surface-dark text-on-dark',
+} %}
+<footer class="border-t py-8 {{ variants[variant]|default(variants.light) }}" data-vf-component="footer" data-vf-variant="{{ variant }}">
+    <div class="mx-auto flex w-full max-w-site flex-wrap items-center justify-between gap-x-6 gap-y-4 px-4 md:px-6">
+        <p class="mb-0"><strong>{{ brand }}</strong> <span class="{% if variant == 'dark' %}text-muted-on-dark{% else %}text-muted{% endif %}">— финансовое управление на основе данных.</span></p>
+        <a class="{% if variant == 'dark' %}text-on-dark hover:text-muted-on-dark focus-visible:outline-focus-on-dark{% endif %}" href="{{ privacy_href }}">Политика конфиденциальности</a>
     </div>
 </footer>

@@ -1,19 +1,19 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'vf-section--surface' %}
+{% set section_class = 'bg-surface' %}
 {% set section_id = 'forms' %}
 {% set labelled_by = 'forms-title' %}
 {% set section_name = 'forms-showcase' %}
 
 {% block section_content %}
-    <div class="vf-section__heading">
+    <div class="mb-8 max-w-content">
         <h2 id="forms-title">Forms</h2>
-        <p class="vf-lead vf-text-muted">Состояния сгруппированы по control; Focus визуально отделён от Error, а Error и Success имеют текстовую обратную связь.</p>
+        <p class="mb-0 text-lead text-muted">Состояния сгруппированы по control; Focus визуально отделён от Error, а Error и Success имеют текстовую обратную связь.</p>
     </div>
 
-    <form class="vf-form vf-form-showcase" aria-label="Пример формы" novalidate>
-        <section class="vf-form-showcase__group" aria-labelledby="forms-input-title" data-vf-form-group="input">
+    <form class="grid gap-8" aria-label="Пример формы" novalidate>
+        <section class="min-w-0" aria-labelledby="forms-input-title" data-vf-form-group="input">
             <h3 id="forms-input-title">Input</h3>
-            <div class="vf-form-showcase__states">
+            <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_input.html.twig' with {
                     id: 'demo-name',
                     label: 'Default input',
@@ -49,9 +49,9 @@
             </div>
         </section>
 
-        <section class="vf-form-showcase__group" aria-labelledby="forms-select-title" data-vf-form-group="select">
+        <section class="min-w-0" aria-labelledby="forms-select-title" data-vf-form-group="select">
             <h3 id="forms-select-title">Select</h3>
-            <div class="vf-form-showcase__states">
+            <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_select.html.twig' with {
                     id: 'demo-select',
                     label: 'Default select',
@@ -91,9 +91,9 @@
             </div>
         </section>
 
-        <section class="vf-form-showcase__group" aria-labelledby="forms-textarea-title" data-vf-form-group="textarea">
+        <section class="min-w-0" aria-labelledby="forms-textarea-title" data-vf-form-group="textarea">
             <h3 id="forms-textarea-title">Textarea</h3>
-            <div class="vf-form-showcase__states">
+            <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_textarea.html.twig' with {
                     id: 'demo-textarea',
                     label: 'Default textarea',
@@ -129,9 +129,9 @@
             </div>
         </section>
 
-        <section class="vf-form-showcase__group" aria-labelledby="forms-checkbox-title" data-vf-form-group="checkbox">
+        <section class="min-w-0" aria-labelledby="forms-checkbox-title" data-vf-form-group="checkbox">
             <h3 id="forms-checkbox-title">Checkbox</h3>
-            <div class="vf-form-showcase__states">
+            <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_checkbox.html.twig' with {
                     id: 'demo-checkbox',
                     label: 'Default checkbox',

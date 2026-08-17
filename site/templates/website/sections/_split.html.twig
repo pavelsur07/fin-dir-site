@@ -1,0 +1,43 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-split') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = marker|default('feature') %}
+{% set media_position = media_position|default('right') == 'left' ? 'left' : 'right' %}
+{% set has_media = media|default(null) or demo_media|default(false) %}
+
+{% block section_content %}
+    <div class="grid items-center gap-8{% if has_media %} md:grid-cols-2{% endif %}" data-vf-layout="split" data-vf-media-position="{{ media_position }}" data-vf-has-media="{{ has_media ? 'true' : 'false' }}">
+        <div class="max-w-content">
+            {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+            <h2 id="{{ labelled_by }}">{{ title }}</h2>
+            <p class="text-lead text-muted">{{ text }}</p>
+            {% if items|default([]) %}
+                <ul class="grid gap-3" role="list">
+                    {% for item in items %}<li class="flex gap-3"><span class="text-muted" aria-hidden="true">—</span><span>{{ item }}</span></li>{% endfor %}
+                </ul>
+            {% endif %}
+            {% if action|default(null) %}
+                {% include 'website/components/_button.html.twig' with {
+                    label: action.label,
+                    href: action.href,
+                    variant: 'outline-primary',
+                    class: 'mt-4',
+                } only %}
+            {% endif %}
+        </div>
+
+        {% if has_media %}
+            <div class="{% if media_position == 'left' %}md:order-first{% endif %}">
+                {% if media|default(null) %}
+                    <img class="aspect-16/10 block w-full rounded-lg object-cover" src="{{ media.src }}" alt="{{ media.alt }}">
+                {% else %}
+                    <div class="grid aspect-16/10 place-content-center gap-2 rounded-lg border border-border-strong bg-page text-center text-muted" aria-hidden="true" data-vf-demo-media>
+                        <strong>Demo media</strong>
+                        <span>16:10</span>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

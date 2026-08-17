@@ -1,0 +1,33 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-comparison') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'comparison' %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    <div class="overflow-x-auto" data-vf-layout="comparison" role="region" aria-label="{{ table_label|default(title) }}" tabindex="0">
+        <table class="min-w-comparison w-full border-collapse text-left">
+            <caption class="text-muted">{{ caption }}</caption>
+            <thead>
+                <tr>
+                    <th class="border-b border-border-strong p-3 align-top" scope="col">{{ criterion_label|default('Критерий') }}</th>
+                    {% for alternative in alternatives %}<th class="border-b border-border-strong p-3 align-top" scope="col">{{ alternative }}</th>{% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <th class="border-b border-border-default p-3 align-top" scope="row">{{ row.criterion }}</th>
+                        {% for value in row.values %}<td class="border-b border-border-default p-3 align-top">{{ value }}</td>{% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-case-preview') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'case-preview' %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    <dl class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-vf-layout="case-preview">
+        {% for item in items %}
+            <div class="border-t border-border-default pt-4">
+                <dt class="mb-2 font-bold">{{ item.label }}</dt>
+                <dd class="text-muted">{{ item.text }}</dd>
+            </div>
+        {% endfor %}
+    </dl>
+{% endblock %}

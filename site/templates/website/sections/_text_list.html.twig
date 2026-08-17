@@ -1,0 +1,25 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-text-list') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = marker|default('text-list') %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    {% if items|default([]) %}
+        <ul class="grid max-w-content gap-3" role="list" data-vf-layout="text-list">
+            {% for item in items %}
+                <li class="border-t border-border-default pt-4">
+                    {% if item.title|default(null) %}<h3 class="text-h4">{{ item.title }}</h3>{% endif %}
+                    <p class="mb-0">{{ item.text }}</p>
+                    {% if item.href|default(null) %}<a href="{{ item.href }}">{{ item.link_label|default('Подробнее') }}</a>{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

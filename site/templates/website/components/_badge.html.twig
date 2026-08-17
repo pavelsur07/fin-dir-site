@@ -1,2 +1,9 @@
 {% set tone = tone|default('default') %}
-<span class="badge vf-badge{% if tone != 'default' %} vf-badge--{{ tone }}{% endif %}" data-vf-component="badge">{{ label }}</span>
+{% set tones = {
+    default: 'bg-surface text-content',
+    success: 'bg-success-soft text-success',
+    warning: 'bg-warning-soft text-warning',
+    danger: 'bg-danger-soft text-danger',
+    info: 'bg-info-soft text-info',
+} %}
+<span class="inline-flex rounded-sm border border-current px-2 py-1 text-caption font-medium {{ tones[tone]|default(tones.default) }}" data-vf-component="badge" data-vf-tone="{{ tone }}">{{ label }}</span>

@@ -1,0 +1,321 @@
+{% extends 'website/layouts/base.html.twig' %}
+
+{% block title %}Marketing Sections — UI-kit «Ваш Финдир»{% endblock %}
+{% block description %}Технический каталог production-паттернов маркетинговых секций публичного сайта «Ваш Финдир».{% endblock %}
+{% block head %}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block navigation %}
+    {% include 'website/components/_navbar.html.twig' with {
+        brand: 'Ваш Финдир',
+        brand_href: path('home'),
+        navigation_id: 'vf-sections-navigation',
+        items: [
+            {label: 'Главная', href: path('home')},
+            {label: 'UI-kit', href: path('ui_kit')},
+            {label: 'Секции', href: path('ui_kit_sections'), active: true},
+        ],
+    } only %}
+{% endblock %}
+
+{% block body %}
+    {% include 'website/sections/_hero.html.twig' with {
+        id: 'sections-hero',
+        eyebrow: 'Marketing Sections Library',
+        title: 'Готовые секции для ясного разговора о финансах бизнеса',
+        text: 'Техническая страница показывает production-паттерны, адаптивность и честные demo-состояния без вымышленных клиентов, цифр и продуктовых обещаний.',
+        variant: 'dark',
+        primary_action: {label: 'Смотреть паттерны', href: '#problem-section'},
+        secondary_action: {label: 'Открыть основы UI-kit', href: path('ui_kit')},
+    } only %}
+
+    {% include 'website/sections/_typography_stress_showcase.html.twig' with {
+        id: 'typography-stress-section',
+    } only %}
+
+    {% include 'website/sections/_text_list.html.twig' with {
+        id: 'problem-section',
+        marker: 'problem',
+        eyebrow: 'Problem / Text + List',
+        title: 'Когда финансовая картина бизнеса распадается на отдельные файлы',
+        text: 'Шесть типовых сигналов помогают быстро узнать свой контекст. Это демонстрационный контент, а не утверждение о конкретной компании.',
+        items: [
+            {text: 'Остатки на счетах видны, но свободные деньги не определены.'},
+            {text: 'Платежи планируются в нескольких несвязанных таблицах.'},
+            {text: 'План и факт сверяются нерегулярно.'},
+            {text: 'Доходность направлений оценивается без общей методики.'},
+            {text: 'Решения зависят от ручной сборки отчёта.'},
+            {text: 'Ответственность за финансовые данные размыта.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_grid.html.twig' with {
+        id: 'benefits-section',
+        marker: 'benefits',
+        eyebrow: 'Benefits / Grid',
+        title: 'Два результата одного управленческого контура',
+        text: 'Компактный Grid подходит для равноправных тезисов, которые действительно нужно сравнить рядом.',
+        items: [
+            {title: 'Понятная картина', text: 'Единые правила помогают читать план, факт и отклонения в одном контексте.'},
+            {title: 'Регулярные решения', text: 'Ритм подготовки данных становится частью управленческого процесса.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_split.html.twig' with {
+        id: 'feature-right-section',
+        marker: 'feature',
+        eyebrow: 'Feature / Split / Media Right',
+        title: 'Сначала смысл, затем подтверждающее изображение',
+        text: 'Контент остаётся первым в DOM и на мобильном экране. Demo media обозначает только допустимую область будущего реального материала.',
+        items: ['Один смысловой акцент', 'Содержательный alt для реального изображения', 'Соотношение области 16:10'],
+        action: {label: 'Пример вторичного действия', href: '#feature-left-section'},
+        media_position: 'right',
+        demo_media: true,
+    } only %}
+
+    {% include 'website/sections/_split.html.twig' with {
+        id: 'feature-left-section',
+        marker: 'feature',
+        eyebrow: 'Feature / Split / Media Left',
+        title: 'Вариант направления не меняет семантику секции',
+        text: 'На desktop media может находиться слева, но мобильный порядок сохраняет сначала заголовок и объяснение. CTA не обязателен.',
+        items: ['Тот же production partial', 'Без отдельной mobile-разметки', 'Без декоративного чередования фона'],
+        media_position: 'left',
+        demo_media: true,
+    } only %}
+
+    {% include 'website/sections/_steps.html.twig' with {
+        id: 'steps-section',
+        eyebrow: 'Steps / Ordered List',
+        title: 'Процесс из пяти последовательных шагов',
+        text: 'Нумерация отражает реальный порядок, поэтому используется семантический ordered list.',
+        steps: [
+            {title: 'Контекст', text: 'Фиксируем исходную управленческую задачу.'},
+            {title: 'Данные', text: 'Определяем источники и правила подготовки.'},
+            {title: 'Модель', text: 'Согласуем структуру планирования и отчётности.'},
+            {title: 'Ритм', text: 'Назначаем регулярные точки сверки.'},
+            {title: 'Решения', text: 'Используем результат в управлении.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_paths.html.twig' with {
+        id: 'paths-section',
+        eyebrow: 'Two Paths',
+        title: 'Два взаимоисключающих пути',
+        text: 'Паттерн применяется только когда пользователю действительно нужно выбрать один из двух следующих шагов.',
+        paths: [
+            {
+                title: 'Разобрать текущую ситуацию',
+                text: 'Подходит, когда сначала требуется определить проблемные зоны.',
+                items: ['Краткий контекст', 'Список вопросов'],
+                action: {label: 'Выбрать разбор', href: '#lead-form-section'},
+            },
+            {
+                title: 'Обсудить регулярную работу',
+                text: 'Подходит, когда задача и ожидаемый формат уже сформулированы.',
+                items: ['Известный запрос', 'Понятный горизонт работы'],
+                action: {label: 'Выбрать обсуждение', href: '#lead-form-section'},
+            },
+        ],
+    } only %}
+
+    {% include 'website/sections/_case_preview.html.twig' with {
+        id: 'case-preview-section',
+        eyebrow: 'Case Preview',
+        title: 'Структура кейса без вымышленных результатов',
+        text: 'Preview показывает контракт Problem → Action → Result. Содержимое ниже явно техническое и не описывает реального клиента.',
+        items: [
+            {label: 'Problem', text: 'Кратко описать подтверждённый исходный контекст.'},
+            {label: 'Action', text: 'Показать фактически выполненную работу без лишней детализации.'},
+            {label: 'Result', text: 'Указать проверяемый результат или честно оставить его без числовой метрики.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_text_list.html.twig' with {
+        id: 'proof-section',
+        marker: 'proof',
+        eyebrow: 'Proof / Text + List',
+        title: 'Доказательства должны быть проверяемыми',
+        text: 'Пока реальные материалы не предоставлены, библиотека показывает только допустимые типы подтверждений.',
+        items: [
+            {title: 'Процесс', text: 'Описание методики с понятными входами и результатом.'},
+            {title: 'Артефакт', text: 'Реальный обезличенный пример документа с разрешением на публикацию.'},
+            {title: 'Источник', text: 'Ссылка на проверяемую публикацию или подтверждённый кейс.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_quote.html.twig' with {
+        id: 'quote-section',
+        eyebrow: 'Quote',
+        title: 'Контракт цитаты',
+        quote: 'Здесь размещается только точная согласованная цитата. Демонстрационный текст не выдаётся за отзыв клиента.',
+        source: 'Demo label — не реальный автор и не клиент',
+    } only %}
+
+    {% include 'website/sections/_grid.html.twig' with {
+        id: 'pricing-section',
+        marker: 'pricing',
+        eyebrow: 'Pricing / Grid',
+        title: 'До четырёх сопоставимых вариантов',
+        text: 'Цены и преимущества не выдуманы: технический preview фиксирует только структуру будущих подтверждённых предложений.',
+        items: [
+            {title: 'Вариант A', text: 'Кратко описать кому подходит.', details: ['Подтверждённый состав', 'Понятное ограничение']},
+            {title: 'Вариант B', text: 'Кратко описать кому подходит.', details: ['Подтверждённый состав', 'Понятное ограничение']},
+            {title: 'Вариант C', text: 'Кратко описать кому подходит.', details: ['Подтверждённый состав', 'Понятное ограничение']},
+            {title: 'Вариант D', text: 'Кратко описать кому подходит.', details: ['Подтверждённый состав', 'Понятное ограничение']},
+        ],
+    } only %}
+
+    {% include 'website/sections/_comparison.html.twig' with {
+        id: 'comparison-section',
+        eyebrow: 'Comparison',
+        title: 'Сравнение трёх альтернатив',
+        text: 'Таблица использует заголовки строк и столбцов, а на узком экране прокручивается внутри своего региона.',
+        table_label: 'Демонстрационное сравнение вариантов работы',
+        caption: 'Demo: значения иллюстрируют структуру, а не коммерческое предложение.',
+        alternatives: ['Вариант A', 'Вариант B', 'Вариант C'],
+        rows: [
+            {criterion: 'Исходный контекст', values: ['Определён', 'Определён', 'Требует разбора']},
+            {criterion: 'Формат взаимодействия', values: ['Разовый', 'Регулярный', 'Диагностический']},
+            {criterion: 'Горизонт планирования', values: ['Короткий', 'Средний', 'Не задан']},
+            {criterion: 'Набор данных', values: ['Согласован', 'Согласован', 'Уточняется']},
+            {criterion: 'Ответственный', values: ['Назначен', 'Назначен', 'Определяется']},
+            {criterion: 'Ритм сверки', values: ['По завершении', 'Регулярный', 'После диагностики']},
+            {criterion: 'Результат', values: ['Артефакт', 'Процесс', 'Рекомендации']},
+            {criterion: 'Следующий шаг', values: ['Передача', 'Продолжение', 'Выбор формата']},
+        ],
+    } only %}
+
+    {% include 'website/sections/_faq.html.twig' with {
+        id: 'faq-section',
+        eyebrow: 'FAQ / Accordion',
+        title: 'Частые вопросы о библиотеке секций',
+        text: 'FAQ переиспользует production Accordion из базового UI-kit.',
+        items: [
+            {title: 'Это готовая маркетинговая страница?', text: 'Нет. Это технический каталог production-паттернов.'},
+            {title: 'Можно ли менять порядок секций?', text: 'Да, если порядок следует задаче и информационной иерархии страницы.'},
+            {title: 'Обязательно ли использовать все секции?', text: 'Нет. Используется минимальный набор, необходимый конкретному сценарию.'},
+            {title: 'Можно ли выдумать пример клиента?', text: 'Нет. Неподтверждённые имена, отзывы, логотипы и метрики запрещены.'},
+            {title: 'Когда нужна новая секция?', text: 'Только когда существующие паттерны не решают подтверждённую задачу.'},
+            {title: 'Где описан контракт?', text: 'В разделе Marketing Sections документа SITE_RULES.md.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_lead_form.html.twig' with {
+        id: 'lead-form-section',
+        eyebrow: 'Form + Context',
+        title: 'Обсудить финансовую задачу',
+        text: 'Форма демонстрирует только layout и production controls. На технической странице данные не отправляются и не сохраняются.',
+        context_items: ['Короткий набор полей', 'Явные labels', 'Согласие до отправки'],
+        action_label: 'Демонстрационная кнопка',
+        note: 'Demo only: обработчик отправки не подключён.',
+    } only %}
+
+    {% include 'website/sections/_grid.html.twig' with {
+        id: 'article-preview-section',
+        marker: 'article-preview',
+        eyebrow: 'Article Preview / Grid',
+        title: 'Два примера редакционных анонсов',
+        text: 'Заголовки служат нейтральной демонстрацией структуры и не имитируют существующие публикации.',
+        items: [
+            {title: 'Как сформулировать вопрос к управленческому отчёту', text: 'Demo-анонс: тезис, контекст и понятное направление перехода.', action: {label: 'Пример ссылки', href: '#article-preview-section'}},
+            {title: 'Какие данные нужны для план-факт анализа', text: 'Demo-анонс: без вымышленной даты, автора или показателей популярности.', action: {label: 'Пример ссылки', href: '#article-preview-section'}},
+        ],
+    } only %}
+
+    {% include 'website/sections/_text_list.html.twig' with {
+        id: 'text-content-stress',
+        marker: 'text-content-stress',
+        eyebrow: 'Contract stress / Text',
+        title: 'Text pattern без списка',
+        text: 'Optional items отсутствуют: section сохраняет heading, reading width и корректную иерархию без пустого list container.',
+    } only %}
+
+    {% include 'website/sections/_text_list.html.twig' with {
+        id: 'problem-min-stress',
+        marker: 'problem',
+        eyebrow: 'Contract stress / Problem minimum',
+        title: 'Минимум из трёх problem statements',
+        text: 'Технический boundary case для нижней границы контракта.',
+        items: [
+            {text: 'Первый демонстрационный тезис.'},
+            {text: 'Второй тезис с немного более длинным текстом для переноса.'},
+            {text: 'Третий демонстрационный тезис.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_grid.html.twig' with {
+        id: 'grid-three-stress',
+        marker: 'grid-stress',
+        eyebrow: 'Contract stress / Grid × 3',
+        title: 'Три равноправных элемента',
+        items: [
+            {title: 'Элемент A', text: 'Demo content.'},
+            {title: 'Элемент B', text: 'Demo content.'},
+            {title: 'Элемент C', text: 'Demo content.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_grid.html.twig' with {
+        id: 'grid-six-stress',
+        marker: 'grid-stress',
+        eyebrow: 'Contract stress / Grid × 6',
+        title: 'Шесть равноправных элементов',
+        items: [
+            {title: 'Элемент A', text: 'Demo content.'},
+            {title: 'Элемент B', text: 'Demo content.'},
+            {title: 'Элемент C', text: 'Demo content.'},
+            {title: 'Элемент D', text: 'Demo content.'},
+            {title: 'Элемент E', text: 'Demo content.'},
+            {title: 'Элемент F', text: 'Demo content.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_steps.html.twig' with {
+        id: 'steps-min-stress',
+        eyebrow: 'Contract stress / Steps minimum',
+        title: 'Последовательность из двух шагов',
+        steps: [
+            {title: 'Шаг один', text: 'Первое обязательное действие.'},
+            {title: 'Шаг два', text: 'Следующее действие после первого.'},
+        ],
+    } only %}
+
+    {% include 'website/sections/_comparison.html.twig' with {
+        id: 'comparison-min-stress',
+        eyebrow: 'Contract stress / Comparison minimum',
+        title: 'Две альтернативы и три критерия',
+        caption: 'Demo boundary case минимального контракта Comparison.',
+        alternatives: ['Вариант A', 'Вариант B'],
+        rows: [
+            {criterion: 'Критерий 1', values: ['Значение A', 'Значение B']},
+            {criterion: 'Критерий 2', values: ['Значение A', 'Значение B']},
+            {criterion: 'Критерий 3', values: ['Значение A', 'Значение B']},
+        ],
+    } only %}
+
+    {% include 'website/sections/_split.html.twig' with {
+        id: 'feature-no-media-stress',
+        marker: 'feature',
+        eyebrow: 'Contract stress / Split optional fields',
+        title: 'Feature без optional media и action',
+        text: 'Один и тот же production partial остаётся читаемым без необязательных блоков и не создаёт пустую колонку.',
+    } only %}
+
+    {% include 'website/sections/_cta.html.twig' with {
+        id: 'sections-cta',
+        title: 'Собирайте страницу из минимально необходимых паттернов',
+        text: 'Перед добавлением новой секции проверьте существующие контракты и правила расширения.',
+        action_label: 'Вернуться к началу',
+        action_href: '#main-content',
+    } only %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'website/components/_footer.html.twig' with {
+        brand: 'Ваш Финдир',
+        privacy_href: path('privacy'),
+        variant: 'dark',
+    } only %}
+{% endblock %}

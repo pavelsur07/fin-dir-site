@@ -1,0 +1,35 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-typography-stress') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'typography-stress' %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        <p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">Typography stress test</p>
+        <h2 id="{{ labelled_by }}">Onest: кириллица, числа и длинные строки</h2>
+        <p class="mb-0 text-lead text-muted">Техническая проверка реального production-шрифта без изменения typography scale.</p>
+    </div>
+
+    <div class="grid max-w-content gap-4" data-vf-showcase="typography-stress">
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H1 / короткий</p>
+        <p class="mb-0 text-h1 font-bold">Финансы без догадок</p>
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H1 / средний</p>
+        <p class="mb-0 text-h1 font-bold">Финансовая система для устойчивого роста бизнеса</p>
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H1 / длинный</p>
+        <p class="mb-0 text-h1 font-bold">Управляйте финансами бизнеса на основе данных, а не ощущения остатка на счёте</p>
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H2 / средний</p>
+        <p class="mb-0 text-h2 font-bold">Планируйте движение денежных средств без кассовых разрывов</p>
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H2 / 100+ символов</p>
+        <p class="mb-0 text-h2 font-bold">Собирайте план, факт и прогноз движения денег в одном управленческом контуре, чтобы обсуждать отклонения до принятия решения</p>
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H3 / средний</p>
+        <p class="mb-0 text-h3 font-bold">Сверяйте план и факт по каждому направлению</p>
+        <p class="mb-0 text-caption font-medium tracking-caption text-muted uppercase">H3 / 100+ символов</p>
+        <p class="mb-0 text-h3 font-bold">Определите единые правила подготовки финансовых данных и регулярно проверяйте результат вместе с ответственными участниками</p>
+        <p class="mb-0 text-h4 font-bold">Проверяйте отклонения до управленческой встречи</p>
+        <p class="mb-0 text-lead">Проверка символов: 2 450 000 ₽ · 18,5% · −7% · «план» (факт).</p>
+        <p class="mb-0">Аа Бб Вв Ёё Йй Фф Щщ Ъъ Ыы Ьь Ээ Юю Яя · 0123456789 · ₽ % № — «» () / + − =</p>
+        <p class="mb-0 text-small">Small: пояснение к данным за выбранный период.</p>
+        <p class="mb-0 text-caption font-medium tracking-caption uppercase">Caption: план / факт</p>
+    </div>
+{% endblock %}

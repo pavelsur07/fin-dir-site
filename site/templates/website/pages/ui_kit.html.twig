@@ -4,7 +4,6 @@
 {% block description %}Design tokens, production components и sections публичного сайта «Ваш Финдир».{% endblock %}
 {% block head %}
     <meta name="robots" content="noindex, nofollow">
-    <link href="/assets/website/components/showcase.css?v={{ vf_asset_version }}" rel="stylesheet">
 {% endblock %}
 
 {% block navigation %}
@@ -15,6 +14,7 @@
         items: [
             {label: 'Главная', href: path('home')},
             {label: 'UI-kit', href: path('ui_kit'), active: true},
+            {label: 'Секции', href: path('ui_kit_sections')},
         ],
     } only %}
 {% endblock %}
@@ -24,7 +24,7 @@
         id: 'ui-kit-hero',
         eyebrow: 'Website foundation',
         title: 'UI-kit «Ваш Финдир»',
-        text: 'Визуальный Source of Truth: typography, spacing, production components и reusable sections на Bootstrap 5.',
+        text: 'Визуальный Source of Truth: typography, spacing, production components и reusable sections на Tailwind CSS 4.',
         variant: 'dark',
         primary_action: {label: 'Смотреть компоненты', href: '#components'},
         secondary_action: {label: 'Правила форм', href: '#forms'},

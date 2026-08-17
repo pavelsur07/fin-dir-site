@@ -1,0 +1,25 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-steps') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = marker|default('steps') %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    <ol class="grid max-w-content gap-6" role="list" data-vf-layout="steps">
+        {% for step in steps %}
+            <li class="flex gap-3">
+                <span class="grid size-12 shrink-0 place-items-center rounded-md border border-border-strong font-bold" data-vf-step-number>{{ loop.index }}</span>
+                <div>
+                    <h3 class="text-h4">{{ step.title }}</h3>
+                    <p class="mb-0 text-muted">{{ step.text }}</p>
+                </div>
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
