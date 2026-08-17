@@ -11,12 +11,13 @@ final class WebsiteFoundationTest extends WebTestCase
     public function testUiKitRendersProductionComponentsAndSections(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/ui-kit');
+        $crawler = $client->request('GET', '/ui-kit');
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'UI-kit «Ваш Финдир»');
         self::assertSelectorCount(1, 'link[href^="/assets/website/app.css?v="]');
+        self::assertSelectorCount(1, 'script[src^="/assets/website/navigation.js?v="][defer]');
         self::assertSelectorCount(0, 'link[href*="bootstrap"], script[src*="bootstrap"]');
 
         foreach ([
@@ -70,7 +71,18 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorExists('[data-vf-state="success"] .text-success');
         self::assertSelectorExists('[data-vf-component="accordion"] details > summary h3');
         self::assertSelectorCount(0, '[data-vf-component="accordion"] [role="heading"]');
-        self::assertSelectorExists('[data-vf-component="navbar"] details > summary');
+        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-open][aria-label="Открыть меню"][aria-haspopup="dialog"][aria-controls][aria-expanded="false"]');
+        self::assertSelectorExists('[data-vf-component="navbar"] dialog[data-vf-menu-dialog][aria-label="Меню"]');
+        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-close][aria-label="Закрыть меню"]');
+        self::assertSelectorExists('[data-vf-component="navbar"] nav[data-vf-mobile-navigation]');
+        self::assertSelectorExists('[data-vf-component="navbar"] nav[aria-label="Основная навигация"] [data-vf-desktop-navigation]');
+        self::assertSelectorExists('[data-vf-component="navbar"] a[aria-current="page"]');
+        self::assertSelectorCount(0, '[data-vf-component="navbar"] details, [data-vf-component="navbar"] summary');
+
+        $drawerId = $crawler->filter('[data-vf-menu-open]')->attr('aria-controls');
+        self::assertNotNull($drawerId);
+        self::assertNotSame('', $drawerId);
+        self::assertCount(1, $crawler->filter('dialog#'.$drawerId));
 
         foreach ([
             'input' => 'form-input',
@@ -160,10 +172,12 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertGreaterThan(0, $checked);
     }
 
-    public function testTailwindBuildIsPinnedAndPublishedAsOneCompiledStylesheet(): void
+    public function testWebsiteAssetsArePinnedAndPublishedFromProjectSources(): void
     {
         $source = $this->read($this->projectPath('assets/styles/website/app.css'));
         $compiled = $this->read($this->projectPath('public/assets/website/app.css'));
+        $navigationSource = $this->read($this->projectPath('assets/scripts/website/navigation.js'));
+        $navigationPublic = $this->read($this->projectPath('public/assets/website/navigation.js'));
         $wrapperPath = dirname(__DIR__, 3).'/scripts/tailwindcss.sh';
         if (!is_file($wrapperPath)) {
             $wrapperPath = '/workspace/scripts/tailwindcss.sh';
@@ -177,8 +191,11 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertStringNotContainsString('@import "tailwindcss"', $compiled);
         self::assertStringContainsString('.bg-brand-red', $compiled);
         self::assertStringContainsString('.grid-auto-fit', $compiled);
+        self::assertStringContainsString('.navigation-drawer-width', $compiled);
         self::assertStringContainsString("TAILWIND_VERSION='4.3.3'", $wrapper);
         self::assertStringContainsString('dc61b3ac6b8c9ca874c0cc4c57b2409791a64c5540404ca5f5367360babc313a', $wrapper);
+        self::assertSame($navigationSource, $navigationPublic);
+        self::assertDoesNotMatchRegularExpression('/bootstrap|data-bs-|flowbite|daisyui|alpine|react|vue/i', $navigationSource);
 
         $withoutColorTokens = preg_replace(
             '/^\s*--vf-color-[a-z0-9-]+:\s*#[0-9a-f]{6};\R?/mi',
@@ -190,7 +207,52 @@ final class WebsiteFoundationTest extends WebTestCase
 
         $published = glob($this->projectPath('public/assets/website/*'));
         self::assertIsArray($published);
-        self::assertSame([$this->projectPath('public/assets/website/app.css')], $published);
+        self::assertSame([
+            $this->projectPath('public/assets/website/app.css'),
+            $this->projectPath('public/assets/website/navigation.js'),
+        ], $published);
+    }
+
+    public function testDocumentScrollbarUsesBrowserDefaults(): void
+    {
+        $sourceFiles = [
+            $this->projectPath('assets/styles/website/app.css'),
+            $this->projectPath('assets/scripts/website/navigation.js'),
+            $this->projectPath('public/assets/website/app.css'),
+            $this->projectPath('public/assets/website/navigation.js'),
+            ...$this->websiteTemplateFiles(),
+        ];
+        $forbidden = '/::-webkit-scrollbar(?:-track|-thumb)?|scrollbar-(?:color|width|gutter)|overflow-y\s*:\s*scroll\b|color-scheme\s*:/i';
+
+        foreach ($sourceFiles as $path) {
+            $contents = $this->read($path);
+            self::assertDoesNotMatchRegularExpression($forbidden, $contents, $path);
+            self::assertStringNotContainsString('--vf-scrollbar-compensation', $contents, $path);
+        }
+
+        $javascript = $this->read($this->projectPath('assets/scripts/website/navigation.js'));
+        self::assertDoesNotMatchRegularExpression(
+            '/(?:document\.documentElement|document\.body)\.style\b|classList\.(?:add|toggle)\(|scrollbar/i',
+            $javascript,
+        );
+        self::assertDoesNotMatchRegularExpression(
+            '/(?:html|body)[^{]*\{[^}]*overflow(?:-[xy])?\s*:\s*hidden/i',
+            $this->read($this->projectPath('assets/styles/website/app.css')),
+        );
+
+        $siteRules = $this->read($this->siteRulesPath());
+        self::assertStringContainsString(
+            'Public Website MUST use the browser/OS native scrollbar for document scrolling.',
+            $siteRules,
+        );
+        foreach ([
+            'NO custom document scrollbar',
+            'NO custom scrollbar track color',
+            'NO forced scrollbar width',
+            'NO fake scrollbar gutter',
+        ] as $rule) {
+            self::assertStringContainsString($rule, $siteRules);
+        }
     }
 
     public function testColorSystemTokensAndContrast(): void
@@ -324,15 +386,16 @@ final class WebsiteFoundationTest extends WebTestCase
         );
     }
 
-    public function testAssetVersionMatchesWebsiteCssContent(): void
+    public function testAssetVersionMatchesWebsiteAssetContent(): void
     {
         $css = $this->read($this->projectPath('public/assets/website/app.css'));
+        $navigation = $this->read($this->projectPath('public/assets/website/navigation.js'));
 
         $layout = $this->read($this->projectPath('templates/website/layouts/base.html.twig'));
         self::assertSame(1, preg_match("/{% set vf_asset_version = '([0-9a-f]{12})' %}/", $layout, $matches));
         $assetVersion = $matches[1] ?? '';
         self::assertNotSame('', $assetVersion);
-        self::assertSame(substr(hash('sha256', $css), 0, 12), $assetVersion);
+        self::assertSame(substr(hash('sha256', $css.$navigation), 0, 12), $assetVersion);
     }
 
     /** @return list<string> */
@@ -381,12 +444,7 @@ final class WebsiteFoundationTest extends WebTestCase
     /** @return array<string, string> */
     private function documentedSiteRulesColors(): array
     {
-        $siteRulesPath = dirname(__DIR__, 3).'/SITE_RULES.md';
-        if (!is_file($siteRulesPath)) {
-            $siteRulesPath = '/workspace/SITE_RULES.md';
-        }
-
-        $siteRules = $this->read($siteRulesPath);
+        $siteRules = $this->read($this->siteRulesPath());
         $result = preg_match_all(
             '/`(--vf-color-[a-z0-9-]+)`(?:\s*\|\s*|\s+)`(#[0-9a-f]{6})`/i',
             $siteRules,
@@ -441,6 +499,13 @@ final class WebsiteFoundationTest extends WebTestCase
     private function projectPath(string $relativePath): string
     {
         return dirname(__DIR__, 2).'/'.$relativePath;
+    }
+
+    private function siteRulesPath(): string
+    {
+        $local = dirname(__DIR__, 3).'/SITE_RULES.md';
+
+        return is_file($local) ? $local : '/workspace/SITE_RULES.md';
     }
 
     private function read(string $path): string

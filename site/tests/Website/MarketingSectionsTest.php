@@ -18,6 +18,9 @@ final class MarketingSectionsTest extends WebTestCase
         self::assertSelectorTextContains('h1', 'Готовые секции');
         self::assertSelectorExists('meta[name="robots"][content="noindex, nofollow"]');
         self::assertSelectorExists('link[href^="/assets/website/app.css?v="]');
+        self::assertSelectorExists('script[src^="/assets/website/navigation.js?v="][defer]');
+        self::assertSelectorExists('[data-vf-component="navbar"] dialog[data-vf-menu-dialog]');
+        self::assertSelectorExists('[data-vf-component="navbar"] nav[aria-label="Основная навигация"] [data-vf-desktop-navigation]');
         self::assertSelectorExists('nav a[aria-current="page"][href="/ui-kit/sections"]');
 
         foreach ([

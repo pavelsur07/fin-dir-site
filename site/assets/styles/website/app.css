@@ -10,8 +10,6 @@
 }
 
 :root {
-    color-scheme: light;
-
     --vf-color-primary: #b00020;
     --vf-color-primary-hover: #8a0019;
     --vf-color-primary-active: #6c0014;
@@ -70,6 +68,7 @@
 
     --vf-container-max: 1200px;
     --vf-content-max: 720px;
+    --vf-navigation-drawer-max: 360px;
     --vf-control-min-height: 44px;
     --vf-textarea-min-height: 132px;
     --vf-grid-item-min: 240px;
@@ -247,6 +246,29 @@
     min-width: calc(var(--vf-grid-item-min) * 3);
 }
 
+@utility navigation-drawer-width {
+    width: min(88vw, var(--vf-navigation-drawer-max));
+}
+
+[data-vf-menu-panel] {
+    transform: translateX(100%);
+    transition: transform 200ms ease-out;
+}
+
+[data-vf-menu-dialog][data-state="open"] [data-vf-menu-panel] {
+    transform: translateX(0);
+}
+
+[data-vf-menu-dialog]::backdrop {
+    background: color-mix(in srgb, var(--vf-color-dark) 55%, transparent);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+}
+
+[data-vf-menu-dialog][data-state="open"]::backdrop {
+    opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -256,6 +278,10 @@
     *::before,
     *::after {
         scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+    }
+
+    [data-vf-menu-dialog]::backdrop {
         transition-duration: 0s !important;
     }
 }
