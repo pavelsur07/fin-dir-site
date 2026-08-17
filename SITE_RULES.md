@@ -7,7 +7,7 @@
 соответствовать этому документу.
 
 Если нужного решения здесь нет, разработчик не создаёт новый визуальный
-паттерн молча. Сначала он проходит алгоритм расширения из раздела 12 и при
+паттерн молча. Сначала он проходит алгоритм расширения из раздела 13 и при
 обоснованной необходимости обновляет этот документ вместе с реализацией.
 
 Legacy-шаблоны вне `site/templates/website/` мигрируют по отдельным задачам.
@@ -17,24 +17,23 @@ Legacy-шаблоны вне `site/templates/website/` мигрируют по �
 
 - Symfony;
 - Twig;
-- Bootstrap 5.3.3 — единственный базовый UI framework;
-- CSS;
-- JavaScript — только для необходимой функциональной интерактивности.
+- Tailwind CSS `4.3.3` — единственный базовый UI framework;
+- CSS — один source entrypoint и один compiled production asset;
+- JavaScript — минимально и только когда native HTML недостаточен.
 
 Правила:
 
 - не подключать второй UI или CSS framework;
-- использовать Bootstrap-компонент, если он корректно решает задачу;
-- не писать собственный JavaScript-аналог Bootstrap-компонента;
+- использовать Tailwind utilities внутри существующего VF Component/Section;
+- сначала использовать native HTML для disclosure и другой простой интерактивности;
 - не добавлять CSS/JS-зависимость ради одного простого элемента;
 - не добавлять JS только для декоративной анимации;
 - не помещать CSS или JavaScript inline в Twig;
 - подключать website assets централизованно в website layout.
 
-Stage 1 использует существующий проектный способ доставки Bootstrap через
-versioned jsDelivr URL с SRI. Если появится требование автономной доступности,
-CSP или отдельное решение по передаче данных CDN, Bootstrap необходимо
-завендорить локально без смены UI framework.
+Tailwind используется только на build-time. Browser получает локальный
+compiled CSS без Tailwind CDN/runtime. Bootstrap запрещён для нового и
+изменяемого Public Website code и не участвует в CSS, JavaScript или layout.
 
 ## 3. Структура
 
@@ -48,27 +47,28 @@ site/templates/website/
 └── components/    # Малые UI-компоненты
 ```
 
-CSS source:
+CSS source и build wrapper:
 
 ```text
 site/assets/styles/website/
-├── tokens.css
-├── base.css
-├── components/
-└── sections/
+└── app.css
+
+scripts/
+└── tailwindcss.sh
 ```
 
 Статические файлы текущего Nginx публикуются из
-`site/public/assets/website/`. Это проверяемое зеркало CSS source, а не второй
-источник правил. Редактировать можно только source. После изменения выполнить
-`make assets`, затем `make assets-check`. `make assets` сначала полностью
-пересоздаёт зеркало, поэтому удалённый или переименованный source-файл не
-остаётся в public.
+`site/public/assets/website/app.css`. Это generated output, его нельзя
+редактировать вручную. `make assets` компилирует и минифицирует source,
+`make assets-watch` запускает watch, `make assets-check` повторяет production
+build во временный файл и ловит drift. Standalone CLI `4.3.3` загружается в
+ignored `site/var/tools`, проверяется pinned SHA-256 и не попадает в production
+image/runtime. Node и package manager проекту для website build не нужны.
 
 Release query определяется один раз в website layout и равен первым 12 знакам
-SHA-256 конкатенации всех CSS source в сортированном порядке. Значение выводит
-`make asset-version`, а functional test проверяет соответствие. Это обязательно,
-потому что Nginx отдаёт static assets с immutable cache.
+SHA-256 compiled `app.css`. Значение выводит `make asset-version`, а functional
+test проверяет соответствие. Это обязательно, потому что Nginx отдаёт static
+assets с immutable cache.
 
 Page преимущественно собирает sections. Section использует общий section
 pattern и готовые components. Layout не содержит page-specific разметку.
@@ -80,8 +80,10 @@ Page-specific CSS допускается только для уникально�
 
 ## 4. Design Tokens
 
-Единственный источник базовых визуальных значений —
-`site/assets/styles/website/tokens.css`.
+Единственный источник базовых визуальных значений — token/theme blocks в
+`site/assets/styles/website/app.css`. Канонические VF tokens используют
+`--vf-*`; Tailwind `@theme inline` только связывает semantic utility names с
+ними и не содержит независимых копий значений.
 
 ### 4.1. Color System
 
@@ -176,6 +178,14 @@ Semantic Colors передают состояние и не используют
 разнообразия sections, cards, badges или decorative accents. Состояние также
 передаётся текстом/семантикой, а не только цветом.
 
+Tailwind semantic aliases не вводят новые значения: `bg-brand-red`,
+`bg-brand-dark`, `bg-surface-dark`, `bg-page`, `bg-surface`, `text-content`,
+`text-muted`, `text-on-dark`, `text-muted-on-dark`, `border-border-default`,
+`border-border-strong`, `text-success`, `bg-success-soft` и остальные state
+utilities ссылаются через `@theme inline` на соответствующий `--vf-color-*`.
+Default Tailwind palette полностью отключена; случайные `red-500`, `blue-600`,
+`slate-700` и `gray-100` недоступны как project tokens.
+
 #### Contrast и сочетания
 
 Минимум: normal text `4.5:1`, large text `3:1`, UI component boundary/state
@@ -212,12 +222,12 @@ Brand Red / Brand Dark имеет только `2.58:1`: Brand Red запрещ�
 tokens не выражают подтверждённую роль. Сначала определить семантическое
 назначение, foreground/background context, состояния и contrast; затем
 добавить token, обновить Color System и `/ui-kit`, добавить проверку. HEX вне
-`tokens.css` запрещён как CSS/style value. Канонический HEX разрешено повторить
+canonical token block `app.css` запрещён как CSS/style value. Канонический HEX разрешено повторить
 только как текстовую документацию в этом разделе и `/ui-kit`; functional test
 обязан проверять его соответствие реальному token.
 
 - NO third brand accent color without explicit design decision;
-- NO arbitrary HEX outside `tokens.css`;
+- NO arbitrary HEX outside canonical token block `app.css`;
 - NO decorative use of semantic colors;
 - NO random shades of red;
 - NO random dark/navy shades;
@@ -230,7 +240,7 @@ tokens не выражают подтверждённую роль. Сначал
 Primary font token:
 
 ```text
-"TT Norms Pro", "TT Norms", Arial, sans-serif
+"Onest", Arial, sans-serif
 ```
 
 Разрешённые веса: `400`, `500`, `700`.
@@ -251,12 +261,17 @@ Font family, size, line-height и weight задаются tokens. Страниц
 семантическая иерархия заголовков совпадают. Long-form text использует
 `--vf-content-max`.
 
-Файлы TT Norms Pro не подключены, пока право webfont-использования не
-подтверждено и лицензированные файлы не предоставлены проекту. Запрещено
-копировать шрифт с `tochka.com`, hotlink-ить его или иной чужой CDN. До
-легального подключения работает указанный fallback; fallback не считается
-окончательной визуальной проверкой Typography. Typography scale при подключении
-лицензированного шрифта не меняется автоматически.
+Onest — единственный primary font Public Website. Variable WOFF2 версии 2.001
+получен из официального Open Font distribution, хранится локально в
+`site/public/assets/fonts/onest/` вместе с OFL 1.1 и подключается через общий
+`@font-face` с `font-display: swap`. Runtime-запросы шрифта к внешнему CDN
+запрещены. Используются только веса `400`, `500`, `700`; другие веса требуют
+реального сценария. Sections и pages не задают произвольный `font-family`.
+
+Typography scale проверяется на реальном Onest. Плохой перенос demo-текста не
+исправляется `<br>` или page-specific размером: сначала корректируются текст,
+width constraint или центральный typography token. Stage 2 не потребовал
+изменения существующих size и line-height tokens.
 
 ### 4.3. Spacing
 
@@ -277,21 +292,24 @@ Font family, size, line-height и weight задаются tokens. Страниц
 - card padding: desktop `24px`, mobile `16px`;
 - section vertical padding: desktop `80px`, tablet `64px`, mobile `48px`.
 
-Использовать только `--vf-space-*` и семантические tokens. Значения вроде
-`37px`, `53px` и `71px` ради визуальной подгонки запрещены.
+В Tailwind используется базовый шаг `4px` и только numeric classes `0`, `1`,
+`2`, `3`, `4`, `6`, `8`, `12`, `16`, `20`, `24`. Runtime aliases
+`--vf-space-*` вычисляются от Tailwind `--spacing` и не являются второй
+независимой шкалой. Значения вроде `p-5`, `gap-7`, `37px`, `53px` и `71px`
+ради визуальной подгонки запрещены.
 
 `--vf-control-min-height: 44px` — не spacing, а минимальная touch target height
-для интерактивного control. `--vf-showcase-item-min` применяется только в
-техническом UI-kit для читаемой раскладки token previews.
+для интерактивного control. `--vf-grid-item-min: 240px` задаёт минимальную
+читаемую ширину равноправного элемента в responsive Grid и его UI-kit previews.
 
 ### 4.4. Containers, borders, radius, shadows
 
-- основной container: Bootstrap `.container`, максимум
-  `--vf-container-max: 1200px`;
+- основной website container: `mx-auto w-full max-w-site px-4 md:px-6`,
+  максимум `--vf-container-max: 1200px`;
 - ширина чтения: `--vf-content-max: 720px`;
 - горизонтальный gutter: `16px` mobile, `24px` начиная с tablet;
-- borders используют `--vf-border-width` и `--vf-color-border`;
-- линии функциональных CSS-иконок используют `--vf-icon-stroke-width`;
+- borders используют Tailwind `border` (`1px`) и `--vf-color-border`;
+- линии функциональных CSS-иконок используют `border-2` (`2px`);
 - radius: `--vf-radius-sm`, `--vf-radius-md`, `--vf-radius-lg`;
 - shadow допускается только через `--vf-shadow-card` и только когда помогает
   отделить интерактивную или приподнятую поверхность.
@@ -301,19 +319,19 @@ Font family, size, line-height и weight задаются tokens. Страниц
 
 ### 4.5. Breakpoints
 
-Используются Bootstrap breakpoints:
+Tailwind breakpoints настроены явно и сохраняют исходный responsive intent:
 
 ```text
 sm 576px
 md 768px
 lg 992px
 xl 1200px
-xxl 1400px
+2xl 1400px
 ```
 
-Их tokens документируют общую шкалу. CSS custom properties нельзя применять
-в media query, поэтому media query повторяет только эти зафиксированные
-значения. Новый breakpoint без отдельного адаптивного сценария запрещён.
+Значения находятся в Tailwind `@theme`, потому что CSS custom properties нельзя
+применять в media query. Default breakpoints не принимаются молча. Новый
+breakpoint без отдельного адаптивного сценария запрещён.
 
 ## 5. Базовые Components
 
@@ -334,9 +352,10 @@ Stage 1 определяет:
 - CTA panel.
 
 Production Twig partial является единственной реализацией компонента. UI-kit и
-будущие страницы подключают тот же partial. Bootstrap отвечает за базовую
-семантику и интерактивность; VF CSS только применяет tokens и согласованные
-состояния.
+будущие страницы подключают тот же partial. Стили задаются Tailwind utilities
+непосредственно в production Twig partial; варианты используют полные
+статические class strings. Accordion и mobile Navbar используют native
+`details`/`summary`, поэтому JavaScript для них не требуется.
 
 CTA использует токенизированный Button variant `on-primary`, предназначенный
 только для действия на primary surface и показанный внутри CTA на `/ui-kit`.
@@ -351,8 +370,8 @@ Disabled, Error и Success. Focus должен быть виден с клави
 Общий pattern:
 
 ```text
-section.vf-section
-└── .container
+section[data-vf-section]
+└── website container utilities
     └── content
 ```
 
@@ -372,10 +391,148 @@ Dark Surface `#1E2331` с теми же on-dark content tokens. Dark не при
 иерархической причины. Navbar Dark не вводится, пока для него нет отдельного
 пользовательского сценария.
 
-## 7. Grid и responsive
+## 7. Marketing Sections
 
-Bootstrap container/grid используется последовательно. Mobile — состояние того
-же компонента, не отдельный template или отдельная версия сайта.
+### 7.1. Доступные layout patterns
+
+Marketing section всегда использует `sections/_base.html.twig`, общий
+website container pattern, typography/spacing tokens и production components. Доступен
+минимальный набор структур:
+
+| Pattern | Когда применять | Ограничение |
+|---|---|---|
+| Text / Content | один связный смысловой блок | long-form ограничен `--vf-content-max` |
+| Text + List | вводный текст и зависимый перечень | не превращать каждый пункт в Card |
+| Split Text + Media | одна feature и подтверждающее media | один partial; `left` или `right` |
+| Grid | действительно равноправные элементы | 2, 3, 4 или 6 без count-specific CSS |
+| Sequential Steps | действия имеют порядок | 2–5 шагов, semantic `ol` |
+| Two Paths | пользователь выбирает один из двух сценариев | строго 2 пути |
+| Quote | одна подтверждённая цитата | не имитировать клиента demo-текстом |
+| Comparison | варианты сравниваются по одинаковым критериям | semantic table; 2–3 варианта, 3–8 строк |
+| Form + Context | объяснение и короткая lead/diagnostic form | только production form controls |
+| CTA | одно ключевое conversion action | production CTA Stage 1 |
+
+Hero не является новым pattern Stage 2: используется production Hero Stage 1
+в разрешённых `light`/`dark` variants. Left/right Split — один pattern, а не
+два шаблона. Mobile DOM order всегда `content → media`; визуальный `media-left`
+применяется только начиная с tablet. Grid не является универсальной заменой
+обычного списка, а Steps не используется для независимых элементов. Text /
+Content реализуется общим Text + List partial без `items`, поэтому отдельный
+template и CSS для него не создаются.
+
+### 7.2. Правила выбора
+
+| Need / content type | Рекомендуется | Не использовать |
+|---|---|---|
+| Узнаваемые проблемы | Problem / Text + List | Card для каждого тезиса по умолчанию |
+| Равноправные outcomes | Benefits / Grid или List | отдельный декоративный язык Benefits |
+| Одна feature + media | Feature Split | Grid независимых Cards |
+| Последовательность действий | Steps | Grid независимых Cards |
+| Два разных следующих сценария | Two Paths | Comparison table без общих критериев |
+| Одинаковые критерии нескольких вариантов | Comparison | Two Paths для трёх и более вариантов |
+| Вопросы и ответы | FAQ / production Accordion | новый custom collapse или JS |
+| Контекст перед короткой формой | Lead / Form + Context | новая реализация form controls |
+| Финальное ключевое действие | production CTA | новый CTA layout |
+
+Состав страницы определяется информационной задачей. Новая production page не
+является основанием для новой section. Не требуется использовать все patterns,
+не допускается декоративное чередование patterns или backgrounds.
+
+### 7.3. Контракты production sections
+
+Во всех контрактах `id` опционален; `eyebrow` и вводный `text` опциональны,
+если ниже явно не указано обратное. Пустой optional блок не рендерится.
+
+Общие defaults: безопасный технический `id` задаётся partial; `eyebrow`,
+actions, lists, details, links, media, source и note отсутствуют; массивы пусты;
+Hero использует `light`, Split — `media_position=right`, demo media выключен;
+link label Text + List — `Подробнее`, Lead button label — `Продолжить`.
+Comparison использует `criterion_label=Критерий`, а `table_label` по умолчанию
+равен `title`. Optional actions в Grid, Split и Two Paths используют production
+Button variant `outline-primary`.
+
+Связь semantic role с фактическим Twig API:
+
+| Role | Production partial | `marker` / section name |
+|---|---|---|
+| Hero | `sections/_hero.html.twig` | `hero`, фиксирован |
+| Problem | `sections/_text_list.html.twig` | required `marker: problem` |
+| Benefits | `sections/_grid.html.twig` | required `marker: benefits` |
+| Feature | `sections/_split.html.twig` | default `feature` |
+| Steps | `sections/_steps.html.twig` | default `steps` |
+| Two Paths | `sections/_paths.html.twig` | default `paths` |
+| Case Preview | `sections/_case_preview.html.twig` | `case-preview`, фиксирован |
+| Proof | `sections/_text_list.html.twig` | required `marker: proof` |
+| Quote | `sections/_quote.html.twig` | `quote`, фиксирован |
+| Pricing Preview | `sections/_grid.html.twig` | required `marker: pricing` |
+| Comparison | `sections/_comparison.html.twig` | `comparison`, фиксирован |
+| FAQ | `sections/_faq.html.twig` | `faq`, фиксирован |
+| Lead Form | `sections/_lead_form.html.twig` | `lead-form`, фиксирован |
+| Article Preview | `sections/_grid.html.twig` | required `marker: article-preview` |
+| CTA | `sections/_cta.html.twig` | `cta`, фиксирован |
+
+`marker` — обязательный semantic identifier при использовании общего partial в
+production role; произвольный marker на production page не создаёт новый
+section contract.
+
+| Section | Purpose | Required | Optional / defaults | Variants и count | Reuse | Не применять |
+|---|---|---|---|---|---|---|
+| Hero | открыть страницу и сформулировать предложение | `title`, `text` | `eyebrow`, actions; variant `light` | `light`, `dark`; 0–2 actions | Hero + Button Stage 1 | как декоративную пустую заставку |
+| Problem | помочь узнать релевантную проблему | `title`, `items[].text` | item title/link | 3–6 items | Text + List | для независимых benefits |
+| Benefits | описать outcomes, а не функции | `title`, `items[].title` | item text/details/action | 2–6 items | Grid или Text + List | как переименование Feature |
+| Feature Split | объяснить одну возможность и её media | `title`, `text` | `items`, `action`, `media`; position `right` | `left`, `right`; одна feature | Split + Button | для 5 независимых преимуществ |
+| Steps | показать последовательность | `title`, `steps[].title`, `steps[].text` | intro text | 2–5 steps | Sequential Steps | если порядок не имеет значения |
+| Two Paths | дать выбор двух сценариев | `title`, ровно два `paths` с title/text | path list/action | ровно 2 paths | Paths + Button | как good/bad или для 3+ вариантов |
+| Case Preview | кратко показать подтверждённый кейс | `title`, `items[].label`, `items[].text` | intro text | ровно 3 labels: Problem/Action/Result | Case flow | без реального материала или с fake metrics |
+| Proof | показать проверяемые основания доверия | `title`, `items[].text` | item title/link | 1–6 items | Text + List | для fake awards, logos или статистики |
+| Quote | показать согласованную цитату | `title`, `quote` | `source` | одна цитата | Quote | без подтверждённого источника; demo как отзыв |
+| Pricing Preview | сравнить подтверждённые предложения | `title`, `items[].title` | item text/details | 2–4 items | Grid | для fake prices или popularity badge |
+| Comparison | сравнить одинаковые критерии | `title`, `caption`, alternatives, rows | labels | 2–3 alternatives; 3–8 rows | semantic table | если нет общих критериев |
+| FAQ | ответить на частые вопросы | `title`, question/answer items | intro text | 3–6 questions | Accordion Stage 1 | для произвольного длинного контента |
+| Lead Form | дать контекст и короткую demo/lead form | `title`, `text` | context list, `action_label`, note | один form block | form controls + Button Stage 1 | без backend flow выдавать form за рабочую |
+| Article Preview | анонсировать подтверждённые материалы | `title`, `items[].title` | item text/action | 2–4 items | Grid | для fake dates, authors или metrics |
+| CTA | завершить сценарием действия | `title`, `text`, action label/href | нет | один крупный CTA по умолчанию | CTA + Button Stage 1 | как обычный section background |
+
+Semantic roles `Problem`, `Benefits`, `Proof`, `Pricing` и `Article Preview`
+передаются общим Text/List или Grid patterns через документированный `marker`:
+отдельные wrapper и CSS-копии для них запрещены. FAQ делегирует production
+Accordion; CTA и Hero переиспользуют Stage 1 без v2 templates. Lead demo
+использует `type="button"`: backend, CRM/API, сохранение и отправка данных в
+Stage 2 отсутствуют.
+
+### 7.4. Media и demo content
+
+Реальное meaningful media требует содержательный `alt`. Декоративное media
+использует пустой `alt`; технический `Demo media` placeholder существует
+только на UI-kit, имеет ratio `16:10` и скрыт от accessibility tree. Fake
+dashboard, screenshot, customer photo, logo и decorative metric запрещены.
+
+Demo content пишется по-русски, имеет реалистичную длину и явно обозначается
+как demo. Запрещены Lorem Ipsum, вымышленные клиенты, должности, компании,
+отзывы, awards, цены, даты публикаций и business metrics. `/ui-kit/sections` —
+`noindex` технический каталог production partials, не маркетинговая страница и
+не источник реальных продуктовых утверждений.
+
+### 7.5. Решение о новой section
+
+Перед созданием нового marketing section последовательно ответить:
+
+1. Есть ли существующий marketing section?
+2. Есть ли существующий layout pattern?
+3. Можно ли решить задачу новым content contract без нового CSS?
+4. Можно ли расширить существующий pattern без изменения его смысла?
+5. Какую конкретную проблему решает новый section?
+6. Почему существующие sections не подходят?
+
+Только после отрицательных ответов на вопросы о reuse и конкретного ответа на
+последние два вопроса допускается минимальный новый pattern с обновлением этого
+документа и `/ui-kit/sections`.
+
+## 8. Grid и responsive
+
+Tailwind `grid`/`flex`, project breakpoints и website container используются
+последовательно. Mobile — состояние того же компонента, не отдельный template
+или отдельная версия сайта.
 
 Обязательные контрольные ширины: `375px`, `768px`, `1024px`, `1440px`.
 На каждой ширине проверяются:
@@ -391,7 +548,7 @@ Bootstrap container/grid используется последовательно
 
 Не скрывать дефект layout глобальным `overflow-x: hidden`.
 
-## 8. Accessibility baseline
+## 9. Accessibility baseline
 
 - использовать semantic HTML landmarks;
 - соблюдать последовательность H1 → H2 → H3;
@@ -406,42 +563,50 @@ Bootstrap container/grid используется последовательно
 - сохранять достаточный contrast;
 - учитывать `prefers-reduced-motion`, если motion когда-либо появится.
 
-Stage 1 не добавляет изображения и декоративную анимацию.
+Stage 1 не добавляет изображения и декоративную анимацию. Stage 2 добавляет
+только технический media placeholder; он скрыт от accessibility tree.
 
-## 9. UI-kit
+## 10. UI-kit
 
-`/ui-kit` — визуальный Source of Truth Design System. Он использует website
-layout и production components/sections, а не демонстрационные копии.
+`/ui-kit` — визуальный Source of Truth foundations/components. Он использует
+website layout и production components/sections, а не демонстрационные копии.
 
 На одной странице показаны Typography, Colors, Spacing, Buttons, Badges,
 Cards, Alerts, Forms, Accordion, Breadcrumbs, Navigation, Dark Hero, Content
-Section, CTA и Dark Footer. Основной H1 только один. Состояния компонентов
-должны быть доступны для визуальной и клавиатурной проверки.
+Section, CTA и Dark Footer. `/ui-kit/sections` — отдельный технический каталог
+Marketing Sections, typography stress cases и layout variants. На каждой
+странице основной H1 только один. Состояния компонентов должны быть доступны
+для визуальной и клавиатурной проверки.
 
-## 10. CSS и JavaScript
+## 11. CSS и JavaScript
 
 - NO inline CSS (`style=""` и `<style>`);
 - NO inline JavaScript;
 - external `<script src>` допускается только для согласованной функциональности;
-- NO arbitrary colors, typography, spacing или border-radius;
+- NO arbitrary Tailwind values (`[...]`) по умолчанию;
+- NO dynamic classname fragments (`bg-{{ ... }}`, `text-{{ ... }}`);
+- variants задаются только полными статическими class maps;
+- только project palette; default Tailwind color palette отключена;
+- только утверждённая numeric spacing scale;
 - NO page-specific copies of reusable components;
 - NO duplicated Twig components;
 - NO desktop-only components;
 - NO second UI framework;
 - NO new component, если существующий решает задачу.
 
-CSS components/sections использует tokens. Hardcoded base values допустимы
-только внутри `tokens.css`; технические media queries используют только
-зафиксированные Bootstrap breakpoints.
+Custom CSS допустим для `@font-face`, canonical theme/base foundation,
+accessibility behavior и layout, который utilities выражают существенно хуже.
+Текущие обоснованные custom utilities: auto-fit project Grid и минимальная
+ширина Comparison table. Custom CSS не используется как привычный способ
+писать component stylesheet вместо Tailwind.
 
-UI-kit-only styles находятся в `components/showcase.css` и подключаются только
-страницей `/ui-kit`, а не общим production layout. Исключение — классы
-симуляции состояния `vf-is-*`: они задаются production partial только по
-явному параметру UI-kit и находятся в одном declaration block с реальным
-pseudo-class. Такое co-location гарантирует, что демонстрация Focus/Hover не
-расходится с production-состоянием.
+UI-kit showcase использует те же production partials и обычные Tailwind
+utilities. Принудительные Hover/Focus/Active состояния берутся из статических
+maps того же production component, поэтому не расходятся с pseudo-states.
+Tailwind source scanning ограничен `site/templates/website/`; `public`,
+`vendor` и generated files не сканируются.
 
-## 11. AI-generated UI anti-patterns
+## 12. AI-generated UI anti-patterns
 
 **The agent MUST NOT introduce visual variety only for decorative purposes.**
 
@@ -471,13 +636,13 @@ pseudo-class. Такое co-location гарантирует, что демонс
 Основные инструменты — typography, whitespace, content hierarchy, clear grid,
 consistent spacing, reusable components, реальные данные и изображения.
 
-## 12. Алгоритм расширения
+## 13. Алгоритм расширения
 
 До создания UI pattern ответить по порядку:
 
-1. Есть ли подходящее решение в Bootstrap 5?
-2. Есть ли уже VF Component?
-3. Есть ли уже VF Section Pattern?
+1. Есть ли уже VF Component?
+2. Есть ли уже VF Section/Layout Pattern?
+3. Можно ли решить задачу Tailwind utilities внутри существующего component?
 4. Можно ли расширить существующий component без изменения его смысла?
 5. Можно ли решить задачу комбинацией существующих components?
 6. Какую конкретную функциональную, информационную, адаптивную или
@@ -488,7 +653,7 @@ consistent spacing, reusable components, реальные данные и изо
 Новая страница не является причиной для «немного другого дизайна» уже
 существующего компонента.
 
-## 13. Проверки изменения
+## 14. Проверки изменения
 
 Минимум:
 
@@ -505,10 +670,11 @@ make test
 
 Дополнительно для website UI:
 
-- functional test `GET /ui-kit → 200`;
+- functional tests `GET /ui-kit → 200` и `GET /ui-kit/sections → 200`;
 - рендер production sections/components;
 - static scan `site/templates/website` на inline CSS/JS;
-- static scan component/section CSS на hardcoded colors;
+- static scan на Bootstrap runtime/classes, arbitrary values и dynamic Tailwind fragments;
+- `make assets-check` для повторного Tailwind build и asset drift;
 - browser checks на `375/768/1024/1440`;
 - keyboard/focus и accessibility audit;
 - visual review по AI anti-patterns.

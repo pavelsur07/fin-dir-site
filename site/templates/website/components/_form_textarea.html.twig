@@ -1,9 +1,15 @@
 {% set state = state|default('default') %}
-{% set state_class = state == 'error' ? ' is-invalid' : (state == 'success' ? ' is-valid' : (state == 'focus' ? ' vf-is-focus' : '')) %}
 {% set feedback_id = id ~ '-feedback' %}
-<div data-vf-component="textarea" data-vf-state="{{ state }}">
-    <label class="form-label" for="{{ id }}">{{ label }}</label>
-    <textarea class="form-control{{ state_class }}" id="{{ id }}" name="{{ name|default(id) }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>{{ value is defined ? value : '' }}</textarea>
-    {% if state == 'error' %}<div class="invalid-feedback" id="{{ feedback_id }}">{{ feedback|default('Добавьте описание.') }}</div>{% endif %}
-    {% if state == 'success' %}<div class="valid-feedback" id="{{ feedback_id }}">{{ feedback|default('Текст принят.') }}</div>{% endif %}
+{% set states = {
+    default: '',
+    focus: 'border-focus outline-2 outline-offset-2 outline-focus',
+    disabled: '',
+    error: 'border-danger focus:border-danger',
+    success: 'border-success focus:border-success',
+} %}
+<div class="grid min-w-0 gap-2" data-vf-component="textarea" data-vf-state="{{ state }}">
+    <label class="font-medium text-content" for="{{ id }}">{{ label }}</label>
+    <textarea class="min-h-textarea w-full resize-y rounded-md border border-border-strong bg-surface px-3 py-2 text-content focus:border-focus focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-disabled {{ states[state]|default('') }}" id="{{ id }}" name="{{ name|default(id) }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>{{ value is defined ? value : '' }}</textarea>
+    {% if state == 'error' %}<div class="text-small text-danger" id="{{ feedback_id }}">{{ feedback|default('Добавьте описание.') }}</div>{% endif %}
+    {% if state == 'success' %}<div class="text-small text-success" id="{{ feedback_id }}">{{ feedback|default('Текст принят.') }}</div>{% endif %}
 </div>

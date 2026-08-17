@@ -1,9 +1,22 @@
 {% set state = state|default('default') %}
-{% set state_class = state == 'error' ? ' is-invalid' : (state == 'success' ? ' is-valid' : (state == 'focus' ? ' vf-is-focus' : '')) %}
 {% set feedback_id = id ~ '-feedback' %}
-<div class="form-check" data-vf-component="checkbox" data-vf-state="{{ state }}">
-    <input class="form-check-input{{ state_class }}" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
-    <label class="form-check-label" for="{{ id }}">{{ label }}</label>
-    {% if state == 'error' %}<div class="invalid-feedback" id="{{ feedback_id }}">{{ feedback|default('Подтвердите выбор.') }}</div>{% endif %}
-    {% if state == 'success' %}<div class="valid-feedback" id="{{ feedback_id }}">{{ feedback|default('Выбор подтверждён.') }}</div>{% endif %}
+{% set input_states = {
+    default: '',
+    focus: 'outline-2 outline-offset-2 outline-focus',
+    disabled: '',
+    error: 'accent-danger',
+    success: 'accent-success',
+} %}
+{% set label_states = {
+    default: 'text-content',
+    focus: 'text-content',
+    disabled: 'text-content',
+    error: 'text-danger',
+    success: 'text-success',
+} %}
+<div class="flex min-w-0 flex-wrap items-start gap-x-2 gap-y-1" data-vf-component="checkbox" data-vf-state="{{ state }}">
+    <input class="mt-1 size-4 shrink-0 accent-brand-red focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-disabled {{ input_states[state]|default('') }}" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
+    <label class="min-w-0 flex-1 font-medium {{ label_states[state]|default(label_states.default) }}" for="{{ id }}">{{ label }}</label>
+    {% if state == 'error' %}<div class="w-full text-small text-danger" id="{{ feedback_id }}">{{ feedback|default('Подтвердите выбор.') }}</div>{% endif %}
+    {% if state == 'success' %}<div class="w-full text-small text-success" id="{{ feedback_id }}">{{ feedback|default('Выбор подтверждён.') }}</div>{% endif %}
 </div>

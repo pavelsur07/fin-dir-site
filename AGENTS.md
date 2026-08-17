@@ -25,7 +25,7 @@
 - Twig — единственный серверный rendering layer публичного сайта (`Public Website`);
 - Symfony Forms и Validator;
 - Symfony Security — authentication, authorization и серверные сессии;
-- Tailwind — базовый UI framework публичного сайта, разрешён к использованию без отдельного архитектурного согласования в рамках правил `SITE_RULES.md`;
+- Tailwind CSS 4.x — базовый UI framework публичного сайта, разрешённый в рамках правил `SITE_RULES.md`; exact build version должна быть pinned;
 - Symfony UX / Stimulus и Twig Components — для локальной интерактивности и переиспользуемых UI-компонентов публичного сайта, когда это действительно требуется.
 
 Административный frontend:
@@ -199,6 +199,8 @@ accessibility baseline и AI-generated UI anti-patterns публичного с�
 
 - публичные страницы рендерятся Symfony/Twig;
 - React на Public Website запрещён без отдельного архитектурного решения;
+- Tailwind является единственным CSS framework Public Website; Bootstrap запрещён для нового и изменяемого website code;
+- exact Tailwind version и build/runtime rules определяются `SITE_RULES.md`;
 - локальную client-side интерактивность реализовывать минимально достаточными средствами, предпочтительно Stimulus/обычным JavaScript в рамках принятого frontend-стека;
 - переиспользуемые визуальные элементы оформлять как Twig Components или существующие компоненты `SITE_RULES.md`, а не копировать markup между страницами;
 - Twig не выполняет Doctrine-запросы, не содержит бизнес-правила и не изменяет состояние приложения;

@@ -1,6 +1,9 @@
 DC=docker compose
 CLI=$(DC) --profile cli run --rm site-php-cli
-TEST_CLI=$(DC) --profile cli run --rm -v $(CURDIR)/SITE_RULES.md:/workspace/SITE_RULES.md:ro site-php-cli
+TEST_CLI=$(DC) --profile cli run --rm \
+	-v $(CURDIR)/SITE_RULES.md:/workspace/SITE_RULES.md:ro \
+	-v $(CURDIR)/scripts:/workspace/scripts:ro \
+	site-php-cli
 
 # -p traefik закрепляет имя проекта, чтобы метаданные контейнера не зависели
 # от имени каталога, из которого запускают make
@@ -10,7 +13,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
-        assets asset-version assets-check lint cs cs-fix phpstan test ci \
+        assets assets-watch asset-version assets-check lint cs cs-fix phpstan test ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -79,17 +82,27 @@ cache-clear:
 deptrac:
 	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
 
-# Публичное зеркало редактируемого CSS source. Nginx раздаёт только site/public.
+# Tailwind работает только во время сборки. Nginx раздаёт compiled app.css.
 assets:
 	rm -rf -- site/public/assets/website
 	mkdir -p site/public/assets/website
-	cp -R site/assets/styles/website/. site/public/assets/website/
+	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --minify
+
+assets-watch:
+	mkdir -p site/public/assets/website
+	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --watch
 
 asset-version:
-	@find site/assets/styles/website -type f -name '*.css' -print0 | LC_ALL=C sort -z | xargs -0 cat | sha256sum | cut -c1-12
+	@sha256sum site/public/assets/website/app.css | cut -c1-12
 
 assets-check:
-	diff -ru site/assets/styles/website site/public/assets/website
+	@temporary=$$(mktemp); \
+	trap 'rm -f "$$temporary"' EXIT HUP INT TERM; \
+	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o "$$temporary" --minify; \
+	cmp --silent "$$temporary" site/public/assets/website/app.css || { \
+		echo 'Compiled Tailwind CSS is stale. Run make assets.' >&2; \
+		exit 1; \
+	}
 
 # --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
 

@@ -1,21 +1,23 @@
 {% extends 'website/sections/_base.html.twig' %}
 {% set variant = variant|default('light') %}
-{% set section_class = variant == 'dark' ? 'vf-section--dark vf-hero vf-hero--dark' : 'vf-section--surface vf-hero' %}
+{% set section_class = variant == 'dark' ? 'bg-brand-dark text-on-dark' : 'bg-surface' %}
 {% set section_id = id|default('vf-hero') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'hero' %}
 
 {% block section_content %}
-    <div class="vf-hero__content" data-vf-variant="{{ variant }}">
-        {% if eyebrow|default(null) %}<p class="vf-caption vf-text-muted">{{ eyebrow }}</p>{% endif %}
-        <h1 id="{{ labelled_by }}">{{ title }}</h1>
-        <p class="vf-lead vf-text-muted">{{ text }}</p>
+    <div class="max-w-content" data-vf-variant="{{ variant }}">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption {% if variant == 'dark' %}text-muted-on-dark{% else %}text-muted{% endif %} uppercase">{{ eyebrow }}</p>{% endif %}
+        <h1 class="{% if variant == 'dark' %}text-on-dark{% endif %}" id="{{ labelled_by }}">{{ title }}</h1>
+        <p class="mb-0 text-lead {% if variant == 'dark' %}text-muted-on-dark{% else %}text-muted{% endif %}">{{ text }}</p>
         {% if primary_action|default(null) or secondary_action|default(null) %}
-            <div class="vf-hero__actions">
+            <div class="mt-8 flex flex-wrap gap-3">
                 {% if primary_action|default(null) %}
                     {% include 'website/components/_button.html.twig' with {
                         label: primary_action.label,
                         href: primary_action.href,
+                        on_dark: variant == 'dark',
+                        full_mobile: true,
                     } only %}
                 {% endif %}
                 {% if secondary_action|default(null) %}
@@ -23,6 +25,8 @@
                         label: secondary_action.label,
                         href: secondary_action.href,
                         variant: 'outline-primary',
+                        on_dark: variant == 'dark',
+                        full_mobile: true,
                     } only %}
                 {% endif %}
             </div>

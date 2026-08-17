@@ -1,11 +1,41 @@
 {% set variant = variant|default('primary') %}
 {% set state = state|default('default') %}
 {% set disabled = disabled|default(false) %}
-{% set classes = variant == 'on-primary' ? 'btn vf-btn-on-primary' : 'btn btn-' ~ variant %}
-{% if state == 'hover' %}{% set classes = classes ~ ' vf-is-hover' %}{% endif %}
-{% if state == 'focus' %}{% set classes = classes ~ ' vf-is-focus' %}{% endif %}
-{% if state == 'active' %}{% set classes = classes ~ ' vf-is-active' %}{% endif %}
-{% if disabled %}{% set classes = classes ~ ' disabled' %}{% endif %}
+{% set context = on_dark|default(false) ? '-on-dark' : '' %}
+{% set variant_key = variant ~ context %}
+{% set variants = {
+    primary: 'border-brand-red bg-brand-red text-on-primary hover:border-brand-red-hover hover:bg-brand-red-hover hover:text-on-primary active:border-brand-red-active active:bg-brand-red-active active:text-on-primary focus-visible:outline-focus',
+    'primary-on-dark': 'border-on-dark bg-brand-red text-on-primary hover:border-on-dark hover:bg-brand-red-hover hover:text-on-primary active:border-on-dark active:bg-brand-red-active active:text-on-primary focus-visible:outline-focus-on-dark',
+    'outline-primary': 'border-brand-red bg-transparent text-brand-red hover:border-brand-red hover:bg-brand-red hover:text-on-primary active:border-brand-red-active active:bg-brand-red-active active:text-on-primary focus-visible:outline-focus',
+    'outline-primary-on-dark': 'border-on-dark bg-transparent text-on-dark hover:border-on-dark hover:bg-on-dark hover:text-brand-dark active:border-muted-on-dark active:bg-muted-on-dark active:text-brand-dark focus-visible:outline-focus-on-dark',
+    'on-primary': 'border-on-primary bg-on-primary text-brand-red hover:border-on-primary hover:bg-brand-red-soft hover:text-brand-red-hover active:border-on-primary active:bg-on-primary active:text-brand-red-active focus-visible:outline-focus-on-dark',
+    'on-primary-on-dark': 'border-on-primary bg-on-primary text-brand-red hover:border-on-primary hover:bg-brand-red-soft hover:text-brand-red-hover active:border-on-primary active:bg-on-primary active:text-brand-red-active focus-visible:outline-focus-on-dark',
+} %}
+{% set state_key = variant ~ '-' ~ state ~ context %}
+{% set states = {
+    'primary-hover': 'border-brand-red-hover bg-brand-red-hover text-on-primary',
+    'primary-active': 'border-brand-red-active bg-brand-red-active text-on-primary',
+    'primary-focus': 'outline-2 outline-offset-2 outline-focus',
+    'primary-hover-on-dark': 'border-on-dark bg-brand-red-hover text-on-primary',
+    'primary-active-on-dark': 'border-on-dark bg-brand-red-active text-on-primary',
+    'primary-focus-on-dark': 'outline-2 outline-offset-2 outline-focus-on-dark',
+    'outline-primary-hover': 'border-brand-red bg-brand-red text-on-primary',
+    'outline-primary-active': 'border-brand-red-active bg-brand-red-active text-on-primary',
+    'outline-primary-focus': 'outline-2 outline-offset-2 outline-focus',
+    'outline-primary-hover-on-dark': 'border-on-dark bg-on-dark text-brand-dark',
+    'outline-primary-active-on-dark': 'border-muted-on-dark bg-muted-on-dark text-brand-dark',
+    'outline-primary-focus-on-dark': 'outline-2 outline-offset-2 outline-focus-on-dark',
+    'on-primary-hover': 'border-on-primary bg-brand-red-soft text-brand-red-hover',
+    'on-primary-active': 'border-on-primary bg-on-primary text-brand-red-active',
+    'on-primary-focus': 'outline-2 outline-offset-2 outline-focus-on-dark',
+    'on-primary-hover-on-dark': 'border-on-primary bg-brand-red-soft text-brand-red-hover',
+    'on-primary-active-on-dark': 'border-on-primary bg-on-primary text-brand-red-active',
+    'on-primary-focus-on-dark': 'outline-2 outline-offset-2 outline-focus-on-dark',
+} %}
+{% set classes = 'inline-flex min-h-control items-center justify-center rounded-md border px-4 py-2 font-medium no-underline transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-offset-2 ' ~ variants[variant_key]|default(variants.primary) ~ ' ' ~ states[state_key]|default('') %}
+{% if class|default(null) %}{% set classes = classes ~ ' ' ~ class %}{% endif %}
+{% if full_mobile|default(false) %}{% set classes = classes ~ ' max-sm:w-full' %}{% endif %}
+{% if disabled %}{% set classes = classes ~ ' pointer-events-none opacity-disabled' %}{% endif %}
 
 {% if href|default(null) %}
     <a class="{{ classes }}"{% if not disabled %} href="{{ href }}"{% else %} aria-disabled="true" tabindex="-1"{% endif %} data-vf-component="button" data-vf-state="{{ state }}">{{ label }}</a>

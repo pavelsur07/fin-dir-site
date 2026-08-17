@@ -15,4 +15,10 @@ final class UiKitController extends AbstractController
     {
         return $this->render('website/pages/ui_kit.html.twig');
     }
+
+    #[Route('/ui-kit/sections', name: 'ui_kit_sections', methods: ['GET'])]
+    public function sections(): Response
+    {
+        return $this->render('website/pages/ui_kit_sections.html.twig');
+    }
 }

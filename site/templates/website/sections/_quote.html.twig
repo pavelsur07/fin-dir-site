@@ -1,0 +1,19 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-quote') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'quote' %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+    </div>
+
+    <figure class="max-w-content border-l border-border-strong pl-6" data-vf-layout="quote">
+        <blockquote class="mb-4 text-h4">
+            <p class="mb-0">{{ quote }}</p>
+        </blockquote>
+        {% if source|default(null) %}<figcaption class="text-muted">{{ source }}</figcaption>{% endif %}
+    </figure>
+{% endblock %}

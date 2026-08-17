@@ -1,18 +1,27 @@
 {% set navigation_id = navigation_id|default('vf-main-navigation') %}
-<nav class="navbar navbar-expand-lg vf-navbar" aria-label="Основная навигация" data-vf-component="navbar">
-    <div class="container">
-        <a class="navbar-brand" href="{{ brand_href }}">{{ brand }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#{{ navigation_id }}" aria-controls="{{ navigation_id }}" aria-expanded="false" aria-label="Открыть меню">
-            <span class="vf-navbar-toggler-icon" aria-hidden="true"><span></span><span></span><span></span></span>
-        </button>
-        <div class="collapse navbar-collapse" id="{{ navigation_id }}">
-            <ul class="navbar-nav ms-auto">
-                {% for item in items %}
-                    <li class="nav-item">
-                        <a class="nav-link{% if item.active|default(false) %} active{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+<nav class="border-b border-border-default bg-surface" aria-label="Основная навигация" data-vf-component="navbar">
+    <div class="mx-auto flex w-full max-w-site flex-wrap items-center justify-between gap-4 px-4 py-3 md:px-6">
+        <a class="font-bold text-content no-underline" href="{{ brand_href }}">{{ brand }}</a>
+        <details class="group contents lg:hidden">
+            <summary class="flex min-h-control cursor-pointer list-none items-center rounded-md border border-border-strong px-3 text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden" aria-label="Открыть или закрыть меню">
+                <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
+            </summary>
+            <div class="hidden w-full group-open:block" id="{{ navigation_id }}">
+                <ul class="flex flex-col gap-2 pt-3">
+                    {% for item in items %}
+                        <li>
+                            <a class="block py-2 font-medium no-underline hover:text-brand-red focus:text-brand-red{% if item.active|default(false) %} text-brand-red{% else %} text-content{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </details>
+        <ul class="ml-auto hidden items-center gap-6 lg:flex">
+            {% for item in items %}
+                <li>
+                    <a class="block py-2 font-medium no-underline hover:text-brand-red focus:text-brand-red{% if item.active|default(false) %} text-brand-red{% else %} text-content{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 </nav>

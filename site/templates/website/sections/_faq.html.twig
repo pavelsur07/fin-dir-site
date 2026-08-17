@@ -1,0 +1,20 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-faq') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'faq' %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    <div class="max-w-content" data-vf-layout="faq">
+        {% include 'website/components/_accordion.html.twig' with {
+            accordion_id: section_id ~ '-accordion',
+            items: items,
+        } only %}
+    </div>
+{% endblock %}

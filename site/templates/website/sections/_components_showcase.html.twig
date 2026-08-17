@@ -1,52 +1,52 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'vf-section--surface' %}
+{% set section_class = 'bg-surface' %}
 {% set section_id = 'components' %}
 {% set labelled_by = 'components-title' %}
 {% set section_name = 'components-showcase' %}
 
 {% block section_content %}
-    <div class="vf-section__heading">
+    <div class="mb-8 max-w-content">
         <h2 id="components-title">Components</h2>
-        <p class="vf-lead vf-text-muted">Состояния ниже рендерятся production partials. Hover и Focus принудительно показаны рядом с интерактивными состояниями.</p>
+        <p class="mb-0 text-lead text-muted">Состояния ниже рендерятся production partials. Hover и Focus принудительно показаны рядом с интерактивными состояниями.</p>
     </div>
 
-    <div class="vf-showcase">
-        <div class="vf-showcase-group" id="buttons">
+    <div class="grid gap-8">
+        <div class="border-t border-border-default py-6" id="buttons">
             <h3>Buttons</h3>
-            <div class="vf-component-row">
+            <div class="flex flex-wrap items-center gap-3">
                 {% for button in [
                     {state: 'default', label: 'Default'},
                     {state: 'hover', label: 'Hover'},
                     {state: 'focus', label: 'Focus'},
                     {state: 'active', label: 'Active'},
                 ] %}
-                    <div class="vf-component-state">
-                        <span class="vf-caption">{{ button.label }}</span>
+                    <div class="grid gap-2">
+                        <span class="text-caption font-medium tracking-caption uppercase">{{ button.label }}</span>
                         {% include 'website/components/_button.html.twig' with {label: button.label, state: button.state} only %}
                     </div>
                 {% endfor %}
-                <div class="vf-component-state">
-                    <span class="vf-caption">Disabled</span>
+                <div class="grid gap-2">
+                    <span class="text-caption font-medium tracking-caption uppercase">Disabled</span>
                     {% include 'website/components/_button.html.twig' with {label: 'Disabled', disabled: true} only %}
                 </div>
-                <div class="vf-component-state">
-                    <span class="vf-caption">Secondary</span>
+                <div class="grid gap-2">
+                    <span class="text-caption font-medium tracking-caption uppercase">Secondary</span>
                     {% include 'website/components/_button.html.twig' with {label: 'Подробнее', variant: 'outline-primary'} only %}
                 </div>
             </div>
         </div>
 
-        <div class="vf-showcase-group" id="cards">
+        <div class="border-t border-border-default py-6" id="cards">
             <h3>Cards</h3>
-            <div class="row vf-card-grid">
-                <div class="col-md-6">
+            <div class="grid gap-6 md:grid-cols-2">
+                <div class="min-w-0">
                     {% include 'website/components/_card.html.twig' with {
                         eyebrow: 'Design tokens',
                         title: 'Единые значения',
                         text: 'Цвет, типографика и spacing не определяются на уровне страницы.',
                     } only %}
                 </div>
-                <div class="col-md-6">
+                <div class="min-w-0">
                     {% include 'website/components/_card.html.twig' with {
                         eyebrow: 'Accessibility',
                         title: 'Наблюдаемые состояния',
@@ -56,9 +56,9 @@
             </div>
         </div>
 
-        <div class="vf-showcase-group" id="badges">
+        <div class="border-t border-border-default py-6" id="badges">
             <h3>Badges</h3>
-            <div class="vf-component-row">
+            <div class="flex flex-wrap items-center gap-3">
                 {% include 'website/components/_badge.html.twig' with {label: 'Default'} only %}
                 {% include 'website/components/_badge.html.twig' with {label: 'Success', tone: 'success'} only %}
                 {% include 'website/components/_badge.html.twig' with {label: 'Warning', tone: 'warning'} only %}
@@ -67,9 +67,9 @@
             </div>
         </div>
 
-        <div class="vf-showcase-group" id="alerts">
+        <div class="border-t border-border-default py-6" id="alerts">
             <h3>Alerts</h3>
-            <div class="vf-showcase">
+            <div class="grid gap-8">
                 {% include 'website/components/_alert.html.twig' with {title: 'Информация', text: 'Нейтральная системная информация.', tone: 'info'} only %}
                 {% include 'website/components/_alert.html.twig' with {title: 'Готово', text: 'Операция завершена успешно.', tone: 'success'} only %}
                 {% include 'website/components/_alert.html.twig' with {title: 'Требуется внимание', text: 'Проверьте данные перед продолжением.', tone: 'warning'} only %}
@@ -77,7 +77,7 @@
             </div>
         </div>
 
-        <div class="vf-showcase-group" id="breadcrumbs">
+        <div class="border-t border-border-default py-6" id="breadcrumbs">
             <h3>Breadcrumbs</h3>
             {% include 'website/components/_breadcrumb.html.twig' with {
                 items: [
@@ -87,7 +87,7 @@
             } only %}
         </div>
 
-        <div class="vf-showcase-group" id="accordion">
+        <div class="border-t border-border-default py-6" id="accordion">
             <h3>Accordion</h3>
             {% include 'website/components/_accordion.html.twig' with {
                 accordion_id: 'ui-kit-accordion',
@@ -98,9 +98,9 @@
             } only %}
         </div>
 
-        <div class="vf-showcase-group" id="navigation">
+        <div class="border-t border-border-default py-6" id="navigation">
             <h3>Navigation</h3>
-            <p>Production Navbar находится в начале страницы, Footer — после содержимого. На узком viewport Navbar использует Bootstrap collapse.</p>
+            <p class="mb-0">Production Navbar находится в начале страницы, Footer — после содержимого. На узком viewport Navbar использует нативный disclosure menu.</p>
         </div>
     </div>
 {% endblock %}

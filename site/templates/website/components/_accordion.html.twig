@@ -1,15 +1,15 @@
-<div class="accordion" id="{{ accordion_id }}" data-vf-component="accordion">
+<div id="{{ accordion_id }}" data-vf-component="accordion">
     {% for item in items %}
         {% set item_id = accordion_id ~ '-item-' ~ loop.index %}
-        <div class="accordion-item">
-            <h3 class="accordion-header">
-                <button class="accordion-button{% if not loop.first %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#{{ item_id }}" aria-expanded="{{ loop.first ? 'true' : 'false' }}" aria-controls="{{ item_id }}">
-                    {{ item.title }}
-                </button>
-            </h3>
-            <div class="accordion-collapse collapse{% if loop.first %} show{% endif %}" id="{{ item_id }}" data-bs-parent="#{{ accordion_id }}">
-                <div class="accordion-body">{{ item.text }}</div>
-            </div>
-        </div>
+        <details class="group border border-b-0 border-border-default bg-surface first:rounded-t-md last:rounded-b-md last:border-b"{% if loop.first %} open{% endif %}>
+            <summary class="flex min-h-control cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 font-medium text-content group-open:bg-brand-red-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus">
+                <h3 class="mb-0 min-w-0 text-body font-medium text-content">{{ item.title }}</h3>
+                <span class="relative size-4 shrink-0" aria-hidden="true">
+                    <span class="absolute inset-x-0 top-1/2 border-t-2 border-current"></span>
+                    <span class="absolute inset-y-0 left-1/2 border-l-2 border-current transition-transform group-open:rotate-90 motion-reduce:transition-none"></span>
+                </span>
+            </summary>
+            <div class="p-4" id="{{ item_id }}">{{ item.text }}</div>
+        </details>
     {% endfor %}
 </div>

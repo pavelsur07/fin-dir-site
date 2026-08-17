@@ -1,0 +1,35 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-grid') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = marker|default('grid') %}
+
+{% block section_content %}
+    <div class="mb-8 max-w-content">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+        <h2 id="{{ labelled_by }}">{{ title }}</h2>
+        {% if text|default(null) %}<p class="mb-0 text-lead text-muted">{{ text }}</p>{% endif %}
+    </div>
+
+    <ul class="grid grid-auto-fit gap-6" role="list" data-vf-layout="grid">
+        {% for item in items %}
+            <li class="border-t border-border-default pt-4">
+                <h3 class="text-h4">{{ item.title }}</h3>
+                {% if item.text|default(null) %}<p class="text-muted">{{ item.text }}</p>{% endif %}
+                {% if item.details|default([]) %}
+                    <ul class="grid gap-3" role="list">
+                        {% for detail in item.details %}<li class="flex gap-3"><span class="text-muted" aria-hidden="true">—</span><span>{{ detail }}</span></li>{% endfor %}
+                    </ul>
+                {% endif %}
+                {% if item.action|default(null) %}
+                    {% include 'website/components/_button.html.twig' with {
+                        label: item.action.label,
+                        href: item.action.href,
+                        variant: 'outline-primary',
+                        class: 'mt-4',
+                    } only %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

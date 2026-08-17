@@ -1,0 +1,54 @@
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('vf-lead-form') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'lead-form' %}
+
+{% block section_content %}
+    <div class="grid items-start gap-8 md:grid-cols-2" data-vf-layout="form-context">
+        <div class="max-w-content">
+            {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
+            <h2 id="{{ labelled_by }}">{{ title }}</h2>
+            <p class="text-lead text-muted">{{ text }}</p>
+            {% if context_items|default([]) %}
+                <ul class="grid gap-3" role="list">
+                    {% for item in context_items %}<li class="flex gap-3"><span class="text-muted" aria-hidden="true">—</span><span>{{ item }}</span></li>{% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <form class="grid gap-4 rounded-lg border border-border-default p-4 md:p-6" data-vf-demo-form>
+            {% include 'website/components/_form_input.html.twig' with {
+                id: section_id ~ '-name',
+                name: 'name',
+                label: 'Имя',
+                required: true,
+                placeholder: 'Как к вам обращаться',
+            } only %}
+            {% include 'website/components/_form_input.html.twig' with {
+                id: section_id ~ '-contact',
+                name: 'contact',
+                label: 'Рабочий телефон или email',
+                required: true,
+                placeholder: '+7 900 000-00-00',
+            } only %}
+            {% include 'website/components/_form_textarea.html.twig' with {
+                id: section_id ~ '-task',
+                name: 'task',
+                label: 'Коротко о задаче',
+                placeholder: 'Контекст для первого разговора',
+            } only %}
+            {% include 'website/components/_form_checkbox.html.twig' with {
+                id: section_id ~ '-agreement',
+                name: 'agreement',
+                label: 'Согласен на обработку персональных данных',
+                required: true,
+            } only %}
+            {% include 'website/components/_button.html.twig' with {
+                label: action_label|default('Продолжить'),
+                type: 'button',
+            } only %}
+            {% if note|default(null) %}<p class="mb-0 text-small text-muted" data-vf-form-note>{{ note }}</p>{% endif %}
+        </form>
+    </div>
+{% endblock %}

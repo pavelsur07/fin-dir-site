@@ -16,9 +16,8 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'UI-kit «Ваш Финдир»');
-        foreach (['tokens.css', 'base.css', 'components/index.css', 'sections/index.css', 'components/showcase.css'] as $stylesheet) {
-            self::assertSelectorExists(sprintf('link[href^="/assets/website/%s?v="]', $stylesheet));
-        }
+        self::assertSelectorCount(1, 'link[href^="/assets/website/app.css?v="]');
+        self::assertSelectorCount(0, 'link[href*="bootstrap"], script[src*="bootstrap"]');
 
         foreach ([
             'button',
@@ -58,17 +57,20 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorTextContains($selector, strtoupper($hex));
         }
 
-        self::assertSelectorExists('[data-vf-color-combinations] .vf-color-context--light');
-        self::assertSelectorExists('[data-vf-color-combinations] .vf-color-context--dark');
-        self::assertSelectorExists('[data-vf-color-combinations] .vf-alert--info');
-        self::assertSelectorExists('.vf-badge--info');
-        self::assertSelectorExists('[data-vf-state="active"].vf-is-active');
-        self::assertSelectorExists('section.vf-hero--dark [data-vf-variant="dark"]');
-        self::assertSelectorExists('footer.vf-footer--dark[data-vf-variant="dark"]');
+        self::assertSelectorExists('[data-vf-color-combinations] [data-vf-color-context="light"]');
+        self::assertSelectorExists('[data-vf-color-combinations] [data-vf-color-context="dark"]');
+        self::assertSelectorExists('[data-vf-color-combinations] [data-vf-component="alert"][data-vf-tone="info"]');
+        self::assertSelectorExists('[data-vf-component="badge"][data-vf-tone="info"]');
+        self::assertSelectorExists('[data-vf-state="active"].bg-brand-red-active');
+        self::assertSelectorExists('section[data-vf-section="hero"].bg-brand-dark [data-vf-variant="dark"]');
+        self::assertSelectorExists('footer.bg-surface-dark[data-vf-variant="dark"]');
 
         self::assertSelectorExists('label[for="demo-name"]');
         self::assertSelectorExists('[data-vf-state="error"] [aria-invalid="true"]');
-        self::assertSelectorExists('[data-vf-state="success"] .valid-feedback');
+        self::assertSelectorExists('[data-vf-state="success"] .text-success');
+        self::assertSelectorExists('[data-vf-component="accordion"] details > summary h3');
+        self::assertSelectorCount(0, '[data-vf-component="accordion"] [role="heading"]');
+        self::assertSelectorExists('[data-vf-component="navbar"] details > summary');
 
         foreach ([
             'input' => 'form-input',
@@ -113,8 +115,9 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertDoesNotMatchRegularExpression('/\sstyle\s*=/i', $contents, $file->getPathname());
             self::assertDoesNotMatchRegularExpression('/<script\b(?![^>]*\bsrc\s*=)[^>]*>/i', $contents, $file->getPathname());
             self::assertDoesNotMatchRegularExpression('/\son[a-z]+\s*=/i', $contents, $file->getPathname());
+            self::assertDoesNotMatchRegularExpression('/bootstrap|data-bs-|--bs-/i', $contents, $file->getPathname());
             self::assertDoesNotMatchRegularExpression(
-                '/(?<!vf-)\b(?:text|bg|border)-(?:primary|secondary|success|danger|warning|info|light|dark|white|black|body|muted)\b/i',
+                '/\b(?:bg|text|border)-(?:red|blue|slate|gray|grey|zinc|neutral|stone)-\d{2,3}\b/i',
                 $contents,
                 $file->getPathname(),
             );
@@ -124,61 +127,70 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertGreaterThan(0, $checked);
     }
 
-    public function testComponentAndSectionCssUseTokensForColors(): void
+    public function testTailwindTemplatesUseStaticApprovedUtilities(): void
     {
-        foreach ($this->websiteCssFiles('assets/styles/website') as $relativePath => $path) {
-            if ('tokens.css' === $relativePath) {
-                continue;
-            }
+        $checked = 0;
+        foreach ($this->websiteTemplateFiles() as $path) {
+            $contents = $this->read($path);
 
             self::assertDoesNotMatchRegularExpression(
-                '/#[0-9a-f]{3,8}\b|\b(?:rgb|hsl|oklch)a?\s*\(|\b(?:color-mix|light-dark)\s*\(|\b(?:white|black|red|green|blue|gray|grey|pink|orange|yellow|purple)\b|var\(--bs-/i',
-                $this->read($path),
-                $relativePath,
+                '/\b[a-z][a-z0-9-]*-\[[^\]\r\n]+\]/i',
+                $contents,
+                $path,
             );
             self::assertDoesNotMatchRegularExpression(
-                '/^\s*(?:color|background(?:-color)?|border(?:-[a-z-]+)?-color|outline-color|fill|stroke)\s*:\s*(?!var\(|currentcolor\b|transparent\b|none\b|inherit\b|initial\b|unset\b)[a-z-]+\b/im',
-                $this->read($path),
-                $relativePath,
+                '/\b(?:bg|text|border|outline|ring|fill|stroke)-\s*(?:\{\{|[\'\"]\s*~)/i',
+                $contents,
+                $path,
             );
-        }
-    }
 
-    public function testComponentAndSectionCssDoNotDefineArbitraryPixelValues(): void
-    {
-        foreach ($this->websiteCssFiles('assets/styles/website') as $relativePath => $path) {
-            if ('tokens.css' === $relativePath) {
-                continue;
+            $count = preg_match_all(
+                '/(?<![a-z0-9])(?:-)?(?:[a-z0-9-]+:)*(?:p[trblxy]?|m[trblxy]?|gap[xy]?|space-[xy]|w|h|size|inset|top|right|bottom|left|translate-[xy])-(\d+)(?:\/\d+)?\b/i',
+                $contents,
+                $matches,
+            );
+            self::assertNotFalse($count);
+            foreach ($matches[1] as $spacing) {
+                self::assertContains((int) $spacing, [0, 1, 2, 3, 4, 6, 8, 12, 16, 20, 24], $path);
             }
 
-            foreach (explode("\n", $this->read($path)) as $line) {
-                if (1 === preg_match('/^\s*@media\s+\((?:min|max)-width:\s*(?:575\.98|767\.98|991\.98|1199\.98|1399\.98|576|768|992|1200|1400)px\)(?:\s+and\s+\((?:min|max)-width:\s*(?:575\.98|767\.98|991\.98|1199\.98|1399\.98|576|768|992|1200|1400)px\))?\s*\{\s*$/', $line)) {
-                    continue;
-                }
-
-                self::assertDoesNotMatchRegularExpression(
-                    '/\b\d+(?:\.\d+)?(?:px|rem|em|vh|vw|vmin|vmax|ch|ex)\b/',
-                    $line,
-                    $relativePath,
-                );
-            }
+            ++$checked;
         }
+
+        self::assertGreaterThan(0, $checked);
     }
 
-    public function testPublishedAssetsMatchTheirSource(): void
+    public function testTailwindBuildIsPinnedAndPublishedAsOneCompiledStylesheet(): void
     {
-        $sourceFiles = $this->websiteCssFiles('assets/styles/website');
-        $publishedFiles = $this->websiteCssFiles('public/assets/website');
-
-        self::assertSame(array_keys($sourceFiles), array_keys($publishedFiles));
-
-        foreach ($sourceFiles as $relativePath => $sourcePath) {
-            self::assertSame(
-                $this->read($sourcePath),
-                $this->read($publishedFiles[$relativePath]),
-                $relativePath,
-            );
+        $source = $this->read($this->projectPath('assets/styles/website/app.css'));
+        $compiled = $this->read($this->projectPath('public/assets/website/app.css'));
+        $wrapperPath = dirname(__DIR__, 3).'/scripts/tailwindcss.sh';
+        if (!is_file($wrapperPath)) {
+            $wrapperPath = '/workspace/scripts/tailwindcss.sh';
         }
+        $wrapper = $this->read($wrapperPath);
+
+        self::assertStringContainsString('@import "tailwindcss" source(none);', $source);
+        self::assertStringContainsString('@source "../../../templates/website";', $source);
+        self::assertStringContainsString('--color-*: initial;', $source);
+        self::assertDoesNotMatchRegularExpression('/bootstrap|data-bs-|--bs-/i', $source);
+        self::assertStringNotContainsString('@import "tailwindcss"', $compiled);
+        self::assertStringContainsString('.bg-brand-red', $compiled);
+        self::assertStringContainsString('.grid-auto-fit', $compiled);
+        self::assertStringContainsString("TAILWIND_VERSION='4.3.3'", $wrapper);
+        self::assertStringContainsString('dc61b3ac6b8c9ca874c0cc4c57b2409791a64c5540404ca5f5367360babc313a', $wrapper);
+
+        $withoutColorTokens = preg_replace(
+            '/^\s*--vf-color-[a-z0-9-]+:\s*#[0-9a-f]{6};\R?/mi',
+            '',
+            $source,
+        );
+        self::assertIsString($withoutColorTokens);
+        self::assertDoesNotMatchRegularExpression('/#[0-9a-f]{3,8}\b/i', $withoutColorTokens);
+
+        $published = glob($this->projectPath('public/assets/website/*'));
+        self::assertIsArray($published);
+        self::assertSame([$this->projectPath('public/assets/website/app.css')], $published);
     }
 
     public function testColorSystemTokensAndContrast(): void
@@ -279,15 +291,7 @@ final class WebsiteFoundationTest extends WebTestCase
         $siteRulesColors = $this->documentedSiteRulesColors();
         self::assertSame($sortedExpectedColors, $siteRulesColors);
 
-        $tokensCss = $this->read($this->projectPath('assets/styles/website/tokens.css'));
-        self::assertSame(
-            1,
-            preg_match('/--vf-color-primary-rgb:\s*(\d+),\s*(\d+),\s*(\d+);/', $tokensCss, $primaryRgb),
-        );
-        self::assertSame(
-            $this->hexChannels($colors['--vf-color-primary']),
-            array_map('intval', array_slice($primaryRgb, 1, 3)),
-        );
+        $tokensCss = $this->read($this->projectPath('assets/styles/website/app.css'));
         self::assertSame(
             1,
             preg_match('/--vf-shadow-card:[^;]*rgb\((\d+)\s+(\d+)\s+(\d+)\s*\/\s*8%\);/', $tokensCss, $shadowRgb),
@@ -297,60 +301,16 @@ final class WebsiteFoundationTest extends WebTestCase
             array_map('intval', array_slice($shadowRgb, 1, 3)),
         );
 
-        $componentsCss = $this->read($this->projectPath('assets/styles/website/components/index.css'));
-        foreach (['.btn-primary', '.btn-outline-primary', '.vf-btn-on-primary'] as $buttonSelector) {
-            self::assertStringContainsString($buttonSelector.":active,\n".$buttonSelector.'.vf-is-active', $componentsCss);
-            $hoverPosition = strpos($componentsCss, $buttonSelector.':hover,');
-            $activePosition = strpos($componentsCss, $buttonSelector.":active,\n");
-            self::assertNotFalse($hoverPosition);
-            self::assertNotFalse($activePosition);
-            self::assertGreaterThan($hoverPosition, $activePosition);
-        }
-        self::assertStringContainsString('--bs-btn-active-color: var(--vf-color-on-primary);', $componentsCss);
-        self::assertStringContainsString('--bs-btn-active-bg: var(--vf-color-on-primary);', $componentsCss);
-        self::assertStringContainsString(
-            ".vf-btn-on-primary:active,\n.vf-btn-on-primary.vf-is-active {\n    background: var(--vf-color-on-primary);",
-            $componentsCss,
-        );
-        self::assertStringContainsString(
-            ".form-control.is-valid:focus,\n.form-select.is-valid:focus,\n.form-check-input.is-valid:focus {\n    border-color: var(--vf-color-success);",
-            $componentsCss,
-        );
-        self::assertStringContainsString(
-            ".form-control.is-invalid:focus,\n.form-select.is-invalid:focus,\n.form-check-input.is-invalid:focus {\n    border-color: var(--vf-color-danger);",
-            $componentsCss,
-        );
-
-        $sectionsCss = $this->read($this->projectPath('assets/styles/website/sections/index.css'));
-        self::assertStringContainsString(
-            ".vf-hero--dark {\n    background: var(--vf-color-dark);",
-            $sectionsCss,
-        );
-        self::assertStringContainsString(
-            ".vf-hero--dark .btn-primary:hover,\n.vf-hero--dark .btn-primary:active,",
-            $sectionsCss,
-        );
-        self::assertStringContainsString(
-            "    border-color: var(--vf-color-text-on-dark);\n    color: var(--vf-color-on-primary);",
-            $sectionsCss,
-        );
-        self::assertStringContainsString(
-            ".vf-section--dark :focus-visible,\n.vf-section--dark .vf-is-focus {\n    outline-color: var(--vf-color-focus-on-dark);",
-            $sectionsCss,
-        );
-        self::assertStringContainsString(
-            ".vf-section--dark .vf-text-muted {\n    color: var(--vf-color-muted-on-dark);",
-            $sectionsCss,
-        );
-        self::assertStringContainsString(
-            ".vf-section--dark :is(a, code) {\n    color: var(--vf-color-text-on-dark);",
-            $sectionsCss,
-        );
-
-        self::assertStringContainsString(
-            ".vf-footer--dark {\n    border-color: var(--vf-color-surface-dark);",
-            $componentsCss,
-        );
+        $button = $this->read($this->projectPath('templates/website/components/_button.html.twig'));
+        self::assertStringContainsString('bg-brand-red-hover', $button);
+        self::assertStringContainsString('bg-brand-red-active', $button);
+        self::assertStringContainsString('outline-focus-on-dark', $button);
+        $form = $this->read($this->projectPath('templates/website/components/_form_input.html.twig'));
+        self::assertStringContainsString('border-focus', $form);
+        self::assertStringContainsString('border-danger focus:border-danger', $form);
+        self::assertStringContainsString('border-success focus:border-success', $form);
+        self::assertStringContainsString('bg-brand-dark', $this->read($this->projectPath('templates/website/sections/_hero.html.twig')));
+        self::assertStringContainsString('bg-surface-dark', $this->read($this->projectPath('templates/website/components/_footer.html.twig')));
 
         self::assertLessThan(
             4.5,
@@ -366,10 +326,7 @@ final class WebsiteFoundationTest extends WebTestCase
 
     public function testAssetVersionMatchesWebsiteCssContent(): void
     {
-        $css = '';
-        foreach ($this->websiteCssFiles('assets/styles/website') as $path) {
-            $css .= $this->read($path);
-        }
+        $css = $this->read($this->projectPath('public/assets/website/app.css'));
 
         $layout = $this->read($this->projectPath('templates/website/layouts/base.html.twig'));
         self::assertSame(1, preg_match("/{% set vf_asset_version = '([0-9a-f]{12})' %}/", $layout, $matches));
@@ -378,34 +335,33 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSame(substr(hash('sha256', $css), 0, 12), $assetVersion);
     }
 
-    /** @return array<string, string> */
-    private function websiteCssFiles(string $relativeDirectory): array
+    /** @return list<string> */
+    private function websiteTemplateFiles(): array
     {
-        $directory = $this->projectPath($relativeDirectory);
+        $directory = $this->projectPath('templates/website');
         $files = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
         );
-        $cssFiles = [];
+        $templates = [];
 
         /** @var \SplFileInfo $file */
         foreach ($files as $file) {
-            if (!$file->isFile() || 'css' !== $file->getExtension()) {
+            if (!$file->isFile() || 'twig' !== $file->getExtension()) {
                 continue;
             }
 
-            $relativePath = str_replace('\\', '/', substr($file->getPathname(), strlen($directory) + 1));
-            $cssFiles[$relativePath] = $file->getPathname();
+            $templates[] = $file->getPathname();
         }
 
-        ksort($cssFiles, SORT_STRING);
+        sort($templates, SORT_STRING);
 
-        return $cssFiles;
+        return $templates;
     }
 
     /** @return array<string, string> */
     private function colorTokens(): array
     {
-        $css = $this->read($this->projectPath('assets/styles/website/tokens.css'));
+        $css = $this->read($this->projectPath('assets/styles/website/app.css'));
         $result = preg_match_all(
             '/^\s*(--vf-color-[a-z0-9-]+):\s*(#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8}));/mi',
             $css,
