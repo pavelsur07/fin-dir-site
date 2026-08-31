@@ -1,0 +1,49 @@
+# conwix.com -- статический сайт. Отдельный compose-файл и отдельный проект
+# (-p conwix): по конвенции хоста (infra/traefik/README.md) новый сайт
+# добавляется только своим файлом, не трогая ни Traefik, ни vashfindir.
+#
+# Сборки нет: nginx раздаёт conwix/public как есть, поэтому выкатка -- это
+# git pull на хосте. Образ собирать незачем, тега IMAGE_TAG здесь нет.
+
+services:
+  conwix:
+    container_name: conwix_site
+    image: nginx:1.27-alpine
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_web"
+
+      - "traefik.http.routers.conwix.rule=Host(`conwix.com`)"
+      - "traefik.http.routers.conwix.entrypoints=websecure"
+      - "traefik.http.routers.conwix.tls.certresolver=le"
+
+      - "traefik.http.routers.conwix-http.rule=Host(`conwix.com`)"
+      - "traefik.http.routers.conwix-http.entrypoints=web"
+      - "traefik.http.routers.conwix-http.middlewares=conwix-https-redirect"
+      - "traefik.http.middlewares.conwix-https-redirect.redirectscheme.scheme=https"
+
+      # www.conwix.com сознательно не описан: A-записи для него нет.
+      # Роутер с tls.certresolver на нерезолвящийся домен заставил бы Traefik
+      # по кругу проваливать ACME-проверку и жечь лимит Let's Encrypt.
+      # Появится DNS -- добавить блок по образцу vf-www в docker-compose.prod.yml.
+
+      - "traefik.http.services.conwix.loadbalancer.server.port=80"
+    volumes:
+      - ./conwix/public:/app/public:ro
+      - ./conwix/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - web
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+networks:
+  # Та же общая шина хоста, что у vashfindir и Traefik. external с обеих
+  # сторон: `down` этого стека не должен уносить связность соседям.
+  web:
+    external: true
+    name: traefik_web
