@@ -1,0 +1,94 @@
+name: Deploy conwix.com
+
+# Статический сайт на общем хосте. Отдельно от deploy-vashfindir.yml по той же
+# причине, по которой отдельно вынесен Traefik: выкатка одного сайта не должна
+# ни трогать соседей, ни ждать чужой CI. Здесь нет ни сборки образа, ни
+# миграций -- только git pull и nginx.
+
+on:
+    push:
+        branches: ["master", "main"]
+        paths:
+            - "conwix/**"
+            - "docker-compose.conwix.yml"
+            - ".github/workflows/deploy-conwix.yml"
+    workflow_dispatch:
+
+jobs:
+    deploy-conwix:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Deploy conwix over SSH
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USER }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
+                  script: |
+                      set -euo pipefail
+
+                      DEPLOY_PATH="${{ secrets.DEPLOY_PATH }}"
+                      COMPOSE_FILE="${DEPLOY_PATH}/docker-compose.conwix.yml"
+
+                      echo "==> cd ${DEPLOY_PATH}"
+                      cd "${DEPLOY_PATH}"
+
+                      echo "==> git sync"
+                      git fetch --all --prune
+                      git reset --hard origin/${{ github.ref_name }}
+
+                      if ! docker compose version >/dev/null 2>&1; then
+                          echo "Docker Compose v2 не установлен. Запустите bootstrap-host.yml"
+                          exit 1
+                      fi
+
+                      # Имя проекта закреплено явно: без -p compose вывел бы его
+                      # из имени каталога и склеил бы стек conwix с vashfindir.
+                      COMPOSE=(docker compose -p conwix -f "${COMPOSE_FILE}")
+
+                      # Сеть общая и никому не принадлежит. Её создаёт
+                      # deploy-traefik.yml, но проверить дешевле, чем ловить
+                      # "network traefik_web not found" в середине выкатки.
+                      echo "==> сеть traefik_web"
+                      docker network inspect traefik_web >/dev/null 2>&1 \
+                          || docker network create traefik_web
+
+                      echo "==> валидация конфига"
+                      "${COMPOSE[@]}" config >/dev/null
+
+                      echo "==> up"
+                      "${COMPOSE[@]}" up -d --wait
+
+                      # Статика и конфиг nginx приезжают bind-mount'ом, поэтому
+                      # compose об их изменении не знает: при неизменных метках
+                      # up -d это no-op. Файлы на диске уже новые -- достаточно
+                      # заставить nginx перечитать конфиг.
+                      echo "==> reload nginx"
+                      "${COMPOSE[@]}" exec -T conwix sh -lc 'nginx -t && nginx -s reload'
+
+                      echo "==> status"
+                      "${COMPOSE[@]}" ps
+
+                      echo "==> health (внутри контейнера)"
+                      "${COMPOSE[@]}" exec -T conwix sh -lc 'wget -qO- http://127.0.0.1/health | grep -qx alive'
+
+                      echo "==> Traefik diagnostics"
+                      docker inspect conwix_site --format '{{json .Config.Labels}}'
+                      docker inspect conwix_site --format '{{json .NetworkSettings.Networks}}'
+
+                      echo "==> logs"
+                      "${COMPOSE[@]}" logs --tail=60 conwix || true
+
+                      # Первый деплой ждёт выпуск сертификата Let's Encrypt,
+                      # поэтому ретраев больше, чем у соседей: ACME по
+                      # tls-challenge занимает секунды, но не мгновенен.
+                      echo "==> публичная проверка"
+                      curl --fail --silent --show-error \
+                          --retry 20 --retry-all-errors --retry-delay 5 \
+                          --head https://conwix.com/
+
+                      echo "==> проверка соседа: vashfindir не задет"
+                      curl --fail --silent --show-error --head https://vashfindir.ru/ >/dev/null \
+                          && echo "vashfindir.ru OK"
