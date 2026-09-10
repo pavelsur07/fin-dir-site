@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://vashfindir.ru/</loc>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/services</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/cases</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/about</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/partners</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/gazeta</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/gazeta/post-1</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/privacy</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/offer</loc>
+    </url>
+    <url>
+        <loc>https://vashfindir.ru/consent</loc>
+    </url>
+</urlset>

@@ -125,7 +125,12 @@ final class WebsiteFoundationTest extends WebTestCase
 
             self::assertDoesNotMatchRegularExpression('/<style\b/i', $contents, $file->getPathname());
             self::assertDoesNotMatchRegularExpression('/\sstyle\s*=/i', $contents, $file->getPathname());
-            self::assertDoesNotMatchRegularExpression('/<script\b(?![^>]*\bsrc\s*=)[^>]*>/i', $contents, $file->getPathname());
+            // application/ld+json — структурированные данные через components/_json_ld.html.twig, не исполняемый JS
+            self::assertDoesNotMatchRegularExpression(
+                '/<script\b(?![^>]*\bsrc\s*=)(?![^>]*type\s*=\s*"application\/ld\+json")[^>]*>/i',
+                $contents,
+                $file->getPathname(),
+            );
             self::assertDoesNotMatchRegularExpression('/\son[a-z]+\s*=/i', $contents, $file->getPathname());
             self::assertDoesNotMatchRegularExpression('/bootstrap|data-bs-|--bs-/i', $contents, $file->getPathname());
             self::assertDoesNotMatchRegularExpression(
@@ -178,6 +183,8 @@ final class WebsiteFoundationTest extends WebTestCase
         $compiled = $this->read($this->projectPath('public/assets/website/app.css'));
         $navigationSource = $this->read($this->projectPath('assets/scripts/website/navigation.js'));
         $navigationPublic = $this->read($this->projectPath('public/assets/website/navigation.js'));
+        $metrikaSource = $this->read($this->projectPath('assets/scripts/website/metrika.js'));
+        $metrikaPublic = $this->read($this->projectPath('public/assets/website/metrika.js'));
         $wrapperPath = dirname(__DIR__, 3).'/scripts/tailwindcss.sh';
         if (!is_file($wrapperPath)) {
             $wrapperPath = '/workspace/scripts/tailwindcss.sh';
@@ -196,6 +203,8 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertStringContainsString('dc61b3ac6b8c9ca874c0cc4c57b2409791a64c5540404ca5f5367360babc313a', $wrapper);
         self::assertSame($navigationSource, $navigationPublic);
         self::assertDoesNotMatchRegularExpression('/bootstrap|data-bs-|flowbite|daisyui|alpine|react|vue/i', $navigationSource);
+        self::assertSame($metrikaSource, $metrikaPublic);
+        self::assertStringContainsString('mc.yandex.ru/metrika/tag.js', $metrikaSource);
 
         $withoutColorTokens = preg_replace(
             '/^\s*--vf-color-[a-z0-9-]+:\s*#[0-9a-f]{6};\R?/mi',
@@ -209,6 +218,7 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertIsArray($published);
         self::assertSame([
             $this->projectPath('public/assets/website/app.css'),
+            $this->projectPath('public/assets/website/metrika.js'),
             $this->projectPath('public/assets/website/navigation.js'),
         ], $published);
     }
@@ -390,12 +400,13 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $css = $this->read($this->projectPath('public/assets/website/app.css'));
         $navigation = $this->read($this->projectPath('public/assets/website/navigation.js'));
+        $metrika = $this->read($this->projectPath('public/assets/website/metrika.js'));
 
         $layout = $this->read($this->projectPath('templates/website/layouts/base.html.twig'));
         self::assertSame(1, preg_match("/{% set vf_asset_version = '([0-9a-f]{12})' %}/", $layout, $matches));
         $assetVersion = $matches[1] ?? '';
         self::assertNotSame('', $assetVersion);
-        self::assertSame(substr(hash('sha256', $css.$navigation), 0, 12), $assetVersion);
+        self::assertSame(substr(hash('sha256', $css.$navigation.$metrika), 0, 12), $assetVersion);
     }
 
     /** @return list<string> */
