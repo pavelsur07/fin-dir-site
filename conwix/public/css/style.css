@@ -53,7 +53,7 @@ a { color: var(--blue); }
 #era-rail {
   position: fixed; top: 0; left: 0; right: 0; z-index: 90;
   display: flex; align-items: center; gap: 14px;
-  padding: 10px 120px 10px 22px;
+  padding: 10px 250px 10px 22px;
   background: var(--paper);
   border-bottom: 1px solid var(--line);
   pointer-events: none;
@@ -513,15 +513,20 @@ hr.sep {
 @media (max-width: 1100px) { .signal-grid, .now-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .signal-grid, .now-grid { grid-template-columns: 1fr; } }
 
-/* ── Conwix: кнопка «Вход» ── */
-.login-btn {
+/* ── Conwix: кнопки «Вход» и «Регистрация» ── */
+.auth-btns {
   position: fixed; top: 14px; right: 22px; z-index: 95;
+  display: flex; gap: 10px;
+}
+.login-btn {
   font-family: var(--sans); font-size: 13px; font-weight: 700;
   color: #fff; background: var(--red); border: 1.5px solid var(--red); border-radius: 6px;
   padding: 8px 20px; text-decoration: none; transition: all .15s;
   box-shadow: var(--shadow);
 }
 .login-btn:hover { background: var(--red-hi); border-color: var(--red-hi); }
+.login-btn.ghost { color: var(--red); background: var(--paper); }
+.login-btn.ghost:hover { color: #fff; background: var(--red); }
 .cta-btn.ghost { color: var(--red); background: var(--paper); }
 .cta-btn.ghost:hover { color: #fff; background: var(--red); }
 
