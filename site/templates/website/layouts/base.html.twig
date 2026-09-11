@@ -1,14 +1,57 @@
-{% set vf_asset_version = '06d75dc8ef38' %}
+{% set vf_asset_version = '5baf1f0c83b3' %}
 <!doctype html>
 <html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Ваш Финдир{% endblock %}</title>
-    <meta name="description" content="{% block description %}Система компонентов публичного сайта «Ваш Финдир».{% endblock %}">
+    <meta name="description" content="{% block description %}Финансовый директор на аутсорсинге и SaaS-платформа для селлеров маркетплейсов: ДДС, ОПиУ, Баланс, планирование и unit-экономика.{% endblock %}">
+    <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ vf_site_url ~ app.request.pathinfo }}{% endblock %}">
 
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="Ваш Финдир">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="{{ block('title') }}">
+    <meta property="og:description" content="{{ block('description') }}">
+    <meta property="og:url" content="{{ block('canonical') }}">
+    <meta property="og:image" content="{% block og_image %}{{ vf_site_url ~ '/assets/og-image.png' }}{% endblock %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ block('title') }}">
+    <meta name="twitter:description" content="{{ block('description') }}">
+    <meta name="twitter:image" content="{{ block('og_image') }}">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
+
+    {% block json_ld %}
+        {% include 'website/components/_json_ld.html.twig' with {
+            schema: [
+                {
+                    '@context': 'https://schema.org',
+                    '@type': 'Organization',
+                    '@id': vf_site_url ~ '/#organization',
+                    name: 'Ваш Финдир',
+                    url: vf_site_url,
+                    email: 'hello@vashfindir.ru',
+                    logo: vf_site_url ~ '/assets/og-image.png',
+                    sameAs: ['https://t.me/vashfindir_ru'],
+                },
+                {
+                    '@context': 'https://schema.org',
+                    '@type': 'WebSite',
+                    name: 'Ваш Финдир',
+                    url: vf_site_url,
+                    inLanguage: 'ru-RU',
+                    publisher: {'@id': vf_site_url ~ '/#organization'},
+                },
+            ],
+        } only %}
+    {% endblock %}
     {% block head %}{% endblock %}
+    {% block analytics %}
+        <script src="/assets/website/metrika.js?v={{ vf_asset_version }}" defer></script>
+    {% endblock %}
 </head>
 <body>
     <a class="fixed top-2 left-2 z-50 -translate-y-24 rounded-sm bg-surface px-4 py-2 focus:translate-y-0" href="#main-content">Перейти к содержанию</a>

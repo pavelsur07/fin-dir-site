@@ -55,26 +55,29 @@ site/assets/styles/website/
 └── app.css
 
 site/assets/scripts/website/
-└── navigation.js
+├── navigation.js
+└── metrika.js
 
 scripts/
 └── tailwindcss.sh
 ```
 
 Статические файлы текущего Nginx публикуются из
-`site/public/assets/website/`: compiled `app.css` и копия `navigation.js`.
+`site/public/assets/website/`: compiled `app.css` и копии project-owned
+JavaScript (`navigation.js`, `metrika.js`).
 Это generated output, его нельзя редактировать вручную. `make assets`
 компилирует CSS и копирует project-owned JavaScript, `make assets-watch`
 запускает CSS watch после копирования JavaScript, `make assets-check`
-повторяет production build во временную директорию и ловит drift обоих
-файлов. Standalone CLI `4.3.3` загружается в
+повторяет production build во временную директорию и ловит drift всех
+трёх файлов. Standalone CLI `4.3.3` загружается в
 ignored `site/var/tools`, проверяется pinned SHA-256 и не попадает в production
 image/runtime. Node и package manager проекту для website build не нужны.
 
 Release query определяется один раз в website layout и равен первым 12 знакам
-SHA-256 конкатенации `app.css` и `navigation.js` в этом порядке. Значение
-выводит `make asset-version`, а functional test проверяет соответствие. Это
-обязательно, потому что Nginx отдаёт static assets с immutable cache.
+SHA-256 конкатенации `app.css`, `navigation.js` и `metrika.js` в этом порядке.
+Значение выводит `make asset-version`, а functional test проверяет
+соответствие. Это обязательно, потому что Nginx отдаёт static assets с
+immutable cache.
 
 Page преимущественно собирает sections. Section использует общий section
 pattern и готовые components. Layout не содержит page-specific разметку.
@@ -738,3 +741,68 @@ make test
 
 Не утверждать, что browser, Lighthouse или external review пройдены, если они
 фактически не запускались.
+
+## 15. SEO и структурированные данные
+
+### 15.1. Metadata-контракт website layout
+
+`website/layouts/base.html.twig` владеет всей SEO-разметкой `<head>`. Страница
+управляет метаданными только через блоки, не через копирование тегов:
+
+| Блок | Default | Назначение |
+|---|---|---|
+| `title` | `Ваш Финдир` | `<title>` и og:title |
+| `description` | общее описание сайта | meta description и og:description |
+| `robots` | `index, follow` | meta robots (`noindex, nofollow` для технических страниц) |
+| `canonical` | `vf_site_url ~ app.request.pathinfo` | абсолютный canonical URL |
+| `og_type` | `website` | og:type (`article` для постов блога) |
+| `og_image` | `vf_site_url ~ '/assets/og-image.png'` | og:image и twitter:image |
+| `json_ld` | `Organization` + `WebSite` | структурированные данные страницы |
+| `analytics` | подключение `metrika.js` | технические страницы переопределяют пустым |
+
+`vf_site_url` — twig global из параметра `vf.site_url`
+(`site/config/services.yaml`). og:title, og:description и og:url читают те же
+блоки через `block('title')` / `block('description')` / `block('canonical')`:
+тексты не дублируются. `/ui-kit` и `/ui-kit/sections` обязаны оставаться
+`noindex, nofollow` без analytics.
+
+### 15.2. JSON-LD
+
+Единственный способ вывода структурированных данных — компонент
+`website/components/_json_ld.html.twig`, принимающий `schema` (array).
+`<script type="application/ld+json">` вне этого компонента не создаётся.
+Данные для schema описываются в шаблоне страницы (статический контент) или
+приходят из контроллера (динамический контент, например посты блога). Если
+те же данные видны на странице (FAQ), используется один общий массив — без
+дублирования текста в разметке.
+
+Карта типов по типам страниц:
+
+| Тип страницы | JSON-LD |
+|---|---|
+| Любая (default layout) | `Organization` + `WebSite` |
+| Главная | + `Service` + `FAQPage` |
+| Страница услуги | `Service` |
+| Пост блога | `Article`/`BlogPosting` + `BreadcrumbList` |
+
+В `Organization.sameAs` и контактах включаются только реально существующие
+ресурсы. Placeholder-ссылки и неподтверждённые телефоны в structured data
+запрещены.
+
+### 15.3. Технические файлы
+
+- `site/public/robots.txt` — `Disallow: /ui-kit`, ссылка на sitemap;
+- `site/public/sitemap.xml` — статический список публичных URL; при добавлении
+  публичной страницы sitemap обновляется в той же задаче; при появлении блога
+  переходит на генерацию отдельным решением;
+- `site/public/favicon.svg` — брендовый favicon, подключён в layout;
+- `site/public/assets/og-image.png` — 1200×630, лежит вне managed-каталога
+  `assets/website/`, чтобы `make assets-check` не считал его drift.
+
+### 15.4. Аналитика
+
+Яндекс.Метрика — единственный согласованный внешний runtime-скрипт сайта.
+Loader — project-owned `site/assets/scripts/website/metrika.js` (счётчик
+105455340), подключается только через блок `analytics` layout с release query.
+Inline-инициализация счётчика и подключение сторонних скриптов мимо этого
+блока запрещены.

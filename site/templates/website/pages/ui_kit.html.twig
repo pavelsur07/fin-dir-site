@@ -2,9 +2,8 @@
 
 {% block title %}UI-kit — Ваш Финдир{% endblock %}
 {% block description %}Design tokens, production components и sections публичного сайта «Ваш Финдир».{% endblock %}
-{% block head %}
-    <meta name="robots" content="noindex, nofollow">
-{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
+{% block analytics %}{% endblock %}
 
 {% block navigation %}
     {% include 'website/components/_navbar.html.twig' with {

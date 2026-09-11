@@ -1,3 +1,6 @@
+parameters:
+  vf.site_url: 'https://vashfindir.ru'
+
 services:
   _defaults:
     autowire: true
