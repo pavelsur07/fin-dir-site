@@ -3,9 +3,66 @@
     light: 'border-border-default bg-surface text-content',
     dark: 'border-surface-dark bg-surface-dark text-on-dark',
 } %}
+{% set muted_class = variant == 'dark' ? 'text-muted-on-dark' : 'text-muted' %}
+{% set border_class = variant == 'dark' ? 'border-muted-on-dark/20' : 'border-border-default' %}
 <footer class="border-t py-8 {{ variants[variant]|default(variants.light) }}" data-vf-component="footer" data-vf-variant="{{ variant }}">
-    <div class="mx-auto flex w-full max-w-site flex-wrap items-center justify-between gap-x-6 gap-y-4 px-4 md:px-6">
-        <p class="mb-0"><strong>{{ brand }}</strong> <span class="{% if variant == 'dark' %}text-muted-on-dark{% else %}text-muted{% endif %}">— финансовое управление на основе данных.</span></p>
-        <a class="{% if variant == 'dark' %}text-on-dark hover:text-muted-on-dark focus-visible:outline-focus-on-dark{% endif %}" href="{{ privacy_href }}">Политика конфиденциальности</a>
+    <div class="mx-auto w-full max-w-site px-4 md:px-6">
+        {% if socials|default([]) is not empty or contacts|default([]) is not empty or documents|default([]) is not empty %}
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div class="text-center md:text-start">
+                    <a class="mb-4 inline-flex items-center gap-3 text-h4 font-bold no-underline {{ variant == 'dark' ? 'text-on-dark' : 'text-content' }}" href="{{ brand_href|default('/') }}" aria-label="{{ brand }} — на главную">
+                        <span class="flex size-10 items-center justify-center rounded-md {{ variant == 'dark' ? 'bg-brand-red text-on-primary' : 'bg-brand-dark text-on-dark' }}">ВФ</span>
+                        <span>{{ brand }}</span>
+                    </a>
+                    {% if description|default(null) %}
+                        <p class="mb-4 {{ muted_class }}">{{ description }}</p>
+                    {% endif %}
+                    {% if socials|default([]) is not empty %}
+                        <div class="flex flex-wrap justify-center gap-3 md:justify-start">
+                            {% for social in socials %}
+                                <a class="inline-flex size-11 items-center justify-center rounded-md border {{ border_class }} no-underline transition-colors hover:bg-brand-dark hover:text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 {{ variant == 'dark' ? 'focus-visible:outline-focus-on-dark text-on-dark' : 'focus-visible:outline-focus text-content' }}" href="{{ social.href }}" target="{{ social.target|default('_self') }}" rel="{{ social.rel|default('') }}" aria-label="{{ social.label }}">
+                                    {% include 'website/components/_icon.html.twig' with {name: social.icon, size: 18} only %}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                {% if contacts|default([]) is not empty %}
+                    <div class="text-center md:text-start">
+                        <h2 class="mb-4 text-caption font-medium uppercase tracking-caption {{ muted_class }}">Контакты</h2>
+                        <ul class="flex flex-col gap-4">
+                            {% for contact in contacts %}
+                                <li class="flex items-start justify-center gap-3 md:justify-start">
+                                    <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md border {{ border_class }}">
+                                        {% include 'website/components/_icon.html.twig' with {name: contact.icon, size: 18} only %}
+                                    </span>
+                                    <div>
+                                        <div class="text-small {{ muted_class }}">{{ contact.label }}</div>
+                                        <a class="font-medium no-underline {{ variant == 'dark' ? 'text-on-dark hover:text-muted-on-dark' : 'text-content hover:text-brand-red' }}" href="{{ contact.href }}">{{ contact.value }}</a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                {% if documents|default([]) is not empty %}
+                    <div class="text-center md:text-start">
+                        <h2 class="mb-4 text-caption font-medium uppercase tracking-caption {{ muted_class }}">Документы</h2>
+                        <ul class="flex flex-col gap-3">
+                            {% for document in documents %}
+                                <li>
+                                    <a class="no-underline {{ variant == 'dark' ? 'text-muted-on-dark hover:text-on-dark' : 'text-muted hover:text-brand-red' }}" href="{{ document.href }}">{{ document.label }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="my-8 h-px w-full {{ variant == 'dark' ? 'bg-muted-on-dark/20' : 'bg-border-default' }}"></div>
+        {% endif %}
+        <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+            <p class="mb-0">© {{ "now"|date("Y") }} <strong>{{ brand }}</strong></p>
+            <a class="{{ variant == 'dark' ? 'text-on-dark hover:text-muted-on-dark focus-visible:outline-focus-on-dark' : 'text-content hover:text-brand-red focus-visible:outline-focus' }} no-underline focus-visible:outline-2 focus-visible:outline-offset-2" href="{{ privacy_href }}">Политика конфиденциальности</a>
+        </div>
     </div>
 </footer>

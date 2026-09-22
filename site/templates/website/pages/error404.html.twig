@@ -1,0 +1,63 @@
+{% extends 'website/layouts/base.html.twig' %}
+
+{% block title %}Страница не найдена — Ваш Финдир{% endblock %}
+{% block description %}Страница не найдена. Возможно, ссылка устарела или адрес набран с ошибкой.{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block body %}
+    <section class="py-12 md:py-16 lg:py-20" data-vf-section="error-404">
+        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+            {% include 'website/components/_breadcrumb.html.twig' with {
+                items: [
+                    {label: 'Главная', href: path('home')},
+                    {label: 'Страница не найдена', href: ''},
+                ],
+            } only %}
+
+            <div class="mt-8 grid gap-8 lg:grid-cols-2 lg:items-start">
+                <div>
+                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Ошибка 404</p>
+                    <h1 class="mb-6 text-h1">Такой страницы <em class="text-brand-red not-italic">нет</em></h1>
+                    <p class="mb-8 max-w-content text-lead text-muted">Возможно, ссылка устарела, адрес набран с ошибкой или страница была перенесена. Поможем быстро вернуться к полезным материалам и услугам.</p>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        {% include 'website/components/_button.html.twig' with {label: 'На главную', href: path('home'), variant: 'primary'} only %}
+                        {% include 'website/components/_button.html.twig' with {label: 'Перейти в газету', href: path('gazeta_index'), variant: 'outline-primary'} only %}
+                    </div>
+                    <p class="mt-6 text-small text-muted"><strong>Совет:</strong> если вы попали сюда из письма, рекламы или старой закладки — откройте главную страницу и выберите нужный раздел заново.</p>
+                </div>
+                <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card md:p-8">
+                    <div class="mb-6 text-center text-h1 font-bold text-brand-red">404</div>
+                    <div class="flex flex-col gap-3">
+                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="/services">
+                            <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                                {% include 'website/components/_icon.html.twig' with {name: 'grid-1x2', size: 20} only %}
+                            </span>
+                            <span>
+                                <span class="block font-bold text-content">Услуги</span>
+                                <span class="text-small text-muted">Финансовый учёт, отчётность и планирование.</span>
+                            </span>
+                        </a>
+                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="/cases">
+                            <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                                {% include 'website/components/_icon.html.twig' with {name: 'graph-up-arrow', size: 20} only %}
+                            </span>
+                            <span>
+                                <span class="block font-bold text-content">Кейсы</span>
+                                <span class="text-small text-muted">Как порядок в цифрах влияет на решения.</span>
+                            </span>
+                        </a>
+                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="/partners">
+                            <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                                {% include 'website/components/_icon.html.twig' with {name: 'people', size: 20} only %}
+                            </span>
+                            <span>
+                                <span class="block font-bold text-content">Партнёрам</span>
+                                <span class="text-small text-muted">Сотрудничество для сервисов и экспертов.</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

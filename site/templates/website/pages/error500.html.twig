@@ -1,0 +1,63 @@
+{% extends 'website/layouts/base.html.twig' %}
+
+{% block title %}Временная ошибка — Ваш Финдир{% endblock %}
+{% block description %}Сервис временно не отвечает. Попробуйте обновить страницу через несколько минут.{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block body %}
+    <section class="py-12 md:py-16 lg:py-20" data-vf-section="error-500">
+        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+            {% include 'website/components/_breadcrumb.html.twig' with {
+                items: [
+                    {label: 'Главная', href: path('home')},
+                    {label: 'Временная ошибка', href: ''},
+                ],
+            } only %}
+
+            <div class="mt-8 grid gap-8 lg:grid-cols-2 lg:items-start">
+                <div>
+                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Ошибка 500</p>
+                    <h1 class="mb-6 text-h1">Сервис временно <em class="text-brand-red not-italic">не отвечает</em></h1>
+                    <p class="mb-8 max-w-content text-lead text-muted">Это техническая ошибка на нашей стороне. Мы уже знаем, что такие ситуации критичны для доверия, поэтому интерфейс должен честно объяснить проблему и дать понятные действия.</p>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        {% include 'website/components/_button.html.twig' with {label: 'Обновить страницу', href: '', variant: 'primary'} only %}
+                        {% include 'website/components/_button.html.twig' with {label: 'На главную', href: path('home'), variant: 'outline-primary'} only %}
+                    </div>
+                    <p class="mt-6 text-small text-muted"><strong>Что делать:</strong> попробуйте обновить страницу через 1–2 минуты. Если ошибка повторяется, напишите нам в Telegram или на email из футера.</p>
+                </div>
+                <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card md:p-8">
+                    <div class="mb-6 text-center text-h1 font-bold text-brand-red">500</div>
+                    <div class="flex flex-col gap-3">
+                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="https://t.me/vashfindir" target="_blank" rel="noopener">
+                            <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                                {% include 'website/components/_icon.html.twig' with {name: 'telegram', size: 20} only %}
+                            </span>
+                            <span>
+                                <span class="block font-bold text-content">Написать в Telegram</span>
+                                <span class="text-small text-muted">Сообщите, на каком действии появилась ошибка.</span>
+                            </span>
+                        </a>
+                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="mailto:hello@vashfindir.ru">
+                            <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                                {% include 'website/components/_icon.html.twig' with {name: 'envelope', size: 20} only %}
+                            </span>
+                            <span>
+                                <span class="block font-bold text-content">Написать на email</span>
+                                <span class="text-small text-muted">Опишите проблему и приложите скриншот.</span>
+                            </span>
+                        </a>
+                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="{{ path('gazeta_index') }}">
+                            <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                                {% include 'website/components/_icon.html.twig' with {name: 'newspaper', size: 20} only %}
+                            </span>
+                            <span>
+                                <span class="block font-bold text-content">Перейти в газету</span>
+                                <span class="text-small text-muted">Почитать материалы, пока мы восстанавливаем страницу.</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

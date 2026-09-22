@@ -6,7 +6,7 @@
         <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-surface p-0 text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
             <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
         </button>
-        <div class="ml-auto hidden lg:block" data-vf-desktop-navigation>
+        <div class="ml-auto hidden lg:flex lg:items-center lg:gap-6" data-vf-desktop-navigation>
             <ul class="flex items-center gap-6">
                 {% for item in items %}
                     <li>
@@ -14,6 +14,9 @@
                     </li>
                 {% endfor %}
             </ul>
+            {% if cta|default(null) %}
+                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'primary', class: 'ml-2'} only %}
+            {% endif %}
         </div>
     </nav>
 
@@ -33,6 +36,11 @@
                         </li>
                     {% endfor %}
                 </ul>
+                {% if cta|default(null) %}
+                    <div class="mt-6">
+                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'primary', full_mobile: true} only %}
+                    </div>
+                {% endif %}
             </nav>
         </div>
     </dialog>
