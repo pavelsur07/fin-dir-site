@@ -1,5 +1,5 @@
 (() => {
-    const initialize = () => {
+    const initializeMenu = () => {
         document.querySelectorAll('[data-vf-menu-open]').forEach((openButton) => {
             const dialog = document.getElementById(openButton.getAttribute('aria-controls'));
 
@@ -36,12 +36,6 @@
                 window.removeEventListener('scroll', holdPagePosition);
                 dialog.removeEventListener('wheel', preventBackdropScroll);
                 dialog.removeEventListener('touchmove', preventBackdropScroll);
-            };
-
-            const lockPage = () => {
-                window.addEventListener('scroll', holdPagePosition, { passive: true });
-                dialog.addEventListener('wheel', preventBackdropScroll, { passive: false });
-                dialog.addEventListener('touchmove', preventBackdropScroll, { passive: false });
             };
 
             const finishClose = (event) => {
@@ -96,7 +90,6 @@
                 holdPagePosition();
                 openButton.setAttribute('aria-expanded', 'true');
 
-                // Commit the off-canvas start state before transitioning it onscreen.
                 panel.getBoundingClientRect();
                 window.requestAnimationFrame(() => {
                     if (!dialog.open) {
@@ -154,6 +147,133 @@
                 }
             });
         });
+    };
+
+    const initializeCookieNotice = () => {
+        const cookieNotice = document.getElementById('cookieNotice');
+        const cookieAccept = document.getElementById('cookieAccept');
+        const cookieClose = document.getElementById('cookieClose');
+        const cookieStorageKey = 'vf_cookie_notice_accepted';
+
+        const hasAcceptedCookies = () => {
+            try {
+                return window.localStorage.getItem(cookieStorageKey) === '1';
+            } catch (error) {
+                return false;
+            }
+        };
+
+        const saveCookieAcceptance = () => {
+            try {
+                window.localStorage.setItem(cookieStorageKey, '1');
+            } catch (error) {
+                console.warn('Не удалось сохранить согласие cookie в localStorage.', error);
+            }
+        };
+
+        const showCookieNotice = () => {
+            if (!cookieNotice || hasAcceptedCookies()) {
+                return;
+            }
+            cookieNotice.hidden = false;
+            window.requestAnimationFrame(() => {
+                cookieNotice.classList.add('is-visible');
+            });
+        };
+
+        const hideCookieNotice = () => {
+            if (!cookieNotice) {
+                return;
+            }
+            cookieNotice.classList.remove('is-visible');
+            window.setTimeout(() => {
+                cookieNotice.hidden = true;
+            }, 250);
+        };
+
+        const acceptCookies = () => {
+            saveCookieAcceptance();
+            hideCookieNotice();
+        };
+
+        if (cookieAccept) {
+            cookieAccept.addEventListener('click', acceptCookies);
+        }
+
+        if (cookieClose) {
+            cookieClose.addEventListener('click', hideCookieNotice);
+        }
+
+        showCookieNotice();
+    };
+
+    const initializeLeadForms = () => {
+        const trackGoal = (goalName) => {
+            const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
+
+            if (typeof window.ym === 'function' && ymId && ymId !== 'YM_COUNTER_ID') {
+                window.ym(ymId, 'reachGoal', goalName);
+            }
+        };
+
+        document.querySelectorAll('.js-cta-click').forEach((element) => {
+            element.addEventListener('click', () => {
+                trackGoal('cta_click');
+            });
+        });
+
+        document.querySelectorAll('.js-telegram-click').forEach((element) => {
+            element.addEventListener('click', () => {
+                trackGoal('telegram_click');
+            });
+        });
+
+        document.querySelectorAll('.js-lead-form').forEach((form) => {
+            const successMessage = form.querySelector('.js-lead-success');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const nameInput = form.elements.name;
+                const contactInput = form.elements.contact;
+                const name = nameInput ? nameInput.value.trim() : '';
+                const contact = contactInput ? contactInput.value.trim() : '';
+
+                if (!name || !contact) {
+                    form.classList.add('was-validated');
+                    return;
+                }
+
+                trackGoal('lead_form_submit');
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Form submit failed');
+                    }
+                } catch (error) {
+                    console.warn('Форма не отправлена на сервер.', error);
+                }
+
+                if (successMessage) {
+                    successMessage.classList.remove('hidden');
+                }
+
+                form.reset();
+                form.classList.remove('was-validated');
+            });
+        });
+    };
+
+    const initialize = () => {
+        initializeMenu();
+        initializeCookieNotice();
+        initializeLeadForms();
     };
 
     if (document.readyState === 'loading') {
