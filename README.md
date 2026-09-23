@@ -57,10 +57,32 @@ make migrate   # применить
 совместимыми со ещё живущим предыдущим кодом (добавлять nullable-колонки,
 удалять их следующим релизом).
 
+## Админка
+
+`/admin` — раздел контент-менеджера (временно на Twig, см. `AGENTS.md` §8).
+Пользователь один — `admin`, сущности нет. Пароль задаётся **хешем** в env
+`ADMIN_PASSWORD_HASH`; открытый пароль нигде не хранится. В dev вход
+`admin` / `admin` (хеш в `docker-compose.yml`, `$` экранирован как `$$`).
+
+Сессии хранятся в Postgres (таблица `sessions`, `PdoSessionHandler`), потому
+что php-fpm на проде в нескольких репликах. Таблицу в схему добавляет
+`PdoSessionHandlerSchemaListener` из DoctrineBundle, поэтому `make diff` её видит
+и не удаляет. Публичный сайт сессию не открывает: firewall стоит только на
+`^/admin`, cookie с `path=/admin`. Сессия живёт по `session.gc_maxlifetime` из
+php.ini (по умолчанию 24 минуты бездействия).
+
+Сменить пароль:
+
+```bash
+make console CMD="security:hash-password"   # ввести пароль, скопировать хеш
+```
+
+Хеш положить в GitHub secret `VF_ADMIN_PASSWORD_HASH` и перевыкатить.
+
 ## Production
 
 Production-окружение описано в `docker-compose.prod.yml`. Для запуска нужны
-`VF_SITE_APP_SECRET` и `VF_SITE_DB_PASSWORD`; PHP-образы публикуются workflow
+`VF_SITE_APP_SECRET`, `VF_SITE_DB_PASSWORD` и `VF_ADMIN_PASSWORD_HASH`; PHP-образы публикуются workflow
 `.github/workflows/deploy-vashfindir.yml`.
 
 `VF_SITE_DB_PASSWORD` должен быть URL-safe: он подставляется в DSN, и `@`, `/`,

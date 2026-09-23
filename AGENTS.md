@@ -259,6 +259,13 @@ Symfony остаётся backend и единственным security boundary. 
 `frontend/` пока не создана — этот раздел применяется с момента появления
 React Admin.
 
+Временное исключение (Stage 4): до появления React Admin административный
+раздел реализуется на Twig — `site/src/Admin/`, `site/templates/admin/`.
+Вход — Symfony `form_login` с session cookie, пользователь без сущности
+(memory provider, хеш пароля в env `ADMIN_PASSWORD_HASH`). Страница входа
+остаётся Symfony-формой и после появления React Admin. Новые разделы
+управления контентом на Twig добавляются только до создания `frontend/`.
+
 Базовая схема:
 
 ```text

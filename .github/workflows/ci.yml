@@ -23,6 +23,8 @@ jobs:
             APP_SECRET: ci-secret
             DEFAULT_URI: https://example.test
             DATABASE_URL: postgresql://site:secret@127.0.0.1:5432/site?serverVersion=17&charset=utf8
+            # Фиктивный bcrypt-хеш: контейнеру нужно значение, вход в CI не выполняется.
+            ADMIN_PASSWORD_HASH: $2y$04$FfV3wn2VKKju6pzPh32byeQGJpmCyArfOBkdE56c/p8zz0DB3pJ8.
 
         steps:
             - name: Checkout

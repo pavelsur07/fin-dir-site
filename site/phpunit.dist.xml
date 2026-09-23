@@ -26,6 +26,9 @@
         <env name="APP_SECRET" value="test-secret" />
         <env name="DEFAULT_URI" value="https://vashfindir.ru" />
         <env name="DATABASE_URL" value="postgresql://site:secret@site-postgres:5432/site?serverVersion=17&amp;charset=utf8" />
+        <!-- Хеш пароля "test-password". force: иначе dev-хеш из compose
+             перекроет его при make test. -->
+        <env name="ADMIN_PASSWORD_HASH" value="$2y$04$ncG.14osDqjpuYWd5d/KSOc5.0NWcAmgPrNU0QsF0vnS0D.GCqfxq" force="true" />
     </php>
 
     <testsuites>

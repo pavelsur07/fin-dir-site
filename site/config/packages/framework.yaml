@@ -2,6 +2,31 @@ framework:
   secret: '%env(APP_SECRET)%'
   http_method_override: false
 
+  # Traefik → nginx → fpm: HTTPS видно только по X-Forwarded-Proto. Без этого
+  # cookie secure: auto не включится, а redirect на логин уйдёт на http://.
+  trusted_proxies: 'private_ranges'
+  trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port']
+
+  csrf_protection: true
+
+  # Сессии только у /admin. php-fpm на проде в двух репликах, поэтому
+  # файловые сессии не годятся -- храним в Postgres (таблица sessions).
+  session:
+    handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+    # Cookie уходит только в /admin: публичные запросы админа остаются без неё.
+    cookie_path: /admin
+    cookie_secure: auto
+    cookie_httponly: true
+    cookie_samesite: lax
+
 when@test:
   framework:
     test: true
+    session:
+      handler_id: ~
+      storage_factory_id: session.storage.factory.mock_file
+    # Счётчик login_throttling иначе живёт в var/cache между запусками phpunit.
+    cache:
+      pools:
+        cache.rate_limiter:
+          adapter: cache.adapter.array

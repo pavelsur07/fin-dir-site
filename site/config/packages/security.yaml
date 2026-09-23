@@ -1,0 +1,46 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    # ponytail: сущности пользователей нет -- один контент-менеджер, пароль
+    # приходит хешем из окружения. Хеш: make console CMD="security:hash-password".
+    # Появятся разные пользователи и роли -- заменить на entity provider.
+    providers:
+        admin_user:
+            memory:
+                users:
+                    admin: { password: '%env(ADMIN_PASSWORD_HASH)%', roles: ['ROLE_ADMIN'] }
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+        # Только /admin: публичный сайт в firewall не попадает и сессию не стартует.
+        admin:
+            pattern: ^/admin
+            provider: admin_user
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                default_target_path: admin_dashboard
+                enable_csrf: true
+            logout:
+                path: /admin/logout
+                target: admin_login
+                enable_csrf: true
+            login_throttling:
+                max_attempts: 5
+                interval: '1 minute'
+
+    access_control:
+        - { path: ^/admin/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Lowest possible value for bcrypt
+                time_cost: 3 # Lowest possible value for argon
+                memory_cost: 10 # Lowest possible value for argon

@@ -12,7 +12,9 @@
     "symfony/flex": "^2",
     "doctrine/doctrine-bundle": "^3.3",
     "doctrine/orm": "^3.6",
-    "doctrine/doctrine-migrations-bundle": "^4.0"
+    "doctrine/doctrine-migrations-bundle": "^4.0",
+    "symfony/security-bundle": "7.4.*",
+    "symfony/rate-limiter": "7.4.*"
   },
   "autoload": {
     "psr-4": {

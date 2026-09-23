@@ -14,3 +14,9 @@ services:
   App\Controller\:
     resource: '../src/Controller/'
     tags: ['controller.service_arguments']
+
+  # URL из DATABASE_URL хендлер сам переводит в PDO DSN; подключается лениво,
+  # только когда /admin реально открывает сессию.
+  Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+    arguments:
+      - '%env(DATABASE_URL)%'

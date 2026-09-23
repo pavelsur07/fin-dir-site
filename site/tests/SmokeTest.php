@@ -34,12 +34,23 @@ final class SmokeTest extends WebTestCase
                 continue;
             }
 
+            // Админка закрыта логином -- её проверяет Admin\AdminAuthTest.
+            if (str_starts_with($route->getPath(), '/admin')) {
+                continue;
+            }
+
             $client->request('GET', $route->getPath());
 
             self::assertSame(
                 200,
                 $client->getResponse()->getStatusCode(),
                 \sprintf('Маршрут %s (%s)', $name, $route->getPath()),
+            );
+            // Сессия есть только у /admin: публичная страница с cookie ломает HTTP-кеш.
+            self::assertSame(
+                [],
+                $client->getResponse()->headers->getCookies(),
+                \sprintf('Маршрут %s (%s) ставит cookie', $name, $route->getPath()),
             );
 
             ++$checked;
