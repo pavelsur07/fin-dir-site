@@ -186,6 +186,11 @@
             if (!cookieNotice) {
                 return;
             }
+            // Фокус на кнопке, которая сейчас спрячется, ушёл бы на body и сбросил порядок Tab.
+            const main = document.getElementById('main-content');
+            if (main && cookieNotice.contains(document.activeElement)) {
+                main.focus({ preventScroll: true });
+            }
             delete cookieNotice.dataset.visible;
             window.setTimeout(() => {
                 cookieNotice.hidden = true;

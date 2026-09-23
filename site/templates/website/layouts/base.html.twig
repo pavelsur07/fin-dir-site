@@ -1,4 +1,4 @@
-{% set vf_asset_version = 'a91a56a341d0' %}
+{% set vf_asset_version = '8f545a06f94d' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -74,7 +74,8 @@
         } only %}
     {% endblock %}
 
-    <main id="main-content">
+    {# tabindex="-1": цель фокуса для «Перейти к содержанию» и после закрытия баннера cookie. #}
+    <main id="main-content" class="focus:outline-hidden" tabindex="-1">
         {% block body %}{% endblock %}
     </main>
 
