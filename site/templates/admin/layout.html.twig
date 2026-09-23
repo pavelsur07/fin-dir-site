@@ -11,10 +11,6 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { margin: 0; font: 16px/1.5 system-ui, sans-serif; color: #0b1020; background: #f5f6f8; }
-        .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 24px; background: #0b1020; color: #fff; }
-        .header a { color: #fff; font-weight: 600; text-decoration: none; }
-        .header form { margin: 0; display: flex; align-items: center; gap: 12px; }
-        .main { max-width: 960px; margin: 0 auto; padding: 32px 16px; }
         .card { max-width: 400px; margin: 48px auto; padding: 24px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
         h1 { margin: 0 0 16px; font-size: 24px; }
         label { display: block; margin: 12px 0 4px; font-weight: 600; }
@@ -27,8 +23,6 @@
         .card button { width: 100%; margin-top: 20px; }
         .alert { padding: 8px 12px; color: #8a0019; background: #f7e6e9; border-radius: 6px; }
         .flash { margin: 0 0 16px; padding: 8px 12px; color: #146c43; background: #e6f4ec; border-radius: 6px; }
-        .nav { display: flex; align-items: center; gap: 24px; }
-        .nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
         .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
         .toolbar h1 { margin: 0; }
         .filters { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 16px; font-size: 14px; }
@@ -69,6 +63,41 @@
         .badge-lead-spam, .badge-lead-closed { color: #fff; background: #5c677d; }
         select { padding: 8px 12px; font: inherit; border: 1px solid #767b85; border-radius: 6px; background: #fff; }
         h2 { margin: 32px 0 12px; font-size: 20px; }
+        /* Каркас: сайдбар 240px слева, рабочая зона -- вся остальная ширина. */
+        .shell { display: flex; min-height: 100vh; }
+        .sidebar { position: sticky; top: 0; display: flex; flex: none; flex-direction: column; width: 240px; height: 100vh; overflow-y: auto; padding: 24px 16px; color: #fff; background: #0b1020; }
+        .workspace { flex: 1; min-width: 0; }
+        .main { padding: 32px; }
+        .brand { display: block; margin: 0 8px 24px; color: #fff; font-weight: 700; text-decoration: none; }
+        .brand small { display: block; color: #8e99af; font-size: 14px; font-weight: 400; }
+        .brand:hover { color: #fff; }
+        .menu ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+        .menu a { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; color: #fff; border-radius: 6px; text-decoration: none; }
+        .menu a:hover { background: #1e2331; color: #fff; }
+        .menu a[aria-current="page"] { font-weight: 700; background: #b00020; }
+        .sidebar a:focus-visible, .sidebar button:focus-visible, .mobile-bar a:focus-visible, .mobile-bar button:focus-visible, .mobile-bar summary:focus-visible { outline-color: #fff; }
+        .count { min-width: 24px; padding: 0 8px; color: #0b1020; font-size: 12px; font-weight: 700; line-height: 20px; text-align: center; background: #fff; border-radius: 999px; }
+        .account { display: grid; gap: 8px; margin: auto 0 0; padding: 16px 8px 0; border-top: 1px solid #1e2331; }
+        .account-name { color: #8e99af; font-size: 14px; }
+        .mobile-bar { display: none; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .skip-link { position: absolute; top: -48px; left: 16px; z-index: 20; padding: 8px 12px; color: #0b1020; background: #fff; border-radius: 6px; }
+        .skip-link:focus { top: 8px; }
+        /* Формы, карточки и текст -- ширина для чтения; таблицы и списки -- во всю ширину. */
+        .main > .panel, .main > .note, .main > .alert { max-width: 960px; }
+        @media (max-width: 899px) {
+            .sidebar { display: none; }
+            .mobile-bar { display: block; position: sticky; top: 0; z-index: 10; padding: 12px 16px; color: #fff; background: #0b1020; }
+            .mobile-bar summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; list-style: none; }
+            .mobile-bar summary::-webkit-details-marker { display: none; }
+            .mobile-bar .brand { margin: 0; }
+            .menu-button { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border: 1px solid #8e99af; border-radius: 6px; }
+            .mobile-bar[open] .menu-button { background: #1e2331; }
+            .mobile-bar .menu { padding-top: 16px; }
+            .mobile-bar .account { margin-top: 16px; }
+            .main { padding: 16px; }
+            .details { grid-template-columns: 1fr; }
+        }
         .prose { max-width: 720px; padding: 24px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
         .prose img { max-width: 100%; }
         .prose pre { overflow-x: auto; padding: 12px; background: #f5f6f8; }
@@ -77,26 +106,40 @@
     </style>
 </head>
 <body>
-{% block header %}
-    <header class="header">
-        {% set route = app.request.attributes.get('_route') %}
-        <nav class="nav" aria-label="Разделы админки">
-            <a href="{{ path('admin_dashboard') }}" {{ route == 'admin_dashboard' ? 'aria-current="page"' }}>Ваш Финдир · Админка</a>
-            <a href="{{ path('admin_post_list') }}" {{ route starts with 'admin_post' ? 'aria-current="page"' }}>Публикации</a>
-            <a href="{{ path('admin_lead_list') }}" {{ route starts with 'admin_lead' ? 'aria-current="page"' }}>Обращения</a>
-        </nav>
-        <form method="post" action="{{ logout_path('admin') }}">
-            <span>{{ app.user.userIdentifier }}</span>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-            <button type="submit">Выйти</button>
-        </form>
-    </header>
+{% block page %}
+    {% set route = app.request.attributes.get('_route') ?? '' %}
+    {# Один список разделов: новый раздел админки -- одна строка здесь. #}
+    {% set menu = [
+        {label: 'Панель', route: 'admin_dashboard', active_prefix: 'admin_dashboard'},
+        {label: 'Публикации', route: 'admin_post_list', active_prefix: 'admin_post'},
+        {label: 'Обращения', route: 'admin_lead_list', active_prefix: 'admin_lead', counter: true},
+    ] %}
+    {# Счётчик считается один раз (фрагмент-контроллер) и выводится в обоих местах меню. #}
+    {% set counter %}{{ render(controller('App\\Lead\\Controller\\Admin\\LeadCounterController')) }}{% endset %}
+    <a class="skip-link" href="#main">К содержимому</a>
+    <div class="shell">
+        <div class="sidebar">
+            <a class="brand" href="{{ path('admin_dashboard') }}">Ваш Финдир <small>Админка</small></a>
+            {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
+        </div>
+        <div class="workspace">
+            {# Узкий экран: сайдбар скрыт, меню раскрывается нативным details без JS. #}
+            <details class="mobile-bar">
+                <summary>
+                    {# Бренд скрыт от дикторов: кнопка должна называться «Меню», а не всей строкой. #}
+                    <span class="brand" aria-hidden="true">Ваш Финдир · Админка</span>
+                    <span class="menu-button">Меню{{ counter }}</span>
+                </summary>
+                {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
+            </details>
+            <main class="main" id="main">
+                {% for message in app.flashes('success') %}
+                    <p class="flash" role="status">{{ message }}</p>
+                {% endfor %}
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </div>
 {% endblock %}
-<main class="main">
-    {% for message in app.flashes('success') %}
-        <p class="flash" role="status">{{ message }}</p>
-    {% endfor %}
-    {% block body %}{% endblock %}
-</main>
 </body>
 </html>

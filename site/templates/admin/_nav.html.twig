@@ -1,0 +1,18 @@
+{# Меню админки. Вход: menu (list<{label, route, active_prefix, counter?}>), route (текущий), counter (готовый HTML счётчика). #}
+<nav class="menu" aria-label="Разделы админки">
+    <ul>
+        {% for item in menu %}
+            <li>
+                <a href="{{ path(item.route) }}"{{ route starts with item.active_prefix ? ' aria-current="page"' }}>
+                    <span>{{ item.label }}</span>
+                    {% if item.counter|default(false) %}{{ counter }}{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>
+<form class="account" method="post" action="{{ logout_path('admin') }}">
+    <span class="account-name">{{ app.user.userIdentifier }}</span>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+    <button type="submit" class="secondary">Выйти</button>
+</form>

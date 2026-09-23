@@ -2,32 +2,33 @@
 
 {% block title %}Вход{% endblock %}
 
-{% block header %}{% endblock %}
+{# Страница входа -- без сайдбара и меню: только карточка по центру. #}
+{% block page %}
+    <main class="main">
+        <form class="card" method="post" action="{{ path('admin_login') }}">
+            <h1>Вход в админку</h1>
 
-{% block body %}
-    <form class="card" method="post" action="{{ path('admin_login') }}">
-        <h1>Вход в админку</h1>
+            {% if error %}
+                <p class="alert" role="alert">
+                    {% if error.messageKey starts with 'Too many failed login attempts' %}
+                        Слишком много попыток входа. Попробуйте через минуту.
+                    {% elseif error.messageKey == 'Invalid CSRF token.' %}
+                        Страница входа устарела. Попробуйте ещё раз.
+                    {% else %}
+                        Неверный логин или пароль.
+                    {% endif %}
+                </p>
+            {% endif %}
 
-        {% if error %}
-            <p class="alert" role="alert">
-                {% if error.messageKey starts with 'Too many failed login attempts' %}
-                    Слишком много попыток входа. Попробуйте через минуту.
-                {% elseif error.messageKey == 'Invalid CSRF token.' %}
-                    Страница входа устарела. Попробуйте ещё раз.
-                {% else %}
-                    Неверный логин или пароль.
-                {% endif %}
-            </p>
-        {% endif %}
+            <label for="username">Логин</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
 
-        <label for="username">Логин</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="_password" autocomplete="current-password" required>
 
-        <label for="password">Пароль</label>
-        <input type="password" id="password" name="_password" autocomplete="current-password" required>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        <button type="submit">Войти</button>
-    </form>
+            <button type="submit">Войти</button>
+        </form>
+    </main>
 {% endblock %}
