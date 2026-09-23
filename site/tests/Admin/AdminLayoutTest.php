@@ -91,19 +91,22 @@ final class AdminLayoutTest extends WebTestCase
         self::assertSelectorExists('form.card input[name="_username"]');
     }
 
-    public function testStylesComeFromSeparateAdminFileWithCurrentVersion(): void
+    public function testAssetsComeFromSeparateAdminFilesWithCurrentVersion(): void
     {
         $this->client->request('GET', '/admin/login');
 
         self::assertSelectorNotExists('style');
         self::assertSelectorCount(1, 'link[rel="stylesheet"]');
-        // nginx отдаёт CSS как immutable: версия обязана меняться вместе с файлом.
-        $css = file_get_contents(self::getContainer()->getParameter('kernel.project_dir').'/public/assets/admin/admin.css');
+        self::assertSelectorCount(1, 'script');
+        // nginx отдаёт CSS/JS как immutable: версия обязана меняться вместе с файлами.
+        $directory = self::getContainer()->getParameter('kernel.project_dir').'/public/assets/admin/';
+        $css = file_get_contents($directory.'admin.css');
+        $js = file_get_contents($directory.'admin.js');
         self::assertIsString($css);
-        self::assertSelectorExists(sprintf(
-            'link[rel="stylesheet"][href="/assets/admin/admin.css?v=%s"]',
-            substr(hash('sha256', $css), 0, 12),
-        ));
+        self::assertIsString($js);
+        $version = substr(hash('sha256', $css.$js), 0, 12);
+        self::assertSelectorExists(sprintf('link[rel="stylesheet"][href="/assets/admin/admin.css?v=%s"]', $version));
+        self::assertSelectorExists(sprintf('script[src="/assets/admin/admin.js?v=%s"][defer]', $version));
     }
 
     private function logIn(): void

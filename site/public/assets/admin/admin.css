@@ -95,3 +95,14 @@ h2 { margin: 32px 0 12px; font-size: 20px; }
 .prose pre { overflow-x: auto; padding: 12px; background: #f5f6f8; }
 .prose table { border-collapse: collapse; }
 .prose th, .prose td { padding: 4px 8px; border: 1px solid #d9dce4; }
+/* Меню действий строки: кнопка «…» и popover со списком ссылок и форм. */
+.menu-toggle { padding: 2px 12px; font-size: 20px; line-height: 1.2; }
+.row-menu { min-width: 220px; overflow-y: auto; padding: 4px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; box-shadow: 0 8px 24px rgb(11 16 32 / 16%); }
+.row-menu .actions { display: grid; gap: 0; }
+.row-menu a, .row-menu button { display: block; width: 100%; padding: 8px 12px; color: #0b1020; font-weight: 400; text-align: left; text-decoration: none; background: none; border: 0; border-radius: 6px; }
+.row-menu a:hover, .row-menu button:hover { color: #0b1020; background: #f5f6f8; }
+/* Браузер без Popover API: меню всегда видно в ячейке, кнопка «…» не нужна. */
+@supports not selector(:popover-open) {
+    .menu-toggle { display: none; }
+    .row-menu { min-width: 0; padding: 0; border: 0; box-shadow: none; background: none; }
+}

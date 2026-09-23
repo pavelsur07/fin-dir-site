@@ -52,7 +52,14 @@
                         <td><span class="badge badge-{{ post.status.value }}">{{ post.status.label }}</span></td>
                         <td>{{ post.updatedAt|date('d.m.Y H:i') }}</td>
                         <td>{{ post.publishedAt ? post.publishedAt|date('d.m.Y') : '—' }}</td>
-                        <td>{% include 'admin/posts/_status_actions.html.twig' with {id: post.id, status: post.status, back: 'list'} only %}</td>
+                        <td>
+                            {# Нативный popover: закрытие по Esc и клику вне -- браузер, позицию под кнопкой ставит admin.js. #}
+                            <button type="button" class="secondary menu-toggle" popovertarget="post-actions-{{ post.id }}" aria-label="Действия: {{ post.title }}">…</button>
+                            <div class="row-menu" id="post-actions-{{ post.id }}" popover>
+                                <a href="{{ path('admin_post_edit', {id: post.id}) }}">Редактировать</a>
+                                {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, status: post.status, back: 'list'} only %}
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

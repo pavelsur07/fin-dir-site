@@ -119,6 +119,46 @@ final class AdminPostTest extends WebTestCase
         self::assertSame(PostStatus::PUBLISHED, $this->findPost('from-list')->status());
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
+    public static function rowMenus(): iterable
+    {
+        yield 'черновик' => ['draft', ['Редактировать', 'Опубликовать', 'В архив']];
+        yield 'опубликована' => ['published', ['Редактировать', 'Снять с публикации', 'В архив']];
+        yield 'в архиве' => ['archived', ['Редактировать', 'Вернуть в черновики']];
+    }
+
+    /**
+     * @param list<string> $items
+     */
+    #[DataProvider('rowMenus')]
+    public function testListRowActionsLiveInDropdownMenu(string $status, array $items): void
+    {
+        $builder = PostBuilder::aPost()->withTitle('Меню строки')->withSlug('row-menu');
+        $builder = match ($status) {
+            'published' => $builder->published(),
+            'archived' => $builder->archived(),
+            default => $builder,
+        };
+        $id = $this->persist($builder->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/posts');
+
+        $cell = $crawler->filter('tbody tr td')->last();
+        $toggle = $cell->filter('button.menu-toggle');
+        self::assertCount(1, $toggle);
+        self::assertSame('Действия: Меню строки', $toggle->attr('aria-label'));
+        self::assertSame('post-actions-'.$id, $toggle->attr('popovertarget'));
+
+        // Вне меню в ячейке только кнопка «…»; все действия -- внутри popover.
+        self::assertCount(1, $cell->filter('button, a')->reduce(static fn ($node) => null === $node->closest('.row-menu')));
+        $menu = $cell->filter('#post-actions-'.$id.'[popover]');
+        self::assertSame($items, $menu->filter('a, button')->each(static fn ($node) => trim($node->text())));
+        self::assertSame('/admin/posts/'.$id.'/edit', $menu->filter('a')->attr('href'));
+        self::assertCount(\count($items) - 1, $menu->filter('form[method="post"] input[name="_token"]'));
+    }
+
     public function testStatusChangeOfUnknownPostIsNotFound(): void
     {
         $id = $this->persist(PostBuilder::aPost()->withSlug('token-source')->build());

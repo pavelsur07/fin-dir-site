@@ -1,7 +1,7 @@
 {# ponytail: временная Twig-админка до React Admin (AGENTS.md §8). Свой минимальный
    CSS в public/assets/admin/admin.css -- вне сборки и design system публичного сайта.
-   После правки CSS: sha256sum site/public/assets/admin/admin.css | cut -c1-12 → admin_asset_version. #}
-{% set admin_asset_version = 'c629b234d4b3' %}
+   После правки CSS/JS: cat site/public/assets/admin/admin.{css,js} | sha256sum | cut -c1-12 → admin_asset_version. #}
+{% set admin_asset_version = 'a2c6ae67401c' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -11,6 +11,7 @@
     <title>{% block title %}Админка{% endblock %} — Ваш Финдир</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="/assets/admin/admin.css?v={{ admin_asset_version }}" rel="stylesheet">
+    <script src="/assets/admin/admin.js?v={{ admin_asset_version }}" defer></script>
 </head>
 <body>
 {% block page %}
