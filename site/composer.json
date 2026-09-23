@@ -25,7 +25,10 @@
     }
   },
   "extra": {
-    "public-dir": "public"
+    "public-dir": "public",
+    "symfony": {
+      "require": "7.4.*"
+    }
   },
   "config": {
     "allow-plugins": {
