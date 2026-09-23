@@ -34,6 +34,40 @@ deptrac:
               - type: classNameRegex
                 value: '#^App\\([A-Za-z]+\\)?Service\\#'
 
+        # Enum и значения без инфраструктуры: их видят все слои.
+        - name: ValueObject
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?ValueObject\\#'
+
+        # Доменные исключения модулей и маркеры из Shared\Exception.
+        - name: Exception
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Exception\\#'
+
+        # Входные DTO (формы, API). Не Entity и не бизнес-логика.
+        - name: DTO
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?DTO\\#'
+
+        - name: Form
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Form\\#'
+
+        - name: EventListener
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?EventListener\\#'
+
+        # Adapter над внешними библиотеками и сервисами (PATTERNS.md §3).
+        - name: Adapter
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Adapter\\#'
+
         # Doctrine-атрибуты маппинга и коллекции -- единственное, что разрешено Entity.
         - name: DoctrineMapping
           collectors:
@@ -46,6 +80,23 @@ deptrac:
               - type: classNameRegex
                 value: '#^Doctrine\\(?!ORM\\Mapping\\|DBAL\\Types\\|Common\\Collections\\)#'
 
+        # Пагинация -- только в Query (PATTERNS.md §10).
+        - name: Pagerfanta
+          collectors:
+              - type: classNameRegex
+                value: '#^Pagerfanta\\#'
+
+        - name: CommonMark
+          collectors:
+              - type: classNameRegex
+                value: '#^League\\CommonMark\\#'
+
+        # Время в сценарии -- через PSR Clock, чтобы тест мог его подменить.
+        - name: Clock
+          collectors:
+              - type: classNameRegex
+                value: '#^Psr\\Clock\\#'
+
         - name: Symfony
           collectors:
               - type: classNameRegex
@@ -54,22 +105,32 @@ deptrac:
     ruleset:
         # Контроллер: один Query или один Application Service плюс HTTP-обвязка.
         # Нет Entity, Repository и Doctrine -- PATTERNS.md §6.
+        # Ожидаемые ошибки ввода контроллер ловит, чтобы показать их в форме.
         Controller:
             - Service
             - Query
             - Symfony
+            - Form
+            - DTO
+            - ValueObject
+            - Exception
+            - Adapter
 
         # Query читает через Doctrine и знает Entity только как источник DQL.
         Query:
             - Entity
             - DoctrineOrm
             - DoctrineMapping
+            - ValueObject
+            - Exception
+            - Pagerfanta
 
         # Repository загружает и сохраняет Entity, транзакцией не управляет.
         Repository:
             - Entity
             - DoctrineOrm
             - DoctrineMapping
+            - Exception
 
         # Application Service: сценарий, транзакционная граница, flush.
         # Нет Query и нет HTTP -- PATTERNS.md §5.1, §8.
@@ -78,12 +139,42 @@ deptrac:
             - Repository
             - DoctrineOrm
             - DoctrineMapping
+            - DTO
+            - ValueObject
+            - Exception
+            - Clock
 
         # Entity не знает ни инфраструктуры, ни HTTP -- PATTERNS.md §7.
         Entity:
             - DoctrineMapping
+            - ValueObject
+            - Exception
+
+        # DTO заполняется из read-модели (Query) для формы редактирования.
+        DTO:
+            - Symfony
+            - ValueObject
+            - Query
+
+        Form:
+            - Symfony
+            - DTO
+
+        EventListener:
+            - Symfony
+            - Exception
+
+        Exception:
+            - ValueObject
+
+        ValueObject: []
+        Adapter:
+            - CommonMark
 
         # Vendor-слои не анализируются: paths ограничены ./src.
         DoctrineMapping: []
         DoctrineOrm: []
         Symfony: []
+        Pagerfanta: []
+        CommonMark: []
+        Clock: []

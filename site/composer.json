@@ -14,7 +14,13 @@
     "doctrine/orm": "^3.6",
     "doctrine/doctrine-migrations-bundle": "^4.0",
     "symfony/security-bundle": "7.4.*",
-    "symfony/rate-limiter": "7.4.*"
+    "symfony/rate-limiter": "7.4.*",
+    "symfony/form": "7.4.*",
+    "symfony/validator": "7.4.*",
+    "babdev/pagerfanta-bundle": "^4.6",
+    "pagerfanta/doctrine-orm-adapter": "^4.9",
+    "pagerfanta/twig": "^4.9",
+    "league/commonmark": "^2.10"
   },
   "autoload": {
     "psr-4": {
@@ -56,6 +62,7 @@
     "friendsofphp/php-cs-fixer": "^3.95",
     "phpunit/phpunit": "^13.2",
     "symfony/browser-kit": "7.4.*",
-    "symfony/css-selector": "7.4.*"
+    "symfony/css-selector": "7.4.*",
+    "dama/doctrine-test-bundle": "^8.6"
   }
 }

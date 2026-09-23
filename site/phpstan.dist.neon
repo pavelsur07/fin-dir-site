@@ -10,5 +10,12 @@ parameters:
 
     # Знание о сервисах, параметрах и роутинге берётся из скомпилированного
     # контейнера -- перед анализом нужен bin/console cache:warmup (см. Makefile).
+    # Doctrine пишет и читает поля Entity через reflection -- PHPStan без
+    # phpstan-doctrine этого не видит. Исключение только для Entity.
+    ignoreErrors:
+        -
+            identifiers: [property.onlyWritten, property.unusedType]
+            paths: [src/*/Entity/*]
+
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml

@@ -4,6 +4,12 @@ controllers:
     namespace: App\Controller
   type: attribute
 
+publication_controllers:
+  resource:
+    path: ../src/Publication/Controller/
+    namespace: App\Publication\Controller
+  type: attribute
+
 admin_controllers:
   resource:
     path: ../src/Admin/Controller/

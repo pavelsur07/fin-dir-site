@@ -54,5 +54,7 @@
     </source>
 
     <extensions>
+        <!-- Каждый тест в транзакции с rollback: база site_test не накапливает данные. -->
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
     </extensions>
 </phpunit>

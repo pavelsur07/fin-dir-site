@@ -10,13 +10,29 @@ jobs:
     checks:
         runs-on: ubuntu-24.04
 
+        # Integration- и functional-тесты ходят в site_test. Пароль -- только для CI.
+        services:
+            postgres:
+                image: postgres:17-alpine
+                env:
+                    POSTGRES_DB: site
+                    POSTGRES_USER: site
+                    POSTGRES_PASSWORD: secret
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd "pg_isready -U site -d site"
+                    --health-interval 5s
+                    --health-timeout 3s
+                    --health-retries 10
+
         defaults:
             run:
                 working-directory: site
 
         # dev, а не test: phpstan-symfony читает скомпилированный контейнер
-        # из var/cache/dev. Реальные значения секретов здесь не нужны --
-        # ни один шаг не ходит в базу и наружу.
+        # из var/cache/dev. Реальные значения секретов здесь не нужны: в базу
+        # ходят только тесты, и только в одноразовый postgres этого job.
         env:
             APP_ENV: dev
             APP_DEBUG: "1"
@@ -73,6 +89,13 @@ jobs:
 
             - name: Check architecture layers
               run: vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --report-uncovered
+
+            - name: Prepare test database
+              env:
+                  APP_ENV: test
+              run: |
+                  php bin/console doctrine:database:create --if-not-exists
+                  php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
             - name: Tests
               run: vendor/bin/phpunit

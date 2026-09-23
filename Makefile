@@ -13,7 +13,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
-        assets assets-watch asset-version assets-check lint cs cs-fix phpstan test ci \
+        assets assets-watch asset-version assets-check lint cs cs-fix phpstan test test-db ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -133,8 +133,13 @@ cs-fix:
 phpstan:
 	$(CLI) sh -lc 'php bin/console cache:warmup && vendor/bin/phpstan analyse --no-progress'
 
-test:
-	$(TEST_CLI) vendor/bin/phpunit
+# Отдельная база site_test (dbname_suffix в doctrine.yaml when@test): тесты
+# не трогают dev-данные, DAMA откатывает каждый тест транзакцией.
+test-db:
+	$(CLI) sh -c 'APP_ENV=test php bin/console doctrine:database:create --if-not-exists && APP_ENV=test php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration'
+
+test: test-db
+	$(TEST_CLI) vendor/bin/phpunit $(CMD)
 
 # Всё, что гоняет CI
 ci: lint cs phpstan deptrac test

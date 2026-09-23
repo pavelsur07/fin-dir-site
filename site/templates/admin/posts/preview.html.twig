@@ -1,0 +1,17 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Предпросмотр{% endblock %}
+
+{% block body %}
+    <div class="toolbar">
+        <a href="{{ path('admin_post_edit', {id: post.id}) }}">← К редактированию</a>
+        <span class="badge badge-{{ post.status.value }}">{{ post.status.label }}</span>
+    </div>
+
+    <article class="prose">
+        <h1>{{ post.title }}</h1>
+        {% if post.excerpt %}<p class="muted">{{ post.excerpt }}</p>{% endif %}
+        {# body_html -- выход MarkdownRenderer: HTML из текста вырезан, небезопасные ссылки отброшены. #}
+        {{ body_html|raw }}
+    </article>
+{% endblock %}

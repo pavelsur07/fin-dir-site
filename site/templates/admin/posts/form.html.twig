@@ -1,0 +1,40 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}{{ post ? 'Редактирование' : 'Новая статья' }}{% endblock %}
+
+{% block body %}
+    <div class="toolbar">
+        <h1>{{ post ? post.title : 'Новая статья' }}</h1>
+        {% if post %}
+            <span class="badge badge-{{ post.status.value }}">{{ post.status.label }}</span>
+        {% endif %}
+    </div>
+
+    {% if post %}
+        <div class="toolbar">
+            {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, status: post.status} only %}
+            <a href="{{ path('admin_post_preview', {id: post.id}) }}">Предпросмотр</a>
+        </div>
+    {% endif %}
+
+    {{ form_start(form, {attr: {class: 'panel', novalidate: 'novalidate'}}) }}
+        {% if form.vars.errors|length > 0 %}
+            <div class="alert form-errors" role="alert">{{ form_errors(form) }}</div>
+        {% endif %}
+
+        {% for field in [form.title, form.slug, form.excerpt, form.body, form.metaTitle, form.metaDescription] %}
+            <div class="form-row">
+                {{ form_label(field) }}
+                {{ form_widget(field) }}
+                {{ form_help(field) }}
+                {{ form_errors(field) }}
+            </div>
+        {% endfor %}
+
+        {{ form_rest(form) }}
+        <div class="actions">
+            <button type="submit">{{ post ? 'Сохранить' : 'Создать черновик' }}</button>
+            <a class="muted" href="{{ path('admin_post_list') }}">К списку</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

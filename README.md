@@ -27,7 +27,13 @@ make ci        # весь набор, как в .github/workflows/ci.yml
 
 По отдельности: `make lint` (composer validate и audit, lint:yaml/twig/container),
 `make cs` (стиль, чинится через `make cs-fix`), `make phpstan` (level 8),
-`make deptrac` (границы слоёв), `make test` (PHPUnit).
+`make deptrac` (границы слоёв), `make test` (PHPUnit; `CMD="--filter ..."` для
+точечного прогона).
+
+Тесты ходят в отдельную базу `site_test` (`dbname_suffix` в `doctrine.yaml`),
+dev-данные не трогают. `make test` сам создаёт её и накатывает миграции
+(`make test-db`), а `dama/doctrine-test-bundle` откатывает каждый тест транзакцией.
+В CI для этого поднимается одноразовый postgres.
 
 Тот же набор гоняется на каждом PR и первым шагом деплоя — `deploy-vashfindir.yml`
 вызывает `ci.yml` и раскатывает только после зелёного результата.
