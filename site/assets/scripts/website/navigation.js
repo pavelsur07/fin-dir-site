@@ -176,16 +176,17 @@
                 return;
             }
             cookieNotice.hidden = false;
-            window.requestAnimationFrame(() => {
-                cookieNotice.className += ' is-visible';
-            });
+            // Reflow фиксирует стартовое состояние (opacity-0, translate-y-4), иначе переход не проигрывается.
+            // data-visible включает data-visible:* варианты Tailwind в разметке баннера.
+            void cookieNotice.offsetHeight;
+            cookieNotice.dataset.visible = '';
         };
 
         const hideCookieNotice = () => {
             if (!cookieNotice) {
                 return;
             }
-            cookieNotice.classList.remove('is-visible');
+            delete cookieNotice.dataset.visible;
             window.setTimeout(() => {
                 cookieNotice.hidden = true;
             }, 250);
