@@ -15,6 +15,11 @@ on:
 jobs:
     deploy-traefik:
         runs-on: ubuntu-24.04
+        # Все SSH-деплои работают в одном checkout на хосте: параллельный
+        # git fetch падает на блокировке ref. Выполняем их строго по очереди.
+        concurrency:
+            group: host-deploy
+            cancel-in-progress: false
 
         steps:
             - name: Deploy Traefik over SSH
