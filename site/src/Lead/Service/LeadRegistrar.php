@@ -7,6 +7,7 @@ namespace App\Lead\Service;
 use App\Lead\DTO\LeadSubmission;
 use App\Lead\Entity\Lead;
 use App\Lead\Repository\LeadRepository;
+use App\Lead\ValueObject\LeadAttribution;
 use App\Lead\ValueObject\LeadConsent;
 use App\Lead\ValueObject\LeadFormCatalog;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -59,6 +60,8 @@ final class LeadRegistrar
             LeadConsent::VERSION,
             $this->spamReason($submission),
             $now,
+            LeadAttribution::fromJson($submission->attribution, $now),
+            $submission->ymClientId,
         );
         $this->leads->save($lead);
 

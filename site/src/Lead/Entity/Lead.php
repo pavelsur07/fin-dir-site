@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lead\Entity;
 
 use App\Lead\ValueObject\ContactType;
+use App\Lead\ValueObject\LeadAttribution;
 use App\Lead\ValueObject\LeadStatus;
 use App\Lead\ValueObject\NormalizedContact;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'lead_lead_status_idx', columns: ['status'])]
 #[ORM\Index(name: 'lead_lead_contact_idx', columns: ['contact_normalized'])]
 #[ORM\Index(name: 'lead_lead_created_idx', columns: ['created_at'])]
+#[ORM\Index(name: 'lead_lead_ym_client_idx', columns: ['ym_client_id'])]
 class Lead
 {
     #[ORM\Id]
@@ -62,6 +64,18 @@ class Lead
     /** @var array<string, string> */
     #[ORM\Column(type: 'json')]
     private array $utm;
+
+    /**
+     * Первый и последний значимый визит до заявки (LeadAttribution::toArray()).
+     *
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $attribution;
+
+    /** ClientID Яндекс Метрики: по нему заявку находят среди визитов в Метрике. */
+    #[ORM\Column(length: 32, nullable: true)]
+    private ?string $ymClientId;
 
     #[ORM\Column]
     private \DateTimeImmutable $consentAt;
@@ -117,6 +131,8 @@ class Lead
         string $consentVersion,
         ?string $spamReason,
         \DateTimeImmutable $now,
+        ?LeadAttribution $attribution = null,
+        ?string $ymClientId = null,
     ) {
         $normalized = NormalizedContact::fromRaw($contact);
 
@@ -131,6 +147,8 @@ class Lead
         $this->pageUrl = $pageUrl;
         $this->referrer = $referrer;
         $this->utm = $utm;
+        $this->attribution = $attribution?->toArray();
+        $this->ymClientId = $ymClientId;
         $this->consentAt = $now;
         $this->consentVersion = $consentVersion;
         $this->status = null === $spamReason ? LeadStatus::NEW : LeadStatus::SPAM;
@@ -208,6 +226,16 @@ class Lead
     public function utm(): array
     {
         return $this->utm;
+    }
+
+    public function attribution(): ?LeadAttribution
+    {
+        return null === $this->attribution ? null : LeadAttribution::fromStored($this->attribution);
+    }
+
+    public function ymClientId(): ?string
+    {
+        return $this->ymClientId;
     }
 
     public function status(): LeadStatus

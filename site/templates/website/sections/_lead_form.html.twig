@@ -46,6 +46,7 @@
                 required: true,
                 autocomplete: 'name',
                 placeholder: 'Как к вам обращаться',
+                analytics_private: true,
             } only %}
             {% include 'website/components/_form_input.html.twig' with {
                 id: section_id ~ '-contact',
@@ -53,6 +54,7 @@
                 label: 'Телефон, email или Telegram',
                 required: true,
                 placeholder: '+7 900 000-00-00',
+                analytics_private: true,
             } only %}
             {% for question in definition.questions %}
                 {% set options = [{value: '', label: 'Выберите вариант'}] %}
@@ -70,6 +72,7 @@
                 name: 'task',
                 label: 'Коротко о задаче',
                 placeholder: 'Контекст для первого разговора',
+                analytics_private: true,
             } only %}
             <div class="grid gap-2">
                 {% include 'website/components/_form_checkbox.html.twig' with {

@@ -23,6 +23,13 @@
             <dt>Страница</dt><dd>{{ lead.pageUrl ?? '—' }}</dd>
             {% if lead.referrer %}<dt>Откуда пришли</dt><dd>{{ lead.referrer }}</dd>{% endif %}
             {% for key, value in lead.utm %}<dt>{{ key }}</dt><dd>{{ value }}</dd>{% endfor %}
+            {% if lead.firstTouch %}
+                <dt>Первый визит</dt><dd>{% include 'admin/leads/_touch.html.twig' with {touch: lead.firstTouch} only %}</dd>
+                {% if lead.lastTouch %}<dt>Последний значимый визит</dt><dd>{% include 'admin/leads/_touch.html.twig' with {touch: lead.lastTouch} only %}</dd>{% endif %}
+                {% if lead.visits %}<dt>Визитов до заявки</dt><dd>{{ lead.visits }}</dd>{% endif %}
+                {% if lead.daysToLead is not null %}<dt>Дней до заявки</dt><dd>{{ lead.daysToLead }}</dd>{% endif %}
+            {% endif %}
+            {% if lead.ymClientId %}<dt>ClientID Метрики</dt><dd>{{ lead.ymClientId }} <span class="muted">— Метрика → Отчёты → Посетители, фильтр по ClientID</span></dd>{% endif %}
             <dt>Согласие на ПД</dt><dd>{{ lead.consentAt|date('d.m.Y H:i') }}, версия {{ lead.consentVersion }}</dd>
             {% if lead.spamReason %}<dt>Признак спама</dt><dd>{{ lead.spamReason == 'honeypot' ? 'заполнено скрытое поле' : 'форма заполнена быстрее 3 секунд' }}</dd>{% endif %}
             <dt>Уведомление</dt>

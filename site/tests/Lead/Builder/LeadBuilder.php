@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Lead\Builder;
 
 use App\Lead\Entity\Lead;
+use App\Lead\ValueObject\LeadAttribution;
 use App\Lead\ValueObject\LeadConsent;
 
 final class LeadBuilder
@@ -15,6 +16,8 @@ final class LeadBuilder
     private string $contact = '+7 900 123-45-67';
     private ?string $spamReason = null;
     private \DateTimeImmutable $createdAt;
+    private ?LeadAttribution $attribution = null;
+    private ?string $ymClientId = null;
 
     private function __construct()
     {
@@ -61,6 +64,17 @@ final class LeadBuilder
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $data формат localStorage vf_attr; время -- относительно createdAt
+     */
+    public function withAttribution(array $data, ?string $ymClientId = null): self
+    {
+        $this->attribution = LeadAttribution::fromJson(json_encode($data, \JSON_THROW_ON_ERROR), $this->createdAt);
+        $this->ymClientId = $ymClientId;
+
+        return $this;
+    }
+
     public function build(): Lead
     {
         return new Lead(
@@ -76,6 +90,8 @@ final class LeadBuilder
             LeadConsent::VERSION,
             $this->spamReason,
             $this->createdAt,
+            $this->attribution,
+            $this->ymClientId,
         );
     }
 }

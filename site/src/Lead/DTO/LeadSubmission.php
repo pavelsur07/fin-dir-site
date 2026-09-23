@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lead\DTO;
 
 use App\Lead\ValueObject\LeadFormCatalog;
+use App\Lead\ValueObject\WebAddress;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -14,8 +15,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 final class LeadSubmission
 {
-    /** Локальный путь: не "//host" и не "/\\host" (браузер читает его как "//host"), без пробелов. */
-    public const string LOCAL_PATH = '#^/(?![/\\\\])[^\s\x00-\x1f]*$#';
+    public const string LOCAL_PATH = WebAddress::LOCAL_PATH;
 
     #[Assert\NotBlank(message: 'Форма не найдена.')]
     public string $form = '';
@@ -65,6 +65,15 @@ final class LeadSubmission
     /** @var array<string, string> */
     public array $utm = [];
 
+    /**
+     * JSON источников визитов из localStorage браузера. Не валидируется: мусор
+     * отбрасывает LeadAttribution, а заявка принимается и без источника.
+     */
+    public ?string $attribution = null;
+
+    /** ClientID Яндекс Метрики: только цифры, иначе не сохраняется. */
+    public ?string $ymClientId = null;
+
     #[Assert\Callback]
     public function validateAnswers(ExecutionContextInterface $context): void
     {
@@ -103,7 +112,10 @@ final class LeadSubmission
         $fillMs = $string('fill_ms');
         $submission->fillMs = null !== $fillMs && ctype_digit($fillMs) ? (int) $fillMs : null;
         $submission->pageUrl = $string('page_url') ?: null;
-        $submission->referrer = self::origin($string('referrer'));
+        $submission->referrer = WebAddress::origin($string('referrer'));
+        $submission->attribution = $string('attribution') ?: null;
+        $ymClientId = $string('ym_client_id');
+        $submission->ymClientId = null !== $ymClientId && 1 === preg_match('/^\d{1,32}$/', $ymClientId) ? $ymClientId : null;
         foreach ($data as $key => $value) {
             if (\is_string($key) && str_starts_with($key, 'utm_') && \is_scalar($value) && '' !== (string) $value) {
                 $submission->utm[$key] = (string) $value;
@@ -111,15 +123,5 @@ final class LeadSubmission
         }
 
         return $submission;
-    }
-
-    private static function origin(?string $url): ?string
-    {
-        $parts = null === $url || '' === $url ? false : parse_url($url);
-        if (false === $parts || !isset($parts['scheme'], $parts['host'])) {
-            return null;
-        }
-
-        return $parts['scheme'].'://'.$parts['host'].(isset($parts['port']) ? ':'.$parts['port'] : '');
     }
 }

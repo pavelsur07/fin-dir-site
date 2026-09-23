@@ -8,6 +8,7 @@ use App\Lead\Entity\Lead;
 use App\Lead\Entity\LeadNote;
 use App\Lead\Exception\LeadNotFound;
 use App\Lead\ValueObject\ContactType;
+use App\Lead\ValueObject\LeadAttribution;
 use App\Lead\ValueObject\LeadStatus;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -23,7 +24,7 @@ final class LeadCardQuery
     {
         /** @var array<string, mixed>|null $row */
         $row = $this->entityManager->createQueryBuilder()
-            ->select('l.id, l.formKey, l.name, l.contact, l.contactNormalized, l.contactType, l.task, l.answers, l.pageUrl, l.referrer, l.utm')
+            ->select('l.id, l.formKey, l.name, l.contact, l.contactNormalized, l.contactType, l.task, l.answers, l.pageUrl, l.referrer, l.utm, l.attribution, l.ymClientId')
             ->addSelect('l.consentAt, l.consentVersion, l.status, l.spamReason, l.nextContactAt, l.notifiedAt, l.notificationError, l.createdAt, l.version')
             ->from(Lead::class, 'l')
             ->where('l.id = :id')
@@ -59,7 +60,10 @@ final class LeadCardQuery
             ->getQuery()
             ->getResult();
 
-        \assert($row['contactType'] instanceof ContactType && $row['status'] instanceof LeadStatus);
+        \assert($row['contactType'] instanceof ContactType && $row['status'] instanceof LeadStatus && $row['createdAt'] instanceof \DateTimeImmutable);
+
+        $attribution = \is_array($row['attribution'] ?? null) ? LeadAttribution::fromStored($row['attribution']) : null;
+        $firstVisitAt = $attribution?->firstVisitAt();
 
         return new LeadCard(
             (int) $row['id'],
@@ -72,6 +76,11 @@ final class LeadCardQuery
             $row['pageUrl'] ?? null,
             $row['referrer'] ?? null,
             $row['utm'],
+            $attribution?->first,
+            $attribution?->last,
+            $attribution?->visits,
+            $this->daysBetween($firstVisitAt, $row['createdAt']),
+            $row['ymClientId'] ?? null,
             $row['consentAt'],
             (string) $row['consentVersion'],
             $row['status'],
@@ -84,5 +93,16 @@ final class LeadCardQuery
             $notes,
             $sameContact,
         );
+    }
+
+    /** Часы браузера могут спешить: первый визит «после» заявки считается нулём дней. */
+    private function daysBetween(?\DateTimeImmutable $from, \DateTimeImmutable $to): ?int
+    {
+        if (null === $from) {
+            return null;
+        }
+        $interval = $from->diff($to);
+
+        return 1 === $interval->invert ? 0 : (int) $interval->days;
     }
 }

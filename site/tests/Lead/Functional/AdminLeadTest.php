@@ -92,6 +92,40 @@ final class AdminLeadTest extends WebTestCase
         self::assertSelectorExists('a[href="/admin/leads/'.$first.'"]');
     }
 
+    public function testCardShowsSourceOfLead(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->withAttribution([
+            'first' => ['channel' => 'cpc', 'source' => 'yandex', 'medium' => 'cpc', 'campaign' => 'brand', 'landing' => '/services', 'click' => ['yclid' => '42']],
+            'last' => ['channel' => 'organic', 'referrer' => 'https://ya.ru'],
+            'visits' => 3,
+        ], '1758600000123456789')->build());
+        $this->logIn();
+
+        $this->client->request('GET', '/admin/leads/'.$id);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('main', 'Первый визит');
+        self::assertSelectorTextContains('main', 'реклама, yandex / cpc, brand');
+        self::assertSelectorTextContains('main', '/services');
+        self::assertSelectorTextContains('main', 'yclid: 42');
+        self::assertSelectorTextContains('main', 'Последний значимый визит');
+        self::assertSelectorTextContains('main', 'поиск');
+        self::assertSelectorTextContains('main', 'Визитов до заявки');
+        self::assertSelectorTextContains('main', '1758600000123456789');
+    }
+
+    public function testCardOfLeadWithoutSourceStillRenders(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+
+        $this->client->request('GET', '/admin/leads/'.$id);
+
+        self::assertResponseIsSuccessful();
+        self::assertStringNotContainsString('Первый визит', (string) $this->client->getResponse()->getContent());
+        self::assertStringNotContainsString('ClientID', (string) $this->client->getResponse()->getContent());
+    }
+
     public function testStatusNextContactAndNoteAreSaved(): void
     {
         [$id] = $this->persist(LeadBuilder::aLead()->build());

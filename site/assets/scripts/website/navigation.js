@@ -207,6 +207,130 @@
         showCookieNotice();
     };
 
+    // Источник визитов для заявки: первый визит и последний значимый (не прямой заход).
+    // Хранится только в браузере (localStorage vf_attr), на сервер уходит вместе с заявкой.
+    // Порядок и сроки описаны в политике конфиденциальности, раздел 3.1.
+    const attributionKey = 'vf_attr';
+    const visitGapMs = 30 * 60 * 1000;
+    const attributionTtlMs = 90 * 24 * 60 * 60 * 1000;
+    const searchHosts = /(^|\.)(yandex\.[a-z]+|ya\.ru|google\.[a-z.]+|bing\.com|go\.mail\.ru|duckduckgo\.com)$/;
+    const socialHosts = /(^|\.)(vk\.com|vk\.ru|t\.me|telegram\.org|ok\.ru|dzen\.ru|youtube\.com|youtu\.be)$/;
+
+    // Запись старше 90 дней с последнего визита удаляется при любом чтении:
+    // устаревший источник не уйдёт с заявкой даже со страницы, открытой внутренним переходом.
+    const readAttribution = () => {
+        try {
+            const data = JSON.parse(window.localStorage.getItem(attributionKey));
+
+            if (!data || data.v !== 1 || !data.first || typeof data.last_seen !== 'number') {
+                return null;
+            }
+            if (Date.now() - data.last_seen * 1000 > attributionTtlMs) {
+                window.localStorage.removeItem(attributionKey);
+                return null;
+            }
+
+            return data;
+        } catch (error) {
+            return null;
+        }
+    };
+
+    // Касание текущей страницы. null -- переход внутри сайта: источник не меняется.
+    const currentTouch = () => {
+        const params = new URLSearchParams(window.location.search);
+        const touch = { ts: Math.floor(Date.now() / 1000), landing: window.location.pathname.slice(0, 200) };
+
+        ['source', 'medium', 'campaign', 'content', 'term'].forEach((key) => {
+            const value = params.get(`utm_${key}`);
+            if (value) {
+                touch[key] = value.slice(0, 200);
+            }
+        });
+
+        const click = {};
+        ['yclid', 'gclid'].forEach((key) => {
+            const value = params.get(key);
+            if (value) {
+                click[key] = value.slice(0, 100);
+            }
+        });
+        if (Object.keys(click).length > 0) {
+            touch.click = click;
+        }
+
+        let referrer = null;
+        try {
+            referrer = document.referrer ? new URL(document.referrer) : null;
+        } catch (error) {
+            referrer = null;
+        }
+        const internal = referrer !== null && referrer.origin === window.location.origin;
+        if (referrer && !internal) {
+            // Только origin: путь и query чужого сайта могут содержать персональные данные.
+            touch.referrer = referrer.origin;
+        }
+
+        if (touch.source || touch.medium || touch.campaign || touch.click) {
+            touch.channel = (touch.medium || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 32) || 'paid';
+        } else if (internal) {
+            return null;
+        } else if (!referrer) {
+            touch.channel = 'direct';
+        } else if (searchHosts.test(referrer.hostname)) {
+            touch.channel = 'organic';
+        } else if (socialHosts.test(referrer.hostname)) {
+            touch.channel = 'social';
+        } else {
+            touch.channel = 'referral';
+        }
+
+        return touch;
+    };
+
+    const sameSource = (a, b) => ['channel', 'source', 'medium', 'campaign', 'referrer']
+        .every((key) => (a[key] || '') === (b[key] || ''))
+        && JSON.stringify(a.click || {}) === JSON.stringify(b.click || {});
+
+    const initializeAttribution = () => {
+        const now = Date.now();
+        const touch = currentTouch();
+        let data = readAttribution();
+
+        if (!data) {
+            // Без записи и с внутренним переходом источник неизвестен -- не выдумываем его.
+            if (!touch) {
+                return;
+            }
+            data = { v: 1, first: touch, last: touch, visits: 1 };
+        } else if (touch) {
+            const significant = touch.channel !== 'direct';
+            // Перезагрузка страницы сохраняет прежний реферер -- это не новый визит.
+            const newVisit = now - data.last_seen * 1000 > visitGapMs || (significant && !sameSource(touch, data.last || {}));
+
+            if (newVisit) {
+                data.visits = Math.min((data.visits || 1) + 1, 10000);
+                if (significant) {
+                    data.last = touch;
+                }
+            }
+        }
+
+        data.last_seen = Math.floor(now / 1000);
+
+        try {
+            window.localStorage.setItem(attributionKey, JSON.stringify(data));
+        } catch (error) {
+            // Хранилище недоступно (приватный режим, запрет): форма уйдёт без источника.
+        }
+    };
+
+    const attributionForForm = () => {
+        const data = readAttribution();
+
+        return data ? JSON.stringify({ v: 1, first: data.first, last: data.last, visits: data.visits }) : '';
+    };
+
     const initializeLeadForms = () => {
         const trackGoal = (goalName) => {
             const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
@@ -289,6 +413,19 @@
             return true;
         };
 
+        // ClientID Метрики связывает заявку с визитами в Метрике. Метрика заблокирована --
+        // колбэк не придёт, поле останется пустым, отправка его не ждёт.
+        let ymClientId = '';
+        const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
+        if (typeof window.ym === 'function' && ymId) {
+            window.ym(ymId, 'getClientID', (clientId) => {
+                ymClientId = /^\d{1,32}$/.test(String(clientId)) ? String(clientId) : '';
+                document.querySelectorAll('[data-vf-lead-form]').forEach((form) => {
+                    setHidden(form, 'ym_client_id', ymClientId);
+                });
+            });
+        }
+
         document.querySelectorAll('[data-vf-lead-form]').forEach((form) => {
             const success = form.querySelector('[data-vf-lead-success]');
             const failure = form.querySelector('[data-vf-lead-error]');
@@ -317,6 +454,8 @@
                         setHidden(form, key, value.slice(0, 200));
                     }
                 });
+                setHidden(form, 'attribution', attributionForForm());
+                setHidden(form, 'ym_client_id', ymClientId);
             };
 
             prepare();
@@ -377,6 +516,7 @@
     const initialize = () => {
         initializeMenu();
         initializeCookieNotice();
+        initializeAttribution();
         initializeLeadForms();
     };
 

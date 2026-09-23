@@ -49,6 +49,36 @@ final class LeadRegistrationTest extends KernelTestCase
         self::assertSame(['utm_source' => 'yandex'], $lead->utm());
     }
 
+    public function testAttributionAndClientIdAreStored(): void
+    {
+        $firstVisit = $this->clock->now()->modify('-5 days')->getTimestamp();
+        $submission = $this->submission();
+        $submission->attribution = json_encode([
+            'v' => 1,
+            'first' => ['ts' => $firstVisit, 'channel' => 'cpc', 'source' => 'yandex', 'landing' => '/'],
+            'last' => ['channel' => 'organic', 'referrer' => 'https://ya.ru'],
+            'visits' => 3,
+        ], \JSON_THROW_ON_ERROR);
+        $submission->ymClientId = '1758600000123456789';
+
+        $lead = $this->lead($this->registrar()->register($submission));
+
+        self::assertSame('1758600000123456789', $lead->ymClientId());
+        self::assertSame(['ts' => $firstVisit, 'channel' => 'cpc', 'source' => 'yandex', 'landing' => '/'], $lead->attribution()?->first);
+        self::assertSame(3, $lead->attribution()->visits);
+    }
+
+    public function testBrokenAttributionDoesNotBlockLead(): void
+    {
+        $submission = $this->submission();
+        $submission->attribution = '{"first":';
+
+        $lead = $this->lead($this->registrar()->register($submission));
+
+        self::assertNull($lead->attribution());
+        self::assertSame(LeadStatus::NEW, $lead->status());
+    }
+
     public function testRepeatedSubmissionReturnsSameLead(): void
     {
         $first = $this->registrar()->register($this->submission());

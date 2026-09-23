@@ -30,6 +30,10 @@ final class LeadSubmitTest extends WebTestCase
         self::assertSelectorExists('form[data-vf-lead-form][method="post"][action="/lead"] button[type="submit"]');
         self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="consultation"]');
         self::assertSelectorExists('form[data-vf-lead-form] input[name="website"][tabindex="-1"]');
+        // Вебвизор Метрики не записывает ввод персональных данных.
+        foreach (['input[name="name"]', 'input[name="contact"]', 'textarea[name="task"]'] as $field) {
+            self::assertSelectorExists('form[data-vf-lead-form] '.$field.'.ym-disable-keys');
+        }
         self::assertStringNotContainsString('демо-режиме', $crawler->filter('main')->text());
         self::assertSame([], $this->client->getResponse()->headers->getCookies());
     }
@@ -46,6 +50,29 @@ final class LeadSubmitTest extends WebTestCase
         // От чужого сайта хранится только origin: path и query могут содержать ПД.
         self::assertSame('https://yandex.ru', (new \ReflectionProperty($lead, 'referrer'))->getValue($lead));
         self::assertSame([], $this->client->getResponse()->headers->getCookies());
+    }
+
+    public function testAttributionAndClientIdAreStored(): void
+    {
+        $this->post($this->fields([
+            'attribution' => json_encode(['v' => 1, 'first' => ['channel' => 'cpc', 'source' => 'yandex', 'click' => ['yclid' => '42']], 'visits' => 2], \JSON_THROW_ON_ERROR),
+            'ym_client_id' => '1758600000123456789',
+        ]));
+
+        self::assertResponseStatusCodeSame(201);
+        $lead = $this->onlyLead();
+        self::assertSame(['channel' => 'cpc', 'source' => 'yandex', 'click' => ['yclid' => '42']], $lead->attribution()?->first);
+        self::assertSame('1758600000123456789', $lead->ymClientId());
+    }
+
+    public function testGarbageAttributionAndClientIdDoNotBlockLead(): void
+    {
+        $this->post($this->fields(['attribution' => '{"first":', 'ym_client_id' => 'abc<script>']));
+
+        self::assertResponseStatusCodeSame(201);
+        $lead = $this->onlyLead();
+        self::assertNull($lead->attribution());
+        self::assertNull($lead->ymClientId());
     }
 
     public function testNumericPostKeysDoNotBreakEndpoint(): void
