@@ -1,4 +1,4 @@
-{% set vf_asset_version = '8f545a06f94d' %}
+{% set vf_asset_version = '72b6fcbf2cf3' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -55,7 +55,8 @@
         <script src="/assets/website/metrika.js?v={{ vf_asset_version }}" defer></script>
     {% endblock %}
 </head>
-<body>
+{# Колонка на всю высоту экрана: на короткой странице футер и баннер cookie прижаты к низу. #}
+<body class="flex min-h-dvh flex-col">
     <a class="fixed top-2 left-2 z-50 -translate-y-24 rounded-sm bg-surface px-4 py-2 focus:translate-y-0" href="#main-content">Перейти к содержанию</a>
 
     {% block navigation %}
@@ -75,7 +76,7 @@
     {% endblock %}
 
     {# tabindex="-1": цель фокуса для «Перейти к содержанию» и после закрытия баннера cookie. #}
-    <main id="main-content" class="focus:outline-hidden" tabindex="-1">
+    <main id="main-content" class="flex-1 focus:outline-hidden" tabindex="-1">
         {% block body %}{% endblock %}
     </main>
 

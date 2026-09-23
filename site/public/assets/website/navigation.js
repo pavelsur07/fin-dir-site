@@ -171,11 +171,33 @@
             }
         };
 
+        // Браузер не прокручивает к элементу, который уже в пределах экрана, даже если его
+        // закрывает прилипший к низу экрана баннер. Докручиваем сами, пока он открыт (WCAG 2.4.11).
+        const keepFocusAboveNotice = (event) => {
+            const target = event.target;
+            // Только клавиатурный фокус: докрутка между mousedown и mouseup увела бы клик мимо цели.
+            // Открытый dialog (мобильное меню) в top layer, баннер его не закрывает.
+            if (!(target instanceof HTMLElement) || cookieNotice.contains(target)
+                || !target.matches(':focus-visible') || target.closest('dialog[open]')) {
+                return;
+            }
+            window.requestAnimationFrame(() => {
+                const rect = target.getBoundingClientRect();
+                const overlap = rect.bottom - cookieNotice.firstElementChild.getBoundingClientRect().top;
+                // Верх элемента не уводим за экран: большой контейнер (main после skip link) не прокручивается.
+                const distance = Math.min(overlap + 16, rect.top - 16);
+                if (overlap > 0 && distance > 0) {
+                    window.scrollBy({ top: distance, behavior: 'instant' });
+                }
+            });
+        };
+
         const showCookieNotice = () => {
             if (!cookieNotice || hasAcceptedCookies()) {
                 return;
             }
             cookieNotice.hidden = false;
+            document.addEventListener('focusin', keepFocusAboveNotice);
             // Reflow фиксирует стартовое состояние (opacity-0, translate-y-4), иначе переход не проигрывается.
             // data-visible включает data-visible:* варианты Tailwind в разметке баннера.
             void cookieNotice.offsetHeight;
@@ -186,6 +208,8 @@
             if (!cookieNotice) {
                 return;
             }
+            // До перевода фокуса: иначе keepFocusAboveNotice прокрутил бы страницу к низу main.
+            document.removeEventListener('focusin', keepFocusAboveNotice);
             // Фокус на кнопке, которая сейчас спрячется, ушёл бы на body и сбросил порядок Tab.
             const main = document.getElementById('main-content');
             if (main && cookieNotice.contains(document.activeElement)) {
