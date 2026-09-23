@@ -14,7 +14,7 @@ on:
 
 jobs:
     deploy-traefik:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             - name: Deploy Traefik over SSH
