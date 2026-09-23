@@ -11,7 +11,7 @@
             <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 <div class="text-center md:text-start">
                     <a class="mb-4 inline-flex items-center gap-3 text-h4 font-bold no-underline {{ variant == 'dark' ? 'text-on-dark' : 'text-content' }}" href="{{ brand_href|default('/') }}" aria-label="{{ brand }} — на главную">
-                        <span class="flex size-10 items-center justify-center rounded-md {{ variant == 'dark' ? 'bg-brand-red text-on-primary' : 'bg-brand-dark text-on-dark' }}">ВФ</span>
+                        <span class="flex size-8 items-center justify-center rounded-md {{ variant == 'dark' ? 'bg-brand-red text-on-primary' : 'bg-brand-dark text-on-dark' }}">ВФ</span>
                         <span>{{ brand }}</span>
                     </a>
                     {% if description|default(null) %}
@@ -20,7 +20,7 @@
                     {% if socials|default([]) is not empty %}
                         <div class="flex flex-wrap justify-center gap-3 md:justify-start">
                             {% for social in socials %}
-                                <a class="inline-flex size-11 items-center justify-center rounded-md border {{ border_class }} no-underline transition-colors hover:bg-brand-dark hover:text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 {{ variant == 'dark' ? 'focus-visible:outline-focus-on-dark text-on-dark' : 'focus-visible:outline-focus text-content' }}" href="{{ social.href }}" target="{{ social.target|default('_self') }}" rel="{{ social.rel|default('') }}" aria-label="{{ social.label }}">
+                                <a class="inline-flex size-8 items-center justify-center rounded-md border {{ border_class }} no-underline transition-colors hover:bg-brand-dark hover:text-on-dark focus-visible:outline-2 focus-visible:outline-offset-2 {{ variant == 'dark' ? 'focus-visible:outline-focus-on-dark text-on-dark' : 'focus-visible:outline-focus text-content' }}" href="{{ social.href }}" target="{{ social.target|default('_self') }}" rel="{{ social.rel|default('') }}" aria-label="{{ social.label }}">
                                     {% include 'website/components/_icon.html.twig' with {name: social.icon, size: 18} only %}
                                 </a>
                             {% endfor %}
@@ -33,7 +33,7 @@
                         <ul class="flex flex-col gap-4">
                             {% for contact in contacts %}
                                 <li class="flex items-start justify-center gap-3 md:justify-start">
-                                    <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-md border {{ border_class }}">
+                                    <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md border {{ border_class }}">
                                         {% include 'website/components/_icon.html.twig' with {name: contact.icon, size: 18} only %}
                                     </span>
                                     <div>
