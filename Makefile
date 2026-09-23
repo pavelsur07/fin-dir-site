@@ -87,22 +87,25 @@ assets:
 	rm -rf -- site/public/assets/website
 	mkdir -p site/public/assets/website
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --minify
+	cp site/assets/scripts/website/analytics.js site/public/assets/website/analytics.js
 	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
 
 assets-watch:
 	mkdir -p site/public/assets/website
+	cp site/assets/scripts/website/analytics.js site/public/assets/website/analytics.js
 	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --watch
 
 asset-version:
-	@cat site/public/assets/website/app.css site/public/assets/website/navigation.js site/public/assets/website/metrika.js | sha256sum | cut -c1-12
+	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js | sha256sum | cut -c1-12
 
 assets-check:
 	@temporary=$$(mktemp -d); \
 	trap 'rm -rf -- "$$temporary"' EXIT HUP INT TERM; \
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o "$$temporary/app.css" --minify; \
+	cp site/assets/scripts/website/analytics.js "$$temporary/analytics.js"; \
 	cp site/assets/scripts/website/navigation.js "$$temporary/navigation.js"; \
 	cp site/assets/scripts/website/metrika.js "$$temporary/metrika.js"; \
 	diff --brief --recursive "$$temporary" site/public/assets/website >/dev/null || { \

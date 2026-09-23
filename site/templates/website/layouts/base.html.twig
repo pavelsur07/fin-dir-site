@@ -1,4 +1,4 @@
-{% set vf_asset_version = 'f2cffdf0a668' %}
+{% set vf_asset_version = 'ff877c681b9a' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -24,11 +24,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 
-    <script>
-        window.VF_ANALYTICS = {
-            ymCounterId: '105455340',
-        };
-    </script>
+    <script src="/assets/website/analytics.js?v={{ vf_asset_version }}" defer></script>
 
     {% block json_ld %}
         {% include 'website/components/_json_ld.html.twig' with {

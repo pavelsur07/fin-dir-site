@@ -177,7 +177,7 @@
             }
             cookieNotice.hidden = false;
             window.requestAnimationFrame(() => {
-                cookieNotice.classList.add('is-visible');
+                cookieNotice.className += ' is-visible';
             });
         };
 

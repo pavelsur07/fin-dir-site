@@ -217,6 +217,7 @@ final class WebsiteFoundationTest extends WebTestCase
         $published = glob($this->projectPath('public/assets/website/*'));
         self::assertIsArray($published);
         self::assertSame([
+            $this->projectPath('public/assets/website/analytics.js'),
             $this->projectPath('public/assets/website/app.css'),
             $this->projectPath('public/assets/website/metrika.js'),
             $this->projectPath('public/assets/website/navigation.js'),
