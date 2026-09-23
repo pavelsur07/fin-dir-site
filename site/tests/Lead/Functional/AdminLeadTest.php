@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Lead\Functional;
 
+use App\Lead\Adapter\TelegramLeadNotifier;
 use App\Lead\Entity\Lead;
 use App\Lead\ValueObject\LeadStatus;
 use App\Tests\Lead\Builder\LeadBuilder;
@@ -11,6 +12,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class AdminLeadTest extends WebTestCase
@@ -159,6 +162,159 @@ final class AdminLeadTest extends WebTestCase
         $this->client->followRedirect();
 
         self::assertSelectorTextContains('.alert', 'Уведомление не отправлено');
+    }
+
+    public function testListRowActionsLiveInDropdownMenu(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads');
+
+        $cell = $crawler->filter('tbody tr td')->last();
+        $toggle = $cell->filter('button.menu-toggle');
+        self::assertSame('Действия: обращение №'.$id, $toggle->attr('aria-label'));
+        self::assertSame('lead-actions-'.$id, $toggle->attr('popovertarget'));
+        self::assertCount(1, $cell->filter('button, a')->reduce(static fn ($node) => null === $node->closest('.row-menu')));
+
+        $menu = $cell->filter('#lead-actions-'.$id.'[popover]');
+        // Текущий статус «Новое» не предлагается; уведомление скрыто -- Telegram в тестах выключен.
+        self::assertSame(
+            ['Открыть', 'Статус: В работе', 'Статус: Квалифицировано', 'Статус: Спам', 'Статус: Закрыто', 'Удалить'],
+            $menu->filter('a, button')->each(static fn ($node) => trim($node->text())),
+        );
+        self::assertSame('/admin/leads/'.$id, $menu->filter('a')->attr('href'));
+        self::assertCount(5, $menu->filter('form[method="post"] input[name="_token"]'));
+    }
+
+    public function testResendItemFollowsNotificationRuleWhenTelegramEnabled(): void
+    {
+        $notified = LeadBuilder::aLead()->withSubmissionId('00000000-0000-4000-8000-000000000001')->build();
+        $notified->markNotified(new \DateTimeImmutable('2026-09-01'));
+        [$pending, $sent, $spam] = $this->persist(
+            LeadBuilder::aLead()->withSubmissionId('00000000-0000-4000-8000-000000000002')->build(),
+            $notified,
+            LeadBuilder::aLead()->withSubmissionId('00000000-0000-4000-8000-000000000003')->spam()->build(),
+        );
+        self::getContainer()->set(TelegramLeadNotifier::class, new TelegramLeadNotifier(
+            new MockHttpClient(),
+            self::getContainer()->get(UrlGeneratorInterface::class),
+            'https://vashfindir.ru',
+            'test-token',
+            '-100123',
+        ));
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads');
+
+        $items = static fn (int $id): array => $crawler->filter('#lead-actions-'.$id.' button')->each(static fn ($node) => trim($node->text()));
+        self::assertContains('Отправить уведомление', $items($pending));
+        self::assertNotContains('Отправить уведомление', $items($sent));
+        self::assertNotContains('Отправить уведомление', $items($spam));
+    }
+
+    public function testStatusChangeWithoutStatusFilterKeepsPage(): void
+    {
+        $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+
+        $this->client->request('GET', '/admin/leads?form=consultation&page=1');
+        $this->client->submitForm('Статус: В работе');
+
+        self::assertResponseRedirects('/admin/leads?form=consultation&page=1');
+    }
+
+    public function testStatusChangeFromListKeepsNextContactAndReturnsToFilteredList(): void
+    {
+        $lead = LeadBuilder::aLead()->build();
+        $lead->scheduleNextContact(new \DateTimeImmutable('2026-10-01'), new \DateTimeImmutable('2026-09-01'));
+        [$id] = $this->persist($lead);
+        $this->logIn();
+
+        $this->client->request('GET', '/admin/leads?status=new&page=1');
+        $this->client->submitForm('Статус: В работе');
+
+        // Строка ушла из фильтра «Новое» -- возвращаемся на первую страницу того же фильтра.
+        self::assertResponseRedirects('/admin/leads?status=new');
+        self::assertSame(LeadStatus::IN_PROGRESS, $this->find($id)?->status());
+        self::assertSame('2026-10-01', self::getContainer()->get(EntityManagerInterface::class)->getConnection()
+            ->fetchOne('SELECT next_contact_at::date FROM lead_lead WHERE id = ?', [$id]));
+    }
+
+    public function testStaleStatusChangeFromListShowsMessageOnList(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads');
+        $stale = $crawler->selectButton('Статус: Закрыто')->form();
+
+        $this->client->submitForm('Статус: В работе');
+        $this->client->submit($stale);
+        self::assertResponseRedirects('/admin/leads');
+        $this->client->followRedirect();
+
+        self::assertSelectorTextContains('.alert', 'изменили в другом окне');
+        self::assertSame(LeadStatus::IN_PROGRESS, $this->find($id)?->status());
+    }
+
+    public function testDeleteFromListReturnsToFilteredList(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+
+        $this->client->request('GET', '/admin/leads?q=%D0%98%D0%B2%D0%B0%D0%BD');
+        $this->client->submitForm('Удалить');
+
+        self::assertResponseRedirects('/admin/leads?q=%D0%98%D0%B2%D0%B0%D0%BD');
+        self::assertNull($this->find($id));
+    }
+
+    public function testResendFromListReturnsToSamePageWithReason(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads');
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+
+        $this->client->request('POST', '/admin/leads/'.$id.'/notify', ['_token' => $token, 'back' => '/admin/leads?form=diagnostics&page=1']);
+        self::assertResponseRedirects('/admin/leads?form=diagnostics&page=1');
+        $this->client->followRedirect();
+        self::assertSelectorTextContains('.alert', 'Уведомление не отправлено');
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function foreignBackUrls(): iterable
+    {
+        yield 'чужой сайт' => ['https://evil.example/admin/leads'];
+        yield 'protocol-relative' => ['//evil.example/admin/leads'];
+        yield 'другой раздел' => ['/admin/posts'];
+        yield 'похожий путь' => ['/admin/leads/../posts'];
+        yield 'перевод строки в конце' => ["/admin/leads\n"];
+    }
+
+    #[DataProvider('foreignBackUrls')]
+    public function testForeignBackUrlIsIgnored(string $back): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads/'.$id);
+        $form = $crawler->selectButton('Сохранить')->form();
+
+        $this->client->request('POST', '/admin/leads/'.$id.'/update', ['back' => $back] + $form->getPhpValues());
+
+        self::assertResponseRedirects('/admin/leads/'.$id);
+    }
+
+    public function testForeignBackUrlOnDeleteFallsBackToList(): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads/'.$id);
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+
+        $this->client->request('POST', '/admin/leads/'.$id.'/delete', ['_token' => $token, 'back' => '//evil.example/admin/leads']);
+
+        self::assertResponseRedirects('/admin/leads');
     }
 
     public function testUnknownLeadIsNotFound(): void

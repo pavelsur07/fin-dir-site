@@ -7,6 +7,8 @@
         <h1>Обращения</h1>
     </div>
 
+    {% for message in app.flashes('error') %}<p class="alert" role="alert">{{ message }}</p>{% endfor %}
+
     <form class="filters" method="get" action="{{ path('admin_lead_list') }}">
         <label>Статус
             <select name="status">
@@ -29,6 +31,12 @@
     {% if pager.nbResults == 0 %}
         <p class="panel">Обращений не найдено.</p>
     {% else %}
+        {% set token = csrf_token('lead-admin') %}
+        {# Куда вернуться после действия из меню: тот же список с фильтрами. Удаление и смена
+           статуса при фильтре по статусу убирают строку из выборки -- тогда на первую
+           страницу, иначе последняя страница может опустеть и ответить 404. #}
+        {% set list_url = app.request.requestUri %}
+        {% set list_url_first_page = path('admin_lead_list', app.request.query.all|filter((value, key) => key != 'page')) %}
         <div class="table-wrap">
             <table class="table">
                 <thead>
@@ -39,10 +47,13 @@
                     <th scope="col">Форма</th>
                     <th scope="col">Статус</th>
                     <th scope="col">Контакт запланирован</th>
+                    <th scope="col">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for lead in pager.currentPageResults %}
+                    {# Как Lead::needsNotification(): спам не уведомляет, отправленное не повторяется. #}
+                    {% set needs_notification = lead.notifiedAt is null and lead.status.value != 'spam' %}
                     <tr>
                         <td><a href="{{ path('admin_lead_show', {id: lead.id}) }}">{{ lead.id }}</a></td>
                         <td>{{ lead.createdAt|date('d.m.Y H:i') }}</td>
@@ -53,9 +64,41 @@
                         <td>{{ forms[lead.formKey].title ?? lead.formKey }}</td>
                         <td>
                             <span class="badge badge-lead-{{ lead.status.value }}">{{ lead.status.label }}</span>
-                            {% if lead.notifiedAt is null and lead.status.value != 'spam' %}<div class="muted">без уведомления</div>{% endif %}
+                            {% if needs_notification %}<div class="muted">без уведомления</div>{% endif %}
                         </td>
                         <td>{{ lead.nextContactAt ? lead.nextContactAt|date('d.m.Y') : '—' }}</td>
+                        <td>
+                            {# То же меню, что в публикациях: нативный popover, позицию ставит admin.js. #}
+                            <button type="button" class="secondary menu-toggle" popovertarget="lead-actions-{{ lead.id }}" aria-label="Действия: обращение №{{ lead.id }}">…</button>
+                            <div class="row-menu" id="lead-actions-{{ lead.id }}" popover>
+                                <a href="{{ path('admin_lead_show', {id: lead.id}) }}">Открыть</a>
+                                <hr>
+                                {% for status in statuses|filter(status => status != lead.status) %}
+                                    {# Меняем только статус: дата контакта уходит текущей, версия ловит правку из другого окна. #}
+                                    <form method="post" action="{{ path('admin_lead_update', {id: lead.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ token }}">
+                                        <input type="hidden" name="version" value="{{ lead.version }}">
+                                        <input type="hidden" name="status" value="{{ status.value }}">
+                                        <input type="hidden" name="next_contact_at" value="{{ lead.nextContactAt ? lead.nextContactAt|date('Y-m-d') }}">
+                                        <input type="hidden" name="back" value="{{ criteria.status ? list_url_first_page : list_url }}">
+                                        <button type="submit">Статус: {{ status.label }}</button>
+                                    </form>
+                                {% endfor %}
+                                <hr>
+                                {% if notifications_enabled and needs_notification %}
+                                    <form method="post" action="{{ path('admin_lead_notify', {id: lead.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ token }}">
+                                        <input type="hidden" name="back" value="{{ list_url }}">
+                                        <button type="submit">Отправить уведомление</button>
+                                    </form>
+                                {% endif %}
+                                <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
+                                    <input type="hidden" name="_token" value="{{ token }}">
+                                    <input type="hidden" name="back" value="{{ list_url_first_page }}">
+                                    <button type="submit" class="danger">Удалить</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

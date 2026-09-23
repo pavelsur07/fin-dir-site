@@ -43,7 +43,7 @@ final class LeadActionController extends AbstractController
             $this->addFlash('error', 'Обращение изменили в другом окне. Проверьте данные и сохраните ещё раз.');
         }
 
-        return $this->redirectToRoute('admin_lead_show', ['id' => $id]);
+        return $this->back($request, $id);
     }
 
     #[Route('/admin/leads/{id}/notes', name: 'admin_lead_note', requirements: ['id' => '\d+'], methods: ['POST'])]
@@ -69,9 +69,9 @@ final class LeadActionController extends AbstractController
 
         $sender->resend($id)
             ? $this->addFlash('success', 'Уведомление отправлено в Telegram.')
-            : $this->addFlash('error', 'Уведомление не отправлено. Причина -- в карточке.');
+            : $this->addFlash('error', 'Уведомление не отправлено. Причина -- в карточке обращения.');
 
-        return $this->redirectToRoute('admin_lead_show', ['id' => $id]);
+        return $this->back($request, $id);
     }
 
     #[Route('/admin/leads/{id}/delete', name: 'admin_lead_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
@@ -81,7 +81,24 @@ final class LeadActionController extends AbstractController
         $eraser->erase($id);
         $this->addFlash('success', \sprintf('Обращение №%d удалено вместе с заметками.', $id));
 
-        return $this->redirectToRoute('admin_lead_list');
+        return $this->back($request, null);
+    }
+
+    /**
+     * Действие из меню списка возвращает в тот же список с фильтрами, иначе -- в карточку
+     * (после удаления -- в список). Принимаем только адрес самого списка: произвольный
+     * адрес из формы был бы open redirect.
+     */
+    private function back(Request $request, ?int $id): Response
+    {
+        $back = $request->getPayload()->getString('back');
+        if (1 === preg_match('~^/admin/leads(?:\?[^\s#]*)?\z~', $back)) {
+            return $this->redirect($back);
+        }
+
+        return null === $id
+            ? $this->redirectToRoute('admin_lead_list')
+            : $this->redirectToRoute('admin_lead_show', ['id' => $id]);
     }
 
     private function guard(Request $request): void

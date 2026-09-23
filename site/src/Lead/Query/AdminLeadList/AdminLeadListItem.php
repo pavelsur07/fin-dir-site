@@ -17,6 +17,7 @@ final readonly class AdminLeadListItem
         public LeadStatus $status,
         public ?\DateTimeImmutable $nextContactAt,
         public ?\DateTimeImmutable $notifiedAt,
+        public int $version,
     ) {
     }
 }

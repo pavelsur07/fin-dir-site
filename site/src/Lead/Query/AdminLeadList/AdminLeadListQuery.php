@@ -24,7 +24,7 @@ final class AdminLeadListQuery
     {
         $queryBuilder = $this->entityManager->createQueryBuilder()
             ->select(\sprintf(
-                'NEW %s(l.id, l.createdAt, l.formKey, l.name, l.contact, l.status, l.nextContactAt, l.notifiedAt)',
+                'NEW %s(l.id, l.createdAt, l.formKey, l.name, l.contact, l.status, l.nextContactAt, l.notifiedAt, l.version)',
                 AdminLeadListItem::class,
             ))
             ->from(Lead::class, 'l')

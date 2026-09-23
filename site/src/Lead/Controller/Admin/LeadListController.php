@@ -6,6 +6,7 @@ namespace App\Lead\Controller\Admin;
 
 use App\Lead\Query\AdminLeadList\AdminLeadListCriteria;
 use App\Lead\Query\AdminLeadList\AdminLeadListQuery;
+use App\Lead\Service\LeadNotificationSender;
 use App\Lead\ValueObject\LeadFormCatalog;
 use App\Lead\ValueObject\LeadStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class LeadListController extends AbstractController
 {
     #[Route('/admin/leads', name: 'admin_lead_list', methods: ['GET'])]
-    public function __invoke(Request $request, AdminLeadListQuery $query): Response
+    public function __invoke(Request $request, AdminLeadListQuery $query, LeadNotificationSender $notifications): Response
     {
         $form = $request->query->getString('form') ?: null;
         if (null !== $form && !LeadFormCatalog::has($form)) {
@@ -38,6 +39,7 @@ final class LeadListController extends AbstractController
             'criteria' => $criteria,
             'statuses' => LeadStatus::cases(),
             'forms' => LeadFormCatalog::all(),
+            'notifications_enabled' => $notifications->isEnabled(),
         ]);
     }
 }

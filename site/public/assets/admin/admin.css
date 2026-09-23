@@ -101,6 +101,8 @@ h2 { margin: 32px 0 12px; font-size: 20px; }
 .row-menu .actions { display: grid; gap: 0; }
 .row-menu a, .row-menu button { display: block; width: 100%; padding: 8px 12px; color: #0b1020; font-weight: 400; text-align: left; text-decoration: none; background: none; border: 0; border-radius: 6px; }
 .row-menu a:hover, .row-menu button:hover { color: #0b1020; background: #f5f6f8; }
+.row-menu hr { margin: 4px 0; border: 0; border-top: 1px solid #d9dce4; }
+.row-menu button.danger, .row-menu button.danger:hover { color: #b00020; }
 /* Браузер без Popover API: меню всегда видно в ячейке, кнопка «…» не нужна. */
 @supports not selector(:popover-open) {
     .menu-toggle { display: none; }
