@@ -240,7 +240,7 @@
                 const contact = contactInput ? contactInput.value.trim() : '';
 
                 if (!name || !contact) {
-                    form.classList.add('was-validated');
+                    form.className += ' was-validated';
                     return;
                 }
 

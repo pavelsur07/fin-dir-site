@@ -400,6 +400,7 @@ final class WebsiteFoundationTest extends WebTestCase
     public function testAssetVersionMatchesWebsiteAssetContent(): void
     {
         $css = $this->read($this->projectPath('public/assets/website/app.css'));
+        $analytics = $this->read($this->projectPath('public/assets/website/analytics.js'));
         $navigation = $this->read($this->projectPath('public/assets/website/navigation.js'));
         $metrika = $this->read($this->projectPath('public/assets/website/metrika.js'));
 
@@ -407,7 +408,7 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSame(1, preg_match("/{% set vf_asset_version = '([0-9a-f]{12})' %}/", $layout, $matches));
         $assetVersion = $matches[1] ?? '';
         self::assertNotSame('', $assetVersion);
-        self::assertSame(substr(hash('sha256', $css.$navigation.$metrika), 0, 12), $assetVersion);
+        self::assertSame(substr(hash('sha256', $css.$analytics.$navigation.$metrika), 0, 12), $assetVersion);
     }
 
     /** @return list<string> */
