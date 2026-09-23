@@ -27,4 +27,17 @@ final class PrivacyPolicyTest extends WebTestCase
         self::assertStringNotContainsString('пункте 3.3', $crawler->filter('main')->text());
         self::assertSelectorTextContains('[data-vf-section="privacy-hero"]', 'v1.3');
     }
+
+    /**
+     * Регрессия: элемент grid по умолчанию не уже самого длинного слова, и
+     * «конфиденциальности» растягивала hero до 444px на экране 375px.
+     */
+    public function testHeroFitsNarrowScreens(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/privacy');
+
+        self::assertSelectorExists('[data-vf-section="privacy-hero"] .grid > .min-w-0.lg\\:col-span-2 h1.hyphens-auto');
+        self::assertSelectorExists('[data-vf-section="privacy-hero"] .grid > .min-w-0.lg\\:col-span-1');
+    }
 }
