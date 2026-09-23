@@ -57,6 +57,22 @@ deptrac:
               - type: classNameRegex
                 value: '#^App\\([A-Za-z]+\\)?Form\\#'
 
+        - name: Command
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Command\\#'
+
+        # Twig-расширения: только представление, без запросов в БД.
+        - name: Twig
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Twig\\#'
+
+        - name: TwigVendor
+          collectors:
+              - type: classNameRegex
+                value: '#^Twig\\#'
+
         - name: EventListener
           collectors:
               - type: classNameRegex
@@ -143,6 +159,7 @@ deptrac:
             - ValueObject
             - Exception
             - Clock
+            - Adapter
 
         # Entity не знает ни инфраструктуры, ни HTTP -- PATTERNS.md §7.
         Entity:
@@ -164,12 +181,24 @@ deptrac:
             - Symfony
             - Exception
 
+        # Консольная команда -- как контроллер: вызывает сценарий.
+        Command:
+            - Service
+            - Symfony
+            - Clock
+
+        Twig:
+            - ValueObject
+            - TwigVendor
+
         Exception:
             - ValueObject
 
         ValueObject: []
+        # Адаптер -- инфраструктура: HTTP-клиент, роутер, внешние библиотеки.
         Adapter:
             - CommonMark
+            - Symfony
 
         # Vendor-слои не анализируются: paths ограничены ./src.
         DoctrineMapping: []
@@ -178,3 +207,4 @@ deptrac:
         Pagerfanta: []
         CommonMark: []
         Clock: []
+        TwigVendor: []

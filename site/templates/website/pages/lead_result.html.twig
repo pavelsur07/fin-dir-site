@@ -1,0 +1,19 @@
+{% extends 'website/layouts/base.html.twig' %}
+
+{# Результат отправки формы без JavaScript. Техническая страница: не индексируется. #}
+{% block title %}{{ success ? 'Заявка отправлена' : 'Заявка не отправлена' }} — Ваш Финдир{% endblock %}
+{% block robots %}noindex, nofollow{% endblock %}
+
+{% block body %}
+    {% include 'website/sections/_text_list.html.twig' with {
+        id: 'lead-result',
+        title: success ? 'Спасибо, заявка отправлена' : 'Заявка не отправлена',
+        text: success
+            ? 'Мы свяжемся с вами в ближайшее время по указанному контакту.'
+            : 'Исправьте данные и отправьте форму ещё раз. Быстрее всего связаться с нами в Telegram: @vashfindir_ru.',
+        items: errors|map(message => {text: message}),
+    } only %}
+    <div class="mx-auto w-full max-w-site px-4 pb-12 md:px-6">
+        {% include 'website/components/_button.html.twig' with {label: 'Вернуться на страницу', href: back_url, variant: 'outline-primary'} only %}
+    </div>
+{% endblock %}

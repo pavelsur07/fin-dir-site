@@ -85,6 +85,23 @@ make console CMD="security:hash-password"   # ввести пароль, ско�
 
 Хеш положить в GitHub secret `VF_ADMIN_PASSWORD_HASH` и перевыкатить.
 
+## Обращения с сайта
+
+Формы сайта (виджет `sections/_lead_form.html.twig`, формы описаны в
+`src/Lead/ValueObject/LeadFormCatalog.php`) отправляют заявки на `POST /lead`.
+Заявка сначала сохраняется в базе, затем уходит уведомление в Telegram —
+**без персональных данных**: номер, форма, страница, ответы и ссылка на карточку
+`/admin/leads/{id}`. Работа с заявками — в админке, раздел «Обращения».
+
+Уведомления включаются двумя переменными (пусто — выключены, заявки всё равно
+сохраняются): GitHub secrets `VF_TELEGRAM_BOT_TOKEN` (токен бота от @BotFather)
+и `VF_TELEGRAM_LEAD_CHAT_ID` (id чата, куда добавлен бот). Локально — те же
+имена в окружении перед `make up`.
+
+Если Telegram был недоступен, заявка остаётся «без уведомления». Дослать за
+последние 7 дней: `make console CMD="app:lead:notify-pending"` или кнопка в
+карточке обращения.
+
 ## Production
 
 Production-окружение описано в `docker-compose.prod.yml`. Для запуска нужны

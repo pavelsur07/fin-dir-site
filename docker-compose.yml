@@ -27,6 +27,9 @@ services:
             DATABASE_URL: "postgresql://site:secret@site-postgres:5432/site?serverVersion=17&charset=utf8"
             # Только dev: хеш пароля "admin". $$ -- экранирование $ для compose.
             ADMIN_PASSWORD_HASH: '$$2y$$13$$je2kd3VBIX8ArfiNwlTXF.RRLbnCETo7kI9ABqYqp7BTYgx9T18ku'
+            # Уведомления о заявках: пусто -- выключены. Для проверки подставить тестового бота.
+            TELEGRAM_BOT_TOKEN: ${VF_TELEGRAM_BOT_TOKEN:-}
+            TELEGRAM_LEAD_CHAT_ID: ${VF_TELEGRAM_LEAD_CHAT_ID:-}
         depends_on:
             site-postgres:
                 condition: service_healthy
@@ -71,6 +74,9 @@ services:
             DATABASE_URL: "postgresql://site:secret@site-postgres:5432/site?serverVersion=17&charset=utf8"
             # Только dev: хеш пароля "admin". $$ -- экранирование $ для compose.
             ADMIN_PASSWORD_HASH: '$$2y$$13$$je2kd3VBIX8ArfiNwlTXF.RRLbnCETo7kI9ABqYqp7BTYgx9T18ku'
+            # Уведомления о заявках: пусто -- выключены. Для проверки подставить тестового бота.
+            TELEGRAM_BOT_TOKEN: ${VF_TELEGRAM_BOT_TOKEN:-}
+            TELEGRAM_LEAD_CHAT_ID: ${VF_TELEGRAM_LEAD_CHAT_ID:-}
         depends_on:
             site-postgres:
                 condition: service_healthy

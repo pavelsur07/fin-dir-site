@@ -1,0 +1,71 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Обращения{% endblock %}
+
+{% block body %}
+    <div class="toolbar">
+        <h1>Обращения</h1>
+    </div>
+
+    <form class="filters" method="get" action="{{ path('admin_lead_list') }}">
+        <label>Статус
+            <select name="status">
+                <option value="">Все</option>
+                {% for status in statuses %}<option value="{{ status.value }}"{{ criteria.status == status ? ' selected' }}>{{ status.label }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Форма
+            <select name="form">
+                <option value="">Все</option>
+                {% for key, definition in forms %}<option value="{{ key }}"{{ criteria.form == key ? ' selected' }}>{{ definition.title }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Поиск по имени или контакту
+            <input type="search" name="q" value="{{ criteria.search }}">
+        </label>
+        <button type="submit" class="secondary">Показать</button>
+    </form>
+
+    {% if pager.nbResults == 0 %}
+        <p class="panel">Обращений не найдено.</p>
+    {% else %}
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">Имя и контакт</th>
+                    <th scope="col">Форма</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Контакт запланирован</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for lead in pager.currentPageResults %}
+                    <tr>
+                        <td><a href="{{ path('admin_lead_show', {id: lead.id}) }}">{{ lead.id }}</a></td>
+                        <td>{{ lead.createdAt|date('d.m.Y H:i') }}</td>
+                        <td>
+                            <a href="{{ path('admin_lead_show', {id: lead.id}) }}">{{ lead.name }}</a>
+                            <div class="muted">{{ lead.contact }}</div>
+                        </td>
+                        <td>{{ forms[lead.formKey].title ?? lead.formKey }}</td>
+                        <td>
+                            <span class="badge badge-lead-{{ lead.status.value }}">{{ lead.status.label }}</span>
+                            {% if lead.notifiedAt is null and lead.status.value != 'spam' %}<div class="muted">без уведомления</div>{% endif %}
+                        </td>
+                        <td>{{ lead.nextContactAt ? lead.nextContactAt|date('d.m.Y') : '—' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if pager.haveToPaginate %}
+            <nav class="pagination" aria-label="Страницы">
+                {{ pagerfanta(pager, {omitFirstPage: true, prev_message: '←', next_message: '→'}) }}
+            </nav>
+        {% endif %}
+    {% endif %}
+{% endblock %}

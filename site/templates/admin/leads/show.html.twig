@@ -1,0 +1,94 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Обращение №{{ lead.id }}{% endblock %}
+
+{% block body %}
+    {% set token = csrf_token('lead-admin') %}
+    <div class="toolbar">
+        <h1>Обращение №{{ lead.id }}</h1>
+        <span class="badge badge-lead-{{ lead.status.value }}">{{ lead.status.label }}</span>
+    </div>
+    <p><a href="{{ path('admin_lead_list') }}">← Все обращения</a></p>
+
+    {% for message in app.flashes('error') %}<p class="alert" role="alert">{{ message }}</p>{% endfor %}
+
+    <div class="panel">
+        <dl class="details">
+            <dt>Получено</dt><dd>{{ lead.createdAt|date('d.m.Y H:i') }}</dd>
+            <dt>Форма</dt><dd>{{ forms[lead.formKey].title ?? lead.formKey }}</dd>
+            <dt>Имя</dt><dd>{{ lead.name }}</dd>
+            <dt>Контакт</dt><dd>{{ lead.contact }}</dd>
+            {% if lead.task %}<dt>Задача</dt><dd class="pre">{{ lead.task }}</dd>{% endif %}
+            {% for answer in lead.answers %}<dt>{{ answer.questionLabel }}</dt><dd>{{ answer.answerLabel }}</dd>{% endfor %}
+            <dt>Страница</dt><dd>{{ lead.pageUrl ?? '—' }}</dd>
+            {% if lead.referrer %}<dt>Откуда пришли</dt><dd>{{ lead.referrer }}</dd>{% endif %}
+            {% for key, value in lead.utm %}<dt>{{ key }}</dt><dd>{{ value }}</dd>{% endfor %}
+            <dt>Согласие на ПД</dt><dd>{{ lead.consentAt|date('d.m.Y H:i') }}, версия {{ lead.consentVersion }}</dd>
+            {% if lead.spamReason %}<dt>Признак спама</dt><dd>{{ lead.spamReason == 'honeypot' ? 'заполнено скрытое поле' : 'форма заполнена быстрее 3 секунд' }}</dd>{% endif %}
+            <dt>Уведомление</dt>
+            <dd>
+                {% if lead.notifiedAt %}
+                    отправлено {{ lead.notifiedAt|date('d.m.Y H:i') }}
+                {% elseif lead.status.value == 'spam' %}
+                    не отправляется для спама
+                {% elseif not notifications_enabled %}
+                    уведомления выключены (нет настроек Telegram)
+                {% else %}
+                    не отправлено{% if lead.notificationError %}: {{ lead.notificationError }}{% endif %}
+                    <form method="post" action="{{ path('admin_lead_notify', {id: lead.id}) }}" class="inline-form">
+                        <input type="hidden" name="_token" value="{{ token }}">
+                        <button type="submit" class="secondary">Отправить повторно</button>
+                    </form>
+                {% endif %}
+            </dd>
+        </dl>
+    </div>
+
+    <h2>Работа с обращением</h2>
+    <form class="panel" method="post" action="{{ path('admin_lead_update', {id: lead.id}) }}">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <input type="hidden" name="version" value="{{ lead.version }}">
+        <div class="form-row">
+            <label for="lead-status">Статус</label>
+            <select id="lead-status" name="status">
+                {% for status in statuses %}<option value="{{ status.value }}"{{ lead.status == status ? ' selected' }}>{{ status.label }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="lead-next-contact">Следующий контакт</label>
+            <input id="lead-next-contact" type="date" name="next_contact_at" value="{{ lead.nextContactAt ? lead.nextContactAt|date('Y-m-d') }}">
+        </div>
+        <button type="submit">Сохранить</button>
+    </form>
+
+    <h2>Заметки</h2>
+    <form class="panel" method="post" action="{{ path('admin_lead_note', {id: lead.id}) }}">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <div class="form-row">
+            <label for="lead-note">Новая заметка</label>
+            <textarea id="lead-note" name="text" rows="3" required maxlength="5000"></textarea>
+        </div>
+        <button type="submit">Добавить заметку</button>
+    </form>
+    {% for note in lead.notes %}
+        <div class="note"><div class="muted">{{ note.createdAt|date('d.m.Y H:i') }}</div><p class="pre">{{ note.text }}</p></div>
+    {% else %}
+        <p class="muted">Заметок пока нет.</p>
+    {% endfor %}
+
+    {% if lead.sameContact %}
+        <h2>Другие обращения с этим контактом</h2>
+        <ul>
+            {% for other in lead.sameContact %}
+                <li><a href="{{ path('admin_lead_show', {id: other.id}) }}">№{{ other.id }}</a> от {{ other.createdAt|date('d.m.Y') }} — {{ other.status.label }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Удаление</h2>
+    <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="panel" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
+        <input type="hidden" name="_token" value="{{ token }}">
+        <p class="muted">Удаляет обращение и заметки без возможности восстановления — например, по запросу человека на удаление персональных данных.</p>
+        <button type="submit">Удалить обращение</button>
+    </form>
+{% endblock %}

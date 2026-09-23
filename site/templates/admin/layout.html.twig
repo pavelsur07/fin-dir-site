@@ -54,6 +54,21 @@
         .pagination { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
         .pagination a, .pagination span { padding: 4px 10px; border: 1px solid #d9dce4; border-radius: 6px; background: #fff; text-decoration: none; }
         .pagination .current { font-weight: 700; }
+        .filters label { display: grid; gap: 4px; margin: 0; font-weight: 400; }
+        .filters select, .filters input { width: auto; min-width: 160px; }
+        .filters button { align-self: end; }
+        .details { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 8px 16px; margin: 0; }
+        .details dt { color: #5c677d; }
+        .details dd { margin: 0; }
+        .pre { white-space: pre-wrap; }
+        .inline-form { display: inline; margin-left: 8px; }
+        .note { margin-bottom: 12px; padding: 12px 16px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
+        .note p { margin: 4px 0 0; }
+        .badge-lead-new { color: #fff; background: #b00020; }
+        .badge-lead-qualified { color: #fff; background: #146c43; }
+        .badge-lead-spam, .badge-lead-closed { color: #fff; background: #5c677d; }
+        select { padding: 8px 12px; font: inherit; border: 1px solid #767b85; border-radius: 6px; background: #fff; }
+        h2 { margin: 32px 0 12px; font-size: 20px; }
         .prose { max-width: 720px; padding: 24px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
         .prose img { max-width: 100%; }
         .prose pre { overflow-x: auto; padding: 12px; background: #f5f6f8; }
@@ -68,6 +83,7 @@
         <nav class="nav" aria-label="Разделы админки">
             <a href="{{ path('admin_dashboard') }}" {{ route == 'admin_dashboard' ? 'aria-current="page"' }}>Ваш Финдир · Админка</a>
             <a href="{{ path('admin_post_list') }}" {{ route starts with 'admin_post' ? 'aria-current="page"' }}>Публикации</a>
+            <a href="{{ path('admin_lead_list') }}" {{ route starts with 'admin_lead' ? 'aria-current="page"' }}>Обращения</a>
         </nav>
         <form method="post" action="{{ logout_path('admin') }}">
             <span>{{ app.user.userIdentifier }}</span>

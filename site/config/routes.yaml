@@ -32,3 +32,9 @@ website_controllers:
     path: ../src/Website/Controller/
     namespace: App\Website\Controller
   type: attribute
+
+lead_controllers:
+  resource:
+    path: ../src/Lead/Controller/
+    namespace: App\Lead\Controller
+  type: attribute

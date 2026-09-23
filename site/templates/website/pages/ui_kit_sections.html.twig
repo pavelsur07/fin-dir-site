@@ -203,12 +203,25 @@
 
     {% include 'website/sections/_lead_form.html.twig' with {
         id: 'lead-form-section',
-        eyebrow: 'Form + Context',
+        form: 'consultation',
+        demo: true,
+        eyebrow: 'Lead Form / простая',
         title: 'Обсудить финансовую задачу',
-        text: 'Форма демонстрирует только layout и production controls. На технической странице данные не отправляются и не сохраняются.',
+        text: 'Простая форма: имя, контакт, задача и согласие. На технической странице данные не отправляются и не сохраняются.',
         context_items: ['Короткий набор полей', 'Явные labels', 'Согласие до отправки'],
         action_label: 'Демонстрационная кнопка',
-        note: 'Demo only: обработчик отправки не подключён.',
+        note: 'Demo only: на UI-kit форма не отправляется.',
+    } only %}
+
+    {% include 'website/sections/_lead_form.html.twig' with {
+        id: 'lead-form-qualification-section',
+        form: 'diagnostics',
+        demo: true,
+        eyebrow: 'Lead Form / квалификационная',
+        title: 'Записаться на диагностику',
+        text: 'Квалификационная форма: вопросы и варианты ответов берутся из каталога форм, сервер проверяет ответы по нему же.',
+        action_label: 'Демонстрационная кнопка',
+        note: 'Demo only: на UI-kit форма не отправляется.',
     } only %}
 
     {% include 'website/sections/_grid.html.twig' with {

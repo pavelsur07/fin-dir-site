@@ -63,6 +63,9 @@ services:
       DEFAULT_URI: https://vashfindir.ru
       DATABASE_URL: "postgresql://site:${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}@site-postgres:5432/site?serverVersion=17&charset=utf8"
       ADMIN_PASSWORD_HASH: ${VF_ADMIN_PASSWORD_HASH:?VF_ADMIN_PASSWORD_HASH is required}
+      # Необязательны: без них заявки сохраняются, но уведомления в Telegram не уходят.
+      TELEGRAM_BOT_TOKEN: ${VF_TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_LEAD_CHAT_ID: ${VF_TELEGRAM_LEAD_CHAT_ID:-}
     depends_on:
       site-postgres:
         condition: service_healthy
@@ -92,6 +95,9 @@ services:
       DEFAULT_URI: https://vashfindir.ru
       DATABASE_URL: "postgresql://site:${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}@site-postgres:5432/site?serverVersion=17&charset=utf8"
       ADMIN_PASSWORD_HASH: ${VF_ADMIN_PASSWORD_HASH:?VF_ADMIN_PASSWORD_HASH is required}
+      # Необязательны: без них заявки сохраняются, но уведомления в Telegram не уходят.
+      TELEGRAM_BOT_TOKEN: ${VF_TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_LEAD_CHAT_ID: ${VF_TELEGRAM_LEAD_CHAT_ID:-}
     networks:
       - internal
     command: ["sh"]

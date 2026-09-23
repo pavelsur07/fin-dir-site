@@ -551,7 +551,7 @@ section contract.
 | Pricing Preview | сравнить подтверждённые предложения | `title`, `items[].title` | item text/details | 2–4 items | Grid | для fake prices или popularity badge |
 | Comparison | сравнить одинаковые критерии | `title`, `caption`, alternatives, rows | labels | 2–3 alternatives; 3–8 rows | semantic table | если нет общих критериев |
 | FAQ | ответить на частые вопросы | `title`, question/answer items | intro text | 3–6 questions | Accordion Stage 1 | для произвольного длинного контента |
-| Lead Form | дать контекст и короткую demo/lead form | `title`, `text` | context list, `action_label`, note | один form block | form controls + Button Stage 1 | без backend flow выдавать form за рабочую |
+| Lead Form | дать контекст и форму обращения | `title`, `text`, `form` (ключ каталога) | context list, `action_label`, note, `demo` | один form block | form controls + Button Stage 1 | с вопросами, которых нет в `LeadFormCatalog`; demo вне UI-kit |
 | Article Preview | анонсировать подтверждённые материалы | `title`, `items[].title` | item text/action/href/meta | 2–4 items | Grid | для fake dates, authors или metrics |
 | Article List | список опубликованных статей блога | `title`, `items[].title`, `items[].href` | item text, meta (+`meta_datetime`), `pagination` | 1–12 items на страницу | Grid + Pagination | для демо-статей на production page |
 | Article | длинный текст статьи из Markdown | `title`, `byline`, `breadcrumbs`, `body_html` | `lead`, реальная дата, `toc`, `heading_level` | одна статья | Breadcrumb + `vf-article-body` | для маркетингового текста, который собирается из sections |
@@ -574,9 +574,23 @@ sticky начиная с `lg`) и тело `vf-article-body`. `body_html` — т
 Semantic roles `Problem`, `Benefits`, `Proof`, `Pricing`, `Article Preview` и
 `Article List` передаются общим Text/List или Grid patterns через документированный `marker`:
 отдельные wrapper и CSS-копии для них запрещены. FAQ делегирует production
-Accordion; CTA и Hero переиспользуют Stage 1 без v2 templates. Lead demo
-использует `type="button"`: backend, CRM/API, сохранение и отправка данных в
-Stage 2 отсутствуют.
+Accordion; CTA и Hero переиспользуют Stage 1 без v2 templates.
+
+Lead Form (Stage 7) — боевой виджет формы обращения: `POST /lead`, данные
+сохраняются в модуле `Lead`. Параметр `form` — ключ `LeadFormCatalog`:
+`consultation` (простая: имя, контакт, задача, согласие) или `diagnostics`
+(квалификационная: плюс вопросы из каталога, рендерятся production Select).
+Вопросы и варианты ответов живут только в каталоге — виджет и серверная
+валидация читают одно определение, копировать их в шаблон запрещено. Виджет
+ставится на любую страницу одним include; новая форма — новая запись в каталоге.
+
+- успех показывается только после ответа сервера `201` (`role="status"`), ошибки
+  полей — у полей (`aria-invalid` + текст), прочие ошибки — `role="alert"` с
+  запасным контактом в Telegram; цель Метрики — только после `201`;
+- без JavaScript форма отправляется обычным POST и получает страницу результата;
+- защита без сессии: stateless CSRF (проверка Origin), honeypot, минимальное
+  время заполнения, лимит частоты; страница с формой остаётся кешируемой;
+- на UI-kit виджет показывается с `demo: true` — без `action`, `type="button"`.
 
 ### 7.4. Media и demo content
 

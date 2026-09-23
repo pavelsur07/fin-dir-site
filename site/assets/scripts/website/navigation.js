@@ -228,44 +228,148 @@
             });
         });
 
-        document.querySelectorAll('.js-lead-form').forEach((form) => {
-            const successMessage = form.querySelector('.js-lead-success');
+        const newSubmissionId = () => {
+            if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+                return window.crypto.randomUUID();
+            }
+
+            // Старые браузеры: id пустой, сервер выдаст свой (защиты от повтора не будет).
+            return '';
+        };
+
+        const setHidden = (form, name, value) => {
+            let input = form.elements.namedItem(name);
+
+            if (!input) {
+                input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                form.append(input);
+            }
+
+            input.value = value;
+        };
+
+        const clearErrors = (form) => {
+            form.querySelectorAll('[data-vf-lead-field-error]').forEach((element) => element.remove());
+            form.querySelectorAll('[aria-invalid="true"]').forEach((field) => {
+                field.removeAttribute('aria-invalid');
+                field.removeAttribute('aria-describedby');
+            });
+        };
+
+        const showFieldError = (form, name, message) => {
+            const field = form.elements.namedItem(name);
+
+            if (!(field instanceof HTMLElement) || field.type === 'hidden') {
+                return false;
+            }
+
+            const component = field.closest('[data-vf-component]');
+            if (!component) {
+                return false;
+            }
+
+            const feedback = document.createElement('div');
+            feedback.className = 'text-small text-danger';
+            feedback.id = `${field.id}-feedback`;
+            feedback.dataset.vfLeadFieldError = '';
+            feedback.textContent = message;
+
+            // Подсветку даёт вариант aria-invalid:* в компоненте -- JS меняет только атрибуты.
+            field.setAttribute('aria-invalid', 'true');
+            field.setAttribute('aria-describedby', feedback.id);
+            // У checkbox корень -- flex-строка: текст ошибки внутри сжал бы подпись.
+            if (component.dataset.vfComponent === 'checkbox') {
+                component.after(feedback);
+            } else {
+                component.append(feedback);
+            }
+
+            return true;
+        };
+
+        document.querySelectorAll('[data-vf-lead-form]').forEach((form) => {
+            const success = form.querySelector('[data-vf-lead-success]');
+            const failure = form.querySelector('[data-vf-lead-error]');
+            const submit = form.querySelector('[type="submit"]');
+            const submitLabel = submit ? submit.textContent : '';
+            const fallback = 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам в Telegram: @vashfindir_ru.';
+
+            let openedAt = performance.now();
+
+            const referrerOrigin = () => {
+                try {
+                    return document.referrer ? new URL(document.referrer).origin : '';
+                } catch (error) {
+                    return '';
+                }
+            };
+
+            const prepare = () => {
+                openedAt = performance.now();
+                setHidden(form, 'submission_id', newSubmissionId());
+                setHidden(form, 'page_url', window.location.pathname);
+                // Только origin: путь и query чужого сайта могут содержать персональные данные.
+                setHidden(form, 'referrer', referrerOrigin());
+                new URLSearchParams(window.location.search).forEach((value, key) => {
+                    if (key.startsWith('utm_')) {
+                        setHidden(form, key, value.slice(0, 200));
+                    }
+                });
+            };
+
+            prepare();
 
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
-
-                const nameInput = form.elements.name;
-                const contactInput = form.elements.contact;
-                const name = nameInput ? nameInput.value.trim() : '';
-                const contact = contactInput ? contactInput.value.trim() : '';
-
-                if (!name || !contact) {
-                    form.className += ' was-validated';
-                    return;
-                }
-
-                trackGoal('lead_form_submit');
+                clearErrors(form);
+                success.hidden = true;
+                failure.hidden = true;
+                submit.disabled = true;
+                submit.textContent = 'Отправляем…';
+                // Длительность по часам самого браузера: расхождение с сервером не важно.
+                setHidden(form, 'fill_ms', String(Math.round(performance.now() - openedAt)));
 
                 try {
                     const response = await fetch(form.action, {
                         method: 'POST',
                         body: new FormData(form),
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                        headers: { Accept: 'application/json' },
                     });
+                    const payload = await response.json().catch(() => ({}));
 
-                    if (!response.ok) {
-                        throw new Error('Form submit failed');
+                    if (response.status === 201) {
+                        // Цель -- только после ответа сервера: заявка действительно сохранена.
+                        trackGoal('lead_form_submit');
+                        form.reset();
+                        prepare();
+                        success.hidden = false;
+                        return;
                     }
+
+                    if (response.status === 422 && payload.errors) {
+                        const unplaced = Object.entries(payload.errors)
+                            .filter(([name, message]) => !showFieldError(form, name, message))
+                            .map(([, message]) => message);
+                        failure.textContent = unplaced.length > 0 ? unplaced.join(' ') : 'Проверьте поля формы.';
+                        failure.hidden = false;
+                        const firstInvalid = form.querySelector('[aria-invalid="true"]');
+                        if (firstInvalid) {
+                            firstInvalid.focus();
+                        }
+                        return;
+                    }
+
+                    failure.textContent = payload.error || fallback;
+                    failure.hidden = false;
                 } catch (error) {
-                    console.warn('Форма не отправлена на сервер.', error);
+                    failure.textContent = fallback;
+                    failure.hidden = false;
+                } finally {
+                    submit.disabled = false;
+                    submit.textContent = submitLabel;
                 }
-
-                if (successMessage) {
-                    successMessage.classList.remove('hidden');
-                }
-
-                form.reset();
-                form.classList.remove('was-validated');
             });
         });
     };

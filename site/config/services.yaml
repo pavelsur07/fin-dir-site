@@ -1,5 +1,8 @@
 parameters:
   vf.site_url: 'https://vashfindir.ru'
+  # Пусто -- уведомления о заявках выключены, заявки всё равно сохраняются.
+  env(TELEGRAM_BOT_TOKEN): ''
+  env(TELEGRAM_LEAD_CHAT_ID): ''
 
 services:
   _defaults:

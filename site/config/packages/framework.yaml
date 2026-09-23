@@ -7,7 +7,23 @@ framework:
   trusted_proxies: 'private_ranges'
   trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port']
 
-  csrf_protection: true
+  # Сессионный CSRF для админки. lead_submit -- stateless (проверка Origin/Referer):
+  # публичная форма живёт на кешируемых страницах без сессии.
+  csrf_protection:
+    stateless_token_ids: [lead_submit]
+
+  # Счётчики лимитов (заявки, попытки входа) -- в Postgres: общие для реплик
+  # php-fpm и переживают деплой. Файловый кеш считал бы на каждой реплике отдельно.
+  cache:
+    pools:
+      cache.rate_limiter:
+        adapter: cache.adapter.doctrine_dbal
+
+  rate_limiter:
+    lead_submit:
+      policy: sliding_window
+      limit: 5
+      interval: '10 minutes'
 
   # Сессии только у /admin. php-fpm на проде в двух репликах, поэтому
   # файловые сессии не годятся -- храним в Postgres (таблица sessions).

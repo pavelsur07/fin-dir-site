@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Website;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 final class MarketingSectionsTest extends WebTestCase
 {
@@ -97,17 +98,31 @@ final class MarketingSectionsTest extends WebTestCase
     public function testLeadFormIsAccessibleDemoWithoutSubmission(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/ui-kit/sections');
+        $crawler = $client->request('GET', '/ui-kit/sections');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorExists('[data-vf-demo-form]:not([action])');
-        self::assertSelectorCount(2, '[data-vf-demo-form] [data-vf-component="form-input"]');
-        self::assertSelectorCount(1, '[data-vf-demo-form] [data-vf-component="textarea"]');
-        self::assertSelectorCount(1, '[data-vf-demo-form] [data-vf-component="checkbox"]');
-        self::assertSelectorCount(4, '[data-vf-demo-form] label');
+        // На UI-kit обе формы -- demo: без action и без submit.
+        self::assertSelectorCount(2, '[data-vf-demo-form]:not([action])');
         self::assertSelectorCount(0, '[data-vf-demo-form] button[type="submit"]');
-        self::assertSelectorCount(1, '[data-vf-demo-form] button[type="button"]');
-        self::assertSelectorTextContains('[data-vf-demo-form] [data-vf-form-note]', 'обработчик отправки не подключён');
+        self::assertSelectorCount(0, '[data-vf-lead-form]');
+
+        $simple = '#lead-form-section [data-vf-demo-form]';
+        self::assertSelectorCount(2, $simple.' [data-vf-component="form-input"]');
+        self::assertSelectorCount(0, $simple.' [data-vf-component="select"]');
+        self::assertSelectorCount(1, $simple.' [data-vf-component="textarea"]');
+        self::assertSelectorCount(1, $simple.' [data-vf-component="checkbox"]');
+        self::assertSelectorCount(1, $simple.' button[type="button"]');
+        self::assertSelectorTextContains($simple.' [data-vf-form-note]', 'форма не отправляется');
+
+        // Квалификационная: вопросы из LeadFormCatalog, у каждого поля свой label.
+        $qualification = '#lead-form-qualification-section [data-vf-demo-form]';
+        self::assertSelectorCount(3, $qualification.' [data-vf-component="select"]');
+        self::assertSelectorTextContains($qualification, 'Оборот в месяц');
+        $fields = $crawler->filter($qualification.' [data-vf-component]:not([data-vf-component="button"])');
+        self::assertCount(7, $fields);
+        foreach ($fields as $field) {
+            self::assertSame(1, (new Crawler($field))->filter('label')->count());
+        }
     }
 
     public function testOnestIsSelfHostedAndIsTheOnlyPrimaryWebsiteFont(): void

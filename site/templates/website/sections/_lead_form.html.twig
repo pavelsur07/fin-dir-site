@@ -1,8 +1,16 @@
+{#
+    Lead Form -- виджет формы обращения (Stage 7). Отправляет на POST /lead.
+    Вход: form ('consultation' | 'diagnostics' -- ключ LeadFormCatalog), title, text,
+    optional: id, eyebrow, context_items, action_label, note,
+    demo (true -- только показ на UI-kit: без action, отправка не выполняется).
+#}
 {% extends 'website/sections/_base.html.twig' %}
 {% set section_class = 'bg-surface' %}
 {% set section_id = id|default('vf-lead-form') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'lead-form' %}
+{% set definition = lead_form(form|default('consultation')) %}
+{% set demo = demo|default(false) %}
 
 {% block section_content %}
     <div class="grid items-start gap-8 md:grid-cols-2" data-vf-layout="form-context">
@@ -17,37 +25,67 @@
             {% endif %}
         </div>
 
-        <form class="grid gap-4 rounded-lg border border-border-default p-4 md:p-6" data-vf-demo-form>
+        <form class="grid gap-4 rounded-lg border border-border-default p-4 md:p-6"{% if demo %} data-vf-demo-form{% else %} method="post" action="{{ path('lead_submit') }}" data-vf-lead-form{% endif %} data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
+            <input type="hidden" name="form" value="{{ definition.key }}">
+            {# Заполняет JS: id отправки (защита от дублей), время открытия (антиспам), источник. #}
+            <input type="hidden" name="submission_id" value="">
+            <input type="hidden" name="fill_ms" value="">
+            <input type="hidden" name="page_url" value="">
+            <input type="hidden" name="referrer" value="">
+            {# Honeypot: человек поле не видит и не заполняет; заполнил -- бот. #}
+            <div class="hidden" aria-hidden="true">
+                <label for="{{ section_id }}-website">Сайт компании</label>
+                <input id="{{ section_id }}-website" name="website" type="text" value="" tabindex="-1" autocomplete="off">
+            </div>
+
             {% include 'website/components/_form_input.html.twig' with {
                 id: section_id ~ '-name',
                 name: 'name',
                 label: 'Имя',
                 required: true,
+                autocomplete: 'name',
                 placeholder: 'Как к вам обращаться',
             } only %}
             {% include 'website/components/_form_input.html.twig' with {
                 id: section_id ~ '-contact',
                 name: 'contact',
-                label: 'Рабочий телефон или email',
+                label: 'Телефон, email или Telegram',
                 required: true,
                 placeholder: '+7 900 000-00-00',
             } only %}
+            {% for question in definition.questions %}
+                {% set options = [{value: '', label: 'Выберите вариант'}] %}
+                {% for value, label in question.options %}{% set options = options|merge([{value: value, label: label}]) %}{% endfor %}
+                {% include 'website/components/_form_select.html.twig' with {
+                    id: section_id ~ '-' ~ question.key,
+                    name: 'answers[' ~ question.key ~ ']',
+                    label: question.label,
+                    required: true,
+                    options: options,
+                } only %}
+            {% endfor %}
             {% include 'website/components/_form_textarea.html.twig' with {
                 id: section_id ~ '-task',
                 name: 'task',
                 label: 'Коротко о задаче',
                 placeholder: 'Контекст для первого разговора',
             } only %}
-            {% include 'website/components/_form_checkbox.html.twig' with {
-                id: section_id ~ '-agreement',
-                name: 'agreement',
-                label: 'Согласен на обработку персональных данных',
-                required: true,
-            } only %}
+            <div class="grid gap-2">
+                {% include 'website/components/_form_checkbox.html.twig' with {
+                    id: section_id ~ '-agreement',
+                    name: 'agreement',
+                    label: 'Согласен на обработку персональных данных',
+                    required: true,
+                } only %}
+                <p class="mb-0 text-small text-muted"><a href="{{ path('consent') }}">Согласие на обработку данных</a> и <a href="{{ path('privacy') }}">политика конфиденциальности</a>.</p>
+            </div>
             {% include 'website/components/_button.html.twig' with {
-                label: action_label|default('Продолжить'),
-                type: 'button',
+                label: action_label|default('Отправить заявку'),
+                type: demo ? 'button' : 'submit',
             } only %}
+            <p class="mb-0 rounded-md bg-success-soft p-3 text-small text-success" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
+            <p class="mb-0 rounded-md bg-danger-soft p-3 text-small text-danger" role="alert" data-vf-lead-error hidden></p>
             {% if note|default(null) %}<p class="mb-0 text-small text-muted" data-vf-form-note>{{ note }}</p>{% endif %}
         </form>
     </div>
