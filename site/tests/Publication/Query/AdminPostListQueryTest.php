@@ -10,12 +10,15 @@ use App\Publication\Query\AdminPostList\AdminPostListQuery;
 use App\Publication\Query\AdminPostList\AdminPostSort;
 use App\Publication\ValueObject\PostStatus;
 use App\Tests\Publication\Builder\PostBuilder;
+use App\Tests\Publication\PostTableCleaner;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class AdminPostListQueryTest extends KernelTestCase
 {
+    use PostTableCleaner;
+
     private EntityManagerInterface $entityManager;
     private AdminPostListQuery $query;
 
@@ -23,6 +26,7 @@ final class AdminPostListQueryTest extends KernelTestCase
     {
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
         $this->query = self::getContainer()->get(AdminPostListQuery::class);
+        self::clearPosts($this->entityManager);
     }
 
     public function testListsAllStatuses(): void

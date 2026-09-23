@@ -381,7 +381,8 @@ Stage 1 определяет:
 - Breadcrumb;
 - Navbar;
 - Footer;
-- CTA panel.
+- CTA panel;
+- Pagination (Stage 6).
 
 Production Twig partial является единственной реализацией компонента. UI-kit и
 будущие страницы подключают тот же partial. Стили задаются Tailwind utilities
@@ -389,6 +390,11 @@ Production Twig partial является единственной реализа
 статические class strings. Accordion использует native `details`/`summary` без
 JavaScript. Mobile Navbar использует native modal `<dialog>` и минимальный
 `navigation.js`, потому что off-canvas lifecycle не является disclosure.
+
+Pagination (`components/_pagination.html.twig`) — переход по страницам списка:
+«← Новее», «Страница N из M», «Раньше →» на production Button `outline-primary`
+внутри `nav aria-label`. Недоступное направление не рендерится, а не
+показывается disabled-кнопкой. Нумерация страниц не вводится, пока списки короткие.
 
 ### 5.1. Navbar
 
@@ -523,6 +529,8 @@ Button variant `outline-primary`.
 | FAQ | `sections/_faq.html.twig` | `faq`, фиксирован |
 | Lead Form | `sections/_lead_form.html.twig` | `lead-form`, фиксирован |
 | Article Preview | `sections/_grid.html.twig` | required `marker: article-preview` |
+| Article List | `sections/_grid.html.twig` | required `marker: article-list` |
+| Article | `sections/_article.html.twig` | `article`, фиксирован |
 | CTA | `sections/_cta.html.twig` | `cta`, фиксирован |
 
 `marker` — обязательный semantic identifier при использовании общего partial в
@@ -544,11 +552,27 @@ section contract.
 | Comparison | сравнить одинаковые критерии | `title`, `caption`, alternatives, rows | labels | 2–3 alternatives; 3–8 rows | semantic table | если нет общих критериев |
 | FAQ | ответить на частые вопросы | `title`, question/answer items | intro text | 3–6 questions | Accordion Stage 1 | для произвольного длинного контента |
 | Lead Form | дать контекст и короткую demo/lead form | `title`, `text` | context list, `action_label`, note | один form block | form controls + Button Stage 1 | без backend flow выдавать form за рабочую |
-| Article Preview | анонсировать подтверждённые материалы | `title`, `items[].title` | item text/action | 2–4 items | Grid | для fake dates, authors или metrics |
+| Article Preview | анонсировать подтверждённые материалы | `title`, `items[].title` | item text/action/href/meta | 2–4 items | Grid | для fake dates, authors или metrics |
+| Article List | список опубликованных статей блога | `title`, `items[].title`, `items[].href` | item text, meta (+`meta_datetime`), `pagination` | 1–12 items на страницу | Grid + Pagination | для демо-статей на production page |
+| Article | длинный текст статьи из Markdown | `title`, `byline`, `breadcrumbs`, `body_html` | `lead`, реальная дата, `toc`, `heading_level` | одна статья | Breadcrumb + `vf-article-body` | для маркетингового текста, который собирается из sections |
 | CTA | завершить сценарием действия | `title`, `text`, action label/href | нет | один крупный CTA по умолчанию | CTA + Button Stage 1 | как обычный section background |
 
-Semantic roles `Problem`, `Benefits`, `Proof`, `Pricing` и `Article Preview`
-передаются общим Text/List или Grid patterns через документированный `marker`:
+Grid item может иметь optional `href` (заголовок становится ссылкой — вместо
+повторяющейся кнопки «Читать»), `meta` — служебную строку `text-small text-muted`
+(с `meta_datetime` рендерится как `<time datetime>`), а секция — optional
+`pagination` с контрактом компонента Pagination. Смысл Grid не меняется.
+
+Article (Stage 6) — единственная секция с H1 внутри: заголовок, lead, строка
+«дата · подпись», оглавление по h2 (показывается, если разделов больше одного;
+sticky начиная с `lg`) и тело `vf-article-body`. `body_html` — только выход
+`MarkdownRenderer` (HTML из текста вырезан, небезопасные ссылки отброшены,
+внешние ссылки получают `rel="noopener noreferrer"`), любой другой HTML в неё не
+передаётся. Картинки из Markdown не выводятся — остаётся текст `alt`: загрузок
+пока нет, а внешние CDN запрещены §7.4. На странице, где H1 уже есть (UI-kit),
+передаётся `heading_level: 'h2'`.
+
+Semantic roles `Problem`, `Benefits`, `Proof`, `Pricing`, `Article Preview` и
+`Article List` передаются общим Text/List или Grid patterns через документированный `marker`:
 отдельные wrapper и CSS-копии для них запрещены. FAQ делегирует production
 Accordion; CTA и Hero переиспользуют Stage 1 без v2 templates. Lead demo
 использует `type="button"`: backend, CRM/API, сохранение и отправка данных в
@@ -655,7 +679,12 @@ Marketing Sections, typography stress cases и layout variants. На каждо�
 Custom CSS допустим для `@font-face`, canonical theme/base foundation,
 accessibility behavior и layout, который utilities выражают существенно хуже.
 Текущие обоснованные custom utilities: auto-fit project Grid, минимальная
-ширина Comparison table и `min(88vw, 360px)` для off-canvas Drawer. Custom CSS
+ширина Comparison table, `min(88vw, 360px)` для off-canvas Drawer и
+`vf-article-body` — оформление HTML статьи из Markdown. Markdown-рендер не
+ставит Tailwind-классы, а сканирование Tailwind ограничено шаблонами, поэтому
+тело статьи оформляется по элементам (h2/h3, списки, врезка `blockquote` на
+`primary-soft`, таблица в прокручиваемой обёртке `vf-table-wrap`, `pre`, `hr`)
+внутри одного контейнера и только существующими tokens. Custom CSS
 допускается для Drawer transform/backdrop transition, потому что это stateful
 behavior native `<dialog>`, а не новый визуальный вариант. Custom CSS не
 используется как привычный способ писать component stylesheet вместо Tailwind.
@@ -792,9 +821,11 @@ make test
 ### 15.3. Технические файлы
 
 - `site/public/robots.txt` — `Disallow: /ui-kit`, ссылка на sitemap;
-- `site/public/sitemap.xml` — статический список публичных URL; при добавлении
-  публичной страницы sitemap обновляется в той же задаче; при появлении блога
-  переходит на генерацию отдельным решением;
+- `/sitemap.xml` — генерируется `Website\Controller\SitemapController` (Stage 6):
+  статические страницы из `STATIC_ROUTES` плюс опубликованные статьи блога с
+  `lastmod`. Новая публичная страница добавляется в `STATIC_ROUTES` в той же
+  задаче. Статический `public/sitemap.xml` не создаётся: nginx отдал бы его
+  раньше маршрута;
 - `site/public/favicon.svg` — брендовый favicon, подключён в layout;
 - `site/public/assets/og-image.png` — 1200×630, лежит вне managed-каталога
   `assets/website/`, чтобы `make assets-check` не считал его drift.

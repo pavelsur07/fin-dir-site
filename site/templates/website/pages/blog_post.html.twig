@@ -1,474 +1,61 @@
 {% extends 'website/layouts/base.html.twig' %}
 
-{% block title %}Маркетплейс или интернет-магазин: где больше прибыли и меньше рисков — Ваш Финдир{% endblock %}
-{% block description %}Разбираем два канала продаж через финансы: стартовые вложения, комиссии, рекламу, cash flow, контроль клиента и управленческие решения.{% endblock %}
-{% block canonical %}{{ vf_site_url ~ path('gazeta_post_1') }}{% endblock %}
+{% block title %}{{ post.seoTitle }} — Ваш Финдир{% endblock %}
+{% block description %}{{ post.seoDescription ?? parent() }}{% endblock %}
+{% block canonical %}{{ canonical_url }}{% endblock %}
 {% block og_type %}article{% endblock %}
 
 {% block json_ld %}
     {{ parent() }}
-    {% include 'website/components/_json_ld.html.twig' with {
-        schema: [
-            {
-                '@context': 'https://schema.org',
-                '@type': 'Article',
-                headline: 'Маркетплейс или интернет-магазин: где больше прибыли и меньше рисков',
-                description: 'Разбираем два канала продаж через финансы: стартовые вложения, комиссии, рекламу, cash flow, контроль клиента и управленческие решения.',
-                url: vf_site_url ~ path('gazeta_post_1'),
-                datePublished: '2026-05-27',
-                author: [
-                    {'@type': 'Person', name: 'Александр Кумар'},
-                    {'@type': 'Organization', name: 'Редакция Ваш Финдир'},
-                ],
-                publisher: {'@id': vf_site_url ~ '/#organization'},
-            },
-        ],
-    } only %}
+    {% include 'website/components/_json_ld.html.twig' with {schema: schema} only %}
+{% endblock %}
+
+{% block navigation %}
+    {% include 'website/pages/_blog_navigation.html.twig' %}
 {% endblock %}
 
 {% block body %}
-    <section class="bg-page py-8 md:py-12 lg:py-16" data-vf-section="blog-hero">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
-            {% include 'website/components/_breadcrumb.html.twig' with {
-                items: [
-                    {label: 'Главная', href: path('home')},
-                    {label: 'Блог', href: path('gazeta_index')},
-                    {label: 'Деньги и прибыль', href: '/blog/money-profit'},
-                    {label: 'Маркетплейс или интернет-магазин'},
-                ],
-            } only %}
+    {% include 'website/sections/_article.html.twig' with {
+        title: post.title,
+        lead: post.excerpt,
+        published_datetime: post.publishedAt|date('Y-m-d'),
+        published_label: post.publishedAt|date('d.m.Y'),
+        byline: 'Редакция Ваш Финдир',
+        breadcrumbs: [
+            {label: 'Главная', href: path('home')},
+            {label: 'Газета', href: path('gazeta_index')},
+            {label: post.title},
+        ],
+        toc: article.toc,
+        body_html: article.html,
+    } only %}
 
-            <div class="mt-6 grid items-center gap-8 lg:grid-cols-12">
-                <div class="lg:col-span-7">
-                    <div class="mb-4 flex flex-wrap items-center gap-3 text-small">
-                        <span class="rounded-full bg-brand-red-soft px-3 py-1 font-medium text-brand-red">Деньги и прибыль</span>
-                        <span class="flex items-center gap-1 text-muted">
-                            {% include 'website/components/_icon.html.twig' with {name: 'calendar', size: 14} only %}
-                            27.05.2026
-                        </span>
-                        <span class="flex items-center gap-1 text-muted">
-                            {% include 'website/components/_icon.html.twig' with {name: 'eye', size: 14} only %}
-                            3 428
-                        </span>
-                    </div>
-                    <h1 class="mb-4 text-h1">Маркетплейс или интернет-магазин: где больше <em class="not-italic text-brand-red">прибыли</em> и меньше рисков</h1>
-                    <p class="mb-6 max-w-content text-lead text-muted">Разбираем два канала продаж через финансы: стартовые вложения, комиссии, рекламу, cash flow, контроль клиента и управленческие решения.</p>
-                    <div class="flex flex-wrap items-center gap-4">
-                        <div class="flex items-center gap-3">
-                            <span class="inline-flex size-8 items-center justify-center rounded-full bg-surface text-sm font-bold text-content shadow-card">АК</span>
-                            <div>
-                                <p class="font-medium text-content">Александр Кумар</p>
-                                <p class="text-small text-muted">Эксперт по маркетплейсам</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <span class="inline-flex size-8 items-center justify-center rounded-full bg-surface text-sm font-bold text-content shadow-card">ВФ</span>
-                            <div>
-                                <p class="font-medium text-content">Редакция Ваш Финдир</p>
-                                <p class="text-small text-muted">Финансовый учёт и аналитика</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-5">
-                    <div class="overflow-hidden rounded-xl border border-border-default bg-surface shadow-card" aria-label="Иллюстрация сравнения маркетплейса и интернет-магазина">
-                        <div class="flex items-center gap-2 border-b border-border-default bg-page px-4 py-2">
-                            <span class="size-2 rounded-full bg-muted"></span>
-                            <span class="size-2 rounded-full bg-muted"></span>
-                            <span class="size-2 rounded-full bg-muted"></span>
-                            <span class="ml-2 text-xs text-muted">Channel dashboard</span>
-                        </div>
-                        <div class="p-4 md:p-6">
-                            <div class="mb-6 grid gap-4 md:grid-cols-2">
-                                <div class="rounded-lg border border-border-default bg-page p-4">
-                                    <h3 class="mb-2 text-h4">Маркетплейс</h3>
-                                    <ul class="list-disc space-y-1 pl-4 text-small text-muted">
-                                        <li>Быстрый старт</li>
-                                        <li>Комиссии и логистика</li>
-                                        <li>Зависимость от правил площадки</li>
-                                    </ul>
-                                </div>
-                                <div class="rounded-lg border border-border-default bg-page p-4">
-                                    <h3 class="mb-2 text-h4">Интернет-магазин</h3>
-                                    <ul class="list-disc space-y-1 pl-4 text-small text-muted">
-                                        <li>Больше контроля</li>
-                                        <li>Расходы на трафик</li>
-                                        <li>Собственная клиентская база</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="flex items-center gap-3 text-small">
-                                    <span class="w-16 shrink-0 text-muted">Контроль</span>
-                                    <div class="h-2 flex-1 rounded-full bg-page">
-                                        <div class="h-2 w-1/2 rounded-full bg-muted"></div>
-                                    </div>
-                                    <span class="w-8 font-medium">MP</span>
-                                </div>
-                                <div class="flex items-center gap-3 text-small">
-                                    <span class="w-16 shrink-0 text-muted">Маржа</span>
-                                    <div class="h-2 flex-1 rounded-full bg-page">
-                                        <div class="h-2 w-3/4 rounded-full bg-brand-red"></div>
-                                    </div>
-                                    <span class="w-8 font-medium">Сайт</span>
-                                </div>
-                                <div class="flex items-center gap-3 text-small">
-                                    <span class="w-16 shrink-0 text-muted">Скорость</span>
-                                    <div class="h-2 flex-1 rounded-full bg-page">
-                                        <div class="h-2 w-3/4 rounded-full bg-muted"></div>
-                                    </div>
-                                    <span class="w-8 font-medium">MP</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    {# Article Preview по контракту -- 2–4 подтверждённых материала; меньше -- блок не показываем. #}
+    {% if related|length >= 2 %}
+        {% set items = [] %}
+        {% for item in related %}
+            {% set items = items|merge([{
+                title: item.title,
+                href: path('gazeta_post', {slug: item.slug}),
+                meta: item.publishedAt|date('d.m.Y'),
+                meta_datetime: item.publishedAt|date('Y-m-d'),
+                text: item.excerpt,
+            }]) %}
+        {% endfor %}
+        {% include 'website/sections/_grid.html.twig' with {
+            id: 'related',
+            marker: 'article-preview',
+            eyebrow: 'Читайте также',
+            title: 'Ещё статьи о финансовом учёте',
+            items: items,
+        } only %}
+    {% endif %}
 
-            <div class="mt-6 grid gap-6 lg:grid-cols-12">
-                <div class="lg:col-span-5">
-                    <div class="h-full rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                        <p class="mb-3 text-caption font-medium uppercase tracking-caption text-muted">Поделиться</p>
-                        <div class="flex flex-wrap gap-2">
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red js-telegram-click" href="https://t.me/share/url?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener">
-                                {% include 'website/components/_icon.html.twig' with {name: 'telegram', size: 14} only %}
-                                Telegram
-                            </a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="https://vk.com/share.php?url=https://vashfindir.ru/blog/marketplace-vs-shop" target="_blank" rel="noopener">
-                                {% include 'website/components/_icon.html.twig' with {name: 'vk', size: 14} only %}
-                                VK
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-7">
-                    <div class="h-full rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                        <p class="mb-3 text-caption font-medium uppercase tracking-caption text-muted">Пересказ статьи в ИИ</p>
-                        <div class="flex flex-wrap gap-2">
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="https://chat.openai.com/" target="_blank" rel="noopener">
-                                {% include 'website/components/_icon.html.twig' with {name: 'stars', size: 14} only %}
-                                ChatGPT
-                            </a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="https://perplexity.ai/" target="_blank" rel="noopener">
-                                {% include 'website/components/_icon.html.twig' with {name: 'search', size: 14} only %}
-                                Perplexity
-                            </a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="https://claude.ai/" target="_blank" rel="noopener">
-                                {% include 'website/components/_icon.html.twig' with {name: 'braces', size: 14} only %}
-                                Claude
-                            </a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="https://yandex.ru/" target="_blank" rel="noopener">
-                                {% include 'website/components/_icon.html.twig' with {name: 'circle-fill', size: 10} only %}
-                                Yandex
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-8 md:py-12 lg:py-16" data-vf-section="article" id="article">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
-            <div class="grid items-start gap-8 lg:grid-cols-12">
-                <aside class="order-2 lg:col-span-3 lg:order-1">
-                    <div class="mb-6 rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                        <h2 class="mb-4 text-h4">Содержание</h2>
-                        <ul class="space-y-2 text-small">
-                            <li><a class="text-content hover:text-brand-red" href="#intro">Коротко: что выбрать</a></li>
-                            <li><a class="text-content hover:text-brand-red" href="#costs">Сравнение затрат</a></li>
-                            <li><a class="text-content hover:text-brand-red" href="#unit">Unit-экономика</a></li>
-                            <li><a class="text-content hover:text-brand-red" href="#cashflow">Деньги и кассовый разрыв</a></li>
-                            <li><a class="text-content hover:text-brand-red" href="#when">Когда выбирать канал</a></li>
-                            <li><a class="text-content hover:text-brand-red" href="#strategy">Мультиканальность</a></li>
-                            <li><a class="text-content hover:text-brand-red" href="#faq">Частые вопросы</a></li>
-                        </ul>
-                    </div>
-                    <div class="relative mb-6 overflow-hidden rounded-xl border border-border-default bg-brand-dark p-4 text-on-dark md:p-6">
-                        <div class="relative z-10">
-                            <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted-on-dark">Финансовая диагностика</p>
-                            <h3 class="mb-2 text-h4">Покажем, где канал продаж съедает прибыль</h3>
-                            <p class="mb-4 text-small text-muted-on-dark">Разберём ДДС, ОПиУ, юнит-экономику и точки роста по WB, Ozon и сайту.</p>
-                            {% include 'website/components/_button.html.twig' with {
-                                label: 'Записаться',
-                                href: '#blog-contact',
-                                variant: 'on-primary-on-dark',
-                                full_mobile: true,
-                                class: 'js-cta-click',
-                            } only %}
-                        </div>
-                    </div>
-                    <div class="rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                        <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Важно</p>
-                        <p class="mb-0 text-small text-muted">Не выбирайте канал только по обороту. Сравнивайте чистую прибыль, скорость возврата денег и управляемость расходов.</p>
-                    </div>
-                </aside>
-
-                <article class="order-1 lg:col-span-9 lg:order-2" id="article">
-                    <figure class="mb-6 overflow-hidden rounded-xl">
-                        <img class="h-auto w-full object-cover" alt="Финансовый учёт для выбора канала продаж" loading="eager" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&amp;fit=crop&amp;w=1600&amp;q=80">
-                    </figure>
-
-                    <div class="mb-6 rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6" id="intro">
-                        <p class="mb-0"><strong>Короткий вывод:</strong> маркетплейс часто быстрее запускается и даёт поток заказов, но забирает контроль через комиссии, логистику, штрафы и правила площадки. Интернет-магазин требует больше системной работы на старте, зато даёт больше контроля над клиентом, ценой, повторными продажами и маржинальностью.</p>
-                    </div>
-
-                    <div class="max-w-content text-content">
-                        <p>Маркетплейсы кажутся простым решением: загрузили карточки, запустили рекламу, получили первые продажи. Но за удобством скрывается финансовая механика, которую собственник часто видит слишком поздно: комиссии, логистика, хранение, возвраты, штрафы, продвижение и зависимость от алгоритмов.</p>
-                        <p>Собственный интернет-магазин работает иначе. Здесь больше ответственности за трафик, сайт, аналитику и клиентский сервис. Но вместе с этим появляется больше управляемости: вы видите клиента, можете работать с повторными продажами, контролировать витрину и постепенно снижать стоимость привлечения.</p>
-                    </div>
-
-                    <div class="my-6 rounded-xl border-l-4 border-brand-red bg-brand-red-soft p-4 md:p-6">
-                        <strong>Главный вопрос не “где больше оборот”, а “где бизнес оставляет больше денег после всех расходов”.</strong>
-                        <p class="mb-0 mt-2">Для ответа нужно сравнивать каналы через ДДС, ОПиУ, Баланс и unit-экономику, а не только через выручку.</p>
-                    </div>
-
-                    <h2 class="mb-4 mt-8 text-h2" id="costs">Сравнение затрат: маркетплейс против интернет-магазина</h2>
-                    <div class="max-w-content text-content">
-                        <p>У маркетплейса ниже входной порог: не нужно проектировать сайт, подключать корзину, платежи и личный кабинет. Но переменные расходы возникают почти сразу и растут вместе с продажами.</p>
-                        <p>У интернет-магазина наоборот: больше расходов на запуск и трафик, зато часть затрат можно оптимизировать и превращать в актив — например, клиентскую базу, контент, SEO, CRM и аналитику.</p>
-                    </div>
-
-                    <div class="my-6 overflow-hidden rounded-xl border border-border-default shadow-card">
-                        <table class="w-full text-left text-small">
-                            <thead class="bg-page text-content">
-                                <tr>
-                                    <th class="border-b border-border-default p-3 font-semibold md:p-4">Критерий</th>
-                                    <th class="border-b border-border-default p-3 font-semibold md:p-4">Маркетплейс</th>
-                                    <th class="border-b border-border-default p-3 font-semibold md:p-4">Интернет-магазин</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-border-default bg-surface text-muted">
-                                <tr>
-                                    <td class="p-3 font-medium text-content md:p-4">Старт</td>
-                                    <td class="p-3 md:p-4">Быстрее: регистрация, карточки, остатки, реклама внутри площадки.</td>
-                                    <td class="p-3 md:p-4">Дольше: сайт, каталог, платежи, доставка, аналитика, трафик.</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-medium text-content md:p-4">Расходы</td>
-                                    <td class="p-3 md:p-4">Комиссии, логистика, хранение, возвраты, штрафы, реклама.</td>
-                                    <td class="p-3 md:p-4">Разработка, поддержка, реклама, CRM, контент, сервис.</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-medium text-content md:p-4">Контроль цены</td>
-                                    <td class="p-3 md:p-4">Ограничен конкуренцией, акциями и правилами площадки.</td>
-                                    <td class="p-3 md:p-4">Выше: можно управлять ценой, пакетами, допродажами.</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-3 font-medium text-content md:p-4">Клиентская база</td>
-                                    <td class="p-3 md:p-4">Обычно остаётся у площадки.</td>
-                                    <td class="p-3 md:p-4">Остаётся у бизнеса и может работать на повторные продажи.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h2 class="mb-4 mt-8 text-h2" id="unit">Unit-экономика: где товар реально прибыльный</h2>
-                    <div class="max-w-content text-content">
-                        <p>Один и тот же товар может быть прибыльным на сайте и убыточным на маркетплейсе. Причина — разные правила расчёта: комиссия, логистика, скидки, реклама, возвраты и операционные расходы.</p>
-                        <p>Для сравнения каналов нужно считать не “продали на 1 млн”, а маржу после всех прямых расходов. Минимальная формула для SKU:</p>
-                        <ul class="list-disc space-y-2 pl-4">
-                            <li>выручка по товару;</li>
-                            <li>минус себестоимость;</li>
-                            <li>минус комиссия площадки или платёжные расходы;</li>
-                            <li>минус логистика, хранение, эквайринг, возвраты;</li>
-                            <li>минус реклама и скидки;</li>
-                            <li>итог — вклад товара в прибыль.</li>
-                        </ul>
-                    </div>
-
-                    <div class="my-6 rounded-xl border-l-4 border-brand-red bg-brand-red-soft p-4 md:p-6">
-                        <strong>Best practice:</strong> сравнивать каналы по CM1/CM2/CM3 и смотреть прибыльность в разрезе SKU, категории и рекламной кампании. Иначе прибыльные товары будут смешиваться с убыточными.
-                    </div>
-
-                    <h2 class="mb-4 mt-8 text-h2" id="cashflow">Деньги и кассовый разрыв</h2>
-                    <div class="max-w-content text-content">
-                        <p>Прибыль на бумаге не означает, что деньги есть на счёте. На маркетплейсах деньги могут приходить с задержкой, часть средств удерживается, возвраты и штрафы появляются позже, а поставщику платить нужно раньше.</p>
-                        <p>У интернет-магазина cash flow тоже требует контроля: реклама оплачивается заранее, товар закупается до продажи, доставка и сервис создают кассовую нагрузку. Поэтому оба канала нужно планировать через платёжный календарь.</p>
-                        <h3 class="mb-2 mt-6 text-h3">Что отслеживать еженедельно</h3>
-                        <ul class="list-disc space-y-2 pl-4">
-                            <li>остаток денег сейчас и прогноз на 30 дней;</li>
-                            <li>обязательства перед поставщиками, подрядчиками и налогами;</li>
-                            <li>ожидаемые выплаты от маркетплейсов;</li>
-                            <li>план закупок и рекламный бюджет;</li>
-                            <li>товары, которые замораживают деньги в остатках.</li>
-                        </ul>
-                    </div>
-
-                    <section class="mt-8 overflow-hidden rounded-xl bg-brand-dark text-on-dark" id="blog-contact">
-                        <div class="grid lg:grid-cols-2">
-                            <div class="relative p-6 md:p-8">
-                                <div class="relative z-10">
-                                    <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted-on-dark">Финансовая диагностика</p>
-                                    <h2 class="mb-3 text-h3">Хотите понять, какой канал продаж выгоднее именно вам?</h2>
-                                    <p class="mb-0 text-muted-on-dark">Оставьте контакты — разберём ДДС, ОПиУ, Баланс, unit-экономику и покажем, где бизнес теряет прибыль.</p>
-                                </div>
-                            </div>
-                            <div class="bg-surface p-6 md:p-8">
-                                <form action="/landing/contact" class="js-lead-form" id="blogLeadForm" method="post" novalidate>
-                                    <input name="source" type="hidden" value="blog_article">
-                                    <div class="space-y-4">
-                                        {% include 'website/components/_form_input.html.twig' with {
-                                            id: 'blogLeadName',
-                                            name: 'name',
-                                            label: 'Ваше имя',
-                                            placeholder: 'Александр',
-                                            required: true,
-                                        } only %}
-                                        {% include 'website/components/_form_input.html.twig' with {
-                                            id: 'blogLeadContact',
-                                            name: 'contact',
-                                            label: 'Telegram или телефон',
-                                            placeholder: '@username или +7 999 000-00-00',
-                                            required: true,
-                                        } only %}
-                                        {% include 'website/components/_form_input.html.twig' with {
-                                            id: 'blogLeadEmail',
-                                            name: 'email',
-                                            label: 'Email',
-                                            placeholder: 'hello@example.ru',
-                                            type: 'email',
-                                        } only %}
-                                        {% include 'website/components/_form_checkbox.html.twig' with {
-                                            id: 'blogLeadConsent',
-                                            name: 'consent',
-                                            required: true,
-                                            label: 'Даю согласие на обработку персональных данных и принимаю <a class="text-brand-red hover:text-brand-red-hover" href="' ~ path('privacy') ~ '">политику конфиденциальности</a>.',
-                                        } only %}
-                                        {% include 'website/components/_button.html.twig' with {
-                                            label: 'Получить консультацию',
-                                            type: 'submit',
-                                            full_mobile: true,
-                                            class: 'js-cta-click',
-                                        } only %}
-                                    </div>
-                                    <div class="js-lead-success mt-4 hidden rounded-md bg-success/10 p-3 text-small text-success" id="blogLeadSuccess">Спасибо! Свяжусь с вами в ближайшее время.</div>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section aria-label="Рубрики блога" class="py-8" id="blog-rubrics">
-                        <div class="flex flex-wrap gap-2">
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/top">Топовый топ!</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/business-processes">Бизнес-процессы</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/qa">Вопрос-ответ</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/glossary">Глоссарий</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/money-profit">Деньги и прибыль</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/law-tax">Законы и налоги</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/career">Карьера в НФ</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/team">Команда</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/training">Обучалка</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/metrics">Показатели</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/consulting">Практика консалтинга</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/development">Развитие бизнеса</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/strategy">Стратегия</a>
-                            <a class="inline-flex items-center gap-2 rounded-full border border-border-default bg-page px-3 py-1.5 text-small font-medium text-content transition-colors hover:border-brand-red hover:text-brand-red" href="/blog/reports">Финансовые отчеты</a>
-                        </div>
-                    </section>
-
-                    <h2 class="mb-4 mt-8 text-h2" id="when">Когда выгоднее маркетплейс, а когда сайт</h2>
-                    <div class="max-w-content text-content">
-                        <p>Маркетплейс подходит, если нужно быстро проверить спрос, выйти на широкую аудиторию и протестировать ассортимент. Но он требует дисциплины в учёте, потому что мелкие удержания и комиссии быстро съедают маржу.</p>
-                        <p>Интернет-магазин выгоднее, когда у бизнеса есть повторные продажи, бренд, контент, сильная ниша или возможность строить долгосрочные отношения с клиентом. Но без системы трафика и аналитики он может стать дорогим экспериментом.</p>
-                        <h3 class="mb-2 mt-6 text-h3">Маркетплейс чаще выбирают, когда:</h3>
-                        <ul class="list-disc space-y-2 pl-4">
-                            <li>нужно быстро получить первые продажи;</li>
-                            <li>товар уже понятен рынку;</li>
-                            <li>есть готовность играть по правилам площадки;</li>
-                            <li>важна скорость запуска, а не полный контроль.</li>
-                        </ul>
-                        <h3 class="mb-2 mt-6 text-h3">Интернет-магазин чаще выбирают, когда:</h3>
-                        <ul class="list-disc space-y-2 pl-4">
-                            <li>есть бранд и понятная аудитория;</li>
-                            <li>важны повторные продажи и клиентская база;</li>
-                            <li>можно управлять трафиком и CRM;</li>
-                            <li>нужен контроль над ценой, ассортиментом и коммуникацией.</li>
-                        </ul>
-                    </div>
-
-                    <h2 class="mb-4 mt-8 text-h2" id="strategy">Мультиканальность как рабочая стратегия</h2>
-                    <div class="max-w-content text-content">
-                        <p>На практике сильное решение — не выбирать один канал навсегда, а выстроить управляемую систему продаж. Маркетплейсы могут давать быстрый спрос и тест гипотез, а сайт — повторные продажи, бренд и базу клиентов.</p>
-                        <p>Но мультиканальность работает только при нормальном учёте. Без единой системы собственник видит много отчётов, но не понимает, какой канал действительно приносит прибыль.</p>
-                    </div>
-
-                    <div class="my-6 rounded-xl border-l-4 border-brand-red bg-brand-red-soft p-4 md:p-6">
-                        <strong>Финансовая система должна отвечать на три вопроса:</strong>
-                        <ul class="mb-0 mt-3 list-disc space-y-2 pl-4">
-                            <li>какой канал приносит прибыль, а какой только оборот;</li>
-                            <li>какие SKU нужно масштабировать, а какие замораживают деньги;</li>
-                            <li>сколько денег понадобится на закупки, рекламу и рост.</li>
-                        </ul>
-                    </div>
-
-                    <h2 class="mb-4 mt-8 text-h2" id="faq">Интернет-магазин или маркетплейс: частые вопросы</h2>
-                    <div class="space-y-4">
-                        <div class="rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                            <h3 class="mb-2 text-h4">Какой канал выгоднее для старта?</h3>
-                            <p class="mb-0 text-muted">Для быстрого теста спроса чаще проще маркетплейс. Но решение зависит от категории, маржи, конкуренции, логистики и рекламных расходов.</p>
-                        </div>
-                        <div class="rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                            <h3 class="mb-2 text-h4">Почему при росте выручки может не быть денег?</h3>
-                            <p class="mb-0 text-muted">Потому что деньги могут быть в остатках, дебиторке, рекламе, задержках выплат, возвратах и обязательствах перед поставщиками. Поэтому нужен ДДС и платёжный календарь.</p>
-                        </div>
-                        <div class="rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                            <h3 class="mb-2 text-h4">Что считать главным показателем?</h3>
-                            <p class="mb-0 text-muted">Не один показатель, а связку: валовая прибыль, вклад SKU в маржу, рекламная эффективность, остатки, cash flow и EBITDA.</p>
-                        </div>
-                        <div class="rounded-xl border border-border-default bg-surface p-4 shadow-card md:p-6">
-                            <h3 class="mb-2 text-h4">Можно ли совмещать маркетплейс и интернет-магазин?</h3>
-                            <p class="mb-0 text-muted">Да, но важно разделять экономику каналов и не смешивать расходы. Иначе невозможно понять, где бизнес зарабатывает, а где теряет.</p>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <section class="bg-page py-12 md:py-16 lg:py-20" data-vf-section="related" id="related">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
-            <div class="mb-8 grid items-end gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-7">
-                    <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Читайте также</p>
-                    <h2 class="text-h2 mb-0">Ещё статьи по финансовому учёту</h2>
-                </div>
-            </div>
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <a class="group flex flex-col overflow-hidden rounded-xl border border-border-default bg-surface shadow-card transition-shadow hover:shadow-lg" href="#">
-                    <div class="aspect-video overflow-hidden">
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Финансовая аналитика SKU" loading="lazy" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
-                    </div>
-                    <div class="flex flex-1 flex-col p-4">
-                        <div class="mb-2 inline-flex w-fit rounded-full bg-brand-red-soft px-2.5 py-0.5 text-xs font-medium text-brand-red">Unit-экономика</div>
-                        <h3 class="mb-2 text-h4">Как понять прибыльность SKU на маркетплейсе</h3>
-                        <p class="mb-4 flex-1 text-small text-muted">Формула, частые ошибки и управленческий отчёт для собственника.</p>
-                        {% include 'website/components/_button.html.twig' with {label: 'Читать', href: '#', variant: 'primary', class: 'mt-auto w-full'} only %}
-                    </div>
-                </a>
-                <a class="group flex flex-col overflow-hidden rounded-xl border border-border-default bg-surface shadow-card transition-shadow hover:shadow-lg" href="#">
-                    <div class="aspect-video overflow-hidden">
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Планирование денежных потоков" loading="lazy" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
-                    </div>
-                    <div class="flex flex-1 flex-col p-4">
-                        <div class="mb-2 inline-flex w-fit rounded-full bg-brand-red-soft px-2.5 py-0.5 text-xs font-medium text-brand-red">ДДС</div>
-                        <h3 class="mb-2 text-h4">Почему прибыльный бизнес попадает в кассовый разрыв</h3>
-                        <p class="mb-4 flex-1 text-small text-muted">Как прогнозировать деньги на 30 дней и не сорвать закупки.</p>
-                        {% include 'website/components/_button.html.twig' with {label: 'Читать', href: '#', variant: 'primary', class: 'mt-auto w-full'} only %}
-                    </div>
-                </a>
-                <a class="group flex flex-col overflow-hidden rounded-xl border border-border-default bg-surface shadow-card transition-shadow hover:shadow-lg" href="#">
-                    <div class="aspect-video overflow-hidden">
-                        <img class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" alt="Отчёт о прибылях и убытках" loading="lazy" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;w=900&amp;q=80">
-                    </div>
-                    <div class="flex flex-1 flex-col p-4">
-                        <div class="mb-2 inline-flex w-fit rounded-full bg-brand-red-soft px-2.5 py-0.5 text-xs font-medium text-brand-red">ОПиУ</div>
-                        <h3 class="mb-2 text-h4">Оборот растёт, а прибыль нет: где искать причину</h3>
-                        <p class="mb-4 flex-1 text-small text-muted">Разбираем комиссии, рекламу, себестоимость и постоянные расходы.</p>
-                        {% include 'website/components/_button.html.twig' with {label: 'Читать', href: '#', variant: 'primary', class: 'mt-auto w-full'} only %}
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
+    {% include 'website/sections/_cta.html.twig' with {
+        id: 'telegram',
+        title: 'Разбираю реальные кейсы финучёта',
+        text: 'Показываю, как читать ДДС, ОПиУ, Баланс и unit-экономику без сложной теории. Практические разборы для собственников маркетплейс-бизнеса.',
+        action_label: 'Подписаться на канал',
+        action_href: 'https://t.me/vashfindir_ru',
+    } only %}
 {% endblock %}

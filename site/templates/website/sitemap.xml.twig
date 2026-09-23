@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% for route in static_routes %}
+    <url>
+        <loc>{{ vf_site_url ~ path(route) }}</loc>
+{% if route == 'home' %}
+        <priority>1.0</priority>
+{% endif %}
+    </url>
+{% endfor %}
+{% for post in posts %}
+    <url>
+        <loc>{{ vf_site_url ~ path('gazeta_post', {slug: post.slug}) }}</loc>
+        <lastmod>{{ post.updatedAt|date('Y-m-d') }}</lastmod>
+    </url>
+{% endfor %}
+</urlset>

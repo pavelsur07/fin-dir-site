@@ -21,7 +21,8 @@ final class PostPreviewController extends AbstractController
 
         return $this->render('admin/posts/preview.html.twig', [
             'post' => $post,
-            'body_html' => $markdown->toHtml($post->body),
+            // Тот же рендер, что на сайте: превью совпадает с публичной статьёй.
+            'body_html' => $markdown->renderArticle($post->body)->html,
         ]);
     }
 }

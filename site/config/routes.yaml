@@ -1,3 +1,14 @@
+# Старый адрес статьи до переноса блога в базу (Stage 6). Должен стоять раньше
+# /gazeta/{slug}, иначе "post-1" разобрался бы как slug и дал 404.
+gazeta_post_1_legacy:
+  path: /gazeta/post-1
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    route: gazeta_post
+    slug: marketpleys-ili-internet-magazin
+    permanent: true
+  methods: [GET, HEAD]
+
 controllers:
   resource:
     path: ../src/Controller/
@@ -14,4 +25,10 @@ admin_controllers:
   resource:
     path: ../src/Admin/Controller/
     namespace: App\Admin\Controller
+  type: attribute
+
+website_controllers:
+  resource:
+    path: ../src/Website/Controller/
+    namespace: App\Website\Controller
   type: attribute

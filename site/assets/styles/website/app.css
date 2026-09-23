@@ -246,6 +246,104 @@
     min-width: calc(var(--vf-grid-item-min) * 3);
 }
 
+/*
+ * Тело статьи из Markdown (SITE_RULES §11): HTML приходит из league/commonmark без
+ * классов, поэтому оформление задаётся по элементам внутри одного контейнера.
+ * Цвета, отступы, радиусы и шрифт -- только существующие tokens; литерал один --
+ * толщина акцентной линии врезки 4px (как border-l-4 в прежней вёрстке статьи).
+ */
+@utility vf-article-body {
+    & > * + h2 {
+        margin-top: var(--vf-space-12);
+    }
+
+    & > * + h3 {
+        margin-top: var(--vf-space-8);
+    }
+
+    & ul,
+    & ol {
+        display: grid;
+        gap: var(--vf-space-2);
+        margin-block: 0 var(--vf-space-4);
+        padding-left: var(--vf-space-6);
+    }
+
+    & ul {
+        list-style: disc;
+    }
+
+    & ol {
+        list-style: decimal;
+    }
+
+    & blockquote {
+        margin-block: var(--vf-space-6);
+        padding: var(--vf-space-4);
+        border-left: 4px solid var(--vf-color-primary);
+        border-radius: var(--vf-radius-md);
+        background: var(--vf-color-primary-soft);
+    }
+
+    & blockquote > :last-child,
+    & li > :last-child {
+        margin-bottom: 0;
+    }
+
+    & .vf-table-wrap {
+        margin-block: var(--vf-space-6);
+        overflow-x: auto;
+        border: 1px solid var(--vf-color-border);
+        border-radius: var(--vf-radius-md);
+    }
+
+    & table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--vf-color-surface);
+        font-size: var(--vf-font-size-small);
+        line-height: var(--vf-line-height-small);
+    }
+
+    & th,
+    & td {
+        padding: var(--vf-space-3);
+        border-bottom: 1px solid var(--vf-color-border);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    & th {
+        background: var(--vf-color-background);
+        font-weight: 700;
+    }
+
+    & tr:last-child td {
+        border-bottom: 0;
+    }
+
+    & pre {
+        margin-block: 0 var(--vf-space-4);
+        padding: var(--vf-space-4);
+        overflow-x: auto;
+        border-radius: var(--vf-radius-md);
+        background: var(--vf-color-background);
+        font-size: var(--vf-font-size-small);
+    }
+
+    & hr {
+        margin-block: var(--vf-space-8);
+        border: 0;
+        border-top: 1px solid var(--vf-color-border);
+    }
+
+    @variant md {
+        & blockquote {
+            padding: var(--vf-space-6);
+        }
+    }
+}
+
 @utility navigation-drawer-width {
     width: min(88vw, var(--vf-navigation-drawer-max));
 }

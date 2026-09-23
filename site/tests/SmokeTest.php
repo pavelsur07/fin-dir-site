@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -31,6 +32,11 @@ final class SmokeTest extends WebTestCase
 
             // Маршруты с параметрами требуют фикстур -- проверяются отдельными тестами.
             if (str_contains($route->getPath(), '{') || ($methods && !\in_array('GET', $methods, true))) {
+                continue;
+            }
+
+            // Redirect-маршруты (старые URL) отвечают 301 -- их проверяет PublicBlogTest.
+            if (RedirectController::class === $route->getDefault('_controller')) {
                 continue;
             }
 

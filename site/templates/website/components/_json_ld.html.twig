@@ -1,2 +1,4 @@
-{# Вход: schema — массив или объект Schema.org. Рендерит один JSON-LD script-блок. #}
-<script type="application/ld+json">{{ schema|json_encode(constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES'))|raw }}</script>
+{# Вход: schema — массив или объект Schema.org. Рендерит один JSON-LD script-блок.
+   JSON_HEX_TAG/AMP обязательны: данные бывают из БД (посты блога), и "</script>"
+   в строке без них закрыл бы блок и выполнил чужой скрипт. #}
+<script type="application/ld+json">{{ schema|json_encode(constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP'))|raw }}</script>

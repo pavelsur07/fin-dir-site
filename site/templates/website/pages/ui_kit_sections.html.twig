@@ -212,6 +212,43 @@
     } only %}
 
     {% include 'website/sections/_grid.html.twig' with {
+        id: 'article-list-section',
+        marker: 'article-list',
+        eyebrow: 'Article List / Grid',
+        title: 'Список статей блога',
+        text: 'Заголовок — ссылка на статью, meta — служебная строка (на сайте — дата публикации), pagination — под списком.',
+        items: [
+            {title: 'Demo-заголовок первой статьи', href: '#article-list-section', meta: 'Demo: служебная строка', text: 'Demo-анонс: одна-две фразы о содержании материала.'},
+            {title: 'Demo-заголовок второй статьи', href: '#article-list-section', meta: 'Demo: служебная строка', text: 'Demo-анонс без вымышленных дат, авторов и просмотров.'},
+        ],
+        pagination: {current: 1, pages: 2, prev_href: null, next_href: '#article-list-section'},
+    } only %}
+
+    {% include 'website/sections/_article.html.twig' with {
+        id: 'article-section',
+        title: 'Article: длинный текст из Markdown',
+        heading_level: 'h2',
+        lead: 'Demo-анонс статьи. Тело ниже — тот HTML, который отдаёт MarkdownRenderer: заголовки с id, списки, врезка и таблица.',
+        byline: 'Demo: подпись редакции',
+        breadcrumbs: [
+            {label: 'Главная', href: '#article-section'},
+            {label: 'Раздел', href: '#article-section'},
+            {label: 'Demo-статья'},
+        ],
+        toc: [
+            {id: 'demo-section-first', title: 'Первый раздел'},
+            {id: 'demo-section-second', title: 'Второй раздел'},
+        ],
+        body_html: '<p>Demo-абзац: обычный текст статьи с <a href="#article-section">ссылкой</a> и <strong>выделением</strong>.</p>'
+            ~ '<h2 id="demo-section-first">Первый раздел</h2><p>Абзац раздела.</p>'
+            ~ '<ul><li>пункт списка;</li><li>второй пункт списка.</li></ul>'
+            ~ '<blockquote><p><strong>Врезка:</strong> ключевая мысль раздела выделяется цитатой Markdown.</p></blockquote>'
+            ~ '<h2 id="demo-section-second">Второй раздел</h2><h3 id="demo-section-sub">Подраздел</h3>'
+            ~ '<div class="vf-table-wrap"><table><thead><tr><th>Критерий</th><th>Вариант A</th><th>Вариант B</th></tr></thead>'
+            ~ '<tbody><tr><td>Строка</td><td>Demo-значение</td><td>Demo-значение</td></tr></tbody></table></div>',
+    } only %}
+
+    {% include 'website/sections/_grid.html.twig' with {
         id: 'article-preview-section',
         marker: 'article-preview',
         eyebrow: 'Article Preview / Grid',

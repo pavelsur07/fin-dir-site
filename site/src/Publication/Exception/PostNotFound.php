@@ -8,8 +8,11 @@ use App\Shared\Exception\NotFound;
 
 final class PostNotFound extends \DomainException implements NotFound
 {
-    public function __construct(public readonly int $postId)
+    /**
+     * @param int|string $reference id (админка) или slug (публичный сайт)
+     */
+    public function __construct(public readonly int|string $reference)
     {
-        parent::__construct(\sprintf('Post %d not found.', $postId));
+        parent::__construct(\sprintf('Post "%s" not found.', $reference));
     }
 }

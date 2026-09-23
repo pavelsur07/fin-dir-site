@@ -8,6 +8,7 @@ use App\Publication\Entity\Post;
 use App\Publication\Query\PostEditData\PostEditDataQuery;
 use App\Publication\ValueObject\PostStatus;
 use App\Tests\Publication\Builder\PostBuilder;
+use App\Tests\Publication\PostTableCleaner;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -16,11 +17,14 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class AdminPostTest extends WebTestCase
 {
+    use PostTableCleaner;
+
     private KernelBrowser $client;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        self::clearPosts(self::getContainer()->get(EntityManagerInterface::class));
     }
 
     /**

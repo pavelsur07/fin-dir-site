@@ -1,0 +1,38 @@
+{#
+    Длинная статья: хлебные крошки, заголовок, мета, оглавление и тело из Markdown.
+    Вход: title, lead (optional), published_datetime + published_label (optional, реальная дата), byline,
+    breadcrumbs, toc (list<{id, title}>), body_html (выход MarkdownRenderer -- безопасен для |raw),
+    heading_level (optional, 'h1' по умолчанию; 'h2' -- когда H1 страницы уже есть, например в UI-kit).
+#}
+{% extends 'website/sections/_base.html.twig' %}
+{% set section_class = 'bg-surface' %}
+{% set section_id = id|default('article') %}
+{% set labelled_by = section_id ~ '-title' %}
+{% set section_name = 'article' %}
+{% set heading_tag = heading_level|default('h1') == 'h2' ? 'h2' : 'h1' %}
+
+{% block section_content %}
+    {% include 'website/components/_breadcrumb.html.twig' with {items: breadcrumbs} only %}
+
+    <article>
+    <header class="mt-6 max-w-content">
+        <{{ heading_tag }} id="{{ labelled_by }}">{{ title }}</{{ heading_tag }}>
+        {% if lead|default(null) %}<p class="text-lead text-muted">{{ lead }}</p>{% endif %}
+        <p class="mb-0 text-small text-muted">{% if published_datetime|default(null) %}<time datetime="{{ published_datetime }}">{{ published_label }}</time> · {% endif %}{{ byline }}</p>
+    </header>
+
+    <div class="mt-12 grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+        {% if toc|length > 1 %}
+            <nav class="rounded-lg border border-border-default p-4 md:p-6 lg:sticky lg:top-24 lg:col-span-3" aria-labelledby="{{ section_id }}-toc-title">
+                <h2 class="text-h4" id="{{ section_id }}-toc-title">Содержание</h2>
+                <ol class="grid gap-2 text-small" role="list">
+                    {% for entry in toc %}<li><a href="#{{ entry.id }}">{{ entry.title }}</a></li>{% endfor %}
+                </ol>
+            </nav>
+        {% endif %}
+        <div class="vf-article-body max-w-content {{ toc|length > 1 ? 'lg:col-span-9' : 'lg:col-span-12' }}">
+            {{ body_html|raw }}
+        </div>
+    </div>
+    </article>
+{% endblock %}

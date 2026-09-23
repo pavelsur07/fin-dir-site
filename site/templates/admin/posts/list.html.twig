@@ -41,7 +41,13 @@
                     <tr>
                         <td>
                             <a href="{{ path('admin_post_edit', {id: post.id}) }}">{{ post.title }}</a>
-                            <div class="muted">/gazeta/{{ post.slug }}</div>
+                            <div class="muted">
+                                {% if post.status.value == 'published' %}
+                                    <a href="{{ path('gazeta_post', {slug: post.slug}) }}" target="_blank" rel="noopener">/gazeta/{{ post.slug }}</a>
+                                {% else %}
+                                    /gazeta/{{ post.slug }}
+                                {% endif %}
+                            </div>
                         </td>
                         <td><span class="badge badge-{{ post.status.value }}">{{ post.status.label }}</span></td>
                         <td>{{ post.updatedAt|date('d.m.Y H:i') }}</td>

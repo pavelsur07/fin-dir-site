@@ -89,17 +89,8 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertStringContainsString('Disallow: /ui-kit', $robots);
         self::assertStringContainsString('Sitemap: https://vashfindir.ru/sitemap.xml', $robots);
 
-        $sitemapPath = $this->projectPath('public/sitemap.xml');
-        $sitemap = simplexml_load_file($sitemapPath);
-        self::assertNotFalse($sitemap);
-
-        $urls = [];
-        foreach ($sitemap->url as $url) {
-            $urls[] = (string) $url->loc;
-        }
-        foreach (['https://vashfindir.ru/', 'https://vashfindir.ru/services', 'https://vashfindir.ru/about'] as $expectedUrl) {
-            self::assertContains($expectedUrl, $urls);
-        }
+        // sitemap генерируется маршрутом (Stage 6): статический файл перекрыл бы его в nginx.
+        self::assertFileDoesNotExist($this->projectPath('public/sitemap.xml'));
 
         self::assertFileExists($this->projectPath('public/favicon.svg'));
 

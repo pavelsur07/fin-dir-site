@@ -1,0 +1,14 @@
+{# Навигация страниц «Газеты»: общий состав меню с активным пунктом «Газета». #}
+{% include 'website/components/_navbar.html.twig' with {
+    brand: 'Ваш Финдир',
+    brand_href: path('home'),
+    items: [
+        {label: 'Главная', href: path('home')},
+        {label: 'Услуги', href: '/services'},
+        {label: 'Кейсы', href: '/cases'},
+        {label: 'О компании', href: '/about'},
+        {label: 'Газета', href: path('gazeta_index'), active: true},
+        {label: 'Партнёрам', href: '/partners'},
+    ],
+    cta: {label: 'Записаться на встречу', href: path('home') ~ '#lead-form'},
+} only %}

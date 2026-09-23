@@ -87,6 +87,17 @@
             } only %}
         </div>
 
+        <div class="border-t border-border-default py-6" id="pagination">
+            <h3>Pagination</h3>
+            <p>Переход между страницами списка. Крайние страницы не показывают недоступную кнопку.</p>
+            {% include 'website/components/_pagination.html.twig' with {
+                current: 2,
+                pages: 3,
+                prev_href: '#pagination',
+                next_href: '#pagination',
+            } only %}
+        </div>
+
         <div class="border-t border-border-default py-6" id="accordion">
             <h3>Accordion</h3>
             {% include 'website/components/_accordion.html.twig' with {

@@ -14,6 +14,9 @@
         <div class="toolbar">
             {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, status: post.status} only %}
             <a href="{{ path('admin_post_preview', {id: post.id}) }}">Предпросмотр</a>
+            {% if post.status.value == 'published' %}
+                <a href="{{ path('gazeta_post', {slug: post.slug}) }}" target="_blank" rel="noopener">Открыть на сайте</a>
+            {% endif %}
         </div>
     {% endif %}
 
