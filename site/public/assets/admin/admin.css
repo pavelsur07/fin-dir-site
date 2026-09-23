@@ -1,0 +1,97 @@
+/* Стили временной Twig-админки (AGENTS.md §8). Отдельно от сборки и design system
+   публичного сайта: без Tailwind, подключаются только в templates/admin/layout.html.twig.
+   После правки обновить admin_asset_version в layout (сверяет AdminLayoutTest). */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.5 system-ui, sans-serif; color: #0b1020; background: #f5f6f8; }
+.card { max-width: 400px; margin: 48px auto; padding: 24px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
+h1 { margin: 0 0 16px; font-size: 24px; }
+label { display: block; margin: 12px 0 4px; font-weight: 600; }
+input, textarea { width: 100%; padding: 8px 12px; font: inherit; border: 1px solid #767b85; border-radius: 6px; }
+textarea { font-family: ui-monospace, monospace; font-size: 14px; }
+input:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #005fcc; outline-offset: 2px; }
+input:disabled { color: #5c677d; background: #f5f6f8; }
+button { padding: 8px 16px; font: inherit; font-weight: 600; color: #fff; background: #b00020; border: 0; border-radius: 6px; cursor: pointer; }
+button:hover { background: #8a0019; }
+.card button { width: 100%; margin-top: 20px; }
+.alert { padding: 8px 12px; color: #8a0019; background: #f7e6e9; border-radius: 6px; }
+.flash { margin: 0 0 16px; padding: 8px 12px; color: #146c43; background: #e6f4ec; border-radius: 6px; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.toolbar h1 { margin: 0; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 16px; font-size: 14px; }
+.filters a[aria-current="true"] { font-weight: 700; color: #0b1020; text-decoration: none; }
+a { color: #b00020; }
+.button { display: inline-block; padding: 8px 16px; font-weight: 600; color: #fff; background: #b00020; border-radius: 6px; text-decoration: none; }
+.button:hover { background: #8a0019; }
+button.secondary { color: #0b1020; background: #fff; border: 1px solid #767b85; }
+button.secondary:hover { background: #f5f6f8; }
+.table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #d9dce4; font-size: 14px; }
+.table th, .table td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid #d9dce4; }
+.table-wrap { overflow-x: auto; }
+.badge { display: inline-block; padding: 2px 8px; font-size: 12px; font-weight: 600; border-radius: 999px; background: #d9dce4; }
+.badge-published { color: #fff; background: #146c43; }
+.badge-archived { color: #fff; background: #5c677d; }
+.muted { color: #5c677d; font-size: 14px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions form { margin: 0; }
+.panel { padding: 24px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
+.form-row { margin-bottom: 16px; }
+.form-row .help-text, .form-row small { display: block; margin-top: 4px; color: #5c677d; font-size: 14px; }
+.form-row ul, .form-errors ul { margin: 4px 0 0; padding: 0; list-style: none; color: #8a0019; font-size: 14px; }
+.pagination { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.pagination a, .pagination span { padding: 4px 10px; border: 1px solid #d9dce4; border-radius: 6px; background: #fff; text-decoration: none; }
+.pagination .current { font-weight: 700; }
+.filters label { display: grid; gap: 4px; margin: 0; font-weight: 400; }
+.filters select, .filters input { width: auto; min-width: 160px; }
+.filters button { align-self: end; }
+.details { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 8px 16px; margin: 0; }
+.details dt { color: #5c677d; }
+.details dd { margin: 0; }
+.pre { white-space: pre-wrap; }
+.inline-form { display: inline; margin-left: 8px; }
+.note { margin-bottom: 12px; padding: 12px 16px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
+.note p { margin: 4px 0 0; }
+.badge-lead-new { color: #fff; background: #b00020; }
+.badge-lead-qualified { color: #fff; background: #146c43; }
+.badge-lead-spam, .badge-lead-closed { color: #fff; background: #5c677d; }
+select { padding: 8px 12px; font: inherit; border: 1px solid #767b85; border-radius: 6px; background: #fff; }
+h2 { margin: 32px 0 12px; font-size: 20px; }
+/* Каркас: сайдбар 240px слева, рабочая зона -- вся остальная ширина. */
+.shell { display: flex; min-height: 100vh; }
+.sidebar { position: sticky; top: 0; display: flex; flex: none; flex-direction: column; width: 240px; height: 100vh; overflow-y: auto; padding: 24px 16px; color: #fff; background: #0b1020; }
+.workspace { flex: 1; min-width: 0; }
+.main { padding: 32px; }
+.brand { display: block; margin: 0 8px 24px; color: #fff; font-weight: 700; text-decoration: none; }
+.brand small { display: block; color: #8e99af; font-size: 14px; font-weight: 400; }
+.brand:hover { color: #fff; }
+.menu ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.menu a { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; color: #fff; border-radius: 6px; text-decoration: none; }
+.menu a:hover { background: #1e2331; color: #fff; }
+.menu a[aria-current="page"] { font-weight: 700; background: #b00020; }
+.sidebar a:focus-visible, .sidebar button:focus-visible, .mobile-bar a:focus-visible, .mobile-bar button:focus-visible, .mobile-bar summary:focus-visible { outline-color: #fff; }
+.count { min-width: 24px; padding: 0 8px; color: #0b1020; font-size: 12px; font-weight: 700; line-height: 20px; text-align: center; background: #fff; border-radius: 999px; }
+.account { display: grid; gap: 8px; margin: auto 0 0; padding: 16px 8px 0; border-top: 1px solid #1e2331; }
+.account-name { color: #8e99af; font-size: 14px; }
+.mobile-bar { display: none; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link { position: absolute; top: -48px; left: 16px; z-index: 20; padding: 8px 12px; color: #0b1020; background: #fff; border-radius: 6px; }
+.skip-link:focus { top: 8px; }
+/* Формы, карточки и текст -- ширина для чтения; таблицы и списки -- во всю ширину. */
+.main > .panel, .main > .note, .main > .alert { max-width: 960px; }
+@media (max-width: 899px) {
+    .sidebar { display: none; }
+    .mobile-bar { display: block; position: sticky; top: 0; z-index: 10; padding: 12px 16px; color: #fff; background: #0b1020; }
+    .mobile-bar summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; list-style: none; }
+    .mobile-bar summary::-webkit-details-marker { display: none; }
+    .mobile-bar .brand { margin: 0; }
+    .menu-button { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border: 1px solid #8e99af; border-radius: 6px; }
+    .mobile-bar[open] .menu-button { background: #1e2331; }
+    .mobile-bar .menu { padding-top: 16px; }
+    .mobile-bar .account { margin-top: 16px; }
+    .main { padding: 16px; }
+    .details { grid-template-columns: 1fr; }
+}
+.prose { max-width: 720px; padding: 24px; background: #fff; border: 1px solid #d9dce4; border-radius: 8px; }
+.prose img { max-width: 100%; }
+.prose pre { overflow-x: auto; padding: 12px; background: #f5f6f8; }
+.prose table { border-collapse: collapse; }
+.prose th, .prose td { padding: 4px 8px; border: 1px solid #d9dce4; }

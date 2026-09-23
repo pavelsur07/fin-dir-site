@@ -91,6 +91,21 @@ final class AdminLayoutTest extends WebTestCase
         self::assertSelectorExists('form.card input[name="_username"]');
     }
 
+    public function testStylesComeFromSeparateAdminFileWithCurrentVersion(): void
+    {
+        $this->client->request('GET', '/admin/login');
+
+        self::assertSelectorNotExists('style');
+        self::assertSelectorCount(1, 'link[rel="stylesheet"]');
+        // nginx отдаёт CSS как immutable: версия обязана меняться вместе с файлом.
+        $css = file_get_contents(self::getContainer()->getParameter('kernel.project_dir').'/public/assets/admin/admin.css');
+        self::assertIsString($css);
+        self::assertSelectorExists(sprintf(
+            'link[rel="stylesheet"][href="/assets/admin/admin.css?v=%s"]',
+            substr(hash('sha256', $css), 0, 12),
+        ));
+    }
+
     private function logIn(): void
     {
         $provider = self::getContainer()->get('security.user.provider.concrete.admin_user');
