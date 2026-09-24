@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Lead\ValueObject\LeadConsent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,6 +32,7 @@ class HomeController extends AbstractController
     #[Route('/consent', name: 'consent')]
     public function consent(): Response
     {
-        return $this->render('website/pages/consent.html.twig');
+        // Редакция на странице совпадает с той, что сохраняется в заявке.
+        return $this->render('website/pages/consent.html.twig', ['consent_version' => LeadConsent::VERSION]);
     }
 }

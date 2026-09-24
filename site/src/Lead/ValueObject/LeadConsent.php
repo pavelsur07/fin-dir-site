@@ -10,5 +10,5 @@ namespace App\Lead\ValueObject;
  */
 final class LeadConsent
 {
-    public const string VERSION = '2026-09-23';
+    public const string VERSION = '2026-09-24';
 }
