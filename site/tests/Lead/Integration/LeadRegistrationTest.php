@@ -138,7 +138,11 @@ final class LeadRegistrationTest extends KernelTestCase
             return new MockResponse('{"ok":true}', ['http_code' => 200]);
         });
 
-        $id = $this->registrar($this->sender($http))->register($this->submission());
+        $submission = $this->submission('diagnostics');
+        $submission->answers = ['channel' => 'ozon', 'turnover' => '1m_5m', 'need' => 'saas'];
+        $submission->utm = ['utm_source' => 'yandex'];
+        $submission->pageUrl = '/gazeta/test';
+        $id = $this->registrar($this->sender($http))->register($submission);
 
         self::assertNotNull($this->lead($id)->notifiedAt());
         self::assertIsArray($sent);
@@ -146,6 +150,13 @@ final class LeadRegistrationTest extends KernelTestCase
         self::assertStringNotContainsString('Иван', $sent['body']);
         self::assertStringNotContainsString('9001234567', $sent['body']);
         self::assertStringContainsString('\/admin\/leads\/'.$id, $sent['body']);
+        // Только номер и ссылка: ни формы, ни страницы, ни ответов, ни UTM.
+        $payload = json_decode($sent['body'], true, flags: \JSON_THROW_ON_ERROR);
+        self::assertIsArray($payload);
+        self::assertSame(
+            \sprintf("<b>Новое обращение №%d</b>\n\n<a href=\"https://vashfindir.ru/admin/leads/%d\">Открыть в админке</a>", $id, $id),
+            $payload['text'] ?? null,
+        );
     }
 
     public function testPendingNotificationsAreResent(): void

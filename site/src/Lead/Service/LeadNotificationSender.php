@@ -8,7 +8,6 @@ use App\Lead\Adapter\LeadNotification;
 use App\Lead\Adapter\TelegramLeadNotifier;
 use App\Lead\Entity\Lead;
 use App\Lead\Repository\LeadRepository;
-use App\Lead\ValueObject\LeadFormCatalog;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 
@@ -63,17 +62,7 @@ final class LeadNotificationSender
             return false;
         }
 
-        $formTitle = LeadFormCatalog::has($lead->formKey()) ? LeadFormCatalog::get($lead->formKey())->title : $lead->formKey();
-        $error = $this->notifier->send(new LeadNotification(
-            (int) $lead->id(),
-            $formTitle,
-            $lead->pageUrl(),
-            array_map(static fn (array $answer): array => [
-                'questionLabel' => $answer['questionLabel'],
-                'answerLabel' => $answer['answerLabel'],
-            ], $lead->answers()),
-            $lead->utm(),
-        ));
+        $error = $this->notifier->send(new LeadNotification((int) $lead->id()));
 
         if (null === $error) {
             $lead->markNotified($this->clock->now());
