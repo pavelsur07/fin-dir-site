@@ -16,7 +16,9 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('[data-vf-ui-kit-intro] h1', 'Ink & Crimson');
         self::assertSelectorExists('[data-vf-ui-kit-intro][data-theme="dark"]');
-        self::assertSelectorExists('[data-vf-ui-kit-intro] [data-vf-component="badge"][data-vf-tone="accent"]');
+        self::assertSelectorExists('[data-vf-ui-kit-intro] [data-vf-component="badge"][data-vf-tone="accent-solid"]');
+        self::assertSelectorCount(0, 'body > [data-vf-component="navbar"]');
+        self::assertSelectorExists('[data-vf-ui-kit-intro] a[href="/"][aria-label]');
         foreach (['logo', 'palette', 'status-colors', 'roles', 'contrast', 'typography', 'radii', 'spacing', 'elevation', 'icons', 'interactive-states', 'data-format', 'forms', 'buttons', 'data-palette', 'alerts', 'navigation-preview', 'empty-state', 'motion', 'article-cards', 'article-preview', 'component-colors', 'section-previews'] as $section) {
             self::assertSelectorExists(sprintf('[data-vf-ui-kit-section="%s"]', $section));
         }
@@ -31,9 +33,15 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertInstanceOf(\DOMElement::class, $swatch);
             self::assertStringContainsString('[data-vf-swatch="'.$swatch->getAttribute('data-vf-swatch').'"]', $css);
         }
-        self::assertSelectorExists('[data-vf-swatch="crimson-500"] > span.bg-bg.text-fg');
-        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] img[src="/assets/brand/logo-light.png"]');
-        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] [data-theme="dark"] img[src="/assets/brand/logo-dark.png"]');
+        self::assertSelectorCount(22, '[data-vf-palette-swatch]');
+        self::assertSelectorCount(4, '[data-vf-status-card]');
+        self::assertSelectorCount(14, '[data-vf-role-row]');
+        self::assertSelectorCount(8, '[data-vf-contrast-row]');
+        self::assertSelectorCount(8, '[data-vf-type-row]');
+        self::assertSelectorCount(5, '[data-vf-logo-size]');
+        self::assertSelectorCount(2, '[data-vf-logo-theme]');
+        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] a[href="/assets/brand/logo-light.png"][download]');
+        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] [data-theme="dark"] a[href="/assets/brand/logo-dark.png"][download]');
         self::assertSelectorCount(1, 'main h1');
         self::assertSelectorCount(0, 'main [style], main style, main script');
     }
@@ -49,7 +57,7 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorExists('[data-vf-color-context="light"]');
         self::assertSelectorExists('[data-vf-color-context="dark"][data-theme="dark"]');
         self::assertSelectorExists('[data-vf-section="hero"][data-theme="dark"]');
-        self::assertSelectorExists('[data-vf-component="navbar"] img[src="/assets/brand/logo-light.png"]');
+        self::assertSelectorExists('[data-vf-ui-kit-intro] a[href="/"]');
         self::assertSelectorExists('[data-vf-component="footer"][data-theme="dark"] img[src="/assets/brand/logo-dark.png"]');
 
         foreach (['button', 'card', 'badge', 'alert', 'form-input', 'select', 'textarea', 'checkbox', 'accordion', 'breadcrumb', 'navbar', 'footer', 'cta'] as $component) {
@@ -73,7 +81,6 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorCount(0, 'link[href*="bootstrap"], script[src*="bootstrap"]');
         self::assertSelectorExists('[data-vf-state="error"] [aria-invalid="true"]');
         self::assertSelectorExists('[data-vf-component="checkbox"] input:not([checked])');
-        self::assertSelectorExists('[data-vf-component="navbar"] a[aria-current="page"]');
         foreach (['input' => 'form-input', 'select' => 'select', 'textarea' => 'textarea', 'checkbox' => 'checkbox'] as $group => $component) {
             foreach (['default', 'focus', 'disabled', 'error', 'success'] as $state) {
                 self::assertSelectorExists(sprintf('[data-vf-form-group="%s"] [data-vf-component="%s"][data-vf-state="%s"]', $group, $component, $state));
@@ -107,7 +114,7 @@ final class WebsiteFoundationTest extends WebTestCase
         $stylesheets = glob($root.'/assets/styles/website/*.css');
         self::assertIsArray($stylesheets);
         self::assertCount(1, $stylesheets);
-        foreach (['analytics.js', 'navigation.js', 'metrika.js'] as $script) {
+        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'ui-kit-logo.js'] as $script) {
             self::assertSame(file_get_contents($root.'/assets/scripts/website/'.$script), file_get_contents($root.'/public/assets/website/'.$script));
         }
     }
@@ -116,7 +123,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'ui-kit-logo.js'] as $asset) {
             $content = file_get_contents($root.'/public/assets/website/'.$asset);
             self::assertIsString($content);
             $contents .= $content;

@@ -108,6 +108,6 @@ final class DesignSystemV2Test extends TestCase
         self::assertIsArray($stylesheets);
         self::assertCount(1, $stylesheets);
         self::assertStringContainsString('@source "../../../templates/website";', $css);
-        self::assertSame(['analytics.js', 'app.css', 'metrika.js', 'navigation.js'], array_map('basename', glob($root.'/public/assets/website/*') ?: []));
+        self::assertSame(['analytics.js', 'app.css', 'metrika.js', 'navigation.js', 'ui-kit-logo.js'], array_map('basename', glob($root.'/public/assets/website/*') ?: []));
     }
 }

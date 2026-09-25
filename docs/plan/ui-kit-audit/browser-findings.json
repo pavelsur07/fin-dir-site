@@ -1,0 +1,1192 @@
+[
+  {
+    "kind": "reference",
+    "width": 320,
+    "state": "default",
+    "title": "",
+    "scrollWidth": 444,
+    "clientWidth": 320,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        false
+      ],
+      [
+        "Onest",
+        false
+      ],
+      [
+        "Golos Text",
+        false
+      ]
+    ],
+    "images": [],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "default",
+    "title": "UI-kit — Ваш Финдир",
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        true
+      ],
+      [
+        "Onest",
+        true
+      ],
+      [
+        "Golos Text",
+        true
+      ]
+    ],
+    "images": [
+      "http://127.0.0.1:8001/assets/brand/logo-dark.png"
+    ],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "24-light",
+    "pressed": [
+      "24",
+      "Светлый"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "24-dark",
+    "pressed": [
+      "24",
+      "Тёмный"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "32-light",
+    "pressed": [
+      "32",
+      "Светлый"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "32-dark",
+    "pressed": [
+      "32",
+      "Тёмный"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "48-light",
+    "pressed": [
+      "48",
+      "Светлый"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "48-dark",
+    "pressed": [
+      "48",
+      "Тёмный"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "64-light",
+    "pressed": [
+      "64",
+      "Светлый"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "64-dark",
+    "pressed": [
+      "64",
+      "Тёмный"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "96-light",
+    "pressed": [
+      "96",
+      "Светлый"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 320,
+    "state": "96-dark",
+    "pressed": [
+      "96",
+      "Тёмный"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "dark"
+  },
+  {
+    "kind": "reference",
+    "width": 375,
+    "state": "default",
+    "title": "",
+    "scrollWidth": 444,
+    "clientWidth": 375,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        false
+      ],
+      [
+        "Onest",
+        false
+      ],
+      [
+        "Golos Text",
+        false
+      ]
+    ],
+    "images": [],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "default",
+    "title": "UI-kit — Ваш Финдир",
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        true
+      ],
+      [
+        "Onest",
+        true
+      ],
+      [
+        "Golos Text",
+        true
+      ]
+    ],
+    "images": [
+      "http://127.0.0.1:8001/assets/brand/logo-dark.png"
+    ],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "24-light",
+    "pressed": [
+      "24",
+      "Светлый"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "24-dark",
+    "pressed": [
+      "24",
+      "Тёмный"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "32-light",
+    "pressed": [
+      "32",
+      "Светлый"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "32-dark",
+    "pressed": [
+      "32",
+      "Тёмный"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "48-light",
+    "pressed": [
+      "48",
+      "Светлый"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "48-dark",
+    "pressed": [
+      "48",
+      "Тёмный"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "64-light",
+    "pressed": [
+      "64",
+      "Светлый"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "64-dark",
+    "pressed": [
+      "64",
+      "Тёмный"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "96-light",
+    "pressed": [
+      "96",
+      "Светлый"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 375,
+    "state": "96-dark",
+    "pressed": [
+      "96",
+      "Тёмный"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "dark"
+  },
+  {
+    "kind": "reference",
+    "width": 768,
+    "state": "default",
+    "title": "",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        false
+      ],
+      [
+        "Onest",
+        false
+      ],
+      [
+        "Golos Text",
+        false
+      ]
+    ],
+    "images": [],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "default",
+    "title": "UI-kit — Ваш Финдир",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        true
+      ],
+      [
+        "Onest",
+        true
+      ],
+      [
+        "Golos Text",
+        true
+      ]
+    ],
+    "images": [
+      "http://127.0.0.1:8001/assets/brand/logo-dark.png"
+    ],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "24-light",
+    "pressed": [
+      "24",
+      "Светлый"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "24-dark",
+    "pressed": [
+      "24",
+      "Тёмный"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "32-light",
+    "pressed": [
+      "32",
+      "Светлый"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "32-dark",
+    "pressed": [
+      "32",
+      "Тёмный"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "48-light",
+    "pressed": [
+      "48",
+      "Светлый"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "48-dark",
+    "pressed": [
+      "48",
+      "Тёмный"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "64-light",
+    "pressed": [
+      "64",
+      "Светлый"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "64-dark",
+    "pressed": [
+      "64",
+      "Тёмный"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "96-light",
+    "pressed": [
+      "96",
+      "Светлый"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 768,
+    "state": "96-dark",
+    "pressed": [
+      "96",
+      "Тёмный"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "dark"
+  },
+  {
+    "kind": "reference",
+    "width": 1024,
+    "state": "default",
+    "title": "",
+    "scrollWidth": 1024,
+    "clientWidth": 1024,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        false
+      ],
+      [
+        "Onest",
+        false
+      ],
+      [
+        "Golos Text",
+        false
+      ]
+    ],
+    "images": [],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "default",
+    "title": "UI-kit — Ваш Финдир",
+    "scrollWidth": 1024,
+    "clientWidth": 1024,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        true
+      ],
+      [
+        "Onest",
+        true
+      ],
+      [
+        "Golos Text",
+        true
+      ]
+    ],
+    "images": [
+      "http://127.0.0.1:8001/assets/brand/logo-dark.png"
+    ],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "24-light",
+    "pressed": [
+      "24",
+      "Светлый"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "24-dark",
+    "pressed": [
+      "24",
+      "Тёмный"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "32-light",
+    "pressed": [
+      "32",
+      "Светлый"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "32-dark",
+    "pressed": [
+      "32",
+      "Тёмный"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "48-light",
+    "pressed": [
+      "48",
+      "Светлый"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "48-dark",
+    "pressed": [
+      "48",
+      "Тёмный"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "64-light",
+    "pressed": [
+      "64",
+      "Светлый"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "64-dark",
+    "pressed": [
+      "64",
+      "Тёмный"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "96-light",
+    "pressed": [
+      "96",
+      "Светлый"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1024,
+    "state": "96-dark",
+    "pressed": [
+      "96",
+      "Тёмный"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "dark"
+  },
+  {
+    "kind": "reference",
+    "width": 1440,
+    "state": "default",
+    "title": "",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        false
+      ],
+      [
+        "Onest",
+        false
+      ],
+      [
+        "Golos Text",
+        false
+      ]
+    ],
+    "images": [],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "default",
+    "title": "UI-kit — Ваш Финдир",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "fonts": [
+      [
+        "Inter",
+        true
+      ],
+      [
+        "Manrope",
+        true
+      ],
+      [
+        "Onest",
+        true
+      ],
+      [
+        "Golos Text",
+        true
+      ]
+    ],
+    "images": [
+      "http://127.0.0.1:8001/assets/brand/logo-dark.png"
+    ],
+    "errors": []
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "24-light",
+    "pressed": [
+      "24",
+      "Светлый"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "24-dark",
+    "pressed": [
+      "24",
+      "Тёмный"
+    ],
+    "values": [
+      "5 px",
+      "9 px",
+      "11 px",
+      "8 px",
+      "≈ 7 px"
+    ],
+    "sign": "24px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "32-light",
+    "pressed": [
+      "32",
+      "Светлый"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "32-dark",
+    "pressed": [
+      "32",
+      "Тёмный"
+    ],
+    "values": [
+      "7 px",
+      "12 px",
+      "15 px",
+      "10 px",
+      "≈ 11 px"
+    ],
+    "sign": "32px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "48-light",
+    "pressed": [
+      "48",
+      "Светлый"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "48-dark",
+    "pressed": [
+      "48",
+      "Тёмный"
+    ],
+    "values": [
+      "10 px",
+      "18 px",
+      "23 px",
+      "15 px",
+      "≈ 16 px"
+    ],
+    "sign": "48px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "64-light",
+    "pressed": [
+      "64",
+      "Светлый"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "64-dark",
+    "pressed": [
+      "64",
+      "Тёмный"
+    ],
+    "values": [
+      "13 px",
+      "24 px",
+      "30 px",
+      "20 px",
+      "≈ 21 px"
+    ],
+    "sign": "64px",
+    "stage": "dark"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "96-light",
+    "pressed": [
+      "96",
+      "Светлый"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "light"
+  },
+  {
+    "kind": "current",
+    "width": 1440,
+    "state": "96-dark",
+    "pressed": [
+      "96",
+      "Тёмный"
+    ],
+    "values": [
+      "20 px",
+      "35 px",
+      "45 px",
+      "30 px",
+      "≈ 31 px"
+    ],
+    "sign": "96px",
+    "stage": "dark"
+  }
+]

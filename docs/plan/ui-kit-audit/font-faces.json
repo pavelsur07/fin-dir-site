@@ -1,0 +1,102 @@
+[
+  {
+    "width": 320,
+    "kind": "reference",
+    "faces": {
+      "Inter": 9,
+      "Manrope": 6,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 320,
+    "kind": "current",
+    "faces": {
+      "Inter": 2,
+      "Manrope": 3,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 375,
+    "kind": "reference",
+    "faces": {
+      "Inter": 9,
+      "Manrope": 6,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 375,
+    "kind": "current",
+    "faces": {
+      "Inter": 2,
+      "Manrope": 3,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 768,
+    "kind": "reference",
+    "faces": {
+      "Inter": 9,
+      "Manrope": 6,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 768,
+    "kind": "current",
+    "faces": {
+      "Inter": 2,
+      "Manrope": 3,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 1024,
+    "kind": "reference",
+    "faces": {
+      "Inter": 9,
+      "Manrope": 6,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 1024,
+    "kind": "current",
+    "faces": {
+      "Inter": 2,
+      "Manrope": 3,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 1440,
+    "kind": "reference",
+    "faces": {
+      "Inter": 9,
+      "Manrope": 6,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  },
+  {
+    "width": 1440,
+    "kind": "current",
+    "faces": {
+      "Inter": 2,
+      "Manrope": 3,
+      "Onest": 0,
+      "Golos Text": 0
+    }
+  }
+]

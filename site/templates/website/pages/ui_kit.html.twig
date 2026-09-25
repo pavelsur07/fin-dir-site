@@ -5,115 +5,11 @@
 {% block robots %}noindex, nofollow{% endblock %}
 {% block analytics %}{% endblock %}
 
-{% block navigation %}
-    {% include 'website/components/_navbar.html.twig' with {
-        brand: 'Ваш Финдир',
-        brand_href: path('home'),
-        navigation_id: 'vf-ui-kit-navigation',
-        items: [
-            {label: 'Главная', href: path('home')},
-            {label: 'UI-kit', href: path('ui_kit'), active: true},
-            {label: 'Секции', href: path('ui_kit_sections')},
-        ],
-    } only %}
-{% endblock %}
-
+{% block navigation %}{% endblock %}
+{% block head %}<script src="/assets/website/ui-kit-logo.js?v={{ vf_asset_version }}" defer></script>{% endblock %}
 {% block body %}
-    <section class="bg-bg py-16 text-fg md:py-20" data-theme="dark" data-vf-section="hero" data-vf-ui-kit-intro>
-        <div class="vf-container grid gap-6">
-            <img class="h-auto max-w-full" src="/assets/brand/logo-dark.png" width="160" height="54" alt="Ваш Финдир">
-            <div class="flex flex-wrap items-center gap-3">
-                {% include 'website/components/_badge.html.twig' with {label: 'v2.0', tone: 'accent'} only %}
-                <span class="text-t6 text-fg-secondary">Дизайн-система · цвет и типографика</span>
-            </div>
-            <h1 class="mb-0 max-w-content text-t1">Ink &amp; Crimson — полная цветовая схема на двух опорных цветах</h1>
-            <p class="mb-0 max-w-content text-t4 text-fg-secondary">Чернильный отвечает за текст, фон и структуру. Малиновый выделяет действия, ключевые значения и фокус. Образцы ниже собраны из токенов и компонентов работающего сайта.</p>
-            <div class="grid gap-4 pt-4 md:grid-cols-2">
-                {% for swatch in [{name: 'brand.ink', token: 'ink-950', text: 'Основа текста и тёмных поверхностей'}, {name: 'brand.crimson', token: 'crimson-700', text: 'Действие и акцент'}] %}
-                    <div class="flex items-center gap-4 rounded-lg border border-border bg-bg-subtle p-4">
-                        <span class="size-16 shrink-0 rounded-md border border-border-strong" data-vf-swatch="{{ swatch.token }}" aria-hidden="true"></span>
-                        <span><strong class="block text-t3">{{ swatch.name }}</strong><span class="text-t6 text-fg-secondary">{{ swatch.text }}</span></span>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
-    <div class="vf-container space-y-24 py-20" data-vf-ui-kit>
-        <section id="logo" class="grid gap-8" aria-labelledby="logo-title" data-vf-ui-kit-section="logo">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">00 · Логотип</p><h2 id="logo-title">Ваш Финдир</h2><p class="mb-0 text-t4 text-fg-secondary">Знак и словесная часть используются в светлом и тёмном контекстах. Файлы ниже совпадают с логотипами сайта.</p></div>
-            <div class="grid gap-4 md:grid-cols-2">
-                <div class="flex flex-col justify-between gap-6 rounded-lg border border-border bg-bg p-6 md:p-8">
-                    <span class="text-t7 text-fg-muted">Светлый фон</span>
-                    <img class="mx-auto h-auto max-w-full" src="/assets/brand/logo-light.png" width="260" height="88" alt="Ваш Финдир на светлом фоне">
-                    <a class="text-t6" href="/assets/brand/logo-light.png" download>Скачать PNG для светлого фона</a>
-                </div>
-                <div class="flex flex-col justify-between gap-6 rounded-lg bg-bg p-6 text-fg md:p-8" data-theme="dark">
-                    <span class="text-t7 text-fg-secondary">Тёмный фон</span>
-                    <img class="mx-auto h-auto max-w-full" src="/assets/brand/logo-dark.png" width="260" height="88" alt="Ваш Финдир на тёмном фоне">
-                    <a class="text-t6 text-accent-text" href="/assets/brand/logo-dark.png" download>Скачать PNG для тёмного фона</a>
-                </div>
-            </div>
-            <p class="mb-0 rounded-md bg-accent-subtle p-4 text-t6 text-accent-text">Логотип не растягивают, не меняют форму знака и не размещают на фоне с недостаточным контрастом.</p>
-        </section>
-
-        <section id="palette" class="grid gap-8" aria-labelledby="palette-title" data-vf-ui-kit-section="palette">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">01 · Палитра</p><h2 id="palette-title">Тональные шкалы</h2><p class="mb-0 text-t4 text-fg-secondary">Две шкалы по 11 ступеней. Образцы получают цвет из канонических переменных CSS.</p></div>
-            {% for family in ['ink', 'crimson'] %}
-                <div class="grid gap-4"><h3 class="mb-0">{{ family }}</h3>
-                    <div class="grid grid-cols-2 gap-2 md:grid-cols-5 lg:grid-cols-11">
-                        {% for step in [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950] %}
-                            <div class="min-w-0">
-                                <div class="flex h-24 items-end rounded-md border border-border-subtle p-2 text-t6 font-semibold {{ (family == 'ink' and step >= 500) or (family == 'crimson' and step >= 600) ? 'text-fg-on-accent' : 'text-fg' }}" data-vf-swatch="{{ family }}-{{ step }}" aria-hidden="true"><span class="{{ family == 'crimson' and step == 500 ? 'rounded-xs bg-bg px-2 py-1 text-fg' : '' }}">{{ step }}</span></div>
-                                <span class="block pt-2 text-t7 text-fg-muted">{{ family }}.{{ step }}</span>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endfor %}
-        </section>
-
-        <section id="status-colors" class="grid gap-8" aria-labelledby="status-colors-title" data-vf-ui-kit-section="status-colors">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">02 · Семантика</p><h2 id="status-colors-title">Статусные цвета</h2><p class="mb-0 text-t4 text-fg-secondary">Статус всегда назван текстом. Цвет помогает быстрее прочитать сообщение, но не заменяет его.</p></div>
-            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {% include 'website/components/_alert.html.twig' with {title: 'Успех', text: 'Действие выполнено.', tone: 'success'} only %}
-                {% include 'website/components/_alert.html.twig' with {title: 'Внимание', text: 'Проверьте данные.', tone: 'warning'} only %}
-                {% include 'website/components/_alert.html.twig' with {title: 'Ошибка', text: 'Исправьте поле.', tone: 'error'} only %}
-                {% include 'website/components/_alert.html.twig' with {title: 'Информация', text: 'Новые сведения.', tone: 'info'} only %}
-            </div>
-        </section>
-
-        <section id="roles" class="grid gap-8" aria-labelledby="roles-title" data-vf-ui-kit-section="roles" data-vf-showcase="colors">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">03 · Роли</p><h2 id="roles-title">Токены поверхностей и текста</h2><p class="mb-0 text-t4 text-fg-secondary">Одинаковые смысловые роли работают в светлой и тёмной теме.</p></div>
-            <div class="grid gap-4 md:grid-cols-2">
-                {% for mode in ['light', 'dark'] %}
-                    <div class="grid gap-4 rounded-lg border border-border bg-bg p-6 text-fg md:p-8" data-vf-color-context="{{ mode }}"{% if mode == 'dark' %} data-theme="dark"{% endif %}>
-                        <span class="text-t7 text-fg-muted">{{ mode == 'dark' ? 'Тёмная' : 'Светлая' }} тема · --vf-color-bg</span>
-                        <strong class="text-t3 text-fg">Основной текст</strong>
-                        <span class="text-fg-secondary">--vf-color-fg-secondary · Вторичный текст помогает выстроить иерархию.</span>
-                        <span class="text-fg-muted">Сдержанная подпись к образцу.</span>
-                        {% include 'website/components/_button.html.twig' with {label: 'Основное действие'} only %}
-                    </div>
-                {% endfor %}
-            </div>
-        </section>
-
-        <section id="contrast" class="grid gap-8" aria-labelledby="contrast-title" data-vf-ui-kit-section="contrast">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">04 · Доступность</p><h2 id="contrast-title">Допустимые сочетания</h2><p class="mb-0 text-t4 text-fg-secondary">Основной и вторичный текст, акцент и сообщения проверяются по контрасту в обеих темах.</p></div>
-            <div class="grid gap-4 md:grid-cols-2">
-                <div class="rounded-lg border border-border bg-bg p-6"><strong class="block text-t3 text-fg">Основной текст на белом</strong><span class="text-t6 text-fg-secondary">Текст для чтения · AA</span></div>
-                <div class="rounded-lg bg-accent p-6 text-fg-on-accent"><strong class="block text-t3">Белый на акценте</strong><span class="text-t6">Кнопка · AA</span></div>
-                <div class="rounded-lg bg-bg-subtle p-6"><strong class="block text-t3 text-fg">Текст на мягкой поверхности</strong><span class="text-t6 text-fg-secondary">Подложка и карточка · AA</span></div>
-                <div class="rounded-lg bg-bg p-6 text-fg" data-theme="dark"><strong class="block text-t3">Светлый текст на Ink</strong><span class="text-t6 text-fg-secondary">Тёмный контекст · AA</span></div>
-            </div>
-        </section>
-
-        <section id="typography" class="grid gap-8" aria-labelledby="typography-title" data-vf-ui-kit-section="typography">
-            <span id="foundations" aria-hidden="true"></span>
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">05 · Типографика</p><h2 id="typography-title">Manrope + Inter, шкала T1–T8</h2><p class="mb-0 text-t4 text-fg-secondary">Заголовки и числа используют Manrope, основной текст — Inter.</p></div>
-            {% include 'website/sections/_foundations_showcase.html.twig' with {catalog_embed: true, catalog_typography_only: true} only %}
-        </section>
-
+    {% include 'website/pages/_ui_kit_foundations.html.twig' %}
+    <div class="vf-container space-y-24 pb-24" data-vf-ui-kit>
         <section id="radii" class="grid gap-8" aria-labelledby="radii-title" data-vf-ui-kit-section="radii">
             <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">06 · Форма</p><h2 id="radii-title">Шкала радиусов</h2></div>
             <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
