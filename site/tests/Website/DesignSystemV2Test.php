@@ -8,6 +8,27 @@ use PHPUnit\Framework\TestCase;
 
 final class DesignSystemV2Test extends TestCase
 {
+    public function testUiKitNavigationHasAllFourReferenceLevels(): void
+    {
+        $root = dirname(__DIR__, 2);
+        $page = file_get_contents($root.'/templates/website/pages/ui_kit.html.twig');
+        self::assertIsString($page);
+        self::assertStringContainsString('_ui_kit_navigation.html.twig', $page);
+        self::assertStringContainsString('ui-kit-navigation.js', $page);
+
+        $navigation = file_get_contents($root.'/templates/website/pages/_ui_kit_navigation.html.twig');
+        self::assertIsString($navigation);
+        foreach (['16.1 · Основное меню сайта', '16.2 · Меню компании и пользователя', '16.3 · Каркас кабинета', '16.4 · Хлебные крошки сайта'] as $heading) {
+            self::assertStringContainsString($heading, $navigation);
+        }
+        foreach (['features', 'audiences', 'mobile-features', 'mobile-audiences', 'company', 'user', 'crumbs'] as $panel) {
+            self::assertStringContainsString('id="vf-ui-nav-'.$panel.'"', $navigation);
+            self::assertStringContainsString('aria-controls="vf-ui-nav-'.$panel.'"', $navigation);
+        }
+        self::assertStringNotContainsString('<h1', $navigation);
+        self::assertStringNotContainsString('href="#"', $navigation);
+    }
+
     public function testLightThemeTextAndControlBoundariesMeetContrastThresholds(): void
     {
         $css = file_get_contents(dirname(__DIR__, 2).'/assets/styles/website/app.css');
@@ -108,6 +129,6 @@ final class DesignSystemV2Test extends TestCase
         self::assertIsArray($stylesheets);
         self::assertCount(1, $stylesheets);
         self::assertStringContainsString('@source "../../../templates/website";', $css);
-        self::assertSame(['analytics.js', 'app.css', 'metrika.js', 'navigation.js', 'ui-kit-logo.js'], array_map('basename', glob($root.'/public/assets/website/*') ?: []));
+        self::assertSame(['analytics.js', 'app.css', 'metrika.js', 'navigation.js', 'ui-kit-logo.js', 'ui-kit-navigation.js'], array_map('basename', glob($root.'/public/assets/website/*') ?: []));
     }
 }

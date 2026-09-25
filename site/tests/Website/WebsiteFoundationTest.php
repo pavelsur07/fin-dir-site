@@ -60,7 +60,7 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorExists('[data-vf-ui-kit-intro] a[href="/"]');
         self::assertSelectorExists('[data-vf-component="footer"][data-theme="dark"] img[src="/assets/brand/logo-dark.png"]');
 
-        foreach (['button', 'card', 'badge', 'alert', 'form-input', 'select', 'textarea', 'checkbox', 'accordion', 'breadcrumb', 'navbar', 'footer', 'cta'] as $component) {
+        foreach (['button', 'card', 'badge', 'alert', 'form-input', 'select', 'textarea', 'checkbox', 'accordion', 'breadcrumb', 'footer', 'cta'] as $component) {
             self::assertSelectorExists(sprintf('[data-vf-component="%s"]', $component));
         }
         foreach (['primary', 'secondary', 'ghost'] as $variant) {
@@ -69,13 +69,8 @@ final class WebsiteFoundationTest extends WebTestCase
         foreach (['default', 'hover', 'focus', 'active'] as $state) {
             self::assertSelectorExists(sprintf('[data-vf-component="button"][data-vf-state="%s"]', $state));
         }
-        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-open][aria-expanded="false"]');
-        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-open][aria-label="Открыть меню"][aria-haspopup="dialog"][aria-controls]');
-        self::assertSelectorExists('[data-vf-component="navbar"] dialog[data-vf-menu-dialog]');
-        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-close]');
-        $drawerId = $crawler->filter('[data-vf-menu-open]')->attr('aria-controls');
-        self::assertNotNull($drawerId);
-        self::assertCount(1, $crawler->filter('dialog#'.$drawerId));
+        self::assertSelectorCount(0, '[data-vf-component="navbar"]');
+        self::assertSelectorExists('#navigation-preview [aria-controls="vf-ui-nav-features"][aria-expanded="false"]');
         self::assertSelectorExists('[data-vf-component="accordion"] details > summary h3');
         self::assertSelectorExists('script[src^="/assets/website/navigation.js?v="][defer]');
         self::assertSelectorCount(0, 'link[href*="bootstrap"], script[src*="bootstrap"]');
@@ -88,6 +83,51 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorExists(sprintf('[data-vf-form-group="%s"] [data-vf-component="%s"][data-vf-state="disabled"] :disabled', $group, $component));
         }
         self::assertSame(1, $crawler->filter('link[href^="/assets/website/app.css?v="]')->count());
+    }
+
+    public function testProductionNavbarRetainsMobileDialog(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/services');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-open][aria-expanded="false"]');
+        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-open][aria-label="Открыть меню"][aria-haspopup="dialog"][aria-controls]');
+        self::assertSelectorExists('[data-vf-component="navbar"] dialog[data-vf-menu-dialog]');
+        self::assertSelectorExists('[data-vf-component="navbar"] button[data-vf-menu-close]');
+        $drawerId = $crawler->filter('[data-vf-menu-open]')->attr('aria-controls');
+        self::assertNotNull($drawerId);
+        self::assertCount(1, $crawler->filter('dialog#'.$drawerId));
+    }
+
+    public function testUiKitNavigationPanelsHaveUniqueAccessibleControls(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/ui-kit');
+
+        self::assertResponseIsSuccessful();
+        self::assertCount(4, $crawler->filter('#navigation-preview .vf-ui-nav-block > h3'));
+        $toggles = $crawler->filter('#navigation-preview [data-vf-ui-kit-nav-toggle]');
+        self::assertCount(7, $toggles);
+        $ids = [];
+        foreach ($toggles as $toggle) {
+            self::assertInstanceOf(\DOMElement::class, $toggle);
+            self::assertSame('false', $toggle->getAttribute('aria-expanded'));
+            $id = $toggle->getAttribute('aria-controls');
+            self::assertNotContains($id, $ids);
+            self::assertCount(1, $crawler->filter('#'.$id.'[hidden]'));
+            $ids[] = $id;
+        }
+        self::assertCount(3, $crawler->filter('#navigation-preview [data-vf-ui-kit-company-option]'));
+        self::assertCount(1, $crawler->filter('#navigation-preview [data-vf-ui-kit-company-empty][role="status"][aria-live="polite"]'));
+        self::assertCount(7, $crawler->filter('#navigation-preview .vf-ui-nav-sidebar li'));
+        self::assertCount(5, $crawler->filter('#navigation-preview .vf-ui-nav-tabbar > *'));
+        self::assertCount(2, $crawler->filter('#navigation-preview [data-vf-component="breadcrumb"]'));
+        $separators = $crawler->filter('#navigation-preview [data-vf-component="breadcrumb"] span[aria-hidden="true"]');
+        self::assertCount(4, $separators);
+        foreach ($separators as $separator) {
+            self::assertSame('›', $separator->textContent);
+        }
     }
 
     public function testWebsiteAssetsAreBuiltFromOnePinnedEntrypoint(): void
@@ -114,7 +154,7 @@ final class WebsiteFoundationTest extends WebTestCase
         $stylesheets = glob($root.'/assets/styles/website/*.css');
         self::assertIsArray($stylesheets);
         self::assertCount(1, $stylesheets);
-        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'ui-kit-logo.js'] as $script) {
+        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'ui-kit-logo.js', 'ui-kit-navigation.js'] as $script) {
             self::assertSame(file_get_contents($root.'/assets/scripts/website/'.$script), file_get_contents($root.'/public/assets/website/'.$script));
         }
     }
@@ -123,7 +163,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'ui-kit-logo.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'ui-kit-logo.js', 'ui-kit-navigation.js'] as $asset) {
             $content = file_get_contents($root.'/public/assets/website/'.$asset);
             self::assertIsString($content);
             $contents .= $content;

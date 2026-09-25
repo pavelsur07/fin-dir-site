@@ -6,7 +6,7 @@
 {% block analytics %}{% endblock %}
 
 {% block navigation %}{% endblock %}
-{% block head %}<script src="/assets/website/ui-kit-logo.js?v={{ vf_asset_version }}" defer></script>{% endblock %}
+{% block head %}<script src="/assets/website/ui-kit-logo.js?v={{ vf_asset_version }}" defer></script><script src="/assets/website/ui-kit-navigation.js?v={{ vf_asset_version }}" defer></script>{% endblock %}
 {% block body %}
     {% include 'website/pages/_ui_kit_foundations.html.twig' %}
     <div class="vf-container space-y-24 pb-24" data-vf-ui-kit>
@@ -89,21 +89,7 @@
             </div>
         </section>
 
-        <section id="navigation-preview" class="grid gap-8" aria-labelledby="navigation-preview-title" data-vf-ui-kit-section="navigation-preview">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">16 · Навигация</p><h2 id="navigation-preview-title">Меню сайта</h2><p class="mb-0 text-t4 text-fg-secondary">Образец использует production Navbar, включая мобильный dialog.</p></div>
-            <div class="overflow-hidden rounded-lg border border-border">
-                {% include 'website/components/_navbar.html.twig' with {
-                    brand: 'Ваш Финдир',
-                    brand_href: path('home'),
-                    brand_aria_label: 'Образец логотипа — на главную',
-                    navigation_id: 'vf-ui-kit-navigation-preview',
-                    navigation_label: 'Образец основной навигации',
-                    mobile_navigation_label: 'Образец мобильной навигации',
-                    dialog_label: 'Образец меню',
-                    items: [{label: 'Главная', href: path('home')}, {label: 'Услуги', href: '/services'}, {label: 'Газета', href: path('gazeta_index')}],
-                } only %}
-            </div>
-        </section>
+        {% include 'website/pages/_ui_kit_navigation.html.twig' %}
 
         <section id="empty-state" class="grid gap-8" aria-labelledby="empty-state-title" data-vf-ui-kit-section="empty-state">
             <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">18 · Состояния</p><h2 id="empty-state-title">Когда показать нечего</h2><p class="mb-0 text-t4 text-fg-secondary">Пустое состояние объясняет, что происходит, и предлагает понятное следующее действие.</p></div>

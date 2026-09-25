@@ -1,0 +1,130 @@
+{% set site_features = [
+    {icon: 'list', name: 'Обзор данных', text: 'Пример раздела с показателями'},
+    {icon: 'newspaper', name: 'Документы', text: 'Пример списка файлов'},
+    {icon: 'calendar', name: 'Планирование', text: 'Пример календаря задач'},
+    {icon: 'list', name: 'Платежи', text: 'Пример учёта операций'},
+    {icon: 'people', name: 'Команда', text: 'Пример совместной работы'},
+    {icon: 'eye', name: 'Контроль', text: 'Пример проверки статусов'}
+] %}
+{% set audiences = [
+    {name: 'Руководителю', text: 'Обзор и решения'},
+    {name: 'Бухгалтеру', text: 'Учёт и документы'},
+    {name: 'Команде', text: 'Задачи и роли'},
+    {name: 'Партнёру', text: 'Совместная работа'}
+] %}
+{% set companies = [
+    {initials: 'А', name: 'Компания А · демо', number: '000 000 0000', role: 'Владелец'},
+    {initials: 'Б', name: 'Компания Б · демо', number: '000 000 0001', role: 'Сотрудник'},
+    {initials: 'В', name: 'Компания В · демо', number: '000 000 0002', role: 'Наблюдатель'}
+] %}
+<section id="navigation-preview" class="grid gap-8" aria-labelledby="navigation-preview-title" data-vf-ui-kit-section="navigation-preview" data-vf-ui-kit-nav>
+    <div class="max-w-content">
+        <p class="text-t7 font-semibold text-accent-text">16 · Навигация</p>
+        <h2 id="navigation-preview-title">Меню сайта и кабинета</h2>
+        <p class="mb-0 text-t4 text-fg-secondary">Три уровня: основное меню сайта с раскрывающимися панелями, меню компании и пользователя в шапке кабинета, боковое меню разделов. Образцы интерактивны — нажмите на пункты со стрелкой. Данные кабинета демонстрационные.</p>
+    </div>
+
+    <div class="vf-ui-nav-block">
+        <h3>16.1 · Основное меню сайта</h3>
+        <div class="vf-ui-nav-demo vf-ui-nav-site">
+            <div class="vf-ui-nav-site-bar">
+                <a class="vf-ui-nav-brand" href="{{ path('home') }}" aria-label="Ваш Финдир — на главную"><span class="vf-ui-nav-brand-mark" aria-hidden="true">ВФ</span><strong>Ваш Финдир</strong></a>
+                <nav class="vf-ui-nav-site-links" aria-label="Демонстрация меню сайта">
+                    <button type="button" aria-expanded="false" aria-controls="vf-ui-nav-features" data-vf-ui-kit-nav-toggle data-vf-ui-kit-nav-group="site">Возможности <span class="vf-ui-nav-chevron" aria-hidden="true">⌄</span></button>
+                    <div id="vf-ui-nav-features" class="vf-ui-nav-dropdown vf-ui-nav-features" hidden data-vf-ui-kit-nav-panel>
+                        <div class="vf-ui-nav-feature-grid">
+                            {% for feature in site_features %}
+                                <div class="vf-ui-nav-feature"><span class="vf-ui-nav-feature-icon" aria-hidden="true">{% include 'website/components/_icon.html.twig' with {name: feature.icon, size: 20} only %}</span><span><strong>{{ feature.name }}</strong><small>{{ feature.text }}</small></span></div>
+                            {% endfor %}
+                        </div>
+                        <div class="vf-ui-nav-feature-promo" data-theme="dark"><small>Демонстрационный блок</small><strong>Образец меню</strong><p>Здесь показано место для короткого описания предложения.</p><a href="{{ path('ui_kit_sections') }}">Смотреть секции <span aria-hidden="true">→</span></a></div>
+                        <div class="vf-ui-nav-feature-foot"><span>Нужна помощь с выбором?</span><a href="{{ path('ui_kit_sections') }}">Открыть каталог секций</a></div>
+                    </div>
+                    <button type="button" aria-expanded="false" aria-controls="vf-ui-nav-audiences" data-vf-ui-kit-nav-toggle data-vf-ui-kit-nav-group="site">Для кого <span class="vf-ui-nav-chevron" aria-hidden="true">⌄</span></button>
+                    <div id="vf-ui-nav-audiences" class="vf-ui-nav-dropdown vf-ui-nav-audiences" hidden data-vf-ui-kit-nav-panel>
+                        {% for audience in audiences %}<div class="vf-ui-nav-audience"><span class="vf-ui-nav-audience-icon" aria-hidden="true">•</span><span><strong>{{ audience.name }}</strong><small>{{ audience.text }}</small></span></div>{% endfor %}
+                    </div>
+                    <a href="{{ path('gazeta_index') }}">Газета</a>
+                </nav>
+                <div class="vf-ui-nav-site-actions"><span class="vf-ui-nav-action-secondary">Войти · демо</span><span class="vf-ui-nav-action-primary">Подключиться · демо</span></div>
+            </div>
+            <div class="vf-ui-nav-site-content">
+                <div class="vf-ui-nav-mobile-column">
+                    <span class="vf-ui-nav-caption">Мобильная версия · &lt; 768 px</span>
+                    <div class="vf-ui-nav-mobile-sample">
+                        <div class="vf-ui-nav-mobile-bar"><span class="vf-ui-nav-brand"><span class="vf-ui-nav-brand-mark" aria-hidden="true">ВФ</span><strong>Ваш Финдир</strong></span><span aria-hidden="true">×</span></div>
+                        <nav class="vf-ui-nav-mobile-links" aria-label="Демонстрация мобильного меню">
+                            <button type="button" aria-expanded="false" aria-controls="vf-ui-nav-mobile-features" data-vf-ui-kit-nav-toggle data-vf-ui-kit-nav-group="mobile">Возможности <span class="vf-ui-nav-chevron" aria-hidden="true">⌄</span></button>
+                            <div id="vf-ui-nav-mobile-features" class="vf-ui-nav-mobile-sublist" hidden data-vf-ui-kit-nav-panel>{% for feature in site_features %}<span>{{ feature.name }}</span>{% endfor %}</div>
+                            <button type="button" aria-expanded="false" aria-controls="vf-ui-nav-mobile-audiences" data-vf-ui-kit-nav-toggle data-vf-ui-kit-nav-group="mobile">Для кого <span class="vf-ui-nav-chevron" aria-hidden="true">⌄</span></button>
+                            <div id="vf-ui-nav-mobile-audiences" class="vf-ui-nav-mobile-sublist" hidden data-vf-ui-kit-nav-panel>{% for audience in audiences %}<span>{{ audience.name }}</span>{% endfor %}</div>
+                            <a href="{{ path('gazeta_index') }}">Газета</a><a href="{{ path('home') }}">Главная</a>
+                        </nav>
+                        <div class="vf-ui-nav-mobile-actions"><span class="vf-ui-nav-action-primary">Подключиться · демо</span><span class="vf-ui-nav-action-secondary">Войти · демо</span></div>
+                    </div>
+                </div>
+                <div class="vf-ui-nav-rules"><h4>Правила меню сайта</h4><ul><li>Основных пунктов немного: они видны с первого взгляда.</li><li>Панель открывается нажатием и закрывается Escape.</li><li>В каждой группе открыта только одна панель.</li><li>Текст пункта объясняет, куда ведёт переход.</li><li>Мобильное меню раскрывает группы по нажатию.</li><li>Фокус остаётся заметным на каждой кнопке и ссылке.</li><li>У демонстрационных действий нет ложных переходов.</li></ul></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="vf-ui-nav-block">
+        <h3>16.2 · Меню компании и пользователя</h3>
+        <div class="vf-ui-nav-demo vf-ui-nav-account">
+            <div class="vf-ui-nav-account-bar">
+                <button type="button" class="vf-ui-nav-company-trigger" aria-expanded="false" aria-controls="vf-ui-nav-company" data-vf-ui-kit-nav-toggle data-vf-ui-kit-nav-group="account"><span class="vf-ui-nav-company-mark" aria-hidden="true" data-vf-ui-kit-company-initial>А</span><span class="vf-ui-nav-company-label"><strong data-vf-ui-kit-company-name>Компания А · демо</strong><small data-vf-ui-kit-company-number>ИНН 000 000 0000</small></span><span class="vf-ui-nav-chevron" aria-hidden="true">⌄</span></button>
+                <div id="vf-ui-nav-company" class="vf-ui-nav-dropdown vf-ui-nav-company-panel" hidden data-vf-ui-kit-nav-panel>
+                    <label for="vf-ui-nav-company-search">Поиск по демонстрационным компаниям</label><input id="vf-ui-nav-company-search" type="search" placeholder="Название или ИНН" autocomplete="off" data-vf-ui-kit-company-search>
+                    <span class="vf-ui-nav-caption">Мои компании · демо</span>
+                    <div class="vf-ui-nav-company-list">
+                        {% for company in companies %}<button type="button" class="vf-ui-nav-company-option" data-vf-ui-kit-company-option data-name="{{ company.name }}" data-number="{{ company.number }}" data-initial="{{ company.initials }}" aria-pressed="{{ loop.first ? 'true' : 'false' }}"><span class="vf-ui-nav-company-mark" aria-hidden="true">{{ company.initials }}</span><span><strong>{{ company.name }}</strong><small>ИНН {{ company.number }} · {{ company.role }}</small></span><span class="vf-ui-nav-selected" aria-hidden="true">✓</span></button>{% endfor %}
+                    </div>
+                    <p class="vf-ui-nav-no-results" role="status" aria-live="polite" data-vf-ui-kit-company-empty></p>
+                    <span class="vf-ui-nav-company-footer">Добавить компанию · образец</span>
+                </div>
+                <div class="vf-ui-nav-account-end"><span class="vf-ui-nav-bell" aria-hidden="true">{% include 'website/components/_icon.html.twig' with {name: 'envelope', size: 20} only %}</span><button type="button" class="vf-ui-nav-user-trigger" aria-label="Демонстрационное меню пользователя" aria-expanded="false" aria-controls="vf-ui-nav-user" data-vf-ui-kit-nav-toggle data-vf-ui-kit-nav-group="account"><span class="vf-ui-nav-avatar" aria-hidden="true">Д</span><span class="vf-ui-nav-chevron" aria-hidden="true">⌄</span></button></div>
+            </div>
+            <div id="vf-ui-nav-user" class="vf-ui-nav-dropdown vf-ui-nav-user-panel" hidden data-vf-ui-kit-nav-panel>
+                <div class="vf-ui-nav-user-info"><span class="vf-ui-nav-avatar" aria-hidden="true">Д</span><span><strong>Демо пользователь</strong><small>demo@example.test</small><em>Образец роли</em></span></div>
+                <div class="vf-ui-nav-user-group"><span>Профиль</span><span>Настройки</span><span>Уведомления</span></div>
+                <div class="vf-ui-nav-user-group"><span>Поддержка</span><span>Документы</span></div>
+                <span class="vf-ui-nav-user-exit">Выйти · образец</span>
+            </div>
+            <div class="vf-ui-nav-account-content"><div class="vf-ui-nav-rules"><h4>Правила меню кабинета</h4><ul><li>Показывайте текущую компанию и роль.</li><li>Поиск помогает найти запись в длинном списке.</li><li>Активная компания отмечена текстом и состоянием.</li><li>Профиль и действия сгруппированы по смыслу.</li><li>Выбор сохраняет фокус и закрывает панель.</li></ul></div></div>
+        </div>
+    </div>
+
+    <div class="vf-ui-nav-block">
+        <h3>16.3 · Каркас кабинета</h3>
+        <div class="vf-ui-nav-shell">
+            <aside class="vf-ui-nav-sidebar" data-theme="dark" aria-label="Образец бокового меню кабинета"><div class="vf-ui-nav-brand"><span class="vf-ui-nav-brand-mark" aria-hidden="true">ВФ</span><strong>Ваш Финдир</strong></div><ul><li>Обзор</li><li>Деньги</li><li class="is-active" aria-current="page">Платежи</li><li>Документы</li><li>Задачи</li><li>Команда</li><li>Настройки</li></ul><span>Демо интерфейса</span></aside>
+            <div class="vf-ui-nav-shell-main"><div class="vf-ui-nav-shell-top"><span>Платежи / Образец страницы</span><span class="vf-ui-nav-avatar" aria-hidden="true">Д</span></div><div class="vf-ui-nav-shell-body"><p class="vf-ui-nav-caption">Пример структуры · без данных клиентов</p><h4>Раздел кабинета</h4><div class="vf-ui-nav-tabs"><span class="is-active">Все записи</span><span>Черновики</span><span>На проверке</span><span>Шаблоны</span></div><div class="vf-ui-nav-shell-placeholder">Здесь располагается содержимое выбранного раздела.</div><div class="vf-ui-nav-pagination"><span>Страница 1 из нескольких</span><span>‹　<strong>1</strong>　2　3　…　›</span></div></div></div>
+        </div>
+        <div class="vf-ui-nav-info-grid"><div class="vf-ui-nav-card"><h4>Мобильное меню</h4><div class="vf-ui-nav-tabbar"><span>Обзор</span><span>Деньги</span><strong>Действие</strong><span>Задачи</span><span>Профиль</span></div><p>На узком экране боковой список заменяется нижней панелью из пяти пунктов. Это технический образец.</p></div><div class="vf-ui-nav-card vf-ui-nav-card-subtle"><h4>Правила</h4><ul><li>Активный раздел виден без опоры только на цвет.</li><li>Боковое меню сохраняет одинаковый порядок.</li><li>Вкладки относятся к текущему разделу.</li><li>Нижняя панель показывает главные действия.</li><li>Длинные названия не ломают сетку.</li></ul></div></div>
+    </div>
+
+    <div class="vf-ui-nav-block">
+        <h3>16.4 · Хлебные крошки сайта</h3>
+        <div class="vf-ui-nav-crumb-hero">
+            <div class="vf-ui-nav-crumb-top"><span class="vf-ui-nav-brand"><span class="vf-ui-nav-brand-mark" aria-hidden="true">ВФ</span><strong>Ваш Финдир</strong></span></div>
+            <div class="vf-ui-nav-crumb-content">
+                {% include 'website/components/_breadcrumb.html.twig' with {separator: '›', items: [{label: 'Главная', href: path('home')}, {label: 'Газета', href: path('gazeta_index')}, {label: 'UI-kit', href: path('ui_kit')}, {label: 'Заголовок материала'}]} only %}
+                <h4>Пример заголовка статьи с навигационной цепочкой</h4><small>Демонстрационный материал · 7 мин</small>
+            </div>
+        </div>
+        <div class="vf-ui-nav-info-grid vf-ui-nav-crumb-variants">
+            <div class="vf-ui-nav-card"><span class="vf-ui-nav-caption">Длинный путь · средние уровни свёрнуты</span><nav aria-label="Сокращённые хлебные крошки"><ol><li><a href="{{ path('home') }}">Главная</a><span aria-hidden="true">›</span></li><li><button type="button" aria-label="Промежуточные разделы" aria-expanded="false" aria-controls="vf-ui-nav-crumbs" data-vf-ui-kit-nav-toggle>…</button><span aria-hidden="true">›</span></li><li id="vf-ui-nav-crumbs" hidden data-vf-ui-kit-nav-panel><a href="{{ path('gazeta_index') }}">Газета</a><span aria-hidden="true">›</span><a href="{{ path('ui_kit') }}">UI-kit</a><span aria-hidden="true">›</span></li><li aria-current="page">Заголовок материала</li></ol></nav></div>
+            <div class="vf-ui-nav-card"><span class="vf-ui-nav-caption">Мобильный · ссылка на родителя</span><a class="vf-ui-nav-parent-link" href="{{ path('gazeta_index') }}">← Газета</a></div>
+            <div class="vf-ui-nav-card vf-ui-nav-card-subtle"><span class="vf-ui-nav-caption">На фоне Ink 50</span>{% include 'website/components/_breadcrumb.html.twig' with {separator: '›', items: [{label: 'Главная', href: path('home')}, {label: 'UI-kit'}]} only %}</div>
+        </div>
+        <div class="vf-ui-nav-info-grid"><div class="vf-ui-nav-card"><h4>Параметры</h4><dl><div><dt>Первый пункт</dt><dd>Главная</dd></div><div><dt>Разделитель</dt><dd>Стрелка</dd></div><div><dt>Текущая страница</dt><dd>Текст без ссылки</dd></div><div><dt>Длинный путь</dt><dd>Промежуточные уровни</dd></div><div><dt>Мобильный экран</dt><dd>Ссылка на родителя</dd></div><div><dt>Доступность</dt><dd>aria-current и понятное имя</dd></div><div><dt>Структура данных</dt><dd>BreadcrumbList</dd></div></dl></div><div class="vf-ui-nav-card vf-ui-nav-card-subtle"><h4>Лучшие практики</h4><ul><li>Цепочка показывает место страницы в структуре.</li><li>Последний пункт помечен как текущая страница.</li><li>Промежуточные уровни можно раскрыть.</li><li>Названия пунктов понятны вне контекста.</li><li>Ссылки ведут на существующие страницы.</li><li>Сокращение не скрывает первый и последний пункты.</li><li>Длинные названия переносятся без обрезания.</li><li>Навигация имеет собственное имя области.</li><li>Микроразметка отражает ту же цепочку.</li></ul></div></div>
+        <div class="vf-ui-nav-code" data-theme="dark"><strong>Пример разметки для поисковиков · JSON-LD</strong><pre><code>{ "@context": "https://schema.org", "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://example.test/" },
+    { "@type": "ListItem", "position": 2, "name": "Газета", "item": "https://example.test/gazeta" },
+    { "@type": "ListItem", "position": 3, "name": "UI-kit", "item": "https://example.test/ui-kit" },
+    { "@type": "ListItem", "position": 4, "name": "Заголовок материала", "item": "https://example.test/ui-kit/article" }
+  ]
+}</code></pre></div>
+    </div>
+</section>
