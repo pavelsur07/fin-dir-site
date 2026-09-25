@@ -15,15 +15,15 @@
             {label: 'Газета', href: path('gazeta_index')},
             {label: 'Партнёрам', href: '/partners'},
         ],
-        cta: {label: 'Записаться на встречу', href: '#lead-form'},
+        cta: {label: 'Записаться на встречу', href: path('home') ~ '#lead-form'},
     } only %}
 {% endblock %}
 
 {% block body %}
     <section class="py-12 md:py-16 lg:py-20" data-vf-section="services">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
-            <h1 class="mb-4 text-h1">Услуги</h1>
-            <p class="max-w-content text-lead text-muted">Раздел в разработке. Скоро здесь появится описание услуг.</p>
+        <div class="vf-container">
+            <h1 class="mb-4 text-t1">Услуги</h1>
+            <p class="max-w-content text-t4 text-fg-secondary">Раздел в разработке. Скоро здесь появится описание услуг.</p>
         </div>
     </section>
 {% endblock %}

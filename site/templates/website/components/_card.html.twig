@@ -1,7 +1,7 @@
-<article class="h-full rounded-lg border border-border-default bg-surface shadow-card" data-vf-component="card">
+<article class="h-full rounded-lg border border-border bg-bg shadow-md" data-vf-component="card">
     <div class="p-4 md:p-6">
-        {% if eyebrow|default(null) %}<p class="mb-4 text-caption font-medium tracking-caption text-muted uppercase">{{ eyebrow }}</p>{% endif %}
-        <h3 class="mb-4 text-h4">{{ title }}</h3>
-        <p class="mb-0 text-muted">{{ text }}</p>
+        {% if eyebrow|default(null) %}<p class="mb-4 text-t7 font-medium text-fg-secondary uppercase">{{ eyebrow }}</p>{% endif %}
+        <h3 class="mb-4 text-t3">{{ title }}</h3>
+        <p class="mb-0 text-fg-secondary">{{ text }}</p>
     </div>
 </article>

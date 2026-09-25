@@ -5,19 +5,19 @@
 {% block robots %}noindex, follow{% endblock %}
 
 {% block body %}
-    <section class="bg-page py-12 md:py-16 lg:py-20" data-vf-section="privacy-hero">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+    <section class="bg-bg-subtle py-12 md:py-16 lg:py-20" data-vf-section="privacy-hero">
+        <div class="vf-container">
             <div class="grid gap-6 lg:grid-cols-3">
                 <div class="min-w-0 lg:col-span-2">
-                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Документы</p>
-                    <h1 class="mb-4 text-h1 hyphens-auto">Политика конфиденциальности</h1>
-                    <p class="max-w-content text-lead text-muted">Полный текст политики обработки персональных данных пользователей сайта «Ваш Финдир». Документ описывает состав данных, цели обработки, порядок хранения, cookie-файлы, права пользователя и обязанности оператора.</p>
+                    <p class="mb-4 text-t7 font-medium uppercase text-fg-secondary">Документы</p>
+                    <h1 class="mb-4 text-t1 hyphens-auto">Политика конфиденциальности</h1>
+                    <p class="max-w-content text-t4 text-fg-secondary">Полный текст политики обработки персональных данных пользователей сайта «Ваш Финдир». Документ описывает состав данных, цели обработки, порядок хранения, cookie-файлы, права пользователя и обязанности оператора.</p>
                 </div>
                 <div class="min-w-0 lg:col-span-1">
-                    <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card">
-                        <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Версия документа</p>
-                        <p class="mb-2 text-h3">v1.4</p>
-                        <p class="mb-0 text-small text-muted">Дата публикации: 24 сентября 2026 года</p>
+                    <div class="rounded-lg border border-border bg-bg p-6 shadow-md">
+                        <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Версия документа</p>
+                        <p class="mb-2 text-t3">v1.4</p>
+                        <p class="mb-0 text-t6 text-fg-secondary">Дата публикации: 24 сентября 2026 года</p>
                     </div>
                 </div>
             </div>
@@ -25,80 +25,80 @@
     </section>
 
     <section class="py-12 md:py-16 lg:py-20" data-vf-section="privacy-summary">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+        <div class="vf-container">
             <div class="mb-8 grid gap-6 lg:grid-cols-3">
                 <div class="lg:col-span-1">
-                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Коротко</p>
-                    <h2 class="mb-3 text-h2">Что важно знать</h2>
+                    <p class="mb-4 text-t7 font-medium uppercase text-fg-secondary">Коротко</p>
+                    <h2 class="mb-3 text-t2">Что важно знать</h2>
                 </div>
                 <div class="lg:col-span-2">
-                    <p class="text-lead text-muted">В начале страницы вынесены ключевые сведения, а полный юридический текст ниже разбит на читаемые карточки.</p>
+                    <p class="text-t4 text-fg-secondary">В начале страницы вынесены ключевые сведения, а полный юридический текст ниже разбит на читаемые карточки.</p>
                 </div>
             </div>
             <div class="grid gap-6 md:grid-cols-3">
-                <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card">
-                    <span class="mb-4 inline-flex size-8 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                <div class="rounded-lg border border-border bg-bg p-6 shadow-md">
+                    <span class="mb-4 inline-flex size-8 items-center justify-center rounded-md bg-accent-subtle text-accent">
                         {% include 'website/components/_icon.html.twig' with {name: 'person-lines-fill', size: 24} only %}
                     </span>
-                    <h3 class="mb-2 text-h4">Какие данные</h3>
-                    <p class="mb-0 text-muted">Имя, контакт для связи, источник перехода на сайт, cookie-файлы и данные Яндекс Метрики, включая Вебвизор.</p>
+                    <h3 class="mb-2 text-t3">Какие данные</h3>
+                    <p class="mb-0 text-fg-secondary">Имя, контакт для связи, источник перехода на сайт, cookie-файлы и данные Яндекс Метрики, включая Вебвизор.</p>
                 </div>
-                <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card">
-                    <span class="mb-4 inline-flex size-8 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                <div class="rounded-lg border border-border bg-bg p-6 shadow-md">
+                    <span class="mb-4 inline-flex size-8 items-center justify-center rounded-md bg-accent-subtle text-accent">
                         {% include 'website/components/_icon.html.twig' with {name: 'chat-dots', size: 24} only %}
                     </span>
-                    <h3 class="mb-2 text-h4">Зачем обрабатываем</h3>
-                    <p class="mb-0 text-muted">Чтобы ответить на заявку, провести консультацию, улучшать сайт и аналитику.</p>
+                    <h3 class="mb-2 text-t3">Зачем обрабатываем</h3>
+                    <p class="mb-0 text-fg-secondary">Чтобы ответить на заявку, провести консультацию, улучшать сайт и аналитику.</p>
                 </div>
-                <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card">
-                    <span class="mb-4 inline-flex size-8 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                <div class="rounded-lg border border-border bg-bg p-6 shadow-md">
+                    <span class="mb-4 inline-flex size-8 items-center justify-center rounded-md bg-accent-subtle text-accent">
                         {% include 'website/components/_icon.html.twig' with {name: 'envelope-check', size: 24} only %}
                     </span>
-                    <h3 class="mb-2 text-h4">Как обратиться</h3>
-                    <p class="mb-0 text-muted">По вопросам персональных данных: <a class="text-brand-red hover:text-brand-red-hover" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>.</p>
+                    <h3 class="mb-2 text-t3">Как обратиться</h3>
+                    <p class="mb-0 text-fg-secondary">По вопросам персональных данных: <a class="text-accent hover:text-accent-hover" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="bg-surface py-12 md:py-16 lg:py-20" data-vf-section="privacy-operator">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+    <section class="bg-bg py-12 md:py-16 lg:py-20" data-vf-section="privacy-operator">
+        <div class="vf-container">
             <div class="mb-8 grid gap-6 lg:grid-cols-3">
                 <div class="lg:col-span-1">
-                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Оператор</p>
-                    <h2 class="mb-3 text-h2">Реквизиты и контакты</h2>
-                    <p class="text-muted">Эти данные используются в тексте политики, в футере сайта и для обращений пользователей по вопросам персональных данных.</p>
+                    <p class="mb-4 text-t7 font-medium uppercase text-fg-secondary">Оператор</p>
+                    <h2 class="mb-3 text-t2">Реквизиты и контакты</h2>
+                    <p class="text-fg-secondary">Эти данные используются в тексте политики, в футере сайта и для обращений пользователей по вопросам персональных данных.</p>
                 </div>
                 <div class="lg:col-span-2">
-                    <div class="rounded-lg border border-border-default bg-page p-6 shadow-card">
+                    <div class="rounded-lg border border-border bg-bg-subtle p-6 shadow-md">
                         <div class="grid gap-4 md:grid-cols-2">
-                            <div class="rounded-md border border-border-default bg-surface p-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Оператор</p>
-                                <p class="mb-0 font-bold text-content break-words">ООО «Ваш Финдир»</p>
+                            <div class="rounded-md border border-border bg-bg p-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Оператор</p>
+                                <p class="mb-0 font-bold text-fg break-words">ООО «Ваш Финдир»</p>
                             </div>
-                            <div class="rounded-md border border-border-default bg-surface p-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Сайт</p>
-                                <p class="mb-0 font-bold text-content break-words">https://vashfindir.ru</p>
+                            <div class="rounded-md border border-border bg-bg p-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Сайт</p>
+                                <p class="mb-0 font-bold text-fg break-words">https://vashfindir.ru</p>
                             </div>
-                            <div class="rounded-md border border-border-default bg-surface p-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">ИНН</p>
-                                <p class="mb-0 font-bold text-content break-words">6140000234</p>
+                            <div class="rounded-md border border-border bg-bg p-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">ИНН</p>
+                                <p class="mb-0 font-bold text-fg break-words">6140000234</p>
                             </div>
-                            <div class="rounded-md border border-border-default bg-surface p-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">ОГРН</p>
-                                <p class="mb-0 font-bold text-content break-words">1156188000176</p>
+                            <div class="rounded-md border border-border bg-bg p-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">ОГРН</p>
+                                <p class="mb-0 font-bold text-fg break-words">1156188000176</p>
                             </div>
-                            <div class="rounded-md border border-border-default bg-surface p-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Email</p>
-                                <p class="mb-0 font-bold text-content break-words"><a class="text-brand-red hover:text-brand-red-hover" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a></p>
+                            <div class="rounded-md border border-border bg-bg p-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Email</p>
+                                <p class="mb-0 font-bold text-fg break-words"><a class="text-accent hover:text-accent-hover" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a></p>
                             </div>
-                            <div class="rounded-md border border-border-default bg-surface p-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Telegram</p>
-                                <p class="mb-0 font-bold text-content break-words"><a class="text-brand-red hover:text-brand-red-hover" href="https://t.me/vashfindir">@vashfindir</a></p>
+                            <div class="rounded-md border border-border bg-bg p-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Telegram</p>
+                                <p class="mb-0 font-bold text-fg break-words"><a class="text-accent hover:text-accent-hover" href="https://t.me/vashfindir">@vashfindir</a></p>
                             </div>
                         </div>
-                        <div class="mt-6 rounded-lg border border-border-default border-l-4 border-l-brand-red bg-brand-red-soft p-4">
-                            <p class="mb-0 text-muted"><strong>Важно перед публикацией:</strong> юридический адрес оператора не был предоставлен. Его нужно добавить в этот блок, в текст политики и при необходимости в футер.</p>
+                        <div class="mt-6 rounded-lg border border-border border-l-4 border-l-accent bg-accent-subtle p-4">
+                            <p class="mb-0 text-fg-secondary"><strong>Важно перед публикацией:</strong> юридический адрес оператора не был предоставлен. Его нужно добавить в этот блок, в текст политики и при необходимости в футер.</p>
                         </div>
                     </div>
                 </div>
@@ -106,300 +106,300 @@
         </div>
     </section>
 
-    <section class="bg-page py-12 md:py-16 lg:py-20" data-vf-section="privacy-document">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+    <section class="bg-bg-subtle py-12 md:py-16 lg:py-20" data-vf-section="privacy-document">
+        <div class="vf-container">
             <div class="grid gap-8 lg:grid-cols-4">
                 <div class="lg:col-span-1">
-                    <nav aria-label="Навигация по политике конфиденциальности" class="rounded-lg border border-border-default bg-surface shadow-card">
-                        <div class="border-b border-border-default px-4 py-3 text-caption font-medium uppercase tracking-caption text-muted">Содержание</div>
+                    <nav aria-label="Навигация по политике конфиденциальности" class="rounded-lg border border-border bg-bg shadow-md">
+                        <div class="border-b border-border px-4 py-3 text-t7 font-medium uppercase text-fg-secondary">Содержание</div>
                         <div class="flex flex-col gap-1 p-2">
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-preamble">Общие сведения о политике</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-definitions">Определения и термины</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-general">Общие положения</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-subject">Предмет политики</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-cookies">Cookie и веб-аналитика</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-purposes">Цели сбора персональных данных</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-categories">Объём и категории данных</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-legal-basis">Правовые основания обработки</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-terms">Способы и сроки обработки</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-rights">Права и обязанности сторон</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-liability">Ответственность</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-disputes">Разрешение споров</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-final">Заключительные положения</a>
-                            <a class="block rounded-md px-3 py-2 text-small text-muted no-underline hover:bg-brand-red-soft hover:text-brand-red" href="#privacy-requisites">Реквизиты оператора</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-preamble">Общие сведения о политике</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-definitions">Определения и термины</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-general">Общие положения</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-subject">Предмет политики</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-cookies">Cookie и веб-аналитика</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-purposes">Цели сбора персональных данных</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-categories">Объём и категории данных</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-legal-basis">Правовые основания обработки</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-terms">Способы и сроки обработки</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-rights">Права и обязанности сторон</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-liability">Ответственность</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-disputes">Разрешение споров</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-final">Заключительные положения</a>
+                            <a class="block rounded-md px-3 py-2 text-t6 text-fg-secondary no-underline hover:bg-accent-subtle hover:text-accent" href="#privacy-requisites">Реквизиты оператора</a>
                         </div>
                     </nav>
                 </div>
                 <div class="lg:col-span-3 max-w-content">
                     <article>
-                        <section class="rounded-lg border border-border-default bg-surface shadow-card" id="privacy-preamble">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Преамбула</p>
-                                <h2 class="text-h3">Общие сведения о политике</h2>
+                        <section class="rounded-lg border border-border bg-bg shadow-md" id="privacy-preamble">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Преамбула</p>
+                                <h2 class="text-t3">Общие сведения о политике</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">— Политика конфиденциальности сайта Ваш Финдир</p>
-                                <p class="mb-4 text-muted">Настоящая политика ООО «Ваш Финдир» (ОГРН: 1156188000176, ИНН: 6140000234) в отношении обработки персональных данных (далее – Политика) разработана в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» (далее — Закон о персональных данных) в целях обеспечения защиты прав и свобод человека и гражданина при обработке его персональных данных, оператором которых является ООО «Ваш Финдир», в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну, и действует в отношении всей информации, которую ООО «Ваш Финдир» может получить о Пользователе в связи с использованием Пользователем сайта ООО «Ваш Финдир» с доменным именем https://vashfindir.ru, в информационно-телекоммуникационной сети «Интернет» (далее – сеть Интернет).</p>
-                                <p class="mb-4 text-muted">Настоящая Политика применяется ко всем Пользователям Сайта. Все термины и определения, встречающиеся в тексте Политики, толкуются в соответствии с действующим законодательством Российской Федерации (в частности, Законом о персональных данных). Пользователи прямо соглашаются на обработку своих персональных данных, как это описано в настоящей Политике.</p>
-                                <p class="mb-0 text-muted">Использование Сайта либо предоставление персональных данных Пользователем через форму обратной связи Сайта «Получить консультацию» означает выражение Пользователем безоговорочного согласия с настоящей Политикой и указанными в Политике условиями обработки персональных данных, а также со сбором и использованием Администратором куки-файлы. Пользователь обязан воздержаться от использования Сайта, если Пользователь не согласен с условиями настоящей Политики.</p>
+                                <p class="mb-4 text-fg-secondary">— Политика конфиденциальности сайта Ваш Финдир</p>
+                                <p class="mb-4 text-fg-secondary">Настоящая политика ООО «Ваш Финдир» (ОГРН: 1156188000176, ИНН: 6140000234) в отношении обработки персональных данных (далее – Политика) разработана в соответствии с требованиями Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» (далее — Закон о персональных данных) в целях обеспечения защиты прав и свобод человека и гражданина при обработке его персональных данных, оператором которых является ООО «Ваш Финдир», в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну, и действует в отношении всей информации, которую ООО «Ваш Финдир» может получить о Пользователе в связи с использованием Пользователем сайта ООО «Ваш Финдир» с доменным именем https://vashfindir.ru, в информационно-телекоммуникационной сети «Интернет» (далее – сеть Интернет).</p>
+                                <p class="mb-4 text-fg-secondary">Настоящая Политика применяется ко всем Пользователям Сайта. Все термины и определения, встречающиеся в тексте Политики, толкуются в соответствии с действующим законодательством Российской Федерации (в частности, Законом о персональных данных). Пользователи прямо соглашаются на обработку своих персональных данных, как это описано в настоящей Политике.</p>
+                                <p class="mb-0 text-fg-secondary">Использование Сайта либо предоставление персональных данных Пользователем через форму обратной связи Сайта «Получить консультацию» означает выражение Пользователем безоговорочного согласия с настоящей Политикой и указанными в Политике условиями обработки персональных данных, а также со сбором и использованием Администратором куки-файлы. Пользователь обязан воздержаться от использования Сайта, если Пользователь не согласен с условиями настоящей Политики.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-definitions">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 1</p>
-                                <h2 class="text-h3">Определения и термины</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-definitions">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 1</p>
+                                <h2 class="text-t3">Определения и термины</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <h3 class="mb-3 mt-0 text-h4">В Политике используются следующие определения и термины:</h3>
-                                <p class="mb-4 text-muted">Администратор – ООО «Ваш Финдир» (ОГРН: 1156188000176, ИНН: 6140000234) (далее также – Оператор).</p>
-                                <p class="mb-4 text-muted">Сайт — сайт, расположенный в сети Интернет с доменным именем https://vashfindir.ru, содержащий информацию об услугах Администратора, позволяющий Пользователю оформить Заявку на консультацию посредством заполнения соответствующей формы обратной связи «Записаться» и/или «Записаться на консультацию» или «Получить консультацию» (далее – форма обратной связи). Правообладателем Сайта является Администратор.</p>
-                                <p class="mb-4 text-muted">Администрация Сайта – уполномоченные работники Администратора на управление Сайтом, действующие от имени Администратора, которые организуют и (или) осуществляют обработку персональных данных, а также определяют цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными.</p>
-                                <p class="mb-4 text-muted">Персональные данные — любая информация, относящаяся к прямо или косвенно определенному или определяемому физическому лицу (субъекту персональных данных).</p>
-                                <p class="mb-4 text-muted">Обработка персональных данных — любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
-                                <p class="mb-4 text-muted">Конфиденциальность персональных данных — обязательное для соблюдения Оператором (Администратором Сайта) или иным получившим доступ к персональным данным лицом требование не допускать их распространения без согласия субъекта персональных данных или наличия иного законного основания.</p>
-                                <p class="mb-4 text-muted">Общедоступные персональные данные – персональные данные, доступ неограниченного круга лиц к которым предоставлен с согласия субъекта персональных данных или на которые в соответствии с федеральными законами не распространяется требование соблюдения конфиденциальности;</p>
-                                <p class="mb-4 text-muted">Пользователь Сайта (далее — Пользователь) – физическое лицо, субъект персональных данных, добровольно предоставивший персональные данные посредством формы обратной связи Сайта или посредством куки-файлов.</p>
-                                <p class="mb-0 text-muted">Техническая информация – информация, не являющаяся персональными данными. Администратор использует куки-файлы (небольшие текстовые файлы на компьютерах Пользователей, в которых хранится информация об их предыдущих действиях на Сайте), которые позволяют идентифицировать Пользователя. куки-файлы — это небольшой фрагмент данных, отправленный веб-сервером и хранимый на компьютере Пользователя, который веб-клиент или веб-браузер пересылает каждый раз веб-серверу в HTTP-запросе при попытке открыть страницу соответствующего сайта. куки-файлы – это также текстовые файлы, доступные Администратору, для обработки информации об активности Пользователя, включая информацию о том, какие страницы посещал Пользователь и о времени, которое Пользователь провел на странице. Пользователь может отключить возможность использования куки-файлов в настройках браузера. Также под технической информацией понимается информация, которая автоматически передается Администратору в процессе использования Сайта с помощью установленного на устройстве Пользователя программного обеспечения.</p>
+                                <h3 class="mb-3 mt-0 text-t3">В Политике используются следующие определения и термины:</h3>
+                                <p class="mb-4 text-fg-secondary">Администратор – ООО «Ваш Финдир» (ОГРН: 1156188000176, ИНН: 6140000234) (далее также – Оператор).</p>
+                                <p class="mb-4 text-fg-secondary">Сайт — сайт, расположенный в сети Интернет с доменным именем https://vashfindir.ru, содержащий информацию об услугах Администратора, позволяющий Пользователю оформить Заявку на консультацию посредством заполнения соответствующей формы обратной связи «Записаться» и/или «Записаться на консультацию» или «Получить консультацию» (далее – форма обратной связи). Правообладателем Сайта является Администратор.</p>
+                                <p class="mb-4 text-fg-secondary">Администрация Сайта – уполномоченные работники Администратора на управление Сайтом, действующие от имени Администратора, которые организуют и (или) осуществляют обработку персональных данных, а также определяют цели обработки персональных данных, состав персональных данных, подлежащих обработке, действия (операции), совершаемые с персональными данными.</p>
+                                <p class="mb-4 text-fg-secondary">Персональные данные — любая информация, относящаяся к прямо или косвенно определенному или определяемому физическому лицу (субъекту персональных данных).</p>
+                                <p class="mb-4 text-fg-secondary">Обработка персональных данных — любое действие (операция) или совокупность действий (операций), совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Конфиденциальность персональных данных — обязательное для соблюдения Оператором (Администратором Сайта) или иным получившим доступ к персональным данным лицом требование не допускать их распространения без согласия субъекта персональных данных или наличия иного законного основания.</p>
+                                <p class="mb-4 text-fg-secondary">Общедоступные персональные данные – персональные данные, доступ неограниченного круга лиц к которым предоставлен с согласия субъекта персональных данных или на которые в соответствии с федеральными законами не распространяется требование соблюдения конфиденциальности;</p>
+                                <p class="mb-4 text-fg-secondary">Пользователь Сайта (далее — Пользователь) – физическое лицо, субъект персональных данных, добровольно предоставивший персональные данные посредством формы обратной связи Сайта или посредством куки-файлов.</p>
+                                <p class="mb-0 text-fg-secondary">Техническая информация – информация, не являющаяся персональными данными. Администратор использует куки-файлы (небольшие текстовые файлы на компьютерах Пользователей, в которых хранится информация об их предыдущих действиях на Сайте), которые позволяют идентифицировать Пользователя. куки-файлы — это небольшой фрагмент данных, отправленный веб-сервером и хранимый на компьютере Пользователя, который веб-клиент или веб-браузер пересылает каждый раз веб-серверу в HTTP-запросе при попытке открыть страницу соответствующего сайта. куки-файлы – это также текстовые файлы, доступные Администратору, для обработки информации об активности Пользователя, включая информацию о том, какие страницы посещал Пользователь и о времени, которое Пользователь провел на странице. Пользователь может отключить возможность использования куки-файлов в настройках браузера. Также под технической информацией понимается информация, которая автоматически передается Администратору в процессе использования Сайта с помощью установленного на устройстве Пользователя программного обеспечения.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-general">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 2</p>
-                                <h2 class="text-h3">Общие положения</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-general">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 2</p>
+                                <h2 class="text-t3">Общие положения</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Сайт собирает, получает доступ и использует в определенных Политикой целях предоставленные Пользователями их Персональные данные, а также Техническую информацию, связанную с Пользователями.</p>
-                                <p class="mb-4 text-muted">Политика применяется только к Сайту. Администрация Сайта не контролирует и не несет ответственность за сайты третьих лиц, на которые Пользователь может перейти по ссылкам, доступным на Сайте.</p>
-                                <p class="mb-4 text-muted">Администрация Сайта не проверяет достоверность Персональных данных и Технической информации, предоставляемой Пользователем Сайта.</p>
-                                <p class="mb-4 text-muted">Политика является общедоступной и подлежит публикации в сети «Интернет» на Сайте Администратора.</p>
-                                <p class="mb-4 text-muted">Политика действует в отношении Технической информации, обрабатываемой Администрацией Сайта с использованием средств автоматизации, а также без использования таких средств.</p>
-                                <p class="mb-4 text-muted">Политика распространяется на отношения в области обработки персональных данных, возникшие у Администратора как до, так и после утверждения Политики.</p>
-                                <p class="mb-0 text-muted">Персональные данные пользователей Сайта являются конфиденциальной информацией и не могут быть использованы администрацией Сайта или любым иным лицом в личных целях. При этом в отношении персональных данных Пользователя Администратором сохраняется ее конфиденциальность, кроме случаев добровольного предоставления Пользователем информации о себе для общего доступа неограниченному кругу лиц.</p>
+                                <p class="mb-4 text-fg-secondary">Сайт собирает, получает доступ и использует в определенных Политикой целях предоставленные Пользователями их Персональные данные, а также Техническую информацию, связанную с Пользователями.</p>
+                                <p class="mb-4 text-fg-secondary">Политика применяется только к Сайту. Администрация Сайта не контролирует и не несет ответственность за сайты третьих лиц, на которые Пользователь может перейти по ссылкам, доступным на Сайте.</p>
+                                <p class="mb-4 text-fg-secondary">Администрация Сайта не проверяет достоверность Персональных данных и Технической информации, предоставляемой Пользователем Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Политика является общедоступной и подлежит публикации в сети «Интернет» на Сайте Администратора.</p>
+                                <p class="mb-4 text-fg-secondary">Политика действует в отношении Технической информации, обрабатываемой Администрацией Сайта с использованием средств автоматизации, а также без использования таких средств.</p>
+                                <p class="mb-4 text-fg-secondary">Политика распространяется на отношения в области обработки персональных данных, возникшие у Администратора как до, так и после утверждения Политики.</p>
+                                <p class="mb-0 text-fg-secondary">Персональные данные пользователей Сайта являются конфиденциальной информацией и не могут быть использованы администрацией Сайта или любым иным лицом в личных целях. При этом в отношении персональных данных Пользователя Администратором сохраняется ее конфиденциальность, кроме случаев добровольного предоставления Пользователем информации о себе для общего доступа неограниченному кругу лиц.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-subject">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 3</p>
-                                <h2 class="text-h3">Предмет политики</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-subject">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 3</p>
+                                <h2 class="text-t3">Предмет политики</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Настоящая Политика устанавливает порядок получения, защиты, хранения, обработки и передачи персональных данных Пользователей Сайта, действует в отношении всей информации, которую Администрация Сайта может получить о Пользователях во время использования ими Сайта.</p>
-                                <p class="mb-4 text-muted">Настоящая Политика также устанавливает обязательства Администрации Сайта по обработке, неразглашению и обеспечению режима защиты персональных данных, которые Пользователь предоставляет по запросу Администрации Сайта при оформлении Заявки посредством направления запроса (далее – запрос) на электронную почту Администратора hello@vashfindir.ru (далее – электронная почта Администратора) либо посредством заполнения формы обратной связи на Сайте.</p>
-                                <p class="mb-4 text-muted">Персональные данные, разрешённые к обработке в рамках настоящей Политики, предоставляются веб-браузером Пользователя при открытии Пользователем Сайта, включают в себя следующую информацию: куки-файлы. Также разрешены к обработке такие Персональные данные Пользователей, как имя, номер телефона, адрес электронной почты или имя пользователя в Telegram, описание задачи и ответы на вопросы формы, предоставляемые Пользователями при оформлении Заявки или заполнения формы обратной связи, а также куки-файлы Пользователей Сайта, указанные в разделе 3.1 настоящей Политики.</p>
-                                <p class="mb-4 text-muted">Администратор защищает персональные данные Пользователя, которые автоматически передаются в процессе использования Пользователем Сайта.</p>
-                                <p class="mb-4 text-muted">Отключение куки-файлов может повлечь невозможность доступа к частям Сайта.</p>
-                                <p class="mb-4 text-muted">Любая иная персональная информация, неоговоренная выше (история покупок, используемые браузеры и операционные системы и т.д.) подлежит надежному хранению и нераспространению, за исключением случаев, предусмотренных в п.п. 5.2., 5.3. настоящей Политики.</p>
-                                <p class="mb-0 text-muted">Администратор (Оператор) обрабатывает персональные данные Пользователя (имя и контакт для связи — номер телефона, адрес электронной почты или имя пользователя в Telegram), чтобы отвечать на обращения Пользователя, предоставлять услуги и отправлять сообщения через мессенджеры, включая WhatsApp, Telegram или иные указанные Пользователем каналы связи. Информационные и рекламные сообщения Администратор (Оператор) направляет только при наличии отдельного согласия Пользователя: согласие на обработку персональных данных, которое даётся при отправке Заявки, его не включает. От таких сообщений можно отказаться в любой момент — через кнопку «Отписаться» или письмом на hello@vashfindir.ru с темой «Отказ от уведомлений». Администратор (Оператор) соблюдает требования законодательства Российской Федерации и правила соответствующих сервисов коммуникации в части обработки данных.</p>
+                                <p class="mb-4 text-fg-secondary">Настоящая Политика устанавливает порядок получения, защиты, хранения, обработки и передачи персональных данных Пользователей Сайта, действует в отношении всей информации, которую Администрация Сайта может получить о Пользователях во время использования ими Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Настоящая Политика также устанавливает обязательства Администрации Сайта по обработке, неразглашению и обеспечению режима защиты персональных данных, которые Пользователь предоставляет по запросу Администрации Сайта при оформлении Заявки посредством направления запроса (далее – запрос) на электронную почту Администратора hello@vashfindir.ru (далее – электронная почта Администратора) либо посредством заполнения формы обратной связи на Сайте.</p>
+                                <p class="mb-4 text-fg-secondary">Персональные данные, разрешённые к обработке в рамках настоящей Политики, предоставляются веб-браузером Пользователя при открытии Пользователем Сайта, включают в себя следующую информацию: куки-файлы. Также разрешены к обработке такие Персональные данные Пользователей, как имя, номер телефона, адрес электронной почты или имя пользователя в Telegram, описание задачи и ответы на вопросы формы, предоставляемые Пользователями при оформлении Заявки или заполнения формы обратной связи, а также куки-файлы Пользователей Сайта, указанные в разделе 3.1 настоящей Политики.</p>
+                                <p class="mb-4 text-fg-secondary">Администратор защищает персональные данные Пользователя, которые автоматически передаются в процессе использования Пользователем Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Отключение куки-файлов может повлечь невозможность доступа к частям Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Любая иная персональная информация, неоговоренная выше (история покупок, используемые браузеры и операционные системы и т.д.) подлежит надежному хранению и нераспространению, за исключением случаев, предусмотренных в п.п. 5.2., 5.3. настоящей Политики.</p>
+                                <p class="mb-0 text-fg-secondary">Администратор (Оператор) обрабатывает персональные данные Пользователя (имя и контакт для связи — номер телефона, адрес электронной почты или имя пользователя в Telegram), чтобы отвечать на обращения Пользователя, предоставлять услуги и отправлять сообщения через мессенджеры, включая WhatsApp, Telegram или иные указанные Пользователем каналы связи. Информационные и рекламные сообщения Администратор (Оператор) направляет только при наличии отдельного согласия Пользователя: согласие на обработку персональных данных, которое даётся при отправке Заявки, его не включает. От таких сообщений можно отказаться в любой момент — через кнопку «Отписаться» или письмом на hello@vashfindir.ru с темой «Отказ от уведомлений». Администратор (Оператор) соблюдает требования законодательства Российской Федерации и правила соответствующих сервисов коммуникации в части обработки данных.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-cookies">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 3.1</p>
-                                <h2 class="text-h3">Файлы cookie, веб-аналитика и источники переходов</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-cookies">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 3.1</p>
+                                <h2 class="text-t3">Файлы cookie, веб-аналитика и источники переходов</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <h3 class="mb-3 mt-0 text-h4">Яндекс Метрика</h3>
-                                <p class="mb-4 text-muted">На всех страницах Сайта при их открытии загружается сервис веб-аналитики Яндекс Метрика. Оператор сервиса — ООО «ЯНДЕКС»; данные, собранные сервисом, обрабатываются в соответствии с <a class="text-brand-red hover:text-brand-red-hover" href="https://yandex.ru/legal/metrica_termsofuse/">условиями использования Яндекс Метрики</a>.</p>
-                                <p class="mb-4 text-muted">Яндекс Метрика записывает в браузер Пользователя cookie-файлы с идентификатором посетителя (ClientID) и собирает сведения о посещениях Сайта: дату и время, источник перехода, просмотренные страницы, длительность визита, тип устройства, браузер и операционную систему, приблизительное местоположение по IP-адресу.</p>
-                                <p class="mb-4 text-muted">В счётчике включены карта кликов, отслеживание переходов по внешним ссылкам и Вебвизор. Вебвизор записывает действия на странице — прокрутку, движения курсора, нажатия — чтобы Администрация Сайта могла оценить удобство Сайта. Ввод в поля формы заявки (имя, контакт, описание задачи) Вебвизором не записывается.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Какие cookie-файлы и данные браузера используются</h3>
-                                <p class="mb-4 text-muted"><strong>_ym_uid, _ym_d и другие cookie-файлы с префиксом _ym</strong> — устанавливает Яндекс Метрика для учёта посетителей и визитов. Названия и сроки хранения определяет ООО «ЯНДЕКС» и приводит в <a class="text-brand-red hover:text-brand-red-hover" href="https://yandex.ru/support/metrica/general/cookie-usage.html">справке Яндекс Метрики</a>.</p>
-                                <p class="mb-4 text-muted"><strong>vf_attr</strong> (хранилище браузера localStorage) — источник первого и последнего перехода на Сайт: метки рекламной кампании (UTM), идентификатор рекламного клика, домен сайта, с которого был переход, первая открытая страница, число и время посещений. Хранится 90 дней с последнего посещения, на сервер не передаётся до отправки Заявки.</p>
-                                <p class="mb-4 text-muted"><strong>vf_cookie_notice_accepted</strong> (localStorage) — отметка о том, что уведомление о cookie-файлах прочитано. Хранится, пока Пользователь не очистит данные Сайта в браузере.</p>
-                                <p class="mb-4 text-muted">Сессионный cookie-файл раздела администрирования ставится только сотрудникам Администратора при входе в этот раздел; посетителям Сайта он не устанавливается.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Что передаётся вместе с Заявкой</h3>
-                                <p class="mb-4 text-muted">При отправке Заявки вместе с указанными в ней данными передаются сведения об источнике первого и последнего перехода на Сайт (из vf_attr), число посещений и дата первого посещения, а также идентификатор ClientID Яндекс Метрики. Эти сведения используются для оценки эффективности рекламы и каналов привлечения и хранятся вместе с Заявкой.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Как отказаться</h3>
-                                <p class="mb-0 text-muted">Пользователь может запретить или удалить cookie-файлы и данные Сайта в настройках браузера, установить <a class="text-brand-red hover:text-brand-red-hover" href="https://yandex.ru/support/metrica/general/opt-out.html">блокировщик Яндекс Метрики</a> или направить запрос на hello@vashfindir.ru. Отказ не ограничивает просмотр Сайта и отправку Заявки.</p>
+                                <h3 class="mb-3 mt-0 text-t3">Яндекс Метрика</h3>
+                                <p class="mb-4 text-fg-secondary">На всех страницах Сайта при их открытии загружается сервис веб-аналитики Яндекс Метрика. Оператор сервиса — ООО «ЯНДЕКС»; данные, собранные сервисом, обрабатываются в соответствии с <a class="text-accent hover:text-accent-hover" href="https://yandex.ru/legal/metrica_termsofuse/">условиями использования Яндекс Метрики</a>.</p>
+                                <p class="mb-4 text-fg-secondary">Яндекс Метрика записывает в браузер Пользователя cookie-файлы с идентификатором посетителя (ClientID) и собирает сведения о посещениях Сайта: дату и время, источник перехода, просмотренные страницы, длительность визита, тип устройства, браузер и операционную систему, приблизительное местоположение по IP-адресу.</p>
+                                <p class="mb-4 text-fg-secondary">В счётчике включены карта кликов, отслеживание переходов по внешним ссылкам и Вебвизор. Вебвизор записывает действия на странице — прокрутку, движения курсора, нажатия — чтобы Администрация Сайта могла оценить удобство Сайта. Ввод в поля формы заявки (имя, контакт, описание задачи) Вебвизором не записывается.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Какие cookie-файлы и данные браузера используются</h3>
+                                <p class="mb-4 text-fg-secondary"><strong>_ym_uid, _ym_d и другие cookie-файлы с префиксом _ym</strong> — устанавливает Яндекс Метрика для учёта посетителей и визитов. Названия и сроки хранения определяет ООО «ЯНДЕКС» и приводит в <a class="text-accent hover:text-accent-hover" href="https://yandex.ru/support/metrica/general/cookie-usage.html">справке Яндекс Метрики</a>.</p>
+                                <p class="mb-4 text-fg-secondary"><strong>vf_attr</strong> (хранилище браузера localStorage) — источник первого и последнего перехода на Сайт: метки рекламной кампании (UTM), идентификатор рекламного клика, домен сайта, с которого был переход, первая открытая страница, число и время посещений. Хранится 90 дней с последнего посещения, на сервер не передаётся до отправки Заявки.</p>
+                                <p class="mb-4 text-fg-secondary"><strong>vf_cookie_notice_accepted</strong> (localStorage) — отметка о том, что уведомление о cookie-файлах прочитано. Хранится, пока Пользователь не очистит данные Сайта в браузере.</p>
+                                <p class="mb-4 text-fg-secondary">Сессионный cookie-файл раздела администрирования ставится только сотрудникам Администратора при входе в этот раздел; посетителям Сайта он не устанавливается.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Что передаётся вместе с Заявкой</h3>
+                                <p class="mb-4 text-fg-secondary">При отправке Заявки вместе с указанными в ней данными передаются сведения об источнике первого и последнего перехода на Сайт (из vf_attr), число посещений и дата первого посещения, а также идентификатор ClientID Яндекс Метрики. Эти сведения используются для оценки эффективности рекламы и каналов привлечения и хранятся вместе с Заявкой.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Как отказаться</h3>
+                                <p class="mb-0 text-fg-secondary">Пользователь может запретить или удалить cookie-файлы и данные Сайта в настройках браузера, установить <a class="text-accent hover:text-accent-hover" href="https://yandex.ru/support/metrica/general/opt-out.html">блокировщик Яндекс Метрики</a> или направить запрос на hello@vashfindir.ru. Отказ не ограничивает просмотр Сайта и отправку Заявки.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-purposes">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 4</p>
-                                <h2 class="text-h3">Цели сбора персональных данных пользователя</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-purposes">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 4</p>
+                                <h2 class="text-t3">Цели сбора персональных данных пользователя</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <h3 class="mb-3 mt-0 text-h4">Персональные данные Пользователя Администрация Сайта может использовать в целях:</h3>
-                                <p class="mb-4 text-muted">Предоставления Пользователю доступа к персонализированным ресурсам Сайта.</p>
-                                <p class="mb-4 text-muted">Предоставления Пользователю возможности оформления Заявки на консультацию или получение услуги.</p>
-                                <p class="mb-4 text-muted">Предоставление информации, консультаций Пользователям по вопросам использования Сайта, а также деятельности Администратора, оформления Заявки, разрешение иных вопросов Пользователей, связанных с оказанием консультации или услуги.</p>
-                                <p class="mb-4 text-muted">Установления с Пользователем обратной связи, включая направление уведомлений, запросов, касающихся использования Сайта, оказания консультации или услуги, обработку запросов и заявок от Пользователя.</p>
-                                <p class="mb-4 text-muted">Определения места нахождения Пользователя для обеспечения безопасности, предотвращения мошенничества.</p>
-                                <p class="mb-4 text-muted">Подтверждения достоверности и полноты персональных данных, предоставленных Пользователем.</p>
-                                <p class="mb-4 text-muted">Предоставления Пользователю эффективной клиентской и технической поддержки при возникновении проблем, связанных с использованием Сайта.</p>
-                                <p class="mb-4 text-muted">Предоставления Пользователю с его согласия, обновлений продукции, специальных предложений, информации о ценах, новостной рассылки и иных сведений от имени Администратора.</p>
-                                <p class="mb-4 text-muted">Осуществления рекламной деятельности с согласия Пользователя.</p>
-                                <p class="mb-0 text-muted">Анализа посещаемости Сайта, поведения Пользователей на его страницах и эффективности рекламных каналов, в том числе с помощью Яндекс Метрики (раздел 3.1 настоящей Политики).</p>
+                                <h3 class="mb-3 mt-0 text-t3">Персональные данные Пользователя Администрация Сайта может использовать в целях:</h3>
+                                <p class="mb-4 text-fg-secondary">Предоставления Пользователю доступа к персонализированным ресурсам Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Предоставления Пользователю возможности оформления Заявки на консультацию или получение услуги.</p>
+                                <p class="mb-4 text-fg-secondary">Предоставление информации, консультаций Пользователям по вопросам использования Сайта, а также деятельности Администратора, оформления Заявки, разрешение иных вопросов Пользователей, связанных с оказанием консультации или услуги.</p>
+                                <p class="mb-4 text-fg-secondary">Установления с Пользователем обратной связи, включая направление уведомлений, запросов, касающихся использования Сайта, оказания консультации или услуги, обработку запросов и заявок от Пользователя.</p>
+                                <p class="mb-4 text-fg-secondary">Определения места нахождения Пользователя для обеспечения безопасности, предотвращения мошенничества.</p>
+                                <p class="mb-4 text-fg-secondary">Подтверждения достоверности и полноты персональных данных, предоставленных Пользователем.</p>
+                                <p class="mb-4 text-fg-secondary">Предоставления Пользователю эффективной клиентской и технической поддержки при возникновении проблем, связанных с использованием Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Предоставления Пользователю с его согласия, обновлений продукции, специальных предложений, информации о ценах, новостной рассылки и иных сведений от имени Администратора.</p>
+                                <p class="mb-4 text-fg-secondary">Осуществления рекламной деятельности с согласия Пользователя.</p>
+                                <p class="mb-0 text-fg-secondary">Анализа посещаемости Сайта, поведения Пользователей на его страницах и эффективности рекламных каналов, в том числе с помощью Яндекс Метрики (раздел 3.1 настоящей Политики).</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-categories">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 5</p>
-                                <h2 class="text-h3">Объем и категории обрабатываемых персональных данных</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-categories">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 5</p>
+                                <h2 class="text-t3">Объем и категории обрабатываемых персональных данных</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Содержание и объем обрабатываемых персональных данных должны соответствовать заявленным целям обработки, предусмотренным в разделе 4 настоящей Политики. Обрабатываемые персональные данные не должны быть избыточными по отношению к заявленным целям их обработки.</p>
-                                <h3 class="mb-3 mt-0 text-h4">Администрация Сайта вправе обрабатывать персональные данные следующих категорий субъектов персональных данных:</h3>
-                                <p class="mb-4 text-muted">Пользователи Сайта.</p>
-                                <p class="mb-0 text-muted">К категориям персональных данных, обрабатываемых Администрацией Сайта, относятся общие персональные данные, а именно: имя Пользователя Сайта, номер телефона, адрес электронной почты или имя пользователя в Telegram, описание задачи и ответы на вопросы формы, предоставляемые Пользователями при оформлении Заявки или заполнения формы обратной связи, а также куки-файлы Пользователей Сайта, указанные в разделе 3.1 настоящей Политики, сведения об источнике перехода на Сайт и идентификатор посетителя в Яндекс Метрике.</p>
+                                <p class="mb-4 text-fg-secondary">Содержание и объем обрабатываемых персональных данных должны соответствовать заявленным целям обработки, предусмотренным в разделе 4 настоящей Политики. Обрабатываемые персональные данные не должны быть избыточными по отношению к заявленным целям их обработки.</p>
+                                <h3 class="mb-3 mt-0 text-t3">Администрация Сайта вправе обрабатывать персональные данные следующих категорий субъектов персональных данных:</h3>
+                                <p class="mb-4 text-fg-secondary">Пользователи Сайта.</p>
+                                <p class="mb-0 text-fg-secondary">К категориям персональных данных, обрабатываемых Администрацией Сайта, относятся общие персональные данные, а именно: имя Пользователя Сайта, номер телефона, адрес электронной почты или имя пользователя в Telegram, описание задачи и ответы на вопросы формы, предоставляемые Пользователями при оформлении Заявки или заполнения формы обратной связи, а также куки-файлы Пользователей Сайта, указанные в разделе 3.1 настоящей Политики, сведения об источнике перехода на Сайт и идентификатор посетителя в Яндекс Метрике.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-legal-basis">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 6</p>
-                                <h2 class="text-h3">Правовые основания, порядок и условия обработки персональных данных</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-legal-basis">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 6</p>
+                                <h2 class="text-t3">Правовые основания, порядок и условия обработки персональных данных</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Администратор осуществляет обработку персональных данных с согласия субъекта персональных данных на обработку его персональных данных, если иное не предусмотрено законодательством Российской Федерации в области персональных данных, следующими способами:</p>
-                                <p class="mb-4 text-muted">автоматизированная обработка персональных данных с передачей полученной информации по информационно-телекоммуникационным сетям или без таковой.</p>
-                                <p class="mb-4 text-muted">Пользователь дает согласие на обработку своих персональных данных посредством открытия Пользователем Сайта с использование веб-браузера, направления Заявки, заполнения формы обратной связи.</p>
-                                <p class="mb-4 text-muted">Пользователь ознакомлен и согласен с тем, что, открывая Сайт с использование веб-браузера, в том числе направляя Заявку, заполняя форму обратной связи, Пользователь предоставляет свое согласие Администратору на обработку, то есть на совершение действий, предусмотренных п. 3 ст. 3 Закона о персональных данных. Обработка персональных данных будет осуществляться в соответствии с целями, указанными в разделе 4 настоящей Политики. Условием прекращения обработки персональных данных является прекращение использования Пользователем Сайта и получение Администратором письменного уведомления об отзыве настоящего Согласия на обработку персональных данных. Согласие на обработку персональных данных действует со дня направления Пользователем персональных данных на электронную почту Администратора либо заполнения формы обратной связи, направления Заявки и действует в течение срока, указанного в Согласии на обработку персональных данных (3 года с даты отправки Заявки), либо до его отзыва. Пользователь вправе отозвать согласие на обработку персональных данных путем направления такого отказа на электронную почту Администратора.</p>
-                                <p class="mb-4 text-muted">Обработка персональных данных Администратором ограничивается достижением конкретных, заранее определенных и законных целей. Обрабатываться подлежат только персональные данные, которые отвечают целям их обработки.</p>
-                                <p class="mb-4 text-muted">К обработке персональных данных допускаются только уполномоченные работники Администратора (Администрация Сайта), в должностные обязанности которых входит обработка персональных данных. Перечень работников Сайта, имеющих доступ к персональным данным пользователей Сайта, утверждается приказом Администратора.</p>
-                                <p class="mb-4 text-muted">Персональные данные Пользователей Сайта хранятся в электронном виде в информационной системе персональных данных Сайта, а также в архивных копиях баз данных Сайта.</p>
-                                <p class="mb-4 text-muted">При хранении персональных данных Пользователей Сайта соблюдаются организационные и технические меры, обеспечивающие их сохранность и исключающие несанкционированный доступ к ним.</p>
-                                <p class="mb-4 text-muted">К обработке персональных данных Пользователей Сайта могут иметь доступ только работники Администрации Сайта, допущенные к работе с персональными данными Пользователей Сайта и подписавшие соглашение о неразглашении персональных данных Пользователей Сайта.</p>
-                                <p class="mb-4 text-muted">Хранение персональных данных осуществляется в форме, позволяющей определить местоположение субъекта персональных данных и информацию о его действиях на Сайте, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных.</p>
-                                <p class="mb-4 text-muted">— Персональные данные на бумажных носителях хранятся в течение сроков хранения документов, для которых эти сроки предусмотрены законодательством об архивном деле в Российской Федерации.</p>
-                                <p class="mb-4 text-muted">Срок хранения персональных данных, обрабатываемых в информационных системах персональных данных, соответствует сроку хранения персональных данных на бумажных носителях.</p>
-                                <p class="mb-4 text-muted">Обрабатываемые персональные данные подлежат уничтожению либо обезличиванию по достижении целей обработки или в случае утраты необходимости в достижении этих целей, если иное не предусмотрено федеральным законом.</p>
-                                <p class="mb-4 text-muted">Условием прекращения обработки персональных данных может являться достижение целей обработки персональных данных, истечение срока действия согласия или отзыв согласия субъекта персональных данных на обработку его персональных данных, а также выявление неправомерной обработки персональных данных.</p>
-                                <p class="mb-4 text-muted">Работники Администратора, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и не распространять персональные данные без согласия субъекта персональных данных, если иное не предусмотрено федеральным законом.</p>
-                                <p class="mb-4 text-muted">Администратор обязан принимать меры, необходимые и достаточные для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, в том числе такие меры включают:</p>
-                                <p class="mb-4 text-muted">назначение лица, ответственного за организацию обработки персональных данных;</p>
-                                <p class="mb-4 text-muted">принятие локальных нормативных актов и иных документов в области обработки и защиты персональных данных;</p>
-                                <p class="mb-4 text-muted">соблюдение условий, обеспечивающих сохранность персональных данных и исключающих несанкционированный доступ к ним;</p>
-                                <p class="mb-4 text-muted">обнаружение фактов несанкционированного доступа к персональным данным и принятие мер;</p>
-                                <p class="mb-4 text-muted">организацию обучения и проведение методической работы с работниками Администратора, допущенными к работе с персональными данными, в том числе посредством информационных систем;</p>
-                                <p class="mb-4 text-muted">получение согласий субъектов персональных данных на обработку их персональных данных, за исключением случаев, предусмотренных законодательством Российской Федерации;</p>
-                                <p class="mb-4 text-muted">обособление персональных данных, обрабатываемых без использования средств автоматизации, от иной информации, в частности путем их фиксации на отдельных материальных носителях персональных данных, в специальных разделах;</p>
-                                <p class="mb-4 text-muted">обеспечение раздельного хранения персональных данных и их материальных носителей, обработка которых осуществляется в разных целях и которые содержат разные категории персональных данных;</p>
-                                <p class="mb-4 text-muted">обеспечение безопасности персональных данных при их передаче по открытым каналам связи;</p>
-                                <p class="mb-4 text-muted">применение сертифицированного антивирусного программного обеспечения с регулярно обновляемыми базами;</p>
-                                <p class="mb-4 text-muted">хранение материальных носителей персональных данных с соблюдением условий, обеспечивающих сохранность персональных данных и исключающих несанкционированный доступ к ним;</p>
-                                <p class="mb-4 text-muted">осуществление внутреннего контроля соответствия обработки персональных данных Закону о персональных данных и принятым в соответствии с ним нормативным правовым актам, требованиям к защите персональных данных, настоящей Политике, локальным нормативным актам Администратора;</p>
-                                <p class="mb-4 text-muted">иные меры, предусмотренные законодательством Российской Федерации в области персональных данных.</p>
-                                <p class="mb-4 text-muted">Все сведения о передаче персональных данных Пользователей Сайта учитываются для контроля правомерности использования данной информации лицами, ее получившими.</p>
-                                <p class="mb-0 text-muted">В целях повышения качества сервиса и обеспечения возможности правовой защиты Администрация Сайта вправе хранить лог-файлы о действиях, совершенных Пользователями в рамках использования Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Администратор осуществляет обработку персональных данных с согласия субъекта персональных данных на обработку его персональных данных, если иное не предусмотрено законодательством Российской Федерации в области персональных данных, следующими способами:</p>
+                                <p class="mb-4 text-fg-secondary">автоматизированная обработка персональных данных с передачей полученной информации по информационно-телекоммуникационным сетям или без таковой.</p>
+                                <p class="mb-4 text-fg-secondary">Пользователь дает согласие на обработку своих персональных данных посредством открытия Пользователем Сайта с использование веб-браузера, направления Заявки, заполнения формы обратной связи.</p>
+                                <p class="mb-4 text-fg-secondary">Пользователь ознакомлен и согласен с тем, что, открывая Сайт с использование веб-браузера, в том числе направляя Заявку, заполняя форму обратной связи, Пользователь предоставляет свое согласие Администратору на обработку, то есть на совершение действий, предусмотренных п. 3 ст. 3 Закона о персональных данных. Обработка персональных данных будет осуществляться в соответствии с целями, указанными в разделе 4 настоящей Политики. Условием прекращения обработки персональных данных является прекращение использования Пользователем Сайта и получение Администратором письменного уведомления об отзыве настоящего Согласия на обработку персональных данных. Согласие на обработку персональных данных действует со дня направления Пользователем персональных данных на электронную почту Администратора либо заполнения формы обратной связи, направления Заявки и действует в течение срока, указанного в Согласии на обработку персональных данных (3 года с даты отправки Заявки), либо до его отзыва. Пользователь вправе отозвать согласие на обработку персональных данных путем направления такого отказа на электронную почту Администратора.</p>
+                                <p class="mb-4 text-fg-secondary">Обработка персональных данных Администратором ограничивается достижением конкретных, заранее определенных и законных целей. Обрабатываться подлежат только персональные данные, которые отвечают целям их обработки.</p>
+                                <p class="mb-4 text-fg-secondary">К обработке персональных данных допускаются только уполномоченные работники Администратора (Администрация Сайта), в должностные обязанности которых входит обработка персональных данных. Перечень работников Сайта, имеющих доступ к персональным данным пользователей Сайта, утверждается приказом Администратора.</p>
+                                <p class="mb-4 text-fg-secondary">Персональные данные Пользователей Сайта хранятся в электронном виде в информационной системе персональных данных Сайта, а также в архивных копиях баз данных Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">При хранении персональных данных Пользователей Сайта соблюдаются организационные и технические меры, обеспечивающие их сохранность и исключающие несанкционированный доступ к ним.</p>
+                                <p class="mb-4 text-fg-secondary">К обработке персональных данных Пользователей Сайта могут иметь доступ только работники Администрации Сайта, допущенные к работе с персональными данными Пользователей Сайта и подписавшие соглашение о неразглашении персональных данных Пользователей Сайта.</p>
+                                <p class="mb-4 text-fg-secondary">Хранение персональных данных осуществляется в форме, позволяющей определить местоположение субъекта персональных данных и информацию о его действиях на Сайте, не дольше, чем этого требуют цели обработки персональных данных, если срок хранения персональных данных не установлен федеральным законом, договором, стороной которого, выгодоприобретателем или поручителем по которому является субъект персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">— Персональные данные на бумажных носителях хранятся в течение сроков хранения документов, для которых эти сроки предусмотрены законодательством об архивном деле в Российской Федерации.</p>
+                                <p class="mb-4 text-fg-secondary">Срок хранения персональных данных, обрабатываемых в информационных системах персональных данных, соответствует сроку хранения персональных данных на бумажных носителях.</p>
+                                <p class="mb-4 text-fg-secondary">Обрабатываемые персональные данные подлежат уничтожению либо обезличиванию по достижении целей обработки или в случае утраты необходимости в достижении этих целей, если иное не предусмотрено федеральным законом.</p>
+                                <p class="mb-4 text-fg-secondary">Условием прекращения обработки персональных данных может являться достижение целей обработки персональных данных, истечение срока действия согласия или отзыв согласия субъекта персональных данных на обработку его персональных данных, а также выявление неправомерной обработки персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Работники Администратора, получившие доступ к персональным данным, обязаны не раскрывать третьим лицам и не распространять персональные данные без согласия субъекта персональных данных, если иное не предусмотрено федеральным законом.</p>
+                                <p class="mb-4 text-fg-secondary">Администратор обязан принимать меры, необходимые и достаточные для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, в том числе такие меры включают:</p>
+                                <p class="mb-4 text-fg-secondary">назначение лица, ответственного за организацию обработки персональных данных;</p>
+                                <p class="mb-4 text-fg-secondary">принятие локальных нормативных актов и иных документов в области обработки и защиты персональных данных;</p>
+                                <p class="mb-4 text-fg-secondary">соблюдение условий, обеспечивающих сохранность персональных данных и исключающих несанкционированный доступ к ним;</p>
+                                <p class="mb-4 text-fg-secondary">обнаружение фактов несанкционированного доступа к персональным данным и принятие мер;</p>
+                                <p class="mb-4 text-fg-secondary">организацию обучения и проведение методической работы с работниками Администратора, допущенными к работе с персональными данными, в том числе посредством информационных систем;</p>
+                                <p class="mb-4 text-fg-secondary">получение согласий субъектов персональных данных на обработку их персональных данных, за исключением случаев, предусмотренных законодательством Российской Федерации;</p>
+                                <p class="mb-4 text-fg-secondary">обособление персональных данных, обрабатываемых без использования средств автоматизации, от иной информации, в частности путем их фиксации на отдельных материальных носителях персональных данных, в специальных разделах;</p>
+                                <p class="mb-4 text-fg-secondary">обеспечение раздельного хранения персональных данных и их материальных носителей, обработка которых осуществляется в разных целях и которые содержат разные категории персональных данных;</p>
+                                <p class="mb-4 text-fg-secondary">обеспечение безопасности персональных данных при их передаче по открытым каналам связи;</p>
+                                <p class="mb-4 text-fg-secondary">применение сертифицированного антивирусного программного обеспечения с регулярно обновляемыми базами;</p>
+                                <p class="mb-4 text-fg-secondary">хранение материальных носителей персональных данных с соблюдением условий, обеспечивающих сохранность персональных данных и исключающих несанкционированный доступ к ним;</p>
+                                <p class="mb-4 text-fg-secondary">осуществление внутреннего контроля соответствия обработки персональных данных Закону о персональных данных и принятым в соответствии с ним нормативным правовым актам, требованиям к защите персональных данных, настоящей Политике, локальным нормативным актам Администратора;</p>
+                                <p class="mb-4 text-fg-secondary">иные меры, предусмотренные законодательством Российской Федерации в области персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Все сведения о передаче персональных данных Пользователей Сайта учитываются для контроля правомерности использования данной информации лицами, ее получившими.</p>
+                                <p class="mb-0 text-fg-secondary">В целях повышения качества сервиса и обеспечения возможности правовой защиты Администрация Сайта вправе хранить лог-файлы о действиях, совершенных Пользователями в рамках использования Сайта.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-terms">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 7</p>
-                                <h2 class="text-h3">Способы и сроки обработки персональных данных</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-terms">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 7</p>
+                                <h2 class="text-t3">Способы и сроки обработки персональных данных</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Персональные данные, переданные через форму Заявки, обрабатываются в течение срока, указанного в Согласии на обработку персональных данных, — 3 года с даты отправки Заявки либо до отзыва согласия. Обработка осуществляется любым законным способом, в том числе в информационных системах персональных данных с использованием средств автоматизации или без использования таких средств.</p>
-                                <p class="mb-4 text-muted">Пользователь соглашается с тем, что Администрация Сайта вправе использовать персональные данные, в том числе для определения статистики действий Пользователей.</p>
-                                <p class="mb-4 text-muted">Персональные данные Пользователя могут быть переданы уполномоченным органам государственной власти Российской Федерации только по основаниям и в порядке, установленным законодательством Российской Федерации.</p>
-                                <p class="mb-4 text-muted">При утрате или разглашении персональных данных Администрация Сайта не позднее 5 (пяти) рабочих дней информирует Пользователя о факте утраты или разглашения персональных данных.</p>
-                                <p class="mb-4 text-muted">Администрация Сайта принимает необходимые организационные и технические меры для защиты персональных данных Пользователя от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также от иных неправомерных действий третьих лиц.</p>
-                                <p class="mb-4 text-muted">Администрация Сайта совместно с Пользователем принимает все необходимые меры по предотвращению убытков или иных отрицательных последствий, вызванных утратой или разглашением персональных данных Пользователя.</p>
-                                <p class="mb-4 text-muted">Подтверждение факта обработки персональных данных, правовые основания и цели обработки персональных данных, а также иные сведения, указанные в ч. 7 ст. 14 Закона о персональных данных, предоставляются субъекту персональных данных или его представителю в течение 10 (десяти) рабочих дней с момента обращения либо получения запроса субъекта персональных данных или его представителя. Данный срок может быть продлен, но не более чем на 5 (пять) рабочих дней. Для этого Администратор направляет субъекту персональных данных мотивированное уведомление с указанием причин продления срока предоставления запрашиваемой информации.</p>
-                                <p class="mb-4 text-muted">В предоставляемые сведения не включаются персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных.</p>
-                                <p class="mb-4 text-muted">Администратор предоставляет сведения, указанные в ч. 7 ст. 14 Закона о персональных данных, субъекту персональных данных или его представителю в той форме, в которой направлены соответствующие обращение либо запрос, если иное не указано в обращении или запросе.</p>
-                                <p class="mb-4 text-muted">Если в обращении (запросе) субъекта персональных данных не отражены в соответствии с требованиями Закона о персональных данных все необходимые сведения или субъект не обладает правами доступа к запрашиваемой информации, то ему направляется мотивированный отказ.</p>
-                                <p class="mb-4 text-muted">В случае выявления неточных персональных данных при обращении субъекта персональных данных или его представителя либо по их запросу или по запросу Роскомнадзора Администратор осуществляет блокирование персональных данных, относящихся к этому субъекту персональных данных, с момента такого обращения или получения указанного запроса на период проверки, если блокирование персональных данных не нарушает права и законные интересы субъекта персональных данных или третьих лиц.</p>
-                                <p class="mb-4 text-muted">В случае подтверждения факта неточности персональных данных Администратор на основании сведений, представленных субъектом персональных данных или его представителем либо Роскомнадзором, или иных необходимых документов уточняет (актуализирует, исправляет) персональные данные в течение 7 (семи) рабочих дней со дня представления таких сведений и снимает блокирование персональных данных.</p>
-                                <p class="mb-4 text-muted">В случае выявления неправомерной обработки персональных данных при обращении (запросе) субъекта персональных данных или его представителя либо Роскомнадзора Администратор осуществляет блокирование неправомерно обрабатываемых персональных данных, относящихся к этому субъекту персональных данных, с момента такого обращения или получения запроса.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Условия и сроки уничтожения персональных данных Администратором:</h3>
-                                <p class="mb-4 text-muted">Достижение цели обработки персональных данных либо утрата необходимости достигать эту цель - в течение 30 (тридцати) дней;</p>
-                                <p class="mb-4 text-muted">Достижение максимальных сроков хранения документов, содержащих персональные данные, - в течение 30 (тридцати) дней;</p>
-                                <p class="mb-4 text-muted">Предоставление субъектом персональных данных (его представителем) подтверждения того, что персональные данные получены незаконно или не являются необходимыми для заявленной цели обработки, - в течение семи рабочих дней;</p>
-                                <p class="mb-0 text-muted">Отзыв субъектом персональных данных согласия на обработку его персональных данных, если их сохранение для цели их обработки более не требуется, - в течение 30 (тридцати) дней.</p>
+                                <p class="mb-4 text-fg-secondary">Персональные данные, переданные через форму Заявки, обрабатываются в течение срока, указанного в Согласии на обработку персональных данных, — 3 года с даты отправки Заявки либо до отзыва согласия. Обработка осуществляется любым законным способом, в том числе в информационных системах персональных данных с использованием средств автоматизации или без использования таких средств.</p>
+                                <p class="mb-4 text-fg-secondary">Пользователь соглашается с тем, что Администрация Сайта вправе использовать персональные данные, в том числе для определения статистики действий Пользователей.</p>
+                                <p class="mb-4 text-fg-secondary">Персональные данные Пользователя могут быть переданы уполномоченным органам государственной власти Российской Федерации только по основаниям и в порядке, установленным законодательством Российской Федерации.</p>
+                                <p class="mb-4 text-fg-secondary">При утрате или разглашении персональных данных Администрация Сайта не позднее 5 (пяти) рабочих дней информирует Пользователя о факте утраты или разглашения персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Администрация Сайта принимает необходимые организационные и технические меры для защиты персональных данных Пользователя от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также от иных неправомерных действий третьих лиц.</p>
+                                <p class="mb-4 text-fg-secondary">Администрация Сайта совместно с Пользователем принимает все необходимые меры по предотвращению убытков или иных отрицательных последствий, вызванных утратой или разглашением персональных данных Пользователя.</p>
+                                <p class="mb-4 text-fg-secondary">Подтверждение факта обработки персональных данных, правовые основания и цели обработки персональных данных, а также иные сведения, указанные в ч. 7 ст. 14 Закона о персональных данных, предоставляются субъекту персональных данных или его представителю в течение 10 (десяти) рабочих дней с момента обращения либо получения запроса субъекта персональных данных или его представителя. Данный срок может быть продлен, но не более чем на 5 (пять) рабочих дней. Для этого Администратор направляет субъекту персональных данных мотивированное уведомление с указанием причин продления срока предоставления запрашиваемой информации.</p>
+                                <p class="mb-4 text-fg-secondary">В предоставляемые сведения не включаются персональные данные, относящиеся к другим субъектам персональных данных, за исключением случаев, когда имеются законные основания для раскрытия таких персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Администратор предоставляет сведения, указанные в ч. 7 ст. 14 Закона о персональных данных, субъекту персональных данных или его представителю в той форме, в которой направлены соответствующие обращение либо запрос, если иное не указано в обращении или запросе.</p>
+                                <p class="mb-4 text-fg-secondary">Если в обращении (запросе) субъекта персональных данных не отражены в соответствии с требованиями Закона о персональных данных все необходимые сведения или субъект не обладает правами доступа к запрашиваемой информации, то ему направляется мотивированный отказ.</p>
+                                <p class="mb-4 text-fg-secondary">В случае выявления неточных персональных данных при обращении субъекта персональных данных или его представителя либо по их запросу или по запросу Роскомнадзора Администратор осуществляет блокирование персональных данных, относящихся к этому субъекту персональных данных, с момента такого обращения или получения указанного запроса на период проверки, если блокирование персональных данных не нарушает права и законные интересы субъекта персональных данных или третьих лиц.</p>
+                                <p class="mb-4 text-fg-secondary">В случае подтверждения факта неточности персональных данных Администратор на основании сведений, представленных субъектом персональных данных или его представителем либо Роскомнадзором, или иных необходимых документов уточняет (актуализирует, исправляет) персональные данные в течение 7 (семи) рабочих дней со дня представления таких сведений и снимает блокирование персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">В случае выявления неправомерной обработки персональных данных при обращении (запросе) субъекта персональных данных или его представителя либо Роскомнадзора Администратор осуществляет блокирование неправомерно обрабатываемых персональных данных, относящихся к этому субъекту персональных данных, с момента такого обращения или получения запроса.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Условия и сроки уничтожения персональных данных Администратором:</h3>
+                                <p class="mb-4 text-fg-secondary">Достижение цели обработки персональных данных либо утрата необходимости достигать эту цель - в течение 30 (тридцати) дней;</p>
+                                <p class="mb-4 text-fg-secondary">Достижение максимальных сроков хранения документов, содержащих персональные данные, - в течение 30 (тридцати) дней;</p>
+                                <p class="mb-4 text-fg-secondary">Предоставление субъектом персональных данных (его представителем) подтверждения того, что персональные данные получены незаконно или не являются необходимыми для заявленной цели обработки, - в течение семи рабочих дней;</p>
+                                <p class="mb-0 text-fg-secondary">Отзыв субъектом персональных данных согласия на обработку его персональных данных, если их сохранение для цели их обработки более не требуется, - в течение 30 (тридцати) дней.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-rights">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 8</p>
-                                <h2 class="text-h3">Права и обязанности сторон</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-rights">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 8</p>
+                                <h2 class="text-t3">Права и обязанности сторон</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <h3 class="mb-3 mt-0 text-h4">Пользователь обязан:</h3>
-                                <p class="mb-4 text-muted">Предоставить Техническую информацию о персональных данных, необходимую для пользования Сайтом, в случае если нормальное функционирование Сайта невозможно без использования такой Технической информации, а также предоставить достоверные Персональных данные в целях направления Заявки либо заполнения формы обратной связи.</p>
-                                <p class="mb-4 text-muted">Обновить, дополнить предоставленную Администратору информацию о персональных данных в случае изменения такой информации.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Администрация Сайта обязана:</h3>
-                                <p class="mb-4 text-muted">Использовать полученную информацию исключительно для целей, указанных в разделе 4 настоящей Политики.</p>
-                                <p class="mb-4 text-muted">Предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных.</p>
-                                <p class="mb-4 text-muted">Организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ.</p>
-                                <p class="mb-4 text-muted">Сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 (десяти) календарных дней с даты получения такого запроса.</p>
-                                <p class="mb-4 text-muted">Соблюдать принципы и правила обработки персональных данных, предусмотренные Законом о персональных данных, соблюдать конфиденциальность персональных данных, принимать необходимые меры, направленные на обеспечение выполнения обязанностей, предусмотренных Законом о персональных данных.</p>
-                                <p class="mb-4 text-muted">Обеспечить конфиденциальность персональных данных, не разглашать их без предварительного письменного разрешения Пользователя, а также не осуществлять продажу, обмен, опубликование, либо разглашение иными возможными способами переданных персональных данных Пользователя, за исключением п.п. 5.2. и 5.3. настоящей Политики.</p>
-                                <p class="mb-4 text-muted">Принимать меры предосторожности для защиты персональных данных Пользователя согласно порядку, обычно используемого для защиты такого рода информации в существующем деловом обороте.</p>
-                                <p class="mb-4 text-muted">Осуществить блокирование персональных данных, относящихся к соответствующему Пользователю, с момента обращения или запроса Пользователя или его законного представителя либо уполномоченного органа по защите прав субъектов персональных данных на период проверки, в случае выявления недостоверных персональных данных или неправомерных действий.</p>
-                                <p class="mb-4 text-muted">Публиковать или иным образом обеспечивать неограниченный доступ Пользователей к настоящей Политике в отношении обработки персональных данных.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Пользователь вправе:</h3>
-                                <p class="mb-4 text-muted">Получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами.</p>
-                                <p class="mb-4 text-muted">Требовать от Администратора уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав.</p>
-                                <p class="mb-4 text-muted">Отозвать согласие на обработку персональных данных, а также, направить требование о прекращении обработки персональных данных;</p>
-                                <p class="mb-4 text-muted">Обжаловать в Роскомнадзоре или в судебном порядке неправомерные действия или бездействие Администратора при обработке его персональных данных.</p>
-                                <h3 class="mb-3 mt-6 text-h4">Администрация Сайта вправе:</h3>
-                                <p class="mb-4 text-muted">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
-                                <p class="mb-4 text-muted">Получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные.</p>
-                                <p class="mb-4 text-muted">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами;</p>
-                                <p class="mb-4 text-muted">Поручить обработку персональных данных другому лицу с согласия субъекта персональных данных, если иное не предусмотрено федеральным законом, на основании заключаемого с этим лицом договора, лицо, осуществляющее обработку персональных данных по поручению Администратора, обязано соблюдать принципы и правила обработки персональных данных, предусмотренные Законом о персональных данных;</p>
-                                <p class="mb-0 text-muted">В случае отзыва субъектом персональных данных согласия на обработку персональных данных Администратор вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных.</p>
+                                <h3 class="mb-3 mt-0 text-t3">Пользователь обязан:</h3>
+                                <p class="mb-4 text-fg-secondary">Предоставить Техническую информацию о персональных данных, необходимую для пользования Сайтом, в случае если нормальное функционирование Сайта невозможно без использования такой Технической информации, а также предоставить достоверные Персональных данные в целях направления Заявки либо заполнения формы обратной связи.</p>
+                                <p class="mb-4 text-fg-secondary">Обновить, дополнить предоставленную Администратору информацию о персональных данных в случае изменения такой информации.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Администрация Сайта обязана:</h3>
+                                <p class="mb-4 text-fg-secondary">Использовать полученную информацию исключительно для целей, указанных в разделе 4 настоящей Политики.</p>
+                                <p class="mb-4 text-fg-secondary">Предоставлять субъекту персональных данных по его просьбе информацию, касающуюся обработки его персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Организовывать обработку персональных данных в порядке, установленном действующим законодательством РФ.</p>
+                                <p class="mb-4 text-fg-secondary">Сообщать в уполномоченный орган по защите прав субъектов персональных данных по запросу этого органа необходимую информацию в течение 10 (десяти) календарных дней с даты получения такого запроса.</p>
+                                <p class="mb-4 text-fg-secondary">Соблюдать принципы и правила обработки персональных данных, предусмотренные Законом о персональных данных, соблюдать конфиденциальность персональных данных, принимать необходимые меры, направленные на обеспечение выполнения обязанностей, предусмотренных Законом о персональных данных.</p>
+                                <p class="mb-4 text-fg-secondary">Обеспечить конфиденциальность персональных данных, не разглашать их без предварительного письменного разрешения Пользователя, а также не осуществлять продажу, обмен, опубликование, либо разглашение иными возможными способами переданных персональных данных Пользователя, за исключением п.п. 5.2. и 5.3. настоящей Политики.</p>
+                                <p class="mb-4 text-fg-secondary">Принимать меры предосторожности для защиты персональных данных Пользователя согласно порядку, обычно используемого для защиты такого рода информации в существующем деловом обороте.</p>
+                                <p class="mb-4 text-fg-secondary">Осуществить блокирование персональных данных, относящихся к соответствующему Пользователю, с момента обращения или запроса Пользователя или его законного представителя либо уполномоченного органа по защите прав субъектов персональных данных на период проверки, в случае выявления недостоверных персональных данных или неправомерных действий.</p>
+                                <p class="mb-4 text-fg-secondary">Публиковать или иным образом обеспечивать неограниченный доступ Пользователей к настоящей Политике в отношении обработки персональных данных.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Пользователь вправе:</h3>
+                                <p class="mb-4 text-fg-secondary">Получать информацию, касающуюся обработки его персональных данных, за исключением случаев, предусмотренных федеральными законами.</p>
+                                <p class="mb-4 text-fg-secondary">Требовать от Администратора уточнения его персональных данных, их блокирования или уничтожения в случае, если персональные данные являются неполными, устаревшими, неточными, незаконно полученными или не являются необходимыми для заявленной цели обработки, а также принимать предусмотренные законом меры по защите своих прав.</p>
+                                <p class="mb-4 text-fg-secondary">Отозвать согласие на обработку персональных данных, а также, направить требование о прекращении обработки персональных данных;</p>
+                                <p class="mb-4 text-fg-secondary">Обжаловать в Роскомнадзоре или в судебном порядке неправомерные действия или бездействие Администратора при обработке его персональных данных.</p>
+                                <h3 class="mb-3 mt-6 text-t3">Администрация Сайта вправе:</h3>
+                                <p class="mb-4 text-fg-secondary">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами.</p>
+                                <p class="mb-4 text-fg-secondary">Получать от субъекта персональных данных достоверные информацию и/или документы, содержащие персональные данные.</p>
+                                <p class="mb-4 text-fg-secondary">Самостоятельно определять состав и перечень мер, необходимых и достаточных для обеспечения выполнения обязанностей, предусмотренных Законом о персональных данных и принятыми в соответствии с ним нормативными правовыми актами, если иное не предусмотрено Законом о персональных данных или другими федеральными законами;</p>
+                                <p class="mb-4 text-fg-secondary">Поручить обработку персональных данных другому лицу с согласия субъекта персональных данных, если иное не предусмотрено федеральным законом, на основании заключаемого с этим лицом договора, лицо, осуществляющее обработку персональных данных по поручению Администратора, обязано соблюдать принципы и правила обработки персональных данных, предусмотренные Законом о персональных данных;</p>
+                                <p class="mb-0 text-fg-secondary">В случае отзыва субъектом персональных данных согласия на обработку персональных данных Администратор вправе продолжить обработку персональных данных без согласия субъекта персональных данных при наличии оснований, указанных в Законе о персональных данных.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-liability">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 9</p>
-                                <h2 class="text-h3">Ответственность за нарушение норм обработки данных</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-liability">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 9</p>
+                                <h2 class="text-t3">Ответственность за нарушение норм обработки данных</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Лица, виновные в нарушении норм, регулирующих получение, обработку и защиту персональных данных пользователей сайта, привлекаются к дисциплинарной, материальной, гражданско-правовой, административной и уголовной ответственности в порядке, установленном действующим законодательством Российской Федерации.</p>
-                                <p class="mb-0 text-muted">Моральный вред, причиненный пользователю сайта вследствие нарушения его прав, нарушения правил обработки персональных данных, установленных Законом о персональных данных, а также требований к защите персональных данных, установленных в соответствии с названным Федеральным законом, подлежит возмещению в соответствии с законодательством Российской Федерации. Возмещение морального вреда осуществляется независимо от возмещения имущественного вреда и понесенных пользователем сайта убытков.</p>
+                                <p class="mb-4 text-fg-secondary">Лица, виновные в нарушении норм, регулирующих получение, обработку и защиту персональных данных пользователей сайта, привлекаются к дисциплинарной, материальной, гражданско-правовой, административной и уголовной ответственности в порядке, установленном действующим законодательством Российской Федерации.</p>
+                                <p class="mb-0 text-fg-secondary">Моральный вред, причиненный пользователю сайта вследствие нарушения его прав, нарушения правил обработки персональных данных, установленных Законом о персональных данных, а также требований к защите персональных данных, установленных в соответствии с названным Федеральным законом, подлежит возмещению в соответствии с законодательством Российской Федерации. Возмещение морального вреда осуществляется независимо от возмещения имущественного вреда и понесенных пользователем сайта убытков.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-disputes">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 10</p>
-                                <h2 class="text-h3">Разрешение споров</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-disputes">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 10</p>
+                                <h2 class="text-t3">Разрешение споров</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">До обращения в суд с иском по спорам, возникающим из отношений между Пользователем Сайта и Администрацией Сайта, обязательным является направление претензии (письменного предложения о добровольном урегулировании спора).</p>
-                                <p class="mb-4 text-muted">Получатель претензии в течение 30 (тридцати) календарных дней со дня получения претензии, письменно уведомляет заявителя претензии о результатах рассмотрения претензии.</p>
-                                <p class="mb-4 text-muted">При недостижении соглашения, спор будет передан на рассмотрение в судебный орган в соответствии с действующим законодательством Российской Федерации.</p>
-                                <p class="mb-0 text-muted">К настоящей Политике и отношениям между Пользователем и Администрацией Сайта применяется действующее законодательство Российской Федерации.</p>
+                                <p class="mb-4 text-fg-secondary">До обращения в суд с иском по спорам, возникающим из отношений между Пользователем Сайта и Администрацией Сайта, обязательным является направление претензии (письменного предложения о добровольном урегулировании спора).</p>
+                                <p class="mb-4 text-fg-secondary">Получатель претензии в течение 30 (тридцати) календарных дней со дня получения претензии, письменно уведомляет заявителя претензии о результатах рассмотрения претензии.</p>
+                                <p class="mb-4 text-fg-secondary">При недостижении соглашения, спор будет передан на рассмотрение в судебный орган в соответствии с действующим законодательством Российской Федерации.</p>
+                                <p class="mb-0 text-fg-secondary">К настоящей Политике и отношениям между Пользователем и Администрацией Сайта применяется действующее законодательство Российской Федерации.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-final">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Раздел 11</p>
-                                <h2 class="text-h3">Заключительные положения</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-final">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Раздел 11</p>
+                                <h2 class="text-t3">Заключительные положения</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-4 text-muted">Администратор имеет право вносить изменения в настоящую Политику. При внесении изменений в актуальной редакции указывается дата последнего обновления. Новая редакция Политики вступает в силу с момента ее размещения на Сайте, если иное не предусмотрено новой редакцией Политики. Действующая редакция постоянно доступна на Сайте. Администратор обеспечивает неограниченный доступ к настоящей Политике.</p>
-                                <p class="mb-4 text-muted">Политика подлежит внеплановому пересмотру в случае существенных изменений законодательства в области защиты персональных данных.</p>
-                                <p class="mb-0 text-muted">Политика подлежит внеплановому пересмотру в случае изменения перечня персональных данных Пользователя, обрабатываемых Администратором при использовании Пользователем Сайта, целей обработки персональных данных и др.</p>
+                                <p class="mb-4 text-fg-secondary">Администратор имеет право вносить изменения в настоящую Политику. При внесении изменений в актуальной редакции указывается дата последнего обновления. Новая редакция Политики вступает в силу с момента ее размещения на Сайте, если иное не предусмотрено новой редакцией Политики. Действующая редакция постоянно доступна на Сайте. Администратор обеспечивает неограниченный доступ к настоящей Политике.</p>
+                                <p class="mb-4 text-fg-secondary">Политика подлежит внеплановому пересмотру в случае существенных изменений законодательства в области защиты персональных данных.</p>
+                                <p class="mb-0 text-fg-secondary">Политика подлежит внеплановому пересмотру в случае изменения перечня персональных данных Пользователя, обрабатываемых Администратором при использовании Пользователем Сайта, целей обработки персональных данных и др.</p>
                             </div>
                         </section>
 
-                        <section class="mt-4 rounded-lg border border-border-default bg-surface shadow-card" id="privacy-requisites">
-                            <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Реквизиты</p>
-                                <h2 class="text-h3">Реквизиты оператора</h2>
+                        <section class="mt-4 rounded-lg border border-border bg-bg shadow-md" id="privacy-requisites">
+                            <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                                <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Реквизиты</p>
+                                <h2 class="text-t3">Реквизиты оператора</h2>
                             </div>
                             <div class="px-4 py-4 md:px-6 md:py-4">
-                                <p class="mb-2 text-muted"><strong>Полное наименование:</strong> Общество с ограниченной ответственностью «Ваш Финдир»</p>
-                                <p class="mb-2 text-muted"><strong>Сокращённое наименование:</strong> ООО «Ваш Финдир»</p>
-                                <p class="mb-2 text-muted"><strong>ИНН:</strong> 6140000234</p>
-                                <p class="mb-2 text-muted"><strong>ОГРН:</strong> 1156188000176</p>
-                                <p class="mb-2 text-muted"><strong>Юридический адрес:</strong> необходимо добавить фактический юридический адрес перед публикацией.</p>
-                                <p class="mb-2 text-muted"><strong>Email:</strong> <a class="text-brand-red hover:text-brand-red-hover" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a></p>
-                                <p class="mb-0 text-muted"><strong>Telegram:</strong> <a class="text-brand-red hover:text-brand-red-hover" href="https://t.me/vashfindir">@vashfindir</a></p>
+                                <p class="mb-2 text-fg-secondary"><strong>Полное наименование:</strong> Общество с ограниченной ответственностью «Ваш Финдир»</p>
+                                <p class="mb-2 text-fg-secondary"><strong>Сокращённое наименование:</strong> ООО «Ваш Финдир»</p>
+                                <p class="mb-2 text-fg-secondary"><strong>ИНН:</strong> 6140000234</p>
+                                <p class="mb-2 text-fg-secondary"><strong>ОГРН:</strong> 1156188000176</p>
+                                <p class="mb-2 text-fg-secondary"><strong>Юридический адрес:</strong> необходимо добавить фактический юридический адрес перед публикацией.</p>
+                                <p class="mb-2 text-fg-secondary"><strong>Email:</strong> <a class="text-accent hover:text-accent-hover" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a></p>
+                                <p class="mb-0 text-fg-secondary"><strong>Telegram:</strong> <a class="text-accent hover:text-accent-hover" href="https://t.me/vashfindir">@vashfindir</a></p>
                             </div>
                         </section>
                     </article>

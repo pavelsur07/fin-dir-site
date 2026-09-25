@@ -1,4 +1,4 @@
-{% set vf_asset_version = '72b6fcbf2cf3' %}
+{% set vf_asset_version = '609590ab3e53' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -15,13 +15,13 @@
     <meta property="og:title" content="{{ block('title') }}">
     <meta property="og:description" content="{{ block('description') }}">
     <meta property="og:url" content="{{ block('canonical') }}">
-    <meta property="og:image" content="{% block og_image %}{{ vf_site_url ~ '/assets/og-image.png' }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ vf_site_url ~ '/assets/og-image-v2.png' }}{% endblock %}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ block('title') }}">
     <meta name="twitter:description" content="{{ block('description') }}">
     <meta name="twitter:image" content="{{ block('og_image') }}">
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/favicon-v2.svg">
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 
     <script src="/assets/website/analytics.js?v={{ vf_asset_version }}" defer></script>
@@ -36,7 +36,7 @@
                     name: 'Ваш Финдир',
                     url: vf_site_url,
                     email: 'hello@vashfindir.ru',
-                    logo: vf_site_url ~ '/assets/og-image.png',
+                    logo: vf_site_url ~ '/assets/brand/logo-light.png',
                     sameAs: ['https://t.me/vashfindir_ru'],
                 },
                 {
@@ -57,7 +57,7 @@
 </head>
 {# Колонка на всю высоту экрана: на короткой странице футер и баннер cookie прижаты к низу. #}
 <body class="flex min-h-dvh flex-col">
-    <a class="fixed top-2 left-2 z-50 -translate-y-24 rounded-sm bg-surface px-4 py-2 focus:translate-y-0" href="#main-content">Перейти к содержанию</a>
+    <a class="fixed top-2 left-2 z-50 -translate-y-24 rounded-sm bg-bg px-4 py-2 focus:translate-y-0" href="#main-content">Перейти к содержанию</a>
 
     {% block navigation %}
         {% include 'website/components/_navbar.html.twig' with {
@@ -71,7 +71,7 @@
                 {label: 'Газета', href: path('gazeta_index')},
                 {label: 'Партнёрам', href: '/partners'},
             ],
-            cta: {label: 'Записаться на встречу', href: '#lead-form'},
+            cta: {label: 'Записаться на встречу', href: path('home') ~ '#lead-form'},
         } only %}
     {% endblock %}
 

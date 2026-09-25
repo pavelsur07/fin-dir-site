@@ -2,10 +2,10 @@
    Только переход «новее / раньше»: нумерация страниц не нужна, пока статей немного. #}
 <nav class="mt-8 flex flex-wrap items-center gap-3" aria-label="Страницы списка" data-vf-component="pagination">
     {% if prev_href %}
-        {% include 'website/components/_button.html.twig' with {label: '← Новее', href: prev_href, variant: 'outline-primary'} only %}
+        {% include 'website/components/_button.html.twig' with {label: '← Новее', href: prev_href, variant: 'secondary'} only %}
     {% endif %}
-    <p class="mb-0 text-small text-muted">Страница {{ current }} из {{ pages }}</p>
+    <p class="mb-0 text-t6 text-fg-secondary">Страница {{ current }} из {{ pages }}</p>
     {% if next_href %}
-        {% include 'website/components/_button.html.twig' with {label: 'Раньше →', href: next_href, variant: 'outline-primary'} only %}
+        {% include 'website/components/_button.html.twig' with {label: 'Раньше →', href: next_href, variant: 'secondary'} only %}
     {% endif %}
 </nav>

@@ -1,8 +1,8 @@
 <nav aria-label="Хлебные крошки" data-vf-component="breadcrumb">
-    <ol class="flex flex-wrap items-center gap-2 text-small">
+    <ol class="flex flex-wrap items-center gap-2 text-t6">
         {% for item in items %}
-            <li class="flex items-center gap-2{% if loop.last %} text-muted{% endif %}"{% if loop.last %} aria-current="page"{% endif %}>
-                {% if not loop.first %}<span class="text-muted" aria-hidden="true">/</span>{% endif %}
+            <li class="flex items-center gap-2{% if loop.last %} text-fg-secondary{% endif %}"{% if loop.last %} aria-current="page"{% endif %}>
+                {% if not loop.first %}<span class="text-fg-secondary" aria-hidden="true">/</span>{% endif %}
                 {% if loop.last %}{{ item.label }}{% else %}<a href="{{ item.href }}">{{ item.label }}</a>{% endif %}
             </li>
         {% endfor %}

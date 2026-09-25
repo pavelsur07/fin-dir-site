@@ -78,19 +78,19 @@
 ] %}
 
 {% block body %}
-    <section class="bg-page py-12 md:py-16 lg:py-20" data-vf-section="consent-hero">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+    <section class="bg-bg-subtle py-12 md:py-16 lg:py-20" data-vf-section="consent-hero">
+        <div class="vf-container">
             <div class="grid gap-6 lg:grid-cols-3">
                 <div class="min-w-0 lg:col-span-2">
-                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Документы</p>
-                    <h1 class="mb-4 text-h1 hyphens-auto">Согласие на обработку персональных данных</h1>
-                    <p class="max-w-content text-lead text-muted">Отправляя заявку на сайте и отмечая поле «Согласен на обработку персональных данных», пользователь даёт согласие на обработку своих персональных данных в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» на условиях ниже.</p>
+                    <p class="mb-4 text-t7 font-medium uppercase text-fg-secondary">Документы</p>
+                    <h1 class="mb-4 text-t1 hyphens-auto">Согласие на обработку персональных данных</h1>
+                    <p class="max-w-content text-t4 text-fg-secondary">Отправляя заявку на сайте и отмечая поле «Согласен на обработку персональных данных», пользователь даёт согласие на обработку своих персональных данных в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» на условиях ниже.</p>
                 </div>
                 <div class="min-w-0 lg:col-span-1">
-                    <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card">
-                        <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">Редакция документа</p>
-                        <p class="mb-2 text-h3">{{ consent_version }}</p>
-                        <p class="mb-0 text-small text-muted">Действует с {{ consent_version|date('d.m.Y') }}</p>
+                    <div class="rounded-lg border border-border bg-bg p-6 shadow-md">
+                        <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">Редакция документа</p>
+                        <p class="mb-2 text-t3">{{ consent_version }}</p>
+                        <p class="mb-0 text-t6 text-fg-secondary">Действует с {{ consent_version|date('d.m.Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -98,22 +98,22 @@
     </section>
 
     <section class="py-12 md:py-16 lg:py-20" data-vf-section="consent-document">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+        <div class="vf-container">
             <article class="grid max-w-content gap-4">
                 {% for section in sections %}
-                    <section class="rounded-lg border border-border-default bg-surface shadow-card" id="{{ section.id }}">
-                        <div class="border-b border-border-default px-4 py-4 md:px-6 md:py-4">
-                            <p class="mb-2 text-caption font-medium uppercase tracking-caption text-muted">{{ section.label }}</p>
-                            <h2 class="text-h3">{{ section.title }}</h2>
+                    <section class="rounded-lg border border-border bg-bg shadow-md" id="{{ section.id }}">
+                        <div class="border-b border-border px-4 py-4 md:px-6 md:py-4">
+                            <p class="mb-2 text-t7 font-medium uppercase text-fg-secondary">{{ section.label }}</p>
+                            <h2 class="text-t3">{{ section.title }}</h2>
                         </div>
                         <div class="px-4 py-4 md:px-6 md:py-4">
                             {% for paragraph in section.paragraphs %}
-                                <p class="{{ loop.last ? 'mb-0' : 'mb-4' }} text-muted">{{ paragraph }}</p>
+                                <p class="{{ loop.last ? 'mb-0' : 'mb-4' }} text-fg-secondary">{{ paragraph }}</p>
                             {% endfor %}
                         </div>
                     </section>
                 {% endfor %}
-                <p class="mb-0 text-small text-muted">Подробнее об обработке данных — в <a class="text-brand-red hover:text-brand-red-hover" href="{{ path('privacy') }}">политике конфиденциальности</a>.</p>
+                <p class="mb-0 text-t6 text-fg-secondary">Подробнее об обработке данных — в <a class="text-accent hover:text-accent-hover" href="{{ path('privacy') }}">политике конфиденциальности</a>.</p>
             </article>
         </div>
     </section>

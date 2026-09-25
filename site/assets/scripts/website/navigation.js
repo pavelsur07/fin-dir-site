@@ -425,7 +425,7 @@
             }
 
             const feedback = document.createElement('div');
-            feedback.className = 'text-small text-danger';
+            feedback.className = 'text-t6 text-error';
             feedback.id = `${field.id}-feedback`;
             feedback.dataset.vfLeadFieldError = '';
             feedback.textContent = message;

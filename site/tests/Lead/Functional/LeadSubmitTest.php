@@ -183,7 +183,7 @@ final class LeadSubmitTest extends WebTestCase
         $this->post($fields, ['HTTP_REFERER' => 'http://localhost/']);
 
         self::assertResponseStatusCodeSame(201);
-        self::assertSelectorTextContains('h2', 'Спасибо, заявка отправлена');
+        self::assertSelectorTextContains('h1', 'Спасибо, заявка отправлена');
         self::assertSelectorExists('meta[name="robots"][content="noindex, nofollow"]');
         self::assertSame(1, $this->leadCount());
     }

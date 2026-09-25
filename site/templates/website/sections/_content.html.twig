@@ -1,5 +1,5 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'bg-surface' %}
+{% set section_class = 'bg-bg' %}
 {% set section_id = id|default('vf-content') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'content' %}
@@ -7,7 +7,7 @@
 {% block section_content %}
     <div class="mb-8 max-w-content">
         <h2 id="{{ labelled_by }}">{{ title }}</h2>
-        <p class="mb-0 text-lead text-muted">{{ text }}</p>
+        <p class="mb-0 text-t4 text-fg-secondary">{{ text }}</p>
     </div>
     {% if cards|default([]) %}
         <div class="grid gap-6 md:grid-cols-2">

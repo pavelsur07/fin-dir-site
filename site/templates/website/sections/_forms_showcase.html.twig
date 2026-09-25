@@ -1,5 +1,5 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'bg-surface' %}
+{% set section_class = 'bg-bg' %}
 {% set section_id = 'forms' %}
 {% set labelled_by = 'forms-title' %}
 {% set section_name = 'forms-showcase' %}
@@ -7,7 +7,7 @@
 {% block section_content %}
     <div class="mb-8 max-w-content">
         <h2 id="forms-title">Forms</h2>
-        <p class="mb-0 text-lead text-muted">Состояния сгруппированы по control; Focus визуально отделён от Error, а Error и Success имеют текстовую обратную связь.</p>
+        <p class="mb-0 text-t4 text-fg-secondary">Состояния сгруппированы по control; Focus выделен двойным кольцом; Error и Success сопровождаются текстовым сообщением.</p>
     </div>
 
     <form class="grid gap-8" aria-label="Пример формы" novalidate>

@@ -1,9 +1,9 @@
 {% set tone = tone|default('default') %}
 {% set tones = {
-    default: 'bg-surface text-content',
-    success: 'bg-success-soft text-success',
-    warning: 'bg-warning-soft text-warning',
-    danger: 'bg-danger-soft text-danger',
-    info: 'bg-info-soft text-info',
+    default: 'bg-bg text-fg',
+    success: 'bg-success-bg text-success',
+    warning: 'bg-warning-bg text-warning',
+    error: 'bg-error-bg text-error',
+    info: 'bg-info-bg text-info',
 } %}
-<span class="inline-flex rounded-sm border border-current px-2 py-1 text-caption font-medium {{ tones[tone]|default(tones.default) }}" data-vf-component="badge" data-vf-tone="{{ tone }}">{{ label }}</span>
+<span class="inline-flex rounded-sm border border-current px-2 py-1 text-t7 font-medium {{ tones[tone]|default(tones.default) }}" data-vf-component="badge" data-vf-tone="{{ tone }}">{{ label }}</span>

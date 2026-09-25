@@ -21,7 +21,7 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertSelectorExists('meta[name="description"][content*="ДДС"]');
         self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/"]');
-        self::assertSelectorExists('link[rel="icon"][type="image/svg+xml"][href="/favicon.svg"]');
+        self::assertSelectorExists('link[rel="icon"][type="image/svg+xml"][href="/favicon-v2.svg"]');
 
         self::assertSelectorExists('meta[property="og:type"][content="website"]');
         self::assertSelectorExists('meta[property="og:site_name"][content="Ваш Финдир"]');
@@ -29,7 +29,7 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertSelectorExists('meta[property="og:title"]');
         self::assertSelectorExists('meta[property="og:description"]');
         self::assertSelectorExists('meta[property="og:url"][content="https://vashfindir.ru/"]');
-        self::assertSelectorExists('meta[property="og:image"][content="https://vashfindir.ru/assets/og-image.png"]');
+        self::assertSelectorExists('meta[property="og:image"][content="https://vashfindir.ru/assets/og-image-v2.png"]');
         self::assertSelectorExists('meta[name="twitter:card"][content="summary_large_image"]');
 
         self::assertSelectorCount(1, 'script[src^="/assets/website/metrika.js?v="][defer]');
@@ -92,10 +92,13 @@ final class WebsiteSeoTest extends WebTestCase
         // sitemap генерируется маршрутом (Stage 6): статический файл перекрыл бы его в nginx.
         self::assertFileDoesNotExist($this->projectPath('public/sitemap.xml'));
 
-        self::assertFileExists($this->projectPath('public/favicon.svg'));
+        self::assertFileExists($this->projectPath('public/favicon-v2.svg'));
 
-        $ogImage = $this->read($this->projectPath('public/assets/og-image.png'));
+        $ogImage = $this->read($this->projectPath('public/assets/og-image-v2.png'));
         self::assertStringStartsWith("\x89PNG\r\n\x1a\n", $ogImage);
+        $dimensions = getimagesize($this->projectPath('public/assets/og-image-v2.png'));
+        self::assertIsArray($dimensions);
+        self::assertSame([1200, 630], [$dimensions[0], $dimensions[1]]);
     }
 
     private function projectPath(string $relativePath): string

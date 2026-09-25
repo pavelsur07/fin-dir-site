@@ -6,7 +6,7 @@
 
 {% block body %}
     <section class="py-12 md:py-16 lg:py-20" data-vf-section="error-404">
-        <div class="mx-auto w-full max-w-site px-4 md:px-6">
+        <div class="vf-container">
             {% include 'website/components/_breadcrumb.html.twig' with {
                 items: [
                     {label: 'Главная', href: path('home')},
@@ -16,43 +16,43 @@
 
             <div class="mt-8 grid gap-8 lg:grid-cols-2 lg:items-start">
                 <div>
-                    <p class="mb-4 text-caption font-medium uppercase tracking-caption text-muted">Ошибка 404</p>
-                    <h1 class="mb-6 text-h1">Такой страницы <em class="text-brand-red not-italic">нет</em></h1>
-                    <p class="mb-8 max-w-content text-lead text-muted">Возможно, ссылка устарела, адрес набран с ошибкой или страница была перенесена. Поможем быстро вернуться к полезным материалам и услугам.</p>
-                    <div class="flex flex-col gap-3 sm:flex-row">
+                    <p class="mb-4 text-t7 font-medium uppercase text-fg-secondary">Ошибка 404</p>
+                    <h1 class="mb-6 text-t1">Такой страницы <em class="text-accent not-italic">нет</em></h1>
+                    <p class="mb-8 max-w-content text-t4 text-fg-secondary">Возможно, ссылка устарела, адрес набран с ошибкой или страница была перенесена. Поможем быстро вернуться к полезным материалам и услугам.</p>
+                    <div class="flex flex-col gap-3 md:flex-row">
                         {% include 'website/components/_button.html.twig' with {label: 'На главную', href: path('home'), variant: 'primary'} only %}
-                        {% include 'website/components/_button.html.twig' with {label: 'Перейти в газету', href: path('gazeta_index'), variant: 'outline-primary'} only %}
+                        {% include 'website/components/_button.html.twig' with {label: 'Перейти в газету', href: path('gazeta_index'), variant: 'secondary'} only %}
                     </div>
-                    <p class="mt-6 text-small text-muted"><strong>Совет:</strong> если вы попали сюда из письма, рекламы или старой закладки — откройте главную страницу и выберите нужный раздел заново.</p>
+                    <p class="mt-6 text-t6 text-fg-secondary"><strong>Совет:</strong> если вы попали сюда из письма, рекламы или старой закладки — откройте главную страницу и выберите нужный раздел заново.</p>
                 </div>
-                <div class="rounded-lg border border-border-default bg-surface p-6 shadow-card md:p-8">
-                    <div class="mb-6 text-center text-h1 font-bold text-brand-red">404</div>
+                <div class="rounded-lg border border-border bg-bg p-6 shadow-md md:p-8">
+                    <div class="mb-6 text-center text-t1 font-bold text-accent">404</div>
                     <div class="flex flex-col gap-3">
-                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="/services">
-                            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                        <a class="flex items-start gap-4 rounded-md border border-border bg-bg-subtle p-4 no-underline transition-colors hover:border-accent hover:bg-accent-subtle" href="/services">
+                            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-accent-subtle text-accent">
                                 {% include 'website/components/_icon.html.twig' with {name: 'grid-1x2', size: 20} only %}
                             </span>
                             <span>
-                                <span class="block font-bold text-content">Услуги</span>
-                                <span class="text-small text-muted">Финансовый учёт, отчётность и планирование.</span>
+                                <span class="block font-bold text-fg">Услуги</span>
+                                <span class="text-t6 text-fg-secondary">Финансовый учёт, отчётность и планирование.</span>
                             </span>
                         </a>
-                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="/cases">
-                            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                        <a class="flex items-start gap-4 rounded-md border border-border bg-bg-subtle p-4 no-underline transition-colors hover:border-accent hover:bg-accent-subtle" href="/cases">
+                            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-accent-subtle text-accent">
                                 {% include 'website/components/_icon.html.twig' with {name: 'graph-up-arrow', size: 20} only %}
                             </span>
                             <span>
-                                <span class="block font-bold text-content">Кейсы</span>
-                                <span class="text-small text-muted">Как порядок в цифрах влияет на решения.</span>
+                                <span class="block font-bold text-fg">Кейсы</span>
+                                <span class="text-t6 text-fg-secondary">Как порядок в цифрах влияет на решения.</span>
                             </span>
                         </a>
-                        <a class="flex items-start gap-4 rounded-md border border-border-default bg-page p-4 no-underline transition-colors hover:border-brand-red hover:bg-brand-red-soft" href="/partners">
-                            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-brand-red-soft text-brand-red">
+                        <a class="flex items-start gap-4 rounded-md border border-border bg-bg-subtle p-4 no-underline transition-colors hover:border-accent hover:bg-accent-subtle" href="/partners">
+                            <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md bg-accent-subtle text-accent">
                                 {% include 'website/components/_icon.html.twig' with {name: 'people', size: 20} only %}
                             </span>
                             <span>
-                                <span class="block font-bold text-content">Партнёрам</span>
-                                <span class="text-small text-muted">Сотрудничество для сервисов и экспертов.</span>
+                                <span class="block font-bold text-fg">Партнёрам</span>
+                                <span class="text-t6 text-fg-secondary">Сотрудничество для сервисов и экспертов.</span>
                             </span>
                         </a>
                     </div>
