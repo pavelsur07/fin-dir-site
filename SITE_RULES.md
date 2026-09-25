@@ -46,7 +46,7 @@ Spacing v2: 0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96 px (`--vf-space-*`). 
 
 ## Компоненты и секции
 
-Production components: Button (`primary`, `secondary`, `ghost`), Input, Select, Textarea, Checkbox, Card, Alert, Badge, Breadcrumbs, Accordion, Pagination, Navbar, Footer, Cookie notice. Классы состояний Button — полные статические Tailwind strings. Не создавать page-specific копию markup. Form labels связаны с control; ошибки показываются текстом и `aria-invalid`, не одним цветом. Согласие не отмечено заранее. Доступное мобильное меню использует native dialog и сохраняет `data-vf-menu-*` hooks.
+Production components: Button (`primary`, `secondary`, `ghost`), Input, Select, Textarea, Checkbox, Card, Alert, Badge, Breadcrumbs, Accordion, Pagination, Navbar, Footer, Cookie notice. Badge поддерживает `default`, `accent` и статусные tones; `accent` используется в техническом каталоге на тёмной вводной области. Классы состояний Button — полные статические Tailwind strings. Не создавать page-specific копию markup. Form labels связаны с control; ошибки показываются текстом и `aria-invalid`, не одним цветом. Согласие не отмечено заранее. Доступное мобильное меню использует native dialog и сохраняет `data-vf-menu-*` hooks.
 
 Production sections: Hero, Content, Text list, Grid, Steps, Paths, Split, Quote, Comparison, FAQ, Case preview, Lead form, CTA, Article. `/ui-kit` и `/ui-kit/sections` рендерят эти же partials и production states, а не параллельную библиотеку; маршруты noindex. Демонстрационная форма не имеет submit action. Новые секции появляются при подтверждённой потребности в другом layout, а не ради другого цвета фона. Примеры цен, возможностей кабинета и неподтверждённое фото из дизайн-макета не публикуются.
 
@@ -62,7 +62,7 @@ HTML статьи из Markdown оформляется только через `
 
 ## Архитектура секций и выбор паттерна
 
-Page хранит порядок секций и данные. Section принимает явные параметры: `id`, `title`, `text`, `eyebrow`, действия и структурированные элементы. Section не запрашивает данные, не вычисляет бизнес-состояние и не хранит копию общего компонента. Общий `_base.html.twig` задаёт `<section>`, заголовочную связь, вертикальные отступы и `.vf-container`. Section может задать `data-theme="dark"` только для реального тёмного контекста. Соседние секции не чередуют фон декоративно.
+Page хранит порядок секций и данные. Section принимает явные параметры: `id`, `title`, `text`, `eyebrow`, действия и структурированные элементы. Section не запрашивает данные, не вычисляет бизнес-состояние и не хранит копию общего компонента. Общий `_base.html.twig` задаёт `<section>`, заголовочную связь, вертикальные отступы и `.vf-container`. На технической странице `/ui-kit` параметр `catalog_embed` выводит содержимое существующей секции без второго контейнера и вертикальных отступов внутри нумерованного блока; на production-страницах он не используется. Section может задать `data-theme="dark"` только для реального тёмного контекста. Соседние секции не чередуют фон декоративно.
 
 Для короткого тезиса выбрать Text list; для равноправных карточек — Grid; для последовательности — Steps; для развилки вариантов — Paths; для доказательства — Case preview или Quote с подтверждённым источником; для данных — Comparison с заголовками таблицы и горизонтальной прокруткой внутри региона; для раскрываемых ответов — FAQ/Accordion; для действия — CTA или Lead form. Split нужен только при осмысленном разделении текста и media. Не создавать вторую секцию с тем же смыслом ради отличающегося фона или ради одной страницы.
 
@@ -81,7 +81,7 @@ Page хранит порядок секций и данные. Section прин�
 
 ## CSS и JavaScript
 
-CSS содержит canonical tokens, Tailwind theme mapping, базовую типографику, Markdown article styling и только те custom utilities, которые выражают общий контракт (`vf-container`, `grid-auto-fit`, `navigation-drawer-width`). Компоненты используют статические Tailwind classes и семантические tokens; классы не конструируются из динамического имени цвета. Hex/rgb допустимы только внутри canonical token block и в графическом asset, а не как значение элемента Twig или отдельного CSS. Browser не загружает Tailwind runtime или второй stylesheet.
+CSS содержит canonical tokens, Tailwind theme mapping, базовую типографику, Markdown article styling и только те custom utilities, которые выражают общий контракт (`vf-container`, `grid-auto-fit`, `navigation-drawer-width`). Технический `/ui-kit` использует `data-vf-swatch` для показа примитивных шкал; селекторы свотчей в том же `app.css` ссылаются только на canonical `--vf-ink-*`, `--vf-crimson-*` и `--vf-chart-*`. Компоненты используют статические Tailwind classes и семантические tokens; классы не конструируются из динамического имени цвета. Hex/rgb допустимы только внутри canonical token block и в графическом asset, а не как значение элемента Twig или отдельного CSS. Browser не загружает Tailwind runtime или второй stylesheet.
 
 JavaScript остаётся в `site/assets/scripts/website/` и обслуживает только существующие сценарии навигации, cookie, аналитики и формы. Не вводить JS ради стилизации. Сохранять `data-vf-*` hooks и CSRF при работе с формой. Новые JS состояния должны получать v2-классы, присутствующие в Tailwind source scan. Проверка v1 aliases охватывает CSS, Twig и website JS.
 

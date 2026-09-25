@@ -1,8 +1,12 @@
 {% set navigation_id = navigation_id|default('vf-main-navigation') %}
 {% set drawer_id = navigation_id ~ '-drawer' %}
+{% set navigation_label = navigation_label|default('Основная навигация') %}
+{% set mobile_navigation_label = mobile_navigation_label|default('Мобильная навигация') %}
+{% set dialog_label = dialog_label|default('Меню') %}
+{% set brand_aria_label = brand_aria_label|default(brand ~ ' — на главную') %}
 <header class="border-b border-border bg-bg" data-vf-component="navbar">
-    <nav class="vf-container flex h-16 flex-nowrap items-center justify-between gap-4" aria-label="Основная навигация">
-        <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand }} — на главную"><img src="/assets/brand/logo-light.png" alt="" width="148" height="50"></a>
+    <nav class="vf-container flex h-16 flex-nowrap items-center justify-between gap-4" aria-label="{{ navigation_label }}">
+        <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}"><img src="/assets/brand/logo-light.png" alt="" width="148" height="50"></a>
         <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-bg p-0 text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
             <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
         </button>
@@ -20,15 +24,15 @@
         </div>
     </nav>
 
-    <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-fg lg:hidden" id="{{ drawer_id }}" aria-label="Меню" data-state="closed" data-vf-menu-dialog>
+    <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-fg lg:hidden" id="{{ drawer_id }}" aria-label="{{ dialog_label }}" data-state="closed" data-vf-menu-dialog>
         <div class="navigation-drawer-width absolute inset-y-0 right-0 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-bg shadow-md" data-vf-menu-panel>
             <div class="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border px-4">
-                <a class="inline-flex items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand }} — на главную"><img src="/assets/brand/logo-light.png" alt="" width="148" height="50"></a>
+                <a class="inline-flex items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}"><img src="/assets/brand/logo-light.png" alt="" width="148" height="50"></a>
                 <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-bg p-0 text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus" type="button" aria-label="Закрыть меню" data-vf-menu-close>
                     <span class="text-t3 leading-none" aria-hidden="true">×</span>
                 </button>
             </div>
-            <nav class="px-4 py-4" aria-label="Мобильная навигация" data-vf-mobile-navigation>
+            <nav class="px-4 py-4" aria-label="{{ mobile_navigation_label }}" data-vf-mobile-navigation>
                 <ul class="flex flex-col gap-2">
                     {% for item in items %}
                         <li>

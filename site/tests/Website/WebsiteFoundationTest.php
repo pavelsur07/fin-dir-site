@@ -8,6 +8,36 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class WebsiteFoundationTest extends WebTestCase
 {
+    public function testUiKitFollowsTheDesignSystemReferenceLayout(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/ui-kit');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('[data-vf-ui-kit-intro] h1', 'Ink & Crimson');
+        self::assertSelectorExists('[data-vf-ui-kit-intro][data-theme="dark"]');
+        self::assertSelectorExists('[data-vf-ui-kit-intro] [data-vf-component="badge"][data-vf-tone="accent"]');
+        foreach (['logo', 'palette', 'status-colors', 'roles', 'contrast', 'typography', 'radii', 'spacing', 'elevation', 'icons', 'interactive-states', 'data-format', 'forms', 'buttons', 'data-palette', 'alerts', 'navigation-preview', 'empty-state', 'motion', 'article-cards', 'article-preview', 'component-colors', 'section-previews'] as $section) {
+            self::assertSelectorExists(sprintf('[data-vf-ui-kit-section="%s"]', $section));
+        }
+        foreach (['typography' => '05 ·', 'interactive-states' => '10 ·', 'forms' => '12 ·'] as $section => $number) {
+            self::assertSelectorTextContains(sprintf('[data-vf-ui-kit-section="%s"] > div > p', $section), $number);
+        }
+        $swatches = $crawler->filter('[data-vf-swatch]');
+        self::assertCount(32, $swatches);
+        $css = file_get_contents(dirname(__DIR__, 2).'/assets/styles/website/app.css');
+        self::assertIsString($css);
+        foreach ($swatches as $swatch) {
+            self::assertInstanceOf(\DOMElement::class, $swatch);
+            self::assertStringContainsString('[data-vf-swatch="'.$swatch->getAttribute('data-vf-swatch').'"]', $css);
+        }
+        self::assertSelectorExists('[data-vf-swatch="crimson-500"] > span.bg-bg.text-fg');
+        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] img[src="/assets/brand/logo-light.png"]');
+        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] [data-theme="dark"] img[src="/assets/brand/logo-dark.png"]');
+        self::assertSelectorCount(1, 'main h1');
+        self::assertSelectorCount(0, 'main [style], main style, main script');
+    }
+
     public function testUiKitUsesProductionComponentsAndBothThemes(): void
     {
         $client = static::createClient();

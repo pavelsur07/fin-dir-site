@@ -5,14 +5,14 @@
 {% set section_name = 'components-showcase' %}
 
 {% block section_content %}
-    <div class="mb-8 max-w-content">
+    {% if not catalog_embed|default(false) %}<div class="mb-8 max-w-content">
         <h2 id="components-title">Components</h2>
         <p class="mb-0 text-t4 text-fg-secondary">Состояния ниже рендерятся production partials. Hover и Focus принудительно показаны рядом с интерактивными состояниями.</p>
-    </div>
+    </div>{% endif %}
 
     <div class="grid gap-8">
         <div class="border-t border-border py-6" id="buttons">
-            <h3>Buttons</h3>
+            <h3>Кнопки</h3>
             <div class="flex flex-wrap items-center gap-3">
                 {% for button in [
                     {state: 'default', label: 'Default'},
@@ -29,19 +29,20 @@
                     <span class="text-t7 font-medium uppercase">Disabled</span>
                     {% include 'website/components/_button.html.twig' with {label: 'Disabled', disabled: true} only %}
                 </div>
-                <div class="grid gap-2">
+                {% if not catalog_embed|default(false) %}<div class="grid gap-2">
                     <span class="text-t7 font-medium uppercase">Secondary</span>
                     {% include 'website/components/_button.html.twig' with {label: 'Подробнее', variant: 'secondary'} only %}
                 </div>
                 <div class="grid gap-2">
                     <span class="text-t7 font-medium uppercase">Ghost</span>
                     {% include 'website/components/_button.html.twig' with {label: 'Подробнее', variant: 'ghost'} only %}
-                </div>
+                </div>{% endif %}
             </div>
         </div>
 
+        {% if not catalog_embed|default(false) %}
         <div class="border-t border-border py-6" id="cards">
-            <h3>Cards</h3>
+            <h3>Карточки</h3>
             <div class="grid gap-6 md:grid-cols-2">
                 <div class="min-w-0">
                     {% include 'website/components/_card.html.twig' with {
@@ -61,7 +62,7 @@
         </div>
 
         <div class="border-t border-border py-6" id="badges">
-            <h3>Badges</h3>
+            <h3>Метки</h3>
             <div class="flex flex-wrap items-center gap-3">
                 {% include 'website/components/_badge.html.twig' with {label: 'Default'} only %}
                 {% include 'website/components/_badge.html.twig' with {label: 'Success', tone: 'success'} only %}
@@ -72,7 +73,7 @@
         </div>
 
         <div class="border-t border-border py-6" id="alerts">
-            <h3>Alerts</h3>
+            <h3>Уведомления</h3>
             <div class="grid gap-8">
                 {% include 'website/components/_alert.html.twig' with {title: 'Информация', text: 'Нейтральная системная информация.', tone: 'info'} only %}
                 {% include 'website/components/_alert.html.twig' with {title: 'Готово', text: 'Операция завершена успешно.', tone: 'success'} only %}
@@ -80,9 +81,10 @@
                 {% include 'website/components/_alert.html.twig' with {title: 'Ошибка', text: 'Исправьте отмеченные поля.', tone: 'error', role: 'alert'} only %}
             </div>
         </div>
+        {% endif %}
 
         <div class="border-t border-border py-6" id="breadcrumbs">
-            <h3>Breadcrumbs</h3>
+            <h3>Хлебные крошки</h3>
             {% include 'website/components/_breadcrumb.html.twig' with {
                 items: [
                     {label: 'Главная', href: '/'},
@@ -92,7 +94,7 @@
         </div>
 
         <div class="border-t border-border py-6" id="pagination">
-            <h3>Pagination</h3>
+            <h3>Пагинация</h3>
             <p>Переход между страницами списка. Крайние страницы не показывают недоступную кнопку.</p>
             {% include 'website/components/_pagination.html.twig' with {
                 current: 2,
@@ -103,7 +105,7 @@
         </div>
 
         <div class="border-t border-border py-6" id="accordion">
-            <h3>Accordion</h3>
+            <h3>Аккордеон</h3>
             {% include 'website/components/_accordion.html.twig' with {
                 accordion_id: 'ui-kit-accordion',
                 items: [
@@ -113,9 +115,9 @@
             } only %}
         </div>
 
-        <div class="border-t border-border py-6" id="navigation">
-            <h3>Navigation</h3>
+        {% if not catalog_embed|default(false) %}<div class="border-t border-border py-6" id="navigation">
+            <h3>Навигация</h3>
             <p class="mb-0">Production Navbar находится в начале страницы, Footer — после содержимого. На узком viewport Navbar использует нативный disclosure menu.</p>
-        </div>
+        </div>{% endif %}
     </div>
 {% endblock %}

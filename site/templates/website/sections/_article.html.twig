@@ -2,14 +2,14 @@
     Длинная статья: хлебные крошки, заголовок, мета, оглавление и тело из Markdown.
     Вход: title, lead (optional), published_datetime + published_label (optional, реальная дата), byline,
     breadcrumbs, toc (list<{id, title}>), body_html (выход MarkdownRenderer -- безопасен для |raw),
-    heading_level (optional, 'h1' по умолчанию; 'h2' -- когда H1 страницы уже есть, например в UI-kit).
+    heading_level (optional, 'h1' по умолчанию; 'h2' или 'h3' для образца внутри каталога).
 #}
 {% extends 'website/sections/_base.html.twig' %}
 {% set section_class = 'bg-bg' %}
 {% set section_id = id|default('article') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'article' %}
-{% set heading_tag = heading_level|default('h1') == 'h2' ? 'h2' : 'h1' %}
+{% set heading_tag = heading_level|default('h1') in ['h2', 'h3'] ? heading_level : 'h1' %}
 
 {% block section_content %}
     {% include 'website/components/_breadcrumb.html.twig' with {items: breadcrumbs} only %}

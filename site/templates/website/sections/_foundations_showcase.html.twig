@@ -5,11 +5,11 @@
 {% set section_name = 'foundations-showcase' %}
 
 {% block section_content %}
-    <div class="mb-8 max-w-content">
+    {% if not catalog_embed|default(false) %}<div class="mb-8 max-w-content">
         <p class="text-t7 font-medium text-accent-text uppercase">Design system v2</p>
         <h2 id="foundations-title">Основа интерфейса</h2>
         <p class="mb-0 text-t4 text-fg-secondary">Inter, Manrope и семантические токены одинаковы на каждой публичной странице.</p>
-    </div>
+    </div>{% endif %}
 
     <div class="grid gap-12" data-vf-showcase="typography">
         <div class="grid gap-4">
@@ -23,7 +23,9 @@
             <p class="mb-0 text-t5">T5 — основной текст, в том числе русский алфавит и цифры 2 450 000 ₽.</p>
             <p class="mb-0 text-t6 text-fg-secondary">T6 — пояснения и элементы управления.</p>
             <p class="mb-0 text-t7 text-fg-secondary">T7 — короткая подпись.</p>
+            <p class="mb-0 text-t8 font-extrabold">T8 — крупное числовое значение 1 234.</p>
         </div>
+        {% if not catalog_typography_only|default(false) %}
         <div data-vf-showcase="colors">
             <h3>Роли цвета</h3>
             <div class="grid gap-6 md:grid-cols-2">
@@ -54,5 +56,6 @@
                 <span class="h-4 w-1 rounded-xs bg-accent"></span><span class="h-4 w-2 rounded-xs bg-accent"></span><span class="h-4 w-3 rounded-xs bg-accent"></span><span class="h-4 w-4 rounded-xs bg-accent"></span><span class="h-4 w-5 rounded-xs bg-accent"></span><span class="h-4 w-6 rounded-xs bg-accent"></span><span class="h-4 w-8 rounded-xs bg-accent"></span><span class="h-4 w-10 rounded-xs bg-accent"></span><span class="h-4 w-12 rounded-xs bg-accent"></span><span class="h-4 w-16 rounded-xs bg-accent"></span><span class="h-4 w-24 rounded-xs bg-accent"></span>
             </div>
         </div>
+        {% endif %}
     </div>
 {% endblock %}

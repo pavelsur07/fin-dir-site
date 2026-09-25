@@ -319,6 +319,38 @@
 }
 @media (min-width: 768px) { :root { --vf-t1-size: 48px; --vf-t1-leading: 56px; --vf-t2-size: 36px; --vf-t2-leading: 44px; } }
 
+/* Token swatches on the technical /ui-kit page. Values stay in the canonical token block. */
+[data-vf-swatch="ink-50"] { background-color: var(--vf-ink-50); }
+[data-vf-swatch="ink-100"] { background-color: var(--vf-ink-100); }
+[data-vf-swatch="ink-200"] { background-color: var(--vf-ink-200); }
+[data-vf-swatch="ink-300"] { background-color: var(--vf-ink-300); }
+[data-vf-swatch="ink-400"] { background-color: var(--vf-ink-400); }
+[data-vf-swatch="ink-500"] { background-color: var(--vf-ink-500); }
+[data-vf-swatch="ink-600"] { background-color: var(--vf-ink-600); }
+[data-vf-swatch="ink-700"] { background-color: var(--vf-ink-700); }
+[data-vf-swatch="ink-800"] { background-color: var(--vf-ink-800); }
+[data-vf-swatch="ink-900"] { background-color: var(--vf-ink-900); }
+[data-vf-swatch="ink-950"] { background-color: var(--vf-ink-950); }
+[data-vf-swatch="crimson-50"] { background-color: var(--vf-crimson-50); }
+[data-vf-swatch="crimson-100"] { background-color: var(--vf-crimson-100); }
+[data-vf-swatch="crimson-200"] { background-color: var(--vf-crimson-200); }
+[data-vf-swatch="crimson-300"] { background-color: var(--vf-crimson-300); }
+[data-vf-swatch="crimson-400"] { background-color: var(--vf-crimson-400); }
+[data-vf-swatch="crimson-500"] { background-color: var(--vf-crimson-500); }
+[data-vf-swatch="crimson-600"] { background-color: var(--vf-crimson-600); }
+[data-vf-swatch="crimson-700"] { background-color: var(--vf-crimson-700); }
+[data-vf-swatch="crimson-800"] { background-color: var(--vf-crimson-800); }
+[data-vf-swatch="crimson-900"] { background-color: var(--vf-crimson-900); }
+[data-vf-swatch="crimson-950"] { background-color: var(--vf-crimson-950); }
+[data-vf-swatch="chart-1"] { background-color: var(--vf-chart-1); }
+[data-vf-swatch="chart-2"] { background-color: var(--vf-chart-2); }
+[data-vf-swatch="chart-3"] { background-color: var(--vf-chart-3); }
+[data-vf-swatch="chart-4"] { background-color: var(--vf-chart-4); }
+[data-vf-swatch="chart-5"] { background-color: var(--vf-chart-5); }
+[data-vf-swatch="chart-6"] { background-color: var(--vf-chart-6); }
+[data-vf-swatch="chart-7"] { background-color: var(--vf-chart-7); }
+[data-vf-swatch="chart-8"] { background-color: var(--vf-chart-8); }
+
 
 @theme {
   --color-*: initial;

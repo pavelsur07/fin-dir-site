@@ -5,14 +5,14 @@
 {% set section_name = 'forms-showcase' %}
 
 {% block section_content %}
-    <div class="mb-8 max-w-content">
-        <h2 id="forms-title">Forms</h2>
+    {% if not catalog_embed|default(false) %}<div class="mb-8 max-w-content">
+        <h2 id="forms-title">Формы</h2>
         <p class="mb-0 text-t4 text-fg-secondary">Состояния сгруппированы по control; Focus выделен двойным кольцом; Error и Success сопровождаются текстовым сообщением.</p>
-    </div>
+    </div>{% endif %}
 
     <form class="grid gap-8" aria-label="Пример формы" novalidate>
         <section class="min-w-0" aria-labelledby="forms-input-title" data-vf-form-group="input">
-            <h3 id="forms-input-title">Input</h3>
+            <h3 id="forms-input-title">Текстовое поле</h3>
             <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_input.html.twig' with {
                     id: 'demo-name',
@@ -50,7 +50,7 @@
         </section>
 
         <section class="min-w-0" aria-labelledby="forms-select-title" data-vf-form-group="select">
-            <h3 id="forms-select-title">Select</h3>
+            <h3 id="forms-select-title">Выбор из списка</h3>
             <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_select.html.twig' with {
                     id: 'demo-select',
@@ -92,7 +92,7 @@
         </section>
 
         <section class="min-w-0" aria-labelledby="forms-textarea-title" data-vf-form-group="textarea">
-            <h3 id="forms-textarea-title">Textarea</h3>
+            <h3 id="forms-textarea-title">Многострочное поле</h3>
             <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_textarea.html.twig' with {
                     id: 'demo-textarea',
@@ -130,7 +130,7 @@
         </section>
 
         <section class="min-w-0" aria-labelledby="forms-checkbox-title" data-vf-form-group="checkbox">
-            <h3 id="forms-checkbox-title">Checkbox</h3>
+            <h3 id="forms-checkbox-title">Флажок</h3>
             <div class="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-5">
                 {% include 'website/components/_form_checkbox.html.twig' with {
                     id: 'demo-checkbox',
