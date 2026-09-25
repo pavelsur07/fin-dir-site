@@ -8,6 +8,39 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class WebsiteFoundationTest extends WebTestCase
 {
+    public function testUiKitReferenceFoundationsHaveCompleteTechnicalExamples(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/ui-kit');
+
+        self::assertResponseIsSuccessful();
+        foreach ([
+            'radii' => ['radius-sample' => 7, 'radius-map-row' => 10, 'radius-rule' => 6],
+            'spacing' => ['spacing-row' => 10, 'spacing-role' => 6, 'grid-column' => 12, 'breakpoint-row' => 4],
+            'elevation' => ['shadow-sample' => 4, 'dark-level' => 4, 'shadow-rule' => 4],
+            'icons' => ['icon-sample' => 12, 'social-icon' => 3, 'social-rule' => 5],
+            'interactive-states' => ['state-row' => 5, 'state-cell' => 30, 'state-rule' => 6],
+        ] as $section => $examples) {
+            foreach ($examples as $kind => $count) {
+                self::assertSelectorCount($count, '[data-vf-ui-kit-section="'.$section.'"] [data-vf-ui-kit-'.$kind.']');
+            }
+        }
+        self::assertSelectorCount(0, '#radii [style], #spacing [style], #elevation [style], #icons [style], #components [style]');
+        foreach (['#radii .vf-ui-kit-radius-map', '#spacing .vf-ui-kit-spacing-table table', '#spacing .vf-ui-kit-breakpoint-scroll table', '#components .vf-ui-kit-state-matrix'] as $table) {
+            self::assertSelectorExists($table.' thead th[scope="col"]');
+            self::assertSelectorExists($table.' tbody th[scope="row"]');
+        }
+        $root = dirname(__DIR__, 2);
+        foreach (['wallet', 'credit-card', 'arrow-left-right', 'receipt', 'file-text', 'landmark', 'piggy-bank', 'trending-up', 'calendar', 'shield-check', 'bell', 'download'] as $icon) {
+            self::assertFileExists($root.'/public/assets/ui-kit/lucide/'.$icon.'.svg');
+        }
+        self::assertFileExists($root.'/public/assets/ui-kit/lucide/LICENSE');
+        self::assertFileExists($root.'/public/assets/ui-kit/social/max-messenger.svg');
+        self::assertFileExists($root.'/public/assets/ui-kit/social/telegram.svg');
+        self::assertFileExists($root.'/public/assets/ui-kit/social/vk.svg');
+        self::assertFileExists($root.'/public/assets/ui-kit/social/ATTRIBUTION.md');
+    }
+
     public function testUiKitFollowsTheDesignSystemReferenceLayout(): void
     {
         $client = static::createClient();
@@ -60,18 +93,14 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorExists('[data-vf-ui-kit-intro] a[href="/"]');
         self::assertSelectorExists('[data-vf-component="footer"][data-theme="dark"] img[src="/assets/brand/logo-dark.png"]');
 
-        foreach (['button', 'card', 'badge', 'alert', 'form-input', 'select', 'textarea', 'checkbox', 'accordion', 'breadcrumb', 'footer', 'cta'] as $component) {
+        foreach (['button', 'card', 'badge', 'alert', 'form-input', 'select', 'textarea', 'checkbox', 'breadcrumb', 'footer', 'cta'] as $component) {
             self::assertSelectorExists(sprintf('[data-vf-component="%s"]', $component));
         }
         foreach (['primary', 'secondary', 'ghost'] as $variant) {
             self::assertSelectorExists(sprintf('[data-vf-component="button"][data-vf-variant="%s"]', $variant));
         }
-        foreach (['default', 'hover', 'focus', 'active'] as $state) {
-            self::assertSelectorExists(sprintf('[data-vf-component="button"][data-vf-state="%s"]', $state));
-        }
         self::assertSelectorCount(0, '[data-vf-component="navbar"]');
         self::assertSelectorExists('#navigation-preview [aria-controls="vf-ui-nav-features"][aria-expanded="false"]');
-        self::assertSelectorExists('[data-vf-component="accordion"] details > summary h3');
         self::assertSelectorExists('script[src^="/assets/website/navigation.js?v="][defer]');
         self::assertSelectorCount(0, 'link[href*="bootstrap"], script[src*="bootstrap"]');
         self::assertSelectorExists('[data-vf-state="error"] [aria-invalid="true"]');
@@ -83,6 +112,19 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorExists(sprintf('[data-vf-form-group="%s"] [data-vf-component="%s"][data-vf-state="disabled"] :disabled', $group, $component));
         }
         self::assertSame(1, $crawler->filter('link[href^="/assets/website/app.css?v="]')->count());
+    }
+
+    public function testSectionsCatalogKeepsProductionComponentShowcase(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/ui-kit/sections');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('[data-vf-section="components-showcase"] [data-vf-component="accordion"] details > summary h3');
+        self::assertSelectorExists('[data-vf-section="components-showcase"] [data-vf-component="pagination"]');
+        foreach (['default', 'hover', 'focus', 'active'] as $state) {
+            self::assertSelectorExists(sprintf('[data-vf-section="components-showcase"] [data-vf-component="button"][data-vf-state="%s"]', $state));
+        }
     }
 
     public function testProductionNavbarRetainsMobileDialog(): void

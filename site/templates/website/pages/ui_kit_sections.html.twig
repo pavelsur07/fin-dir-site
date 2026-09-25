@@ -352,6 +352,8 @@
         text: 'Один и тот же production partial остаётся читаемым без необязательных блоков и не создаёт пустую колонку.',
     } only %}
 
+    {% include 'website/sections/_components_showcase.html.twig' with {} only %}
+
     {% include 'website/sections/_cta.html.twig' with {
         id: 'sections-cta',
         title: 'Собирайте страницу из минимально необходимых паттернов',

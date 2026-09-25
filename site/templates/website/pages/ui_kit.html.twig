@@ -10,44 +10,7 @@
 {% block body %}
     {% include 'website/pages/_ui_kit_foundations.html.twig' %}
     <div class="vf-container space-y-24 pb-24" data-vf-ui-kit>
-        <section id="radii" class="grid gap-8" aria-labelledby="radii-title" data-vf-ui-kit-section="radii">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">06 · Форма</p><h2 id="radii-title">Шкала радиусов</h2></div>
-            <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-                {% for radius in [{name: '0', class: 'rounded-none'}, {name: 'XS', class: 'rounded-xs'}, {name: 'SM', class: 'rounded-sm'}, {name: 'MD', class: 'rounded-md'}, {name: 'LG', class: 'rounded-lg'}, {name: 'XL', class: 'rounded-xl'}, {name: 'Full', class: 'rounded-full'}] %}
-                    <div class="grid gap-3 rounded-md border border-border bg-bg p-4"><span class="text-t7 text-fg-secondary">{{ radius.name }}</span><span class="h-16 w-full border border-border-strong bg-bg-subtle {{ radius.class }}" aria-hidden="true"></span></div>
-                {% endfor %}
-            </div>
-        </section>
-
-        <section id="spacing" class="grid gap-8" aria-labelledby="spacing-title" data-vf-ui-kit-section="spacing" data-vf-showcase="spacing">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">07 · Сетка</p><h2 id="spacing-title">Пространство</h2><p class="mb-0 text-t4 text-fg-secondary">Отступы образуют единую шкалу: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64 и 96 px.</p></div>
-            <div class="flex flex-wrap items-end gap-4 rounded-lg border border-border bg-bg-subtle p-6" aria-hidden="true">
-                <span class="h-4 w-1 bg-accent"></span><span class="h-4 w-2 bg-accent"></span><span class="h-4 w-3 bg-accent"></span><span class="h-4 w-4 bg-accent"></span><span class="h-4 w-5 bg-accent"></span><span class="h-4 w-6 bg-accent"></span><span class="h-4 w-8 bg-accent"></span><span class="h-4 w-10 bg-accent"></span><span class="h-4 w-12 bg-accent"></span><span class="h-4 w-16 bg-accent"></span><span class="h-4 w-24 bg-accent"></span>
-            </div>
-        </section>
-
-        <section id="elevation" class="grid gap-8" aria-labelledby="elevation-title" data-vf-ui-kit-section="elevation">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">08 · Глубина</p><h2 id="elevation-title">Уровни высоты</h2></div>
-            <div class="grid gap-4 md:grid-cols-3">
-                <div class="rounded-lg border border-border bg-bg p-8 shadow-sm"><strong class="text-t3">Small</strong><p class="mb-0 text-fg-secondary">Лёгкое отделение элемента</p></div>
-                <div class="rounded-lg border border-border bg-bg p-8 shadow-md"><strong class="text-t3">Medium</strong><p class="mb-0 text-fg-secondary">Приподнятая карточка</p></div>
-                <div class="rounded-lg border border-border bg-bg p-8 shadow-lg"><strong class="text-t3">Large</strong><p class="mb-0 text-fg-secondary">Важная поверхность</p></div>
-            </div>
-        </section>
-
-        <section id="icons" class="grid gap-8" aria-labelledby="icons-title" data-vf-ui-kit-section="icons">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">09 · Иконки</p><h2 id="icons-title">Линейный стиль</h2><p class="mb-0 text-t4 text-fg-secondary">Иконки помогают распознавать действие и не заменяют текстовую подпись.</p></div>
-            <div class="flex flex-wrap gap-4">
-                {% for icon in [{name: 'telegram', label: 'Сообщение'}, {name: 'envelope', label: 'Письмо'}, {name: 'newspaper', label: 'Статья'}] %}
-                    <div class="flex min-h-control items-center gap-3 rounded-md border border-border bg-bg p-4 text-t6">{% include 'website/components/_icon.html.twig' with {name: icon.name, size: 20} only %}<span>{{ icon.label }}</span></div>
-                {% endfor %}
-            </div>
-        </section>
-
-        <section id="components" class="grid gap-8" aria-labelledby="interactive-states-title" data-vf-ui-kit-section="interactive-states">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">10 · Поведение</p><h2 id="interactive-states-title">Интерактивные состояния</h2><p class="mb-0 text-t4 text-fg-secondary">Ниже показаны действующие компоненты в состояниях default, hover, focus, active и disabled.</p></div>
-            {% include 'website/sections/_components_showcase.html.twig' with {catalog_embed: true} only %}
-        </section>
+        {% include 'website/pages/_ui_kit_foundations_06_10.html.twig' %}
 
         <section id="data-format" class="grid gap-8" aria-labelledby="data-format-title" data-vf-ui-kit-section="data-format">
             <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">11 · Данные</p><h2 id="data-format-title">Формат данных</h2><p class="mb-0 text-t4 text-fg-secondary">Демонстрационные значения показывают запись сумм, дат и изменений без привязки к реальному клиенту.</p></div>
