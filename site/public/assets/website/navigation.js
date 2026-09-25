@@ -32,6 +32,12 @@
                 }
             };
 
+            const lockPage = () => {
+                window.addEventListener('scroll', holdPagePosition);
+                dialog.addEventListener('wheel', preventBackdropScroll, { passive: false });
+                dialog.addEventListener('touchmove', preventBackdropScroll, { passive: false });
+            };
+
             const unlockPage = () => {
                 window.removeEventListener('scroll', holdPagePosition);
                 dialog.removeEventListener('wheel', preventBackdropScroll);
