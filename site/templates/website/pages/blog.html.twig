@@ -1,4 +1,4 @@
-{% extends 'website/layouts/base.html.twig' %}
+{% extends 'website/layouts/page.html.twig' %}
 
 {% block title %}Газета{% if pager.currentPage > 1 %} — страница {{ pager.currentPage }}{% endif %} — Ваш Финдир{% endblock %}
 {% block description %}Материалы о финансовом учёте, управлении деньгами и unit-экономике для селлеров маркетплейсов.{% endblock %}
@@ -9,42 +9,29 @@
     {% include 'website/pages/_blog_navigation.html.twig' %}
 {% endblock %}
 
-{% block body %}
-    {% include 'website/sections/_hero.html.twig' with {
-        id: 'blog-hero',
-        title: 'Газета',
-        text: 'Разборы финансового учёта для селлеров: ДДС, ОПиУ, Баланс, unit-экономика и управленческие решения.',
-    } only %}
+{% block content %}
+    <h1 class="text-3xl font-bold">Газета</h1>
+    <p>Разборы финансового учёта для селлеров: ДДС, ОПиУ, Баланс, unit-экономика и управленческие решения.</p>
 
     {% if pager.nbResults > 0 %}
-        {% set items = [] %}
-        {% for post in pager.currentPageResults %}
-            {% set items = items|merge([{
-                title: post.title,
-                href: path('gazeta_post', {slug: post.slug}),
-                meta: post.publishedAt|date('d.m.Y'),
-                meta_datetime: post.publishedAt|date('Y-m-d'),
-                text: post.excerpt,
-            }]) %}
-        {% endfor %}
+        <ul class="space-y-6" data-vf-section="article-list">
+            {% for post in pager.currentPageResults %}
+                <li>
+                    <h2 class="text-xl font-bold"><a class="underline" href="{{ path('gazeta_post', {slug: post.slug}) }}">{{ post.title }}</a></h2>
+                    <p><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time></p>
+                    {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
 
-        {% include 'website/sections/_grid.html.twig' with {
-            id: 'blog-articles',
-            marker: 'article-list',
-            title: 'Публикации',
-            items: items,
-            pagination: pager.haveToPaginate ? {
-                current: pager.currentPage,
-                pages: pager.nbPages,
-                prev_href: pager.hasPreviousPage ? (pager.previousPage > 1 ? path('gazeta_index', {page: pager.previousPage}) : path('gazeta_index')) : null,
-                next_href: pager.hasNextPage ? path('gazeta_index', {page: pager.nextPage}) : null,
-            } : null,
-        } only %}
+        {% if pager.haveToPaginate %}
+            <nav aria-label="Страницы списка" data-vf-component="pagination">
+                {% if pager.hasPreviousPage %}<a class="underline" href="{{ pager.previousPage > 1 ? path('gazeta_index', {page: pager.previousPage}) : path('gazeta_index') }}">← Новее</a> · {% endif %}
+                Страница {{ pager.currentPage }} из {{ pager.nbPages }}
+                {% if pager.hasNextPage %} · <a class="underline" href="{{ path('gazeta_index', {page: pager.nextPage}) }}">Раньше →</a>{% endif %}
+            </nav>
+        {% endif %}
     {% else %}
-        {% include 'website/sections/_text_list.html.twig' with {
-            id: 'blog-empty',
-            title: 'Публикаций пока нет',
-            text: 'Первые статьи появятся здесь в ближайшее время.',
-        } only %}
+        <p>Публикаций пока нет. Первые статьи появятся здесь в ближайшее время.</p>
     {% endif %}
 {% endblock %}

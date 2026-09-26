@@ -1,4 +1,4 @@
-{% extends 'website/layouts/base.html.twig' %}
+{% extends 'website/layouts/page.html.twig' %}
 
 {% block title %}Согласие на обработку персональных данных — Ваш Финдир{% endblock %}
 {% block description %}Согласие на обработку персональных данных, которое пользователь даёт при отправке заявки на сайте «Ваш Финдир».{% endblock %}
@@ -77,44 +77,20 @@
     },
 ] %}
 
-{% block body %}
-    <section class="bg-slate-50 py-12 md:py-16 lg:py-20" data-vf-section="consent-hero">
-        <div class="mx-auto w-full max-w-6xl px-4 md:px-8">
-            <div class="grid gap-6 lg:grid-cols-3">
-                <div class="min-w-0 lg:col-span-2">
-                    <p class="mb-4 text-xs leading-5 font-medium uppercase text-slate-600">Документы</p>
-                    <h1 class="mb-4 text-4xl leading-tight md:text-5xl font-extrabold hyphens-auto">Согласие на обработку персональных данных</h1>
-                    <p class="max-w-3xl text-lg leading-7 text-slate-600">Отправляя заявку на сайте и отмечая поле «Согласен на обработку персональных данных», пользователь даёт согласие на обработку своих персональных данных в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» на условиях ниже.</p>
-                </div>
-                <div class="min-w-0 lg:col-span-1">
-                    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-md">
-                        <p class="mb-2 text-xs leading-5 font-medium uppercase text-slate-600">Редакция документа</p>
-                        <p class="mb-2 text-xl leading-7 font-bold">{{ consent_version }}</p>
-                        <p class="mb-0 text-sm leading-6 text-slate-600">Действует с {{ consent_version|date('d.m.Y') }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+{% block content %}
+    <header class="space-y-2" data-vf-section="consent-hero">
+        <h1 class="text-3xl font-bold">Согласие на обработку персональных данных</h1>
+        <p>Редакция документа: {{ consent_version }}. Действует с {{ consent_version|date('d.m.Y') }}</p>
+        <p>Отправляя заявку на сайте и отмечая поле «Согласен на обработку персональных данных», пользователь даёт согласие на обработку своих персональных данных в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» на условиях ниже.</p>
+    </header>
 
-    <section class="py-12 md:py-16 lg:py-20" data-vf-section="consent-document">
-        <div class="mx-auto w-full max-w-6xl px-4 md:px-8">
-            <article class="grid max-w-3xl gap-4">
-                {% for section in sections %}
-                    <section class="rounded-lg border border-slate-200 bg-white shadow-md" id="{{ section.id }}">
-                        <div class="border-b border-slate-200 px-4 py-4 md:px-6 md:py-4">
-                            <p class="mb-2 text-xs leading-5 font-medium uppercase text-slate-600">{{ section.label }}</p>
-                            <h2 class="text-xl leading-7 font-bold">{{ section.title }}</h2>
-                        </div>
-                        <div class="px-4 py-4 md:px-6 md:py-4">
-                            {% for paragraph in section.paragraphs %}
-                                <p class="{{ loop.last ? 'mb-0' : 'mb-4' }} text-slate-600">{{ paragraph }}</p>
-                            {% endfor %}
-                        </div>
-                    </section>
-                {% endfor %}
-                <p class="mb-0 text-sm leading-6 text-slate-600">Подробнее об обработке данных — в <a class="text-red-700 hover:text-red-800" href="{{ path('privacy') }}">политике конфиденциальности</a>.</p>
-            </article>
-        </div>
-    </section>
+    <article class="max-w-3xl space-y-6" data-vf-section="consent-document">
+        {% for section in sections %}
+            <section class="space-y-2" id="{{ section.id }}">
+                <h2 class="text-xl font-bold">{{ section.label }}. {{ section.title }}</h2>
+                {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+            </section>
+        {% endfor %}
+        <p>Подробнее об обработке данных — в <a class="underline" href="{{ path('privacy') }}">политике конфиденциальности</a>.</p>
+    </article>
 {% endblock %}

@@ -1,20 +1,18 @@
-{% extends 'website/layouts/base.html.twig' %}
+{% extends 'website/layouts/page.html.twig' %}
 
 {# Результат отправки формы без JavaScript. Техническая страница: не индексируется. #}
 {% block title %}{{ success ? 'Заявка отправлена' : 'Заявка не отправлена' }} — Ваш Финдир{% endblock %}
 {% block robots %}noindex, nofollow{% endblock %}
 
-{% block body %}
-    {% include 'website/sections/_text_list.html.twig' with {
-        id: 'lead-result',
-        is_page_title: true,
-        title: success ? 'Спасибо, заявка отправлена' : 'Заявка не отправлена',
-        text: success
-            ? 'Мы свяжемся с вами в ближайшее время по указанному контакту.'
-            : 'Исправьте данные и отправьте форму ещё раз. Быстрее всего связаться с нами в Telegram: @vashfindir_ru.',
-        items: errors|map(message => {text: message}),
-    } only %}
-    <div class="mx-auto w-full max-w-6xl px-4 md:px-8 pb-12">
-        {% include 'website/components/_button.html.twig' with {label: 'Вернуться на страницу', href: back_url, variant: 'secondary'} only %}
-    </div>
+{% block content %}
+    <h1 class="text-3xl font-bold">{{ success ? 'Спасибо, заявка отправлена' : 'Заявка не отправлена' }}</h1>
+    <p>{{ success
+        ? 'Мы свяжемся с вами в ближайшее время по указанному контакту.'
+        : 'Исправьте данные и отправьте форму ещё раз. Быстрее всего связаться с нами в Telegram: @vashfindir_ru.' }}</p>
+    {% if errors %}
+        <ul class="list-disc pl-6">
+            {% for message in errors %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+    {% endif %}
+    <p><a class="underline" href="{{ back_url }}">Вернуться на страницу</a></p>
 {% endblock %}

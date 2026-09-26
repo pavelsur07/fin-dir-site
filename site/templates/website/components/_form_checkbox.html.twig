@@ -1,4 +1,4 @@
-<div class="flex min-w-0 flex-wrap items-start gap-x-2 gap-y-1" data-vf-component="checkbox">
-    <input class="mt-1 size-4 shrink-0 accent-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:ring-2 aria-invalid:ring-orange-700 disabled:cursor-not-allowed disabled:opacity-50" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
-    <label class="min-w-0 flex-1 font-medium text-slate-950" for="{{ id }}">{{ label }}</label>
+<div class="flex items-start gap-2" data-vf-component="checkbox">
+    <input class="aria-invalid:ring-2 aria-invalid:ring-orange-700" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
+    <label for="{{ id }}">{{ label }}</label>
 </div>

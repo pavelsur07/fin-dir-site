@@ -1,4 +1,4 @@
-{% extends 'website/layouts/base.html.twig' %}
+{% extends 'website/layouts/page.html.twig' %}
 
 {% block title %}{{ post.seoTitle }} — Ваш Финдир{% endblock %}
 {% block description %}{{ post.seoDescription ?? parent() }}{% endblock %}
@@ -14,48 +14,47 @@
     {% include 'website/pages/_blog_navigation.html.twig' %}
 {% endblock %}
 
-{% block body %}
-    {% include 'website/sections/_article.html.twig' with {
-        title: post.title,
-        lead: post.excerpt,
-        published_datetime: post.publishedAt|date('Y-m-d'),
-        published_label: post.publishedAt|date('d.m.Y'),
-        byline: 'Редакция Ваш Финдир',
-        breadcrumbs: [
-            {label: 'Главная', href: path('home')},
-            {label: 'Газета', href: path('gazeta_index')},
-            {label: post.title},
-        ],
-        toc: article.toc,
-        body_html: article.html,
-    } only %}
+{% block content %}
+    {# Совпадает с BreadcrumbList в JSON-LD статьи. #}
+    <nav aria-label="Хлебные крошки" data-vf-component="breadcrumb">
+        <ol class="flex flex-wrap gap-2">
+            <li><a class="underline" href="{{ path('home') }}">Главная</a> /</li>
+            <li><a class="underline" href="{{ path('gazeta_index') }}">Газета</a> /</li>
+            <li aria-current="page">{{ post.title }}</li>
+        </ol>
+    </nav>
 
-    {# Article Preview по контракту -- 2–4 подтверждённых материала; меньше -- блок не показываем. #}
+    {# body_html -- выход MarkdownRenderer, безопасен для |raw. #}
+    <article class="max-w-3xl space-y-6" data-vf-section="article">
+        <header class="space-y-2">
+            <h1 class="text-3xl font-bold">{{ post.title }}</h1>
+            {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
+            <p><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time> · Редакция Ваш Финдир</p>
+        </header>
+
+        {% if article.toc|length > 1 %}
+            <nav aria-labelledby="article-toc-title">
+                <h2 class="text-xl font-bold" id="article-toc-title">Содержание</h2>
+                <ol class="list-decimal pl-6">
+                    {% for entry in article.toc %}<li><a class="underline" href="#{{ entry.id }}">{{ entry.title }}</a></li>{% endfor %}
+                </ol>
+            </nav>
+        {% endif %}
+
+        <div class="space-y-4">
+            {{ article.html|raw }}
+        </div>
+    </article>
+
+    {# Не меньше двух подтверждённых материалов; меньше -- блок не показываем. #}
     {% if related|length >= 2 %}
-        {% set items = [] %}
-        {% for item in related %}
-            {% set items = items|merge([{
-                title: item.title,
-                href: path('gazeta_post', {slug: item.slug}),
-                meta: item.publishedAt|date('d.m.Y'),
-                meta_datetime: item.publishedAt|date('Y-m-d'),
-                text: item.excerpt,
-            }]) %}
-        {% endfor %}
-        {% include 'website/sections/_grid.html.twig' with {
-            id: 'related',
-            marker: 'article-preview',
-            eyebrow: 'Читайте также',
-            title: 'Ещё статьи о финансовом учёте',
-            items: items,
-        } only %}
+        <section class="space-y-4" id="related" aria-labelledby="related-title" data-vf-section="article-preview">
+            <h2 class="text-2xl font-bold" id="related-title">Ещё статьи о финансовом учёте</h2>
+            <ul class="list-disc pl-6">
+                {% for item in related %}
+                    <li><a class="underline" href="{{ path('gazeta_post', {slug: item.slug}) }}">{{ item.title }}</a> — <time datetime="{{ item.publishedAt|date('Y-m-d') }}">{{ item.publishedAt|date('d.m.Y') }}</time></li>
+                {% endfor %}
+            </ul>
+        </section>
     {% endif %}
-
-    {% include 'website/sections/_cta.html.twig' with {
-        id: 'telegram',
-        title: 'Разбираю реальные кейсы финучёта',
-        text: 'Показываю, как читать ДДС, ОПиУ, Баланс и unit-экономику без сложной теории. Практические разборы для собственников маркетплейс-бизнеса.',
-        action_label: 'Подписаться на канал',
-        action_href: 'https://t.me/vashfindir_ru',
-    } only %}
 {% endblock %}

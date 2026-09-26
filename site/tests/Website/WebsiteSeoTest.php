@@ -43,7 +43,6 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $types = [];
-        $faqQuestionCount = null;
         foreach ($crawler->filter('script[type="application/ld+json"]') as $node) {
             $documents = json_decode((string) $node->textContent, true);
             self::assertIsArray($documents, 'JSON-LD должен быть валидным JSON');
@@ -53,20 +52,14 @@ final class WebsiteSeoTest extends WebTestCase
                 $type = $document['@type'] ?? null;
                 self::assertIsString($type);
                 $types[] = $type;
-
-                if ('FAQPage' === $type) {
-                    $faqQuestionCount = count($document['mainEntity'] ?? []);
-                }
             }
         }
 
-        foreach (['Organization', 'WebSite', 'Service', 'FAQPage'] as $expectedType) {
+        foreach (['Organization', 'WebSite', 'Service'] as $expectedType) {
             self::assertContains($expectedType, $types);
         }
-
-        $faqItemsCount = $crawler->filter('[data-vf-section="faq"] details')->count();
-        self::assertGreaterThan(0, $faqItemsCount);
-        self::assertSame($faqItemsCount, $faqQuestionCount, 'FAQPage mainEntity должен совпадать с видимым FAQ');
+        // FAQPage допустим только при видимом FAQ на странице; секция FAQ снята до новой вёрстки.
+        self::assertNotContains('FAQPage', $types);
     }
 
     public function testSeoStaticFilesExistAndAreConsistent(): void
