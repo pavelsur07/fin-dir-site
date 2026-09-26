@@ -5,144 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Website;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
 
 final class MarketingSectionsTest extends WebTestCase
 {
-    public function testMarketingSectionsCatalogRendersProductionPatterns(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/ui-kit/sections');
-
-        self::assertResponseIsSuccessful();
-        self::assertSelectorCount(1, 'h1');
-        self::assertSelectorTextContains('h1', 'Готовые секции');
-        self::assertSelectorExists('meta[name="robots"][content="noindex, nofollow"]');
-        self::assertSelectorExists('link[href^="/assets/website/app.css?v="]');
-        self::assertSelectorExists('script[src^="/assets/website/navigation.js?v="][defer]');
-        self::assertSelectorExists('[data-vf-component="navbar"] dialog[data-vf-menu-dialog]');
-        self::assertSelectorExists('[data-vf-component="navbar"] nav[aria-label="Основная навигация"] [data-vf-desktop-navigation]');
-        self::assertSelectorExists('nav a[aria-current="page"][href="/ui-kit/sections"]');
-
-        foreach ([
-            'hero',
-            'typography-stress',
-            'problem',
-            'benefits',
-            'steps',
-            'paths',
-            'case-preview',
-            'proof',
-            'quote',
-            'pricing',
-            'comparison',
-            'faq',
-            'lead-form',
-            'article-preview',
-            'cta',
-        ] as $section) {
-            self::assertSelectorExists(sprintf('[data-vf-section="%s"]', $section));
-        }
-
-        self::assertSelectorCount(3, '[data-vf-section="feature"]');
-        self::assertSelectorExists('[data-vf-section="feature"] [data-vf-media-position="left"]');
-        self::assertSelectorExists('[data-vf-section="feature"] [data-vf-media-position="right"]');
-        self::assertSelectorCount(2, '[data-vf-section="feature"] [data-vf-demo-media][aria-hidden="true"]');
-
-        self::assertSelectorCount(6, '#problem-section [data-vf-layout="text-list"] > li');
-        self::assertSelectorCount(2, '#benefits-section [data-vf-layout="grid"] > li');
-        self::assertSelectorCount(5, '#steps-section [data-vf-layout="steps"] > li');
-        self::assertSelectorCount(2, '#paths-section [data-vf-layout="paths"] > li');
-        self::assertSelectorCount(3, '#case-preview-section [data-vf-layout="case-preview"] > div');
-        self::assertSelectorCount(4, '#pricing-section [data-vf-layout="grid"] > li');
-        self::assertSelectorCount(2, '#article-preview-section [data-vf-layout="grid"] > li');
-
-        self::assertSelectorExists('#problem-section [data-vf-layout="text-list"][role="list"]');
-        self::assertSelectorExists('#benefits-section [data-vf-layout="grid"][role="list"]');
-        self::assertSelectorExists('#steps-section [data-vf-layout="steps"][role="list"]');
-        self::assertSelectorCount(5, '#steps-section [data-vf-step-number]:not([aria-hidden])');
-        self::assertSelectorExists('#paths-section [data-vf-layout="paths"][role="list"]');
-
-        self::assertSelectorExists('[data-vf-layout="steps"]');
-        self::assertSelectorExists('[data-vf-layout="paths"]');
-        self::assertSelectorExists('[data-vf-layout="quote"] blockquote');
-        self::assertSelectorExists('[data-vf-layout="comparison"][role="region"][tabindex="0"]');
-        self::assertSelectorCount(4, '#comparison-section [data-vf-layout="comparison"] thead th[scope="col"]');
-        self::assertSelectorCount(8, '#comparison-section [data-vf-layout="comparison"] tbody th[scope="row"]');
-        self::assertSelectorCount(8, '#comparison-section [data-vf-layout="comparison"] tbody tr');
-
-        self::assertSelectorCount(6, '[data-vf-section="faq"] [data-vf-component="accordion"] > details');
-        self::assertSelectorCount(6, '[data-vf-section="faq"] [data-vf-component="accordion"] > details > summary h3');
-        self::assertSelectorExists('[data-vf-section="faq"] [data-vf-component="accordion"]');
-        self::assertSelectorCount(1, '[data-vf-section="cta"] [data-vf-component="cta"]');
-    }
-
-    public function testMarketingSectionBoundaryContractsAreRendered(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/ui-kit/sections');
-
-        self::assertResponseIsSuccessful();
-        self::assertSelectorCount(0, '#text-content-stress ul');
-        self::assertSelectorCount(3, '#problem-min-stress [data-vf-layout="text-list"] > li');
-        self::assertSelectorCount(3, '#grid-three-stress [data-vf-layout="grid"] > li');
-        self::assertSelectorCount(6, '#grid-six-stress [data-vf-layout="grid"] > li');
-        self::assertSelectorCount(2, '#steps-min-stress [data-vf-layout="steps"] > li');
-        self::assertSelectorCount(3, '#comparison-min-stress thead th[scope="col"]');
-        self::assertSelectorCount(3, '#comparison-min-stress tbody tr');
-        self::assertSelectorExists('#feature-no-media-stress [data-vf-has-media="false"]');
-        self::assertSelectorCount(0, '#feature-no-media-stress [data-vf-demo-media], #feature-no-media-stress img');
-        self::assertSelectorCount(0, '#feature-no-media-stress [data-vf-component="button"]');
-    }
-
-    public function testLeadFormIsAccessibleDemoWithoutSubmission(): void
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/ui-kit/sections');
-
-        self::assertResponseIsSuccessful();
-        // На UI-kit обе формы -- demo: без action и без submit.
-        self::assertSelectorCount(2, '[data-vf-demo-form]:not([action])');
-        self::assertSelectorCount(0, '[data-vf-demo-form] button[type="submit"]');
-        self::assertSelectorCount(0, '[data-vf-lead-form]');
-
-        $simple = '#lead-form-section [data-vf-demo-form]';
-        self::assertSelectorCount(2, $simple.' [data-vf-component="form-input"]');
-        self::assertSelectorCount(0, $simple.' [data-vf-component="select"]');
-        self::assertSelectorCount(1, $simple.' [data-vf-component="textarea"]');
-        self::assertSelectorCount(1, $simple.' [data-vf-component="checkbox"]');
-        self::assertSelectorCount(1, $simple.' button[type="button"]');
-        self::assertSelectorTextContains($simple.' [data-vf-form-note]', 'форма не отправляется');
-
-        // Квалификационная: вопросы из LeadFormCatalog, у каждого поля свой label.
-        $qualification = '#lead-form-qualification-section [data-vf-demo-form]';
-        self::assertSelectorCount(3, $qualification.' [data-vf-component="select"]');
-        self::assertSelectorTextContains($qualification, 'Оборот в месяц');
-        $fields = $crawler->filter($qualification.' [data-vf-component]:not([data-vf-component="button"])');
-        self::assertCount(7, $fields);
-        foreach ($fields as $field) {
-            self::assertSame(1, (new Crawler($field))->filter('label')->count());
-        }
-    }
-
     public function testWebsiteDoesNotRegisterCustomFonts(): void
     {
         $appCss = $this->read($this->projectPath('assets/styles/website/app.css'));
         self::assertStringNotContainsString('@font-face', $appCss);
         self::assertStringNotContainsString('fonts.googleapis', $appCss);
-    }
-
-    public function testTypographyStressCasesUseStandardTailwindClasses(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/ui-kit/sections');
-
-        self::assertResponseIsSuccessful();
-        self::assertSelectorExists('[data-vf-showcase="typography-stress"] .text-4xl');
-        self::assertSelectorExists('[data-vf-showcase="typography-stress"] .text-3xl');
-        self::assertSelectorTextContains('[data-vf-showcase="typography-stress"]', '₽');
-        self::assertSelectorTextContains('[data-vf-showcase="typography-stress"]', '%');
-        self::assertSelectorCount(0, '[data-vf-showcase="typography-stress"] br');
     }
 
     private function projectPath(string $relativePath): string

@@ -1,19 +1,8 @@
-{% set state = state|default('default') %}
-{% set feedback_id = id ~ '-feedback' %}
-{% set states = {
-    default: '',
-    focus: 'border-red-700 outline-2 outline-offset-2 outline-red-700',
-    disabled: '',
-    error: 'border-orange-300 focus:border-orange-700',
-    success: 'border-green-300 focus:border-green-700',
-} %}
-<div class="grid min-w-0 gap-2" data-vf-component="select" data-vf-state="{{ state }}">
+<div class="grid min-w-0 gap-2" data-vf-component="select">
     <label class="font-medium text-slate-950" for="{{ id }}">{{ label }}</label>
-    <select class="min-h-11 w-full rounded-md border border-slate-500 bg-white px-3 py-2 text-slate-950 focus:border-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:border-orange-700 disabled:cursor-not-allowed disabled:opacity-50 {{ states[state]|default('') }}" id="{{ id }}" name="{{ name|default(id) }}"{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
+    <select class="min-h-11 w-full rounded-md border border-slate-500 bg-white px-3 py-2 text-slate-950 focus:border-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:border-orange-700 disabled:cursor-not-allowed disabled:opacity-50" id="{{ id }}" name="{{ name|default(id) }}"{% if required|default(false) %} required{% endif %}>
         {% for option in options %}
             <option value="{{ option.value }}"{% if option.selected|default(false) %} selected{% endif %}>{{ option.label }}</option>
         {% endfor %}
     </select>
-    {% if state == 'error' %}<div class="text-sm leading-6 text-orange-800" id="{{ feedback_id }}">{{ feedback|default('Выберите значение.') }}</div>{% endif %}
-    {% if state == 'success' %}<div class="text-sm leading-6 text-green-800" id="{{ feedback_id }}">{{ feedback|default('Значение принято.') }}</div>{% endif %}
 </div>

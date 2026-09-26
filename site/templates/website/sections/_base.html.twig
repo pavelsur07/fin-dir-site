@@ -2,9 +2,8 @@
 {% set section_id = section_id|default(null) %}
 {% set labelled_by = labelled_by|default(null) %}
 {% set section_name = section_name|default('base') %}
-{% set section_tag = catalog_embed|default(false) ? 'div' : 'section' %}
-<{{ section_tag }} class="{{ catalog_embed|default(false) ? '' : 'py-12 md:py-16 lg:py-20' }} {{ section_class }}"{% if section_id and not catalog_embed|default(false) %} id="{{ section_id }}"{% endif %}{% if labelled_by and not catalog_embed|default(false) %} aria-labelledby="{{ labelled_by }}"{% endif %} data-vf-section="{{ section_name }}">
-    {% if not catalog_embed|default(false) %}<div class="mx-auto w-full max-w-6xl px-4 md:px-8">{% endif %}
+<section class="py-12 md:py-16 lg:py-20 {{ section_class }}"{% if section_id %} id="{{ section_id }}"{% endif %}{% if labelled_by %} aria-labelledby="{{ labelled_by }}"{% endif %} data-vf-section="{{ section_name }}">
+    <div class="mx-auto w-full max-w-6xl px-4 md:px-8">
         {% block section_content %}{% endblock %}
-    {% if not catalog_embed|default(false) %}</div>{% endif %}
-</{{ section_tag }}>
+    </div>
+</section>

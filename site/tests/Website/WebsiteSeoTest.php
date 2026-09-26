@@ -69,24 +69,9 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertSame($faqItemsCount, $faqQuestionCount, 'FAQPage mainEntity должен совпадать с видимым FAQ');
     }
 
-    public function testUiKitStaysNoindexWithoutAnalytics(): void
-    {
-        $client = static::createClient();
-
-        foreach (['/ui-kit', '/ui-kit/sections'] as $path) {
-            $client->request('GET', $path);
-
-            self::assertResponseIsSuccessful();
-            self::assertSelectorExists('meta[name="robots"][content="noindex, nofollow"]');
-            self::assertSelectorCount(0, 'script[src*="metrika"]', $path);
-            self::assertSelectorExists('link[rel="canonical"]', $path);
-        }
-    }
-
     public function testSeoStaticFilesExistAndAreConsistent(): void
     {
         $robots = $this->read($this->projectPath('public/robots.txt'));
-        self::assertStringContainsString('Disallow: /ui-kit', $robots);
         self::assertStringContainsString('Sitemap: https://vashfindir.ru/sitemap.xml', $robots);
 
         // sitemap генерируется маршрутом (Stage 6): статический файл перекрыл бы его в nginx.

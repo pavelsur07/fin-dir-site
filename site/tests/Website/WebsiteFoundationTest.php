@@ -8,24 +8,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class WebsiteFoundationTest extends WebTestCase
 {
-    public function testUiKitShowsProductionComponentsWithTailwindClasses(): void
+    public function testUiKitPagesAreRemoved(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/ui-kit');
 
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('[data-vf-ui-kit-intro] h1', 'Компоненты сайта');
-        self::assertSelectorExists('meta[name="robots"][content="noindex, nofollow"]');
-        self::assertSelectorCount(1, 'main h1');
-        self::assertSelectorExists('[data-vf-ui-kit-section="palette"] .bg-slate-950');
-        self::assertSelectorExists('[data-vf-ui-kit-section="palette"] .bg-red-700');
-        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] img[src="/assets/brand/logo-light.png"]');
-        self::assertSelectorExists('[data-vf-ui-kit-section="logo"] img[src="/assets/brand/logo-dark.png"]');
-        self::assertSelectorExists('[data-vf-component="navbar"] dialog[data-vf-menu-dialog]');
-        self::assertSelectorExists('[data-vf-component="button"][data-vf-variant="primary"]');
-        self::assertSelectorExists('[data-vf-component="alert"]');
-        self::assertSelectorCount(0, 'main [style], main style, main script');
-        self::assertSame(1, $crawler->filter('link[href^="/assets/website/app.css?v="]')->count());
+        foreach (['/ui-kit', '/ui-kit/sections'] as $path) {
+            $client->request('GET', $path);
+            self::assertResponseStatusCodeSame(404, $path);
+        }
     }
 
     public function testWebsiteAssetsAreBuiltFromPinnedTailwind(): void
