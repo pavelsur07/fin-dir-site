@@ -12,9 +12,7 @@
                     {% if socials|default([]) is not empty %}
                         <div class="flex flex-wrap justify-center gap-3 md:justify-start">
                             {% for social in socials %}
-                                <a class="inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm border border-slate-600 text-white hover:bg-slate-800 no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700" href="{{ social.href }}" target="{{ social.target|default('_self') }}" rel="{{ social.rel|default('') }}" aria-label="{{ social.label }}">
-                                    {% include 'website/components/_icon.html.twig' with {name: social.icon, size: 18} only %}
-                                </a>
+                                <a class="inline-flex min-h-11 items-center justify-center rounded-sm border border-slate-600 px-3 text-white hover:bg-slate-800 no-underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700" href="{{ social.href }}" target="{{ social.target|default('_self') }}" rel="{{ social.rel|default('') }}">{{ social.label }}</a>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -24,10 +22,7 @@
                         <h2 class="mb-4 text-xs leading-5 font-medium uppercase text-slate-300">Контакты</h2>
                         <ul class="flex flex-col gap-4">
                             {% for contact in contacts %}
-                                <li class="flex items-start justify-center gap-3 md:justify-start">
-                                    <span class="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-slate-600">
-                                        {% include 'website/components/_icon.html.twig' with {name: contact.icon, size: 18} only %}
-                                    </span>
+                                <li class="flex justify-center md:justify-start">
                                     <div>
                                         <div class="text-sm leading-6 text-slate-300">{{ contact.label }}</div>
                                         <a class="font-medium no-underline text-white hover:text-slate-200" href="{{ contact.href }}">{{ contact.value }}</a>
