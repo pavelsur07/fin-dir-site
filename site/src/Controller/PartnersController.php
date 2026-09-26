@@ -13,6 +13,6 @@ class PartnersController extends AbstractController
     #[Route('/partners')]
     public function index(): Response
     {
-        return $this->render('website/pages/partners.html.twig');
+        return $this->render('website/pages/marketing/partners.html.twig');
     }
 }

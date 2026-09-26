@@ -31,12 +31,12 @@
             {% endif %}
             {% if lead.ymClientId %}<dt>ClientID Метрики</dt><dd>{{ lead.ymClientId }} <span class="text-sm text-slate-600">— Метрика → Отчёты → Посетители, фильтр по ClientID</span></dd>{% endif %}
             <dt>Согласие на ПД</dt><dd>{{ lead.consentAt|date('d.m.Y H:i') }}, версия {{ lead.consentVersion }}</dd>
-            {% if lead.spamReason %}<dt>Признак спама</dt><dd>{{ lead.spamReason == 'honeypot' ? 'заполнено скрытое поле' : 'форма заполнена быстрее 3 секунд' }}</dd>{% endif %}
+            {% if lead.spamReasonLabel %}<dt>Признак спама</dt><dd>{{ lead.spamReasonLabel }}</dd>{% endif %}
             <dt>Уведомление</dt>
             <dd>
                 {% if lead.notifiedAt %}
                     отправлено {{ lead.notifiedAt|date('d.m.Y H:i') }}
-                {% elseif lead.status.value == 'spam' %}
+                {% elseif not lead.needsNotification %}
                     не отправляется для спама
                 {% elseif not notifications_enabled %}
                     уведомления выключены (нет настроек Telegram)

@@ -21,7 +21,7 @@ final class PostIndexController extends AbstractController
         $response->setMaxAge(300);
 
         // Нечисловая страница -- 400 (getInt), 0 и вне диапазона -- 404 (Pagerfanta).
-        return $this->render('website/pages/blog.html.twig', [
+        return $this->render('website/pages/publication/blog.html.twig', [
             'pager' => $posts->paginate($request->query->getInt('page', 1)),
         ], $response);
     }

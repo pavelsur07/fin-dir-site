@@ -13,6 +13,6 @@ class AboutController extends AbstractController
     #[Route('/about')]
     public function index(): Response
     {
-        return $this->render('website/pages/about.html.twig');
+        return $this->render('website/pages/marketing/about.html.twig');
     }
 }

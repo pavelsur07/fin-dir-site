@@ -13,6 +13,6 @@ class CasesController extends AbstractController
     #[Route('/cases')]
     public function index(): Response
     {
-        return $this->render('website/pages/cases.html.twig');
+        return $this->render('website/pages/marketing/cases.html.twig');
     }
 }

@@ -68,7 +68,7 @@ final class LeadSubmitController extends AbstractController
             return new JsonResponse($payload, $status);
         }
 
-        $response = $this->render('website/pages/lead_result.html.twig', [
+        $response = $this->render('website/pages/lead/lead_result.html.twig', [
             'success' => Response::HTTP_CREATED === $status,
             'errors' => $payload['errors'] ?? (isset($payload['error']) ? [$payload['error']] : []),
             // Только свой адрес: чужой URL из формы не превращается в ссылку.

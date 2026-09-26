@@ -35,7 +35,7 @@ final class PostShowController extends AbstractController
 
         $url = $siteUrl.$this->generateUrl('gazeta_post', ['slug' => $post->slug]);
 
-        return $this->render('website/pages/blog_post.html.twig', [
+        return $this->render('website/pages/publication/blog_post.html.twig', [
             'post' => $post,
             'article' => $markdown->renderArticle($post->body),
             'related' => $list->latestExcept($post->id, self::RELATED_LIMIT),

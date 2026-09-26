@@ -1,15 +1,9 @@
-{# Кнопки перехода статуса: показываем только допустимые для текущего статуса. #}
-{% set transitions = {
-    draft: [['publish', 'Опубликовать', ''], ['archive', 'В архив', 'secondary']],
-    published: [['unpublish', 'Снять с публикации', 'secondary'], ['archive', 'В архив', 'secondary']],
-    archived: [['restore', 'Вернуть в черновики', 'secondary']],
-} %}
 <div class="flex flex-wrap gap-2">
-    {% for transition in transitions[status.value] %}
-        <form method="post" action="{{ path('admin_post_status', {id: id, action: transition[0]}) }}">
+    {% for transition in actions %}
+        <form method="post" action="{{ path('admin_post_status', {id: id, action: transition.action}) }}">
             <input type="hidden" name="_token" value="{{ csrf_token('post-status') }}">
             {% if back is defined %}<input type="hidden" name="back" value="{{ back }}">{% endif %}
-            <button type="submit" class="{{ transition[2] }}">{{ transition[1] }}</button>
+            <button type="submit" class="{{ transition.class }}">{{ transition.label }}</button>
         </form>
     {% endfor %}
 </div>

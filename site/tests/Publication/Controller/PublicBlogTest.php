@@ -31,6 +31,8 @@ final class PublicBlogTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h1', 'Маркетплейс или интернет-магазин');
+        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"][aria-current="page"]');
+        self::assertSelectorExists('[data-vf-mobile-navigation] a[href="/gazeta"][aria-current="page"]');
         self::assertSelectorExists('article[data-vf-section="article"] .overflow-x-auto table');
         // Из старой вёрстки не переехали внешние картинки и форма, терявшая заявки.
         self::assertSelectorCount(0, 'main img');

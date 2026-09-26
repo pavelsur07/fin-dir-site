@@ -10,6 +10,7 @@ use App\Publication\Exception\PostSlugIsLocked;
 use App\Publication\Exception\PostWasModified;
 use App\Publication\Form\PostType;
 use App\Publication\Query\PostEditData\PostEditDataQuery;
+use App\Publication\Query\PostStatusActionOptions;
 use App\Publication\Service\PostEditor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -54,6 +55,7 @@ final class PostEditController extends AbstractController
         return $this->render('admin/posts/form.html.twig', [
             'form' => $form,
             'post' => $post,
+            'status_actions' => PostStatusActionOptions::forStatus($post->status),
         ]);
     }
 }

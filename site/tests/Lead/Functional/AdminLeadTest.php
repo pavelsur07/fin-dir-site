@@ -246,6 +246,32 @@ final class AdminLeadTest extends WebTestCase
         self::assertNotContains('Отправить уведомление', $items($spam));
     }
 
+    public function testListAndCardShowNotificationAndSpamStates(): void
+    {
+        $notified = LeadBuilder::aLead()->withSubmissionId('20000000-0000-4000-8000-000000000001')->build();
+        $notified->markNotified(new \DateTimeImmutable('2026-09-01'));
+        [$pendingId, $sentId, $spamId] = $this->persist(
+            LeadBuilder::aLead()->withSubmissionId('20000000-0000-4000-8000-000000000002')->build(),
+            $notified,
+            LeadBuilder::aLead()->withSubmissionId('20000000-0000-4000-8000-000000000003')->spam('unexpected')->build(),
+        );
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/admin/leads');
+        self::assertStringContainsString('без уведомления', $crawler->filter('#lead-actions-'.$pendingId)->ancestors()->filter('tr')->text());
+        self::assertStringNotContainsString('без уведомления', $crawler->filter('#lead-actions-'.$sentId)->ancestors()->filter('tr')->text());
+        self::assertStringNotContainsString('без уведомления', $crawler->filter('#lead-actions-'.$spamId)->ancestors()->filter('tr')->text());
+        self::assertSelectorNotExists('button:contains("Отправить уведомление")');
+
+        $this->client->request('GET', '/admin/leads/'.$pendingId);
+        self::assertSelectorTextContains('main', 'уведомления выключены');
+        $this->client->request('GET', '/admin/leads/'.$sentId);
+        self::assertSelectorTextContains('main', 'отправлено');
+        $this->client->request('GET', '/admin/leads/'.$spamId);
+        self::assertSelectorTextContains('main', 'неизвестная причина');
+        self::assertSelectorTextContains('main', 'не отправляется для спама');
+    }
+
     public function testStatusChangeWithoutStatusFilterKeepsPage(): void
     {
         $this->persist(LeadBuilder::aLead()->build());

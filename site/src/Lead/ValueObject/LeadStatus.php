@@ -12,6 +12,11 @@ enum LeadStatus: string
     case SPAM = 'spam';
     case CLOSED = 'closed';
 
+    public function needsNotification(?\DateTimeImmutable $notifiedAt): bool
+    {
+        return self::SPAM !== $this && null === $notifiedAt;
+    }
+
     public function label(): string
     {
         return match ($this) {

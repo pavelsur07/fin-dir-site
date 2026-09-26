@@ -13,6 +13,6 @@ class ServicesController extends AbstractController
     #[Route('/services')]
     public function index(): Response
     {
-        return $this->render('website/pages/services.html.twig');
+        return $this->render('website/pages/marketing/services.html.twig');
     }
 }

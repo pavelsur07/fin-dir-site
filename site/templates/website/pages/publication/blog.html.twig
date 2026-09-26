@@ -5,9 +5,7 @@
 {# Каждая страница списка -- самостоятельный URL, canonical не склеивает их с первой. #}
 {% block canonical %}{{ vf_site_url ~ (pager.currentPage > 1 ? path('gazeta_index', {page: pager.currentPage}) : path('gazeta_index')) }}{% endblock %}
 
-{% block navigation %}
-    {% include 'website/pages/_blog_navigation.html.twig' %}
-{% endblock %}
+{% block active_navigation %}gazeta{% endblock %}
 
 {% block content %}
     <h1 class="text-3xl font-bold">Газета</h1>

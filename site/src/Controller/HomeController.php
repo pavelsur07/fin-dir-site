@@ -14,25 +14,25 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->render('website/pages/home.html.twig');
+        return $this->render('website/pages/marketing/home.html.twig');
     }
 
     #[Route('/privacy', name: 'privacy')]
     public function privacy(): Response
     {
-        return $this->render('website/pages/privacy.html.twig');
+        return $this->render('website/pages/legal/privacy.html.twig');
     }
 
     #[Route('/offer', name: 'offer')]
     public function offer(): Response
     {
-        return $this->render('website/pages/offer.html.twig');
+        return $this->render('website/pages/legal/offer.html.twig');
     }
 
     #[Route('/consent', name: 'consent')]
     public function consent(): Response
     {
         // Редакция на странице совпадает с той, что сохраняется в заявке.
-        return $this->render('website/pages/consent.html.twig', ['consent_version' => LeadConsent::VERSION]);
+        return $this->render('website/pages/legal/consent.html.twig', ['consent_version' => LeadConsent::VERSION]);
     }
 }

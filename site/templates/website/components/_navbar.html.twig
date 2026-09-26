@@ -14,7 +14,7 @@
             <ul class="flex items-center gap-6">
                 {% for item in items %}
                     <li>
-                        <a class="block py-2 font-medium no-underline hover:text-red-700 focus:text-red-700{% if item.active|default(false) %} text-red-700{% else %} text-slate-950{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                        <a class="block py-2 font-medium no-underline hover:text-red-700 focus:text-red-700{% if (item.key|default(null) == active_key and active_key is not empty) %} text-red-700{% else %} text-slate-950{% endif %}" href="{{ item.href }}"{% if (item.key|default(null) == active_key and active_key is not empty) %} aria-current="page"{% endif %}>{{ item.label }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -36,7 +36,7 @@
                 <ul class="flex flex-col gap-2">
                     {% for item in items %}
                         <li>
-                            <a class="flex min-h-11 items-center py-2 text-left font-medium no-underline hover:text-red-700 focus:text-red-700{% if item.active|default(false) %} text-red-700{% else %} text-slate-950{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                            <a class="flex min-h-11 items-center py-2 text-left font-medium no-underline hover:text-red-700 focus:text-red-700{% if (item.key|default(null) == active_key and active_key is not empty) %} text-red-700{% else %} text-slate-950{% endif %}" href="{{ item.href }}"{% if (item.key|default(null) == active_key and active_key is not empty) %} aria-current="page"{% endif %}>{{ item.label }}</a>
                         </li>
                     {% endfor %}
                 </ul>

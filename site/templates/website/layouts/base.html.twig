@@ -59,19 +59,21 @@
 <body class="flex min-h-dvh flex-col">
     <a class="fixed top-2 left-2 z-50 -translate-y-24 rounded-sm bg-white px-4 py-2 focus:translate-y-0" href="#main-content">Перейти к содержанию</a>
 
+    {% set active_key %}{% block active_navigation %}{% endblock %}{% endset %}
     {% block navigation %}
         {% include 'website/components/_navbar.html.twig' with {
             brand: 'Ваш Финдир',
             brand_href: path('home'),
             items: [
                 {label: 'Главная', href: path('home')},
-                {label: 'Услуги', href: '/services'},
-                {label: 'Кейсы', href: '/cases'},
-                {label: 'О компании', href: '/about'},
-                {label: 'Газета', href: path('gazeta_index')},
-                {label: 'Партнёрам', href: '/partners'},
+                {key: 'services', label: 'Услуги', href: '/services'},
+                {key: 'cases', label: 'Кейсы', href: '/cases'},
+                {key: 'about', label: 'О компании', href: '/about'},
+                {key: 'gazeta', label: 'Газета', href: path('gazeta_index')},
+                {key: 'partners', label: 'Партнёрам', href: '/partners'},
             ],
             cta: {label: 'Записаться на встречу', href: path('home') ~ '#lead-form'},
+            active_key: active_key|trim,
         } only %}
     {% endblock %}
 

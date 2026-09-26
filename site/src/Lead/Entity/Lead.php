@@ -183,7 +183,7 @@ class Lead
     /** Спам не уведомляет; уже отправленное не шлётся второй раз. */
     public function needsNotification(): bool
     {
-        return LeadStatus::SPAM !== $this->status && null === $this->notifiedAt;
+        return $this->status->needsNotification($this->notifiedAt);
     }
 
     public function markNotified(\DateTimeImmutable $now): void

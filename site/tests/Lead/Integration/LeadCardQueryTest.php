@@ -54,6 +54,16 @@ final class LeadCardQueryTest extends KernelTestCase
         self::assertNull($card->ymClientId);
     }
 
+    public function testCardProjectsNotificationNeedAndUnknownSpamReason(): void
+    {
+        $pending = self::getContainer()->get(LeadCardQuery::class)->get($this->persist(LeadBuilder::aLead()->withSubmissionId('10000000-0000-4000-8000-000000000001')->build()));
+        $spam = self::getContainer()->get(LeadCardQuery::class)->get($this->persist(LeadBuilder::aLead()->withSubmissionId('10000000-0000-4000-8000-000000000002')->spam('unexpected')->build()));
+
+        self::assertTrue($pending->needsNotification);
+        self::assertFalse($spam->needsNotification);
+        self::assertSame('неизвестная причина', $spam->spamReasonLabel);
+    }
+
     private function persist(Lead $lead): int
     {
         $entityManager = self::getContainer()->get(EntityManagerInterface::class);

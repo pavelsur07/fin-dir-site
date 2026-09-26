@@ -1,5 +1,6 @@
 # AGENTS.md
 
+
 ## 1. Назначение и главный принцип
 
 Проект разрабатывается как простой модульный монолит на Symfony.
@@ -211,10 +212,9 @@ site/templates/website/
 `site/templates/website/` является согласованным исключением из правила
 разделения Twig по бизнес-модулям и используется только для Public Website.
 
-Текущее состояние: рядом с `website/` существуют legacy-шаблоны (`about/`,
-`blog/`, `cases/`, `home/`, `partners/`, `services/` и др.). Они мигрируют в
-структуру `website/` отдельными задачами по правилам `SITE_RULES.md`. Новый
-код не копирует их page-specific решения.
+Публичные страницы расположены в тематических каталогах `website/pages/`:
+`marketing/`, `publication/`, `legal/`, `lead/`, `errors/`. Правила их
+использования определены в `SITE_RULES.md`.
 
 Структура тестов должна повторять структуру приложения:
 
@@ -433,7 +433,7 @@ ServicePriceUpdater
 непосредственно через `render()`:
 
 ```php
-return $this->render('website/pages/about.html.twig', [
+return $this->render('website/pages/marketing/about.html.twig', [
     'title' => $title,
     'description' => $description,
 ]);

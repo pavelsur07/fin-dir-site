@@ -8,6 +8,8 @@ use App\Lead\ValueObject\LeadStatus;
 
 final readonly class AdminLeadListItem
 {
+    public bool $needsNotification;
+
     public function __construct(
         public int $id,
         public \DateTimeImmutable $createdAt,
@@ -19,5 +21,6 @@ final readonly class AdminLeadListItem
         public ?\DateTimeImmutable $notifiedAt,
         public int $version,
     ) {
+        $this->needsNotification = $status->needsNotification($notifiedAt);
     }
 }

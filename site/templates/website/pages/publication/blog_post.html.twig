@@ -10,9 +10,7 @@
     {% include 'website/components/_json_ld.html.twig' with {schema: schema} only %}
 {% endblock %}
 
-{% block navigation %}
-    {% include 'website/pages/_blog_navigation.html.twig' %}
-{% endblock %}
+{% block active_navigation %}gazeta{% endblock %}
 
 {% block content %}
     {# Совпадает с BreadcrumbList в JSON-LD статьи. #}

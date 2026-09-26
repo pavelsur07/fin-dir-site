@@ -13,6 +13,9 @@ use App\Lead\ValueObject\LeadStatus;
  */
 final readonly class LeadCard
 {
+    public bool $needsNotification;
+    public ?string $spamReasonLabel;
+
     /**
      * @param list<array{question: string, questionLabel: string, answer: string, answerLabel: string}> $answers
      * @param array<string, string>                                                                     $utm
@@ -50,5 +53,12 @@ final readonly class LeadCard
         public array $notes,
         public array $sameContact,
     ) {
+        $this->needsNotification = $status->needsNotification($notifiedAt);
+        $this->spamReasonLabel = match ($spamReason) {
+            null => null,
+            'honeypot' => 'заполнено скрытое поле',
+            'too_fast' => 'форма заполнена быстрее 3 секунд',
+            default => 'неизвестная причина',
+        };
     }
 }
