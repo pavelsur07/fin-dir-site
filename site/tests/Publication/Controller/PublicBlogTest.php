@@ -123,6 +123,8 @@ final class PublicBlogTest extends WebTestCase
         self::assertSelectorTextContains('h1', 'Статья о ДДС');
         self::assertSelectorTextContains('nav[data-vf-component="breadcrumb"] li[aria-current="page"]', 'Статья о ДДС');
         self::assertSelectorExists('nav[data-vf-component="breadcrumb"] a[href="/gazeta"]');
+        // Статья газеты -- на всю ширину header и footer.
+        self::assertSelectorNotExists('main .max-w-3xl');
         self::assertSelectorTextContains('title', 'Статья о ДДС — Ваш Финдир');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta/article"]');
         self::assertSelectorExists('meta[property="og:type"][content="article"]');
