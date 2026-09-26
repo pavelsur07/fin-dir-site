@@ -16,7 +16,7 @@ Tailwind CSS 4.3.3 собирается командой `make assets` и не �
 
 Форма заявки отправляет `POST /lead` с CSRF и сохраняет существующие поля и `data-vf-*` hooks. Анонимный GET не начинает session без необходимости. Уведомление о cookie сохраняет выбор; мобильное меню доступно с клавиатуры. Не менять публичные URL без redirect. На странице один H1, форма имеет видимые labels и текст ошибок, интерактивные элементы имеют видимый focus. Уважать `prefers-reduced-motion`. Проверять отсутствие горизонтальной прокрутки на ширинах 320, 375, 768, 1024 и 1440px.
 
-Layout централизованно выводит title, description, robots, canonical, Open Graph, Twitter и JSON-LD. Маршруты `/ui-kit` и `/ui-kit/sections` остаются техническими каталогами с `noindex`; они используют production partials и стандартные классы Tailwind.
+Layout централизованно выводит title, description, robots, canonical, Open Graph, Twitter и JSON-LD.
 
 ## Проверка
 

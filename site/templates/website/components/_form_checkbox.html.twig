@@ -1,22 +1,4 @@
-{% set state = state|default('default') %}
-{% set feedback_id = id ~ '-feedback' %}
-{% set input_states = {
-    default: '',
-    focus: 'outline-2 outline-offset-2 outline-red-700',
-    disabled: '',
-    error: 'accent-orange-700',
-    success: 'accent-green-700',
-} %}
-{% set label_states = {
-    default: 'text-slate-950',
-    focus: 'text-slate-950',
-    disabled: 'text-slate-950',
-    error: 'text-orange-800',
-    success: 'text-green-800',
-} %}
-<div class="flex min-w-0 flex-wrap items-start gap-x-2 gap-y-1" data-vf-component="checkbox" data-vf-state="{{ state }}">
-    <input class="mt-1 size-4 shrink-0 accent-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:ring-2 aria-invalid:ring-orange-700 disabled:cursor-not-allowed disabled:opacity-50 {{ input_states[state]|default('') }}" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>
-    <label class="min-w-0 flex-1 font-medium {{ label_states[state]|default(label_states.default) }}" for="{{ id }}">{{ label }}</label>
-    {% if state == 'error' %}<div class="w-full text-sm leading-6 text-orange-800" id="{{ feedback_id }}">{{ feedback|default('Подтвердите выбор.') }}</div>{% endif %}
-    {% if state == 'success' %}<div class="w-full text-sm leading-6 text-green-800" id="{{ feedback_id }}">{{ feedback|default('Выбор подтверждён.') }}</div>{% endif %}
+<div class="flex min-w-0 flex-wrap items-start gap-x-2 gap-y-1" data-vf-component="checkbox">
+    <input class="mt-1 size-4 shrink-0 accent-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:ring-2 aria-invalid:ring-orange-700 disabled:cursor-not-allowed disabled:opacity-50" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
+    <label class="min-w-0 flex-1 font-medium text-slate-950" for="{{ id }}">{{ label }}</label>
 </div>

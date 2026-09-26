@@ -1,8 +1,7 @@
 {#
     Lead Form -- виджет формы обращения (Stage 7). Отправляет на POST /lead.
     Вход: form ('consultation' | 'diagnostics' -- ключ LeadFormCatalog), title, text,
-    optional: id, eyebrow, context_items, action_label, note,
-    demo (true -- только показ на UI-kit: без action, отправка не выполняется).
+    optional: id, eyebrow, context_items, action_label, note.
 #}
 {% extends 'website/sections/_base.html.twig' %}
 {% set section_class = 'bg-white' %}
@@ -10,7 +9,6 @@
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'lead-form' %}
 {% set definition = lead_form(form|default('consultation')) %}
-{% set demo = demo|default(false) %}
 
 {% block section_content %}
     <div class="grid items-start gap-8 md:grid-cols-2" data-vf-layout="form-context">
@@ -25,7 +23,7 @@
             {% endif %}
         </div>
 
-        <form class="grid gap-4 rounded-lg border border-slate-200 p-4 md:p-6"{% if demo %} data-vf-demo-form{% else %} method="post" action="{{ path('lead_submit') }}" data-vf-lead-form{% endif %} data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
+        <form class="grid gap-4 rounded-lg border border-slate-200 p-4 md:p-6" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
             <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
             <input type="hidden" name="form" value="{{ definition.key }}">
             {# Заполняет JS: id отправки (защита от дублей), время открытия (антиспам), источник. #}
@@ -85,7 +83,7 @@
             </div>
             {% include 'website/components/_button.html.twig' with {
                 label: action_label|default('Отправить заявку'),
-                type: demo ? 'button' : 'submit',
+                type: 'submit',
             } only %}
             <p class="mb-0 rounded-md bg-green-50 p-3 text-sm leading-6 text-green-800" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
             <p class="mb-0 rounded-md bg-orange-50 p-3 text-sm leading-6 text-orange-800" role="alert" data-vf-lead-error hidden></p>

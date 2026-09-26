@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /ui-kit
 
 Sitemap: https://vashfindir.ru/sitemap.xml
