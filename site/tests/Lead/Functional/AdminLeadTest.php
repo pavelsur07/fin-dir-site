@@ -155,7 +155,7 @@ final class AdminLeadTest extends WebTestCase
         $this->client->submit($stale, ['status' => 'closed']);
         $this->client->followRedirect();
 
-        self::assertSelectorTextContains('.alert', 'изменили в другом окне');
+        self::assertSelectorTextContains('[role="alert"]', 'изменили в другом окне');
         self::assertSame(LeadStatus::IN_PROGRESS, $this->find($id)?->status());
     }
 
@@ -195,7 +195,7 @@ final class AdminLeadTest extends WebTestCase
         $this->client->request('POST', '/admin/leads/'.$id.'/notify', ['_token' => $token]);
         $this->client->followRedirect();
 
-        self::assertSelectorTextContains('.alert', 'Уведомление не отправлено');
+        self::assertSelectorTextContains('[role="alert"]', 'Уведомление не отправлено');
     }
 
     public function testListRowActionsLiveInDropdownMenu(): void
@@ -205,12 +205,13 @@ final class AdminLeadTest extends WebTestCase
         $crawler = $this->client->request('GET', '/admin/leads');
 
         $cell = $crawler->filter('tbody tr td')->last();
-        $toggle = $cell->filter('button.menu-toggle');
+        $toggle = $cell->filter('details > summary[data-admin-menu-toggle]');
         self::assertSame('Действия: обращение №'.$id, $toggle->attr('aria-label'));
-        self::assertSame('lead-actions-'.$id, $toggle->attr('popovertarget'));
-        self::assertCount(1, $cell->filter('button, a')->reduce(static fn ($node) => null === $node->closest('.row-menu')));
+        self::assertSame('lead-actions-'.$id, $toggle->attr('aria-controls'));
+        self::assertCount(1, $cell->filter('details'));
+        self::assertCount(0, $cell->filter('button, a')->reduce(static fn ($node) => null === $node->closest('[data-admin-row-menu]')));
 
-        $menu = $cell->filter('#lead-actions-'.$id.'[popover]');
+        $menu = $cell->filter('details > #lead-actions-'.$id);
         // Текущий статус «Новое» не предлагается; уведомление скрыто -- Telegram в тестах выключен.
         self::assertSame(
             ['Открыть', 'Статус: В работе', 'Статус: Квалифицировано', 'Статус: Спам', 'Статус: Закрыто', 'Удалить'],
@@ -285,7 +286,7 @@ final class AdminLeadTest extends WebTestCase
         self::assertResponseRedirects('/admin/leads');
         $this->client->followRedirect();
 
-        self::assertSelectorTextContains('.alert', 'изменили в другом окне');
+        self::assertSelectorTextContains('[role="alert"]', 'изменили в другом окне');
         self::assertSame(LeadStatus::IN_PROGRESS, $this->find($id)?->status());
     }
 
@@ -311,7 +312,7 @@ final class AdminLeadTest extends WebTestCase
         $this->client->request('POST', '/admin/leads/'.$id.'/notify', ['_token' => $token, 'back' => '/admin/leads?form=diagnostics&page=1']);
         self::assertResponseRedirects('/admin/leads?form=diagnostics&page=1');
         $this->client->followRedirect();
-        self::assertSelectorTextContains('.alert', 'Уведомление не отправлено');
+        self::assertSelectorTextContains('[role="alert"]', 'Уведомление не отправлено');
     }
 
     /**

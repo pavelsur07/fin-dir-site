@@ -31,7 +31,7 @@ final class PublicBlogTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h1', 'Маркетплейс или интернет-магазин');
-        self::assertSelectorExists('.vf-article-body .vf-table-wrap table');
+        self::assertSelectorExists('[data-vf-section="article"] article .overflow-x-auto table');
         self::assertSelectorExists('[data-vf-section="cta"] a[href="https://t.me/vashfindir_ru"]');
         // Из старой вёрстки не переехали внешние картинки и форма, терявшая заявки.
         self::assertSelectorCount(0, 'main img');
@@ -127,7 +127,7 @@ final class PublicBlogTest extends WebTestCase
         self::assertSelectorExists('meta[property="og:type"][content="article"]');
         self::assertSelectorExists('time[datetime="2026-02-01"]');
         self::assertCount(2, $crawler->filter('[data-vf-section="article"] nav ol a[href^="#section-"]'));
-        self::assertCount(0, $crawler->filter('.vf-article-body script'));
+        self::assertCount(0, $crawler->filter('[data-vf-section="article"] article script'));
 
         $types = [];
         foreach ($crawler->filter('script[type="application/ld+json"]') as $script) {
@@ -208,7 +208,7 @@ final class PublicBlogTest extends WebTestCase
         $this->client->request('GET', '/gazeta/semantic');
 
         self::assertSelectorExists('[data-vf-section="article"] article h1');
-        self::assertSelectorExists('[data-vf-section="article"] article .vf-article-body');
+        self::assertSelectorExists('[data-vf-section="article"] article .leading-7');
     }
 
     public function testArticleIsCacheableWithoutSession(): void

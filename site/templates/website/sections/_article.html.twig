@@ -5,7 +5,7 @@
     heading_level (optional, 'h1' по умолчанию; 'h2' или 'h3' для образца внутри каталога).
 #}
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'bg-bg' %}
+{% set section_class = 'bg-white' %}
 {% set section_id = id|default('article') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'article' %}
@@ -15,22 +15,22 @@
     {% include 'website/components/_breadcrumb.html.twig' with {items: breadcrumbs} only %}
 
     <article>
-    <header class="mt-6 max-w-content">
-        <{{ heading_tag }} id="{{ labelled_by }}">{{ title }}</{{ heading_tag }}>
-        {% if lead|default(null) %}<p class="text-t4 text-fg-secondary">{{ lead }}</p>{% endif %}
-        <p class="mb-0 text-t6 text-fg-secondary">{% if published_datetime|default(null) %}<time datetime="{{ published_datetime }}">{{ published_label }}</time> · {% endif %}{{ byline }}</p>
+    <header class="mt-6 max-w-3xl">
+        <{{ heading_tag }} id="{{ labelled_by }}" class="{{ heading_tag == 'h1' ? 'mb-4 text-4xl font-extrabold leading-tight md:text-5xl' : (heading_tag == 'h2' ? 'mb-4 text-3xl font-bold leading-tight md:text-4xl' : 'mb-3 text-xl font-bold leading-7') }}">{{ title }}</{{ heading_tag }}>
+        {% if lead|default(null) %}<p class="text-lg leading-7 text-slate-600">{{ lead }}</p>{% endif %}
+        <p class="mb-0 text-sm leading-6 text-slate-600">{% if published_datetime|default(null) %}<time datetime="{{ published_datetime }}">{{ published_label }}</time> · {% endif %}{{ byline }}</p>
     </header>
 
     <div class="mt-12 grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
         {% if toc|length > 1 %}
-            <nav class="rounded-lg border border-border p-4 md:p-6 lg:sticky lg:top-24 lg:col-span-3" aria-labelledby="{{ section_id }}-toc-title">
-                <h2 class="text-t3" id="{{ section_id }}-toc-title">Содержание</h2>
-                <ol class="grid gap-2 text-t6" role="list">
-                    {% for entry in toc %}<li><a href="#{{ entry.id }}">{{ entry.title }}</a></li>{% endfor %}
+            <nav class="rounded-lg border border-slate-200 p-4 md:p-6 lg:sticky lg:top-24 lg:col-span-3" aria-labelledby="{{ section_id }}-toc-title">
+                <h2 class="text-xl leading-7 font-bold" id="{{ section_id }}-toc-title">Содержание</h2>
+                <ol class="grid gap-2 text-sm leading-6" role="list">
+                    {% for entry in toc %}<li><a class="text-red-700 underline" href="#{{ entry.id }}">{{ entry.title }}</a></li>{% endfor %}
                 </ol>
             </nav>
         {% endif %}
-        <div class="vf-article-body max-w-content {{ toc|length > 1 ? 'lg:col-span-9' : 'lg:col-span-12' }}">
+        <div class="space-y-4 leading-7 max-w-3xl {{ toc|length > 1 ? 'lg:col-span-9' : 'lg:col-span-12' }}">
             {{ body_html|raw }}
         </div>
     </div>

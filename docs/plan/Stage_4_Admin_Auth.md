@@ -35,7 +35,7 @@
 | HTTPS за прокси | `framework.trusted_proxies: private_ranges`, `trusted_headers: [x-forwarded-for, x-forwarded-proto, x-forwarded-port]` |
 | Cookie сессии | `cookie_secure: auto`, `cookie_httponly: true`, `cookie_samesite: lax` |
 | Модуль | `site/src/Admin/Controller/` (новый код по модульной структуре; deptrac-регэксп `App\<Module>\Controller` уже покрывает) |
-| Шаблоны | `site/templates/admin/` — отдельный минимальный layout со своим небольшим `<style>`, **без** правок `site/assets/**` и Tailwind: публичные assets и `vf_asset_version` не меняются, временная Twig-админка не связана с design system сайта. `noindex, nofollow` |
+| Шаблоны | `site/templates/admin/` — отдельный минимальный layout с общим Tailwind asset и без отдельного оформления. `noindex, nofollow` |
 | Исключение из AGENTS §8 | дописать в `AGENTS.md` §8: «До появления React Admin административный раздел временно реализуется на Twig (`templates/admin/`, `src/Admin/`); страница входа остаётся Symfony-формой и после появления React» |
 
 Вне объёма: сущность User, роли кроме `ROLE_ADMIN`, CRUD контента, React, Redis, изменения Traefik.

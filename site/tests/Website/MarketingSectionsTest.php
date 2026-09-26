@@ -125,54 +125,21 @@ final class MarketingSectionsTest extends WebTestCase
         }
     }
 
-    public function testInterAndManropeAreSelfHosted(): void
+    public function testWebsiteDoesNotRegisterCustomFonts(): void
     {
-        $font = $this->projectPath('public/assets/fonts/inter/Inter-cyrillic.woff2');
-        $license = $this->projectPath('public/assets/fonts/inter/OFL.txt');
-
-        self::assertFileExists($font);
-        self::assertSame('wOF2', substr($this->read($font), 0, 4));
-        self::assertGreaterThan(0, filesize($font));
-        self::assertFileExists($license);
-        self::assertStringContainsString('SIL OPEN FONT LICENSE Version 1.1', $this->read($license));
-
         $appCss = $this->read($this->projectPath('assets/styles/website/app.css'));
-        self::assertStringContainsString('@font-face', $appCss);
-        self::assertStringContainsString('font-family: "Inter";', $appCss);
-        self::assertStringContainsString('font-style: normal;', $appCss);
-        self::assertStringContainsString('font-weight: 100 900;', $appCss);
-        self::assertStringContainsString('font-display: swap;', $appCss);
-        self::assertStringContainsString('url(/assets/fonts/inter/Inter-cyrillic.woff2)', $appCss);
-        self::assertStringContainsString('--vf-font-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;', $appCss);
-
-        self::assertFileExists($this->projectPath('public/assets/fonts/manrope/Manrope-cyrillic.woff2'));
-        self::assertFileExists($this->projectPath('public/assets/fonts/manrope/OFL.txt'));
-        self::assertStringContainsString('font-family: "Manrope";', $appCss);
-        foreach (['inter/Inter', 'manrope/Manrope'] as $family) {
-            foreach (['cyrillic-ext', 'cyrillic', 'latin-ext', 'latin'] as $subset) {
-                $file = $this->projectPath('public/assets/fonts/'.$family.'-'.$subset.'.woff2');
-                self::assertFileExists($file);
-                self::assertSame('wOF2', substr($this->read($file), 0, 4));
-            }
-        }
-        $activeTypography = $appCss.$this->read($this->siteRulesPath());
-        self::assertDoesNotMatchRegularExpression('/TT\s+Norms/i', $activeTypography);
-        self::assertDoesNotMatchRegularExpression('/fonts\.googleapis|fonts\.gstatic/i', $activeTypography);
+        self::assertStringNotContainsString('@font-face', $appCss);
+        self::assertStringNotContainsString('fonts.googleapis', $appCss);
     }
 
-    public function testTypographyStressCasesUseTheProductionScaleWithoutForcedBreaks(): void
+    public function testTypographyStressCasesUseStandardTailwindClasses(): void
     {
         $client = static::createClient();
         $client->request('GET', '/ui-kit/sections');
 
         self::assertResponseIsSuccessful();
-        foreach (['text-t1', 'text-t2', 'text-t3', 'text-t4', 'text-t6', 'text-t7'] as $class) {
-            self::assertSelectorExists(sprintf('[data-vf-showcase="typography-stress"] .%s', $class));
-        }
-        self::assertSelectorCount(3, '[data-vf-showcase="typography-stress"] .text-t1');
-        self::assertSelectorCount(2, '[data-vf-showcase="typography-stress"] .text-t2');
-        self::assertSelectorCount(3, '[data-vf-showcase="typography-stress"] .text-t3');
-
+        self::assertSelectorExists('[data-vf-showcase="typography-stress"] .text-4xl');
+        self::assertSelectorExists('[data-vf-showcase="typography-stress"] .text-3xl');
         self::assertSelectorTextContains('[data-vf-showcase="typography-stress"]', '₽');
         self::assertSelectorTextContains('[data-vf-showcase="typography-stress"]', '%');
         self::assertSelectorCount(0, '[data-vf-showcase="typography-stress"] br');
@@ -181,13 +148,6 @@ final class MarketingSectionsTest extends WebTestCase
     private function projectPath(string $relativePath): string
     {
         return dirname(__DIR__, 2).'/'.$relativePath;
-    }
-
-    private function siteRulesPath(): string
-    {
-        $local = dirname(__DIR__, 3).'/SITE_RULES.md';
-
-        return is_file($local) ? $local : '/workspace/SITE_RULES.md';
     }
 
     private function read(string $path): string

@@ -12,7 +12,7 @@
 
 - Все legacy-страницы отдают одинаковые title/description (`site/templates/base.html.twig:6-7`), блоков нет.
 - Нет canonical, OG/Twitter Card, JSON-LD, robots.txt, sitemap.xml, favicon.
-- Главная — legacy Bootstrap с inline-стилями и фейковым dashboard.
+- Главная — прежняя главная с фейковым dashboard.
 - Новый `website/layouts/base.html.twig` имеет только title/description/head-блоки.
 
 ## Архитектура решения

@@ -1,21 +1,21 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'bg-bg' %}
+{% set section_class = 'bg-white' %}
 {% set section_id = id|default('vf-text-list') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = marker|default('text-list') %}
 
 {% block section_content %}
-    <div class="mb-8 max-w-content">
-        {% if eyebrow|default(null) %}<p class="mb-4 text-t7 font-medium text-fg-secondary uppercase">{{ eyebrow }}</p>{% endif %}
-        {% if is_page_title|default(false) %}<h1 id="{{ labelled_by }}">{{ title }}</h1>{% else %}<h2 id="{{ labelled_by }}">{{ title }}</h2>{% endif %}
-        {% if text|default(null) %}<p class="mb-0 text-t4 text-fg-secondary">{{ text }}</p>{% endif %}
+    <div class="mb-8 max-w-3xl">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-xs leading-5 font-medium text-slate-600 uppercase">{{ eyebrow }}</p>{% endif %}
+        {% if is_page_title|default(false) %}<h1 id="{{ labelled_by }}" class="mb-4 text-4xl font-extrabold leading-tight md:text-5xl">{{ title }}</h1>{% else %}<h2 id="{{ labelled_by }}" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">{{ title }}</h2>{% endif %}
+        {% if text|default(null) %}<p class="mb-0 text-lg leading-7 text-slate-600">{{ text }}</p>{% endif %}
     </div>
 
     {% if items|default([]) %}
-        <ul class="grid max-w-content gap-3" role="list" data-vf-layout="text-list">
+        <ul class="grid max-w-3xl gap-3" role="list" data-vf-layout="text-list">
             {% for item in items %}
-                <li class="border-t border-border pt-4">
-                    {% if item.title|default(null) %}<h3 class="text-t3">{{ item.title }}</h3>{% endif %}
+                <li class="border-t border-slate-200 pt-4">
+                    {% if item.title|default(null) %}<h3 class="text-xl leading-7 font-bold">{{ item.title }}</h3>{% endif %}
                     <p class="mb-0">{{ item.text }}</p>
                     {% if item.href|default(null) %}<a href="{{ item.href }}">{{ item.link_label|default('Подробнее') }}</a>{% endif %}
                 </li>

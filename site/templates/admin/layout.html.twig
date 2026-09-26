@@ -1,7 +1,4 @@
-{# ponytail: временная Twig-админка до React Admin (AGENTS.md §8). Свой минимальный
-   CSS в public/assets/admin/admin.css -- вне сборки и design system публичного сайта.
-   После правки CSS/JS: cat site/public/assets/admin/admin.{css,js} | sha256sum | cut -c1-12 → admin_asset_version. #}
-{% set admin_asset_version = '75d01fec050b' %}
+{% set vf_asset_version = '8a959d2e28a9' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -10,10 +7,9 @@
     <meta name="robots" content="noindex, nofollow">
     <title>{% block title %}Админка{% endblock %} — Ваш Финдир</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link href="/assets/admin/admin.css?v={{ admin_asset_version }}" rel="stylesheet">
-    <script src="/assets/admin/admin.js?v={{ admin_asset_version }}" defer></script>
+    <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 </head>
-<body>
+<body class="bg-slate-50 text-slate-950">
 {% block page %}
     {% set route = app.request.attributes.get('_route') ?? '' %}
     {# Один список разделов: новый раздел админки -- одна строка здесь. #}
@@ -24,25 +20,25 @@
     ] %}
     {# Счётчик считается один раз (фрагмент-контроллер) и выводится в обоих местах меню. #}
     {% set counter %}{{ render(controller('App\\Lead\\Controller\\Admin\\LeadCounterController')) }}{% endset %}
-    <a class="skip-link" href="#main">К содержимому</a>
-    <div class="shell">
-        <div class="sidebar">
-            <a class="brand" href="{{ path('admin_dashboard') }}">Ваш Финдир <small>Админка</small></a>
+    <a class="fixed left-4 top-2 z-20 -translate-y-24 rounded bg-white px-3 py-2 text-slate-950 focus:translate-y-0" href="#main">К содержимому</a>
+    <div class="flex min-h-screen">
+        <div data-admin-sidebar class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto bg-slate-950 px-4 py-6 text-white lg:flex">
+            <a class="mb-6 block font-bold text-white no-underline" href="{{ path('admin_dashboard') }}">Ваш Финдир <small>Админка</small></a>
             {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
         </div>
-        <div class="workspace">
+        <div class="min-w-0 flex-1">
             {# Узкий экран: сайдбар скрыт, меню раскрывается нативным details без JS. #}
-            <details class="mobile-bar">
+            <details data-admin-mobile-menu class="sticky top-0 z-10 bg-slate-950 p-4 text-white lg:hidden">
                 <summary>
                     {# Бренд скрыт от дикторов: кнопка должна называться «Меню», а не всей строкой. #}
-                    <span class="brand" aria-hidden="true">Ваш Финдир · Админка</span>
-                    <span class="menu-button">Меню{{ counter }}</span>
+                    <span class="mb-6 block font-bold text-white no-underline" aria-hidden="true">Ваш Финдир · Админка</span>
+                    <span class="inline-flex items-center rounded border border-slate-400 px-3 py-1">Меню{{ counter }}</span>
                 </summary>
                 {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
             </details>
-            <main class="main" id="main">
+            <main class="p-4 lg:p-8" id="main">
                 {% for message in app.flashes('success') %}
-                    <p class="flash" role="status">{{ message }}</p>
+                    <p class="rounded-lg border border-green-300 bg-green-50 p-4 text-green-800" role="status">{{ message }}</p>
                 {% endfor %}
                 {% block body %}{% endblock %}
             </main>

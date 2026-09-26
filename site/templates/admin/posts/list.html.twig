@@ -3,62 +3,62 @@
 {% block title %}Публикации{% endblock %}
 
 {% block body %}
-    <div class="toolbar">
-        <h1>Публикации</h1>
-        <a class="button" href="{{ path('admin_post_new') }}">Новая статья</a>
+    <div class="mb-4 flex flex-wrap gap-2">
+        <h1 class="mb-6 text-3xl font-bold">Публикации</h1>
+        <a class="inline-flex items-center justify-center rounded-md bg-red-700 px-4 py-2 font-semibold text-white hover:bg-red-800" href="{{ path('admin_post_new') }}">Новая статья</a>
     </div>
 
-    <div class="filters">
+    <div class="mb-4 flex flex-wrap gap-4">
         <span>Статус:</span>
-        <a href="{{ path('admin_post_list', {sort: criteria.sort.value}) }}" {{ criteria.status is null ? 'aria-current="true"' }}>Все</a>
+        <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('admin_post_list', {sort: criteria.sort.value}) }}" {{ criteria.status is null ? 'aria-current="true"' }}>Все</a>
         {% for status in statuses %}
-            <a href="{{ path('admin_post_list', {status: status.value, sort: criteria.sort.value}) }}" {{ criteria.status == status ? 'aria-current="true"' }}>{{ status.label }}</a>
+            <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('admin_post_list', {status: status.value, sort: criteria.sort.value}) }}" {{ criteria.status == status ? 'aria-current="true"' }}>{{ status.label }}</a>
         {% endfor %}
     </div>
-    <div class="filters">
+    <div class="mb-4 flex flex-wrap gap-4">
         <span>Сортировка:</span>
         {% for sort in sorts %}
-            <a href="{{ path('admin_post_list', criteria.status ? {status: criteria.status.value, sort: sort.value} : {sort: sort.value}) }}" {{ criteria.sort == sort ? 'aria-current="true"' }}>{{ sort.label }}</a>
+            <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('admin_post_list', criteria.status ? {status: criteria.status.value, sort: sort.value} : {sort: sort.value}) }}" {{ criteria.sort == sort ? 'aria-current="true"' }}>{{ sort.label }}</a>
         {% endfor %}
     </div>
 
     {% if pager.nbResults == 0 %}
-        <p class="panel">Статей пока нет.</p>
+        <p class="max-w-5xl rounded-lg border border-slate-200 bg-white p-6">Статей пока нет.</p>
     {% else %}
-        <div class="table-wrap">
-            <table class="table">
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-slate-200 bg-white text-sm">
                 <thead>
                 <tr>
-                    <th scope="col">Заголовок</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Изменена</th>
-                    <th scope="col">Опубликована</th>
-                    <th scope="col">Действия</th>
+                    <th class="border-b border-slate-200 px-3 py-2 text-left font-semibold" scope="col">Заголовок</th>
+                    <th class="border-b border-slate-200 px-3 py-2 text-left font-semibold" scope="col">Статус</th>
+                    <th class="border-b border-slate-200 px-3 py-2 text-left font-semibold" scope="col">Изменена</th>
+                    <th class="border-b border-slate-200 px-3 py-2 text-left font-semibold" scope="col">Опубликована</th>
+                    <th class="border-b border-slate-200 px-3 py-2 text-left font-semibold" scope="col">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for post in pager.currentPageResults %}
                     <tr>
-                        <td>
-                            <a href="{{ path('admin_post_edit', {id: post.id}) }}">{{ post.title }}</a>
-                            <div class="muted">
+                        <td class="border-b border-slate-200 px-3 py-2 align-top">
+                            <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('admin_post_edit', {id: post.id}) }}">{{ post.title }}</a>
+                            <div class="text-sm text-slate-600">
                                 {% if post.status.value == 'published' %}
-                                    <a href="{{ path('gazeta_post', {slug: post.slug}) }}" target="_blank" rel="noopener">/gazeta/{{ post.slug }}</a>
+                                    <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('gazeta_post', {slug: post.slug}) }}" target="_blank" rel="noopener">/gazeta/{{ post.slug }}</a>
                                 {% else %}
                                     /gazeta/{{ post.slug }}
                                 {% endif %}
                             </div>
                         </td>
-                        <td><span class="badge badge-{{ post.status.value }}">{{ post.status.label }}</span></td>
-                        <td>{{ post.updatedAt|date('d.m.Y H:i') }}</td>
-                        <td>{{ post.publishedAt ? post.publishedAt|date('d.m.Y') : '—' }}</td>
-                        <td>
-                            {# Нативный popover: закрытие по Esc и клику вне -- браузер, позицию под кнопкой ставит admin.js. #}
-                            <button type="button" class="secondary menu-toggle" popovertarget="post-actions-{{ post.id }}" aria-label="Действия: {{ post.title }}">…</button>
-                            <div class="row-menu" id="post-actions-{{ post.id }}" popover>
-                                <a href="{{ path('admin_post_edit', {id: post.id}) }}">Редактировать</a>
+                        <td class="border-b border-slate-200 px-3 py-2 align-top"><span class="inline-block rounded-full px-2 py-1 text-xs font-semibold {{ post.status.value == 'published' ? 'bg-green-700 text-white' : 'bg-slate-600 text-white' }}">{{ post.status.label }}</span></td>
+                        <td class="border-b border-slate-200 px-3 py-2 align-top">{{ post.updatedAt|date('d.m.Y H:i') }}</td>
+                        <td class="border-b border-slate-200 px-3 py-2 align-top">{{ post.publishedAt ? post.publishedAt|date('d.m.Y') : '—' }}</td>
+                        <td class="border-b border-slate-200 px-3 py-2 align-top">
+                            <details class="relative"><summary data-admin-menu-toggle class="w-fit cursor-pointer list-none rounded-md border border-slate-500 bg-white px-3 py-1 text-xl text-slate-950 hover:bg-slate-50" aria-controls="post-actions-{{ post.id }}" aria-label="Действия: {{ post.title }}">…</summary>
+                            <div data-admin-row-menu class="absolute right-0 top-full z-20 grid min-w-52 gap-2 rounded-lg border border-slate-200 bg-white p-2 shadow-lg" id="post-actions-{{ post.id }}">
+                                <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('admin_post_edit', {id: post.id}) }}">Редактировать</a>
                                 {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, status: post.status, back: 'list'} only %}
                             </div>
+                            </details>
                         </td>
                     </tr>
                 {% endfor %}
@@ -67,7 +67,7 @@
         </div>
 
         {% if pager.haveToPaginate %}
-            <nav class="pagination" aria-label="Страницы">
+            <nav class="mt-4 flex flex-wrap gap-2" aria-label="Страницы">
                 {{ pagerfanta(pager, {omitFirstPage: true, prev_message: '←', next_message: '→'}) }}
             </nav>
         {% endif %}

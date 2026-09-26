@@ -90,20 +90,16 @@ assets:
 	cp site/assets/scripts/website/analytics.js site/public/assets/website/analytics.js
 	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
-	cp site/assets/scripts/website/ui-kit-logo.js site/public/assets/website/ui-kit-logo.js
-	cp site/assets/scripts/website/ui-kit-navigation.js site/public/assets/website/ui-kit-navigation.js
 
 assets-watch:
 	mkdir -p site/public/assets/website
 	cp site/assets/scripts/website/analytics.js site/public/assets/website/analytics.js
 	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
-	cp site/assets/scripts/website/ui-kit-logo.js site/public/assets/website/ui-kit-logo.js
-	cp site/assets/scripts/website/ui-kit-navigation.js site/public/assets/website/ui-kit-navigation.js
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --watch
 
 asset-version:
-	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/ui-kit-logo.js site/public/assets/website/ui-kit-navigation.js | sha256sum | cut -c1-12
+	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js | sha256sum | cut -c1-12
 
 assets-check:
 	@temporary=$$(mktemp -d); \
@@ -112,8 +108,6 @@ assets-check:
 	cp site/assets/scripts/website/analytics.js "$$temporary/analytics.js"; \
 	cp site/assets/scripts/website/navigation.js "$$temporary/navigation.js"; \
 	cp site/assets/scripts/website/metrika.js "$$temporary/metrika.js"; \
-	cp site/assets/scripts/website/ui-kit-logo.js "$$temporary/ui-kit-logo.js"; \
-	cp site/assets/scripts/website/ui-kit-navigation.js "$$temporary/ui-kit-navigation.js"; \
 	diff --brief --recursive "$$temporary" site/public/assets/website >/dev/null || { \
 		echo 'Compiled website assets are stale. Run make assets.' >&2; \
 		exit 1; \

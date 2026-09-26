@@ -40,7 +40,7 @@
 ## Изменённые файлы
 
 - **Новый код:** `site/src/Publication/**`, `site/src/Shared/{Exception,EventListener}/**`, `site/templates/admin/posts/**`.
-- **Изменены:** `site/templates/admin/{layout,dashboard}.html.twig` (навигация, flash, стили).
+- **Изменены:** `site/templates/admin/{layout,dashboard}.html.twig` (навигация, flash).
 - **Конфиг:** `doctrine.yaml`, `routes.yaml`, `bundles.php`, `babdev_pagerfanta.yaml`, `validator.yaml` (рецепт), `deptrac.yaml`, `phpstan.dist.neon` (исключение для полей Entity, которые Doctrine заполняет через reflection), `phpunit.dist.xml` (расширение DAMA).
 - **Зависимости:** `symfony/form`, `symfony/validator`, `babdev/pagerfanta-bundle`, `pagerfanta/doctrine-orm-adapter`, `pagerfanta/twig`, `league/commonmark`; dev — `dama/doctrine-test-bundle`.
 - **Миграция:** `Version20260923072155` — только `CREATE TABLE publication_post` и индексы. Безопасна для данных.

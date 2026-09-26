@@ -4,12 +4,12 @@
 
 {# Страница входа -- без сайдбара и меню: только карточка по центру. #}
 {% block page %}
-    <main class="main">
-        <form class="card" method="post" action="{{ path('admin_login') }}">
-            <h1>Вход в админку</h1>
+    <main class="p-4 lg:p-8">
+        <form class="rounded-lg border border-slate-200 bg-white p-6" method="post" action="{{ path('admin_login') }}">
+            <h1 class="mb-6 text-3xl font-bold">Вход в админку</h1>
 
             {% if error %}
-                <p class="alert" role="alert">
+                <p class="rounded-lg border border-orange-300 bg-orange-50 p-4 text-orange-800" role="alert">
                     {% if error.messageKey starts with 'Too many failed login attempts' %}
                         Слишком много попыток входа. Попробуйте через минуту.
                     {% elseif error.messageKey == 'Invalid CSRF token.' %}
@@ -20,15 +20,15 @@
                 </p>
             {% endif %}
 
-            <label for="username">Логин</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+            <label class="grid gap-1 font-medium" for="username">Логин</label>
+            <input class="min-h-11 rounded-md border border-slate-500 bg-white px-3 py-2 text-base" type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
 
-            <label for="password">Пароль</label>
-            <input type="password" id="password" name="_password" autocomplete="current-password" required>
+            <label class="grid gap-1 font-medium" for="password">Пароль</label>
+            <input class="min-h-11 rounded-md border border-slate-500 bg-white px-3 py-2 text-base" type="password" id="password" name="_password" autocomplete="current-password" required>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button type="submit">Войти</button>
+            <button class="rounded-md bg-red-700 px-4 py-2 font-semibold text-white hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-red-700" type="submit">Войти</button>
         </form>
     </main>
 {% endblock %}

@@ -16,8 +16,8 @@ final class MarkdownRendererTest extends TestCase
         self::assertCount(2, $article->toc);
         self::assertSame('Сравнение затрат', $article->toc[0]['title']);
         self::assertSame('Unit-экономика', $article->toc[1]['title']);
-        self::assertStringContainsString('<h2 id="'.$article->toc[0]['id'].'">Сравнение затрат</h2>', $article->html);
-        self::assertMatchesRegularExpression('/<h3 id="[^"]+">Деталь<\/h3>/', $article->html);
+        self::assertStringContainsString('id="'.$article->toc[0]['id'].'">Сравнение затрат</h2>', $article->html);
+        self::assertMatchesRegularExpression('/<h3 class="[^"]+" id="[^"]+">Деталь<\/h3>/', $article->html);
     }
 
     public function testDuplicateHeadingsGetUniqueIds(): void
@@ -40,7 +40,7 @@ final class MarkdownRendererTest extends TestCase
     {
         $article = new MarkdownRenderer()->renderArticle("| A | B |\n|---|---|\n| 1 | 2 |\n");
 
-        self::assertStringContainsString('<div class="vf-table-wrap"><table>', $article->html);
+        self::assertStringContainsString('<div class="my-6 overflow-x-auto rounded-lg border border-slate-200"><table class="w-full border-collapse text-left">', $article->html);
     }
 
     public function testImagesAreReplacedByAltText(): void
@@ -55,8 +55,20 @@ final class MarkdownRendererTest extends TestCase
     {
         $article = new MarkdownRenderer()->renderArticle('[внешняя](https://example.com) и [своя](https://vashfindir.ru/gazeta)');
 
-        self::assertStringContainsString('<a rel="noopener noreferrer" href="https://example.com">', $article->html);
-        self::assertStringContainsString('<a href="https://vashfindir.ru/gazeta">', $article->html);
+        self::assertStringContainsString('rel="noopener noreferrer" href="https://example.com">', $article->html);
+        self::assertStringContainsString('href="https://vashfindir.ru/gazeta">', $article->html);
+        self::assertStringContainsString('class="text-red-700 underline', $article->html);
+    }
+
+    public function testArticleElementsCarryTailwindTypography(): void
+    {
+        $article = new MarkdownRenderer()->renderArticle("## Раздел\n\n- Пункт\n\n1. Первый\n\n> Цитата\n\n```php\necho 1;\n```\n");
+
+        self::assertStringContainsString('<h2 class="mb-4 mt-10 text-3xl font-bold', $article->html);
+        self::assertStringContainsString('<ul class="mb-4 list-disc pl-6">', $article->html);
+        self::assertStringContainsString('<ol class="mb-4 list-decimal pl-6">', $article->html);
+        self::assertStringContainsString('<blockquote class="my-6 border-l-4', $article->html);
+        self::assertStringContainsString('<pre class="my-6 overflow-x-auto', $article->html);
     }
 
     public function testRawHtmlAndUnsafeLinksAreDropped(): void

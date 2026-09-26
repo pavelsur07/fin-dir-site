@@ -107,7 +107,7 @@ site/templates/admin/posts/{list,form,preview}.html.twig
 4. **Домен.** `PostStatus`, `Post`, исключения, `PostRepository`; `make diff` → миграция `publication_post` (только `CREATE`, безопасна).
 5. **Сервисы.** `PostSlugger`, `PostCreator`, `PostEditor`, `PostStatusChanger`, `DomainExceptionListener`.
 6. **Чтение.** `AdminPostListQuery` (DTO-проекция через `NEW`, Pagerfanta), `PostEditDataQuery`.
-7. **Админка.** `PostInput` и `PostType`, контроллеры, шаблоны `admin/posts/*` в существующем inline-стиле `admin/layout.html.twig`, простая form theme.
+7. **Админка.** `PostInput` и `PostType`, контроллеры, шаблоны `admin/posts/*` с использованием существующего `admin/layout.html.twig`, простая form theme.
 8. **Тестовая БД:**
    - `Makefile`: цель `test-db` (`doctrine:database:create --if-not-exists` + `migrate` в `APP_ENV=test`), `test: test-db`;
    - `ci.yml`: service `postgres:17-alpine` (site/secret/site, порт 5432) и шаг подготовки `site_test` перед Tests.

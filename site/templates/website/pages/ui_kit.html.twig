@@ -1,33 +1,69 @@
 {% extends 'website/layouts/base.html.twig' %}
 
 {% block title %}UI-kit — Ваш Финдир{% endblock %}
-{% block description %}Цвет, типографика и компоненты дизайн-системы «Ваш Финдир».{% endblock %}
+{% block description %}Компоненты публичного сайта на стандартных классах Tailwind.{% endblock %}
 {% block robots %}noindex, nofollow{% endblock %}
 {% block analytics %}{% endblock %}
 
 {% block navigation %}{% endblock %}
-{% block head %}<script src="/assets/website/ui-kit-logo.js?v={{ vf_asset_version }}" defer></script><script src="/assets/website/ui-kit-navigation.js?v={{ vf_asset_version }}" defer></script>{% endblock %}
 {% block body %}
     {% include 'website/pages/_ui_kit_foundations.html.twig' %}
-    <div class="vf-container space-y-24 pb-24" data-vf-ui-kit>
-        {% include 'website/pages/_ui_kit_foundations_06_10.html.twig' %}
+    <div class="mx-auto w-full max-w-6xl px-4 md:px-8 space-y-24 pb-24" data-vf-ui-kit>
+        <section id="radii" class="grid gap-8" aria-labelledby="radii-title" data-vf-ui-kit-section="radii">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">06 · Форма</p><h2 id="radii-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Шкала радиусов</h2></div>
+            <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+                {% for radius in [{name: '0', class: 'rounded-none'}, {name: 'XS', class: 'rounded-xs'}, {name: 'SM', class: 'rounded-sm'}, {name: 'MD', class: 'rounded-md'}, {name: 'LG', class: 'rounded-lg'}, {name: 'XL', class: 'rounded-xl'}, {name: 'Full', class: 'rounded-full'}] %}
+                    <div class="grid gap-3 rounded-md border border-slate-200 bg-white p-4"><span class="text-xs leading-5 text-slate-600">{{ radius.name }}</span><span class="h-16 w-full border border-slate-500 bg-slate-50 {{ radius.class }}" aria-hidden="true"></span></div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="spacing" class="grid gap-8" aria-labelledby="spacing-title" data-vf-ui-kit-section="spacing" data-vf-showcase="spacing">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">07 · Сетка</p><h2 id="spacing-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Пространство</h2><p class="mb-0 text-lg leading-7 text-slate-600">Отступы образуют единую шкалу: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64 и 96 px.</p></div>
+            <div class="flex flex-wrap items-end gap-4 rounded-lg border border-slate-200 bg-slate-50 p-6" aria-hidden="true">
+                <span class="h-4 w-1 bg-red-700"></span><span class="h-4 w-2 bg-red-700"></span><span class="h-4 w-3 bg-red-700"></span><span class="h-4 w-4 bg-red-700"></span><span class="h-4 w-5 bg-red-700"></span><span class="h-4 w-6 bg-red-700"></span><span class="h-4 w-8 bg-red-700"></span><span class="h-4 w-10 bg-red-700"></span><span class="h-4 w-12 bg-red-700"></span><span class="h-4 w-16 bg-red-700"></span><span class="h-4 w-24 bg-red-700"></span>
+            </div>
+        </section>
+
+        <section id="elevation" class="grid gap-8" aria-labelledby="elevation-title" data-vf-ui-kit-section="elevation">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">08 · Глубина</p><h2 id="elevation-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Уровни высоты</h2></div>
+            <div class="grid gap-4 md:grid-cols-3">
+                <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-sm"><strong class="text-xl leading-7 font-bold">Small</strong><p class="mb-0 text-slate-600">Лёгкое отделение элемента</p></div>
+                <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-md"><strong class="text-xl leading-7 font-bold">Medium</strong><p class="mb-0 text-slate-600">Приподнятая карточка</p></div>
+                <div class="rounded-lg border border-slate-200 bg-white p-8 shadow-lg"><strong class="text-xl leading-7 font-bold">Large</strong><p class="mb-0 text-slate-600">Важная поверхность</p></div>
+            </div>
+        </section>
+
+        <section id="icons" class="grid gap-8" aria-labelledby="icons-title" data-vf-ui-kit-section="icons">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">09 · Иконки</p><h2 id="icons-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Линейный стиль</h2><p class="mb-0 text-lg leading-7 text-slate-600">Иконки помогают распознавать действие и не заменяют текстовую подпись.</p></div>
+            <div class="flex flex-wrap gap-4">
+                {% for icon in [{name: 'telegram', label: 'Сообщение'}, {name: 'envelope', label: 'Письмо'}, {name: 'newspaper', label: 'Статья'}] %}
+                    <div class="flex min-h-11 items-center gap-3 rounded-md border border-slate-200 bg-white p-4 text-sm leading-6">{% include 'website/components/_icon.html.twig' with {name: icon.name, size: 20} only %}<span>{{ icon.label }}</span></div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="components" class="grid gap-8" aria-labelledby="interactive-states-title" data-vf-ui-kit-section="interactive-states">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">10 · Поведение</p><h2 id="interactive-states-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Интерактивные состояния</h2><p class="mb-0 text-lg leading-7 text-slate-600">Ниже показаны действующие компоненты в состояниях default, hover, focus, active и disabled.</p></div>
+            {% include 'website/sections/_components_showcase.html.twig' with {catalog_embed: true} only %}
+        </section>
 
         <section id="data-format" class="grid gap-8" aria-labelledby="data-format-title" data-vf-ui-kit-section="data-format">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">11 · Данные</p><h2 id="data-format-title">Формат данных</h2><p class="mb-0 text-t4 text-fg-secondary">Демонстрационные значения показывают запись сумм, дат и изменений без привязки к реальному клиенту.</p></div>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">11 · Данные</p><h2 id="data-format-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Формат данных</h2><p class="mb-0 text-lg leading-7 text-slate-600">Демонстрационные значения показывают запись сумм, дат и изменений без привязки к реальному клиенту.</p></div>
             <div class="grid gap-4 md:grid-cols-3">
-                <div class="rounded-lg border border-border p-6"><span class="block text-t7 text-fg-muted">Сумма</span><strong class="text-t8">1 234,56 ₽</strong></div>
-                <div class="rounded-lg border border-border p-6"><span class="block text-t7 text-fg-muted">Дата</span><strong class="text-t8">25.09.2026</strong></div>
-                <div class="rounded-lg border border-border p-6"><span class="block text-t7 text-fg-muted">Изменение</span><strong class="text-t8 text-success">+12 %</strong></div>
+                <div class="rounded-lg border border-slate-200 p-6"><span class="block text-xs leading-5 text-slate-500">Сумма</span><strong class="text-3xl leading-tight font-extrabold">1 234,56 ₽</strong></div>
+                <div class="rounded-lg border border-slate-200 p-6"><span class="block text-xs leading-5 text-slate-500">Дата</span><strong class="text-3xl leading-tight font-extrabold">25.09.2026</strong></div>
+                <div class="rounded-lg border border-slate-200 p-6"><span class="block text-xs leading-5 text-slate-500">Изменение</span><strong class="text-3xl leading-tight font-extrabold text-green-800">+12 %</strong></div>
             </div>
         </section>
 
         <section id="forms" class="grid gap-8" aria-labelledby="forms-catalog-title" data-vf-ui-kit-section="forms">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">12 · Ввод</p><h2 id="forms-catalog-title">Поля и элементы выбора</h2><p class="mb-0 text-t4 text-fg-secondary">Состояния production-полей показаны без отправки демо-формы.</p></div>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">12 · Ввод</p><h2 id="forms-catalog-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Поля и элементы выбора</h2><p class="mb-0 text-lg leading-7 text-slate-600">Состояния production-полей показаны без отправки демо-формы.</p></div>
             {% include 'website/sections/_forms_showcase.html.twig' with {catalog_embed: true} only %}
         </section>
 
         <section id="buttons-reference" class="grid gap-8" aria-labelledby="buttons-reference-title" data-vf-ui-kit-section="buttons">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">13 · Операции</p><h2 id="buttons-reference-title">Кнопки действий</h2><p class="mb-0 text-t4 text-fg-secondary">Primary, secondary и ghost — варианты одного production-компонента.</p></div>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">13 · Операции</p><h2 id="buttons-reference-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Кнопки действий</h2><p class="mb-0 text-lg leading-7 text-slate-600">Primary, secondary и ghost — варианты одного production-компонента.</p></div>
             <div class="flex flex-wrap gap-3">
                 {% include 'website/components/_button.html.twig' with {label: 'Основное действие', variant: 'primary'} only %}
                 {% include 'website/components/_button.html.twig' with {label: 'Вторичное действие', variant: 'secondary'} only %}
@@ -35,43 +71,41 @@
             </div>
         </section>
 
-        <section id="data-palette" class="grid gap-8" aria-labelledby="data-palette-title" data-vf-ui-kit-section="data-palette">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">14 · Данные</p><h2 id="data-palette-title">Палитра данных</h2><p class="mb-0 text-t4 text-fg-secondary">Восемь канонических цветов предназначены для различения серий данных. Цвет всегда сопровождается подписью.</p></div>
-            <div class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-8">
-                {% for number in 1..8 %}
-                    <div class="grid gap-2 rounded-md border border-border p-3"><span class="h-16 rounded-sm" data-vf-swatch="chart-{{ number }}" aria-hidden="true"></span><span class="text-t7 text-fg-secondary">chart.{{ number }}</span></div>
-                {% endfor %}
-            </div>
-        </section>
-
         <section id="alerts-reference" class="grid gap-8" aria-labelledby="alerts-reference-title" data-vf-ui-kit-section="alerts">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">15 · Обратная связь</p><h2 id="alerts-reference-title">Уведомления и статусы</h2><p class="mb-0 text-t4 text-fg-secondary">На Public Website используется один Alert с семантическим статусом и текстом.</p></div>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">15 · Обратная связь</p><h2 id="alerts-reference-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Уведомления и статусы</h2><p class="mb-0 text-lg leading-7 text-slate-600">На Public Website используется один Alert с семантическим статусом и текстом.</p></div>
             <div class="grid gap-4 md:grid-cols-2">
                 {% include 'website/components/_alert.html.twig' with {title: 'Информация', text: 'Системное сообщение с пояснением.', tone: 'info'} only %}
                 {% include 'website/components/_alert.html.twig' with {title: 'Исправьте данные', text: 'Ошибка объясняется текстом, а не одним цветом.', tone: 'error'} only %}
             </div>
         </section>
 
-        {% include 'website/pages/_ui_kit_navigation.html.twig' %}
+        <section id="navigation-preview" class="grid gap-8" aria-labelledby="navigation-preview-title" data-vf-ui-kit-section="navigation-preview">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">16 · Навигация</p><h2 id="navigation-preview-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Меню сайта</h2><p class="mb-0 text-lg leading-7 text-slate-600">Образец использует production Navbar, включая мобильный dialog.</p></div>
+            <div class="overflow-hidden rounded-lg border border-slate-200">
+                {% include 'website/components/_navbar.html.twig' with {
+                    brand: 'Ваш Финдир',
+                    brand_href: path('home'),
+                    brand_aria_label: 'Образец логотипа — на главную',
+                    navigation_id: 'vf-ui-kit-navigation-preview',
+                    navigation_label: 'Образец основной навигации',
+                    mobile_navigation_label: 'Образец мобильной навигации',
+                    dialog_label: 'Образец меню',
+                    items: [{label: 'Главная', href: path('home')}, {label: 'Услуги', href: '/services'}, {label: 'Газета', href: path('gazeta_index')}],
+                } only %}
+            </div>
+        </section>
 
         <section id="empty-state" class="grid gap-8" aria-labelledby="empty-state-title" data-vf-ui-kit-section="empty-state">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">18 · Состояния</p><h2 id="empty-state-title">Когда показать нечего</h2><p class="mb-0 text-t4 text-fg-secondary">Пустое состояние объясняет, что происходит, и предлагает понятное следующее действие.</p></div>
-            <div class="grid justify-items-start gap-4 rounded-lg border border-border bg-bg-subtle p-6 md:p-8">
-                <h3 class="mb-0">Здесь пока нет элементов</h3>
-                <p class="mb-0 text-fg-secondary">Это демонстрационный пример. После добавления элементов они появятся в этом списке.</p>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">18 · Состояния</p><h2 id="empty-state-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Когда показать нечего</h2><p class="mb-0 text-lg leading-7 text-slate-600">Пустое состояние объясняет, что происходит, и предлагает понятное следующее действие.</p></div>
+            <div class="grid justify-items-start gap-4 rounded-lg border border-slate-200 bg-slate-50 p-6 md:p-8">
+                <h3 class="mb-3 text-xl font-bold leading-7 mb-0">Здесь пока нет элементов</h3>
+                <p class="mb-0 text-slate-600">Это демонстрационный пример. После добавления элементов они появятся в этом списке.</p>
                 {% include 'website/components/_button.html.twig' with {label: 'Посмотреть разделы', href: path('ui_kit_sections'), variant: 'secondary'} only %}
             </div>
         </section>
 
-        <section id="motion" class="grid gap-8" aria-labelledby="motion-title" data-vf-ui-kit-section="motion">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">20 · Движение</p><h2 id="motion-title">Движение</h2><p class="mb-0 text-t4 text-fg-secondary">Быстрые переходы помогают увидеть смену состояния. При предпочтении reduced motion переходы выключаются.</p></div>
-            <div class="grid gap-3 rounded-lg border border-border p-6 text-t6 md:grid-cols-5">
-                {% for duration in ['instant', 'fast', 'base', 'slow', 'deliberate'] %}<div class="min-w-0 rounded-md bg-bg-subtle p-4"><strong class="block text-fg">{{ duration }}</strong><span class="break-words text-fg-secondary">--vf-duration-{{ duration }}</span></div>{% endfor %}
-            </div>
-        </section>
-
         <section id="article-cards" class="grid gap-8" aria-labelledby="article-cards-title" data-vf-ui-kit-section="article-cards">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">24 · Публикации</p><h2 id="article-cards-title">Последние статьи</h2><p class="mb-0 text-t4 text-fg-secondary">Карточки ниже показывают компоновку. Актуальные опубликованные материалы доступны в газете.</p></div>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">24 · Публикации</p><h2 id="article-cards-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Последние статьи</h2><p class="mb-0 text-lg leading-7 text-slate-600">Карточки ниже показывают компоновку. Актуальные опубликованные материалы доступны в газете.</p></div>
             <div class="grid gap-4 md:grid-cols-2">
                 {% include 'website/components/_card.html.twig' with {eyebrow: 'Образец', title: 'Заголовок статьи', text: 'Короткое описание помогает выбрать материал для чтения.'} only %}
                 {% include 'website/components/_card.html.twig' with {eyebrow: 'Образец', title: 'Следующий материал', text: 'Карточка сохраняет общую типографику и отступы.'} only %}
@@ -80,15 +114,15 @@
         </section>
 
         <section id="article-preview" class="grid gap-8" aria-labelledby="article-preview-title" data-vf-ui-kit-section="article-preview">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">26 · Статья</p><h2 id="article-preview-title">Статья блога</h2><p class="mb-0 text-t4 text-fg-secondary">Production Article показывает структуру публикации и оформление Markdown-контента.</p></div>
-            <div class="overflow-hidden rounded-lg border border-border">
-                {% include 'website/sections/_article.html.twig' with {id: 'ui-kit-article-preview', catalog_embed: true, heading_level: 'h3', title: 'Образец заголовка статьи', lead: 'Демонстрационный текст для проверки типографики.', byline: 'UI-kit', breadcrumbs: [{label: 'UI-kit', href: path('ui_kit')}, {label: 'Образец статьи'}], toc: [], body_html: '<p>Это технический образец основного текста статьи.</p><blockquote><p>Цитата выделяется с помощью общих токенов и остаётся читаемой.</p></blockquote>'} only %}
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">26 · Статья</p><h2 id="article-preview-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Статья блога</h2><p class="mb-0 text-lg leading-7 text-slate-600">Production Article показывает структуру публикации и оформление Markdown-контента.</p></div>
+            <div class="overflow-hidden rounded-lg border border-slate-200">
+                {% include 'website/sections/_article.html.twig' with {id: 'ui-kit-article-preview', catalog_embed: true, heading_level: 'h3', title: 'Образец заголовка статьи', lead: 'Демонстрационный текст для проверки типографики.', byline: 'UI-kit', breadcrumbs: [{label: 'UI-kit', href: path('ui_kit')}, {label: 'Образец статьи'}], toc: [], body_html: '<p>Это технический образец основного текста статьи.</p><blockquote><p>Цитата выделяется с помощью классов Tailwind и остаётся читаемой.</p></blockquote>'} only %}
             </div>
         </section>
 
         <section id="component-colors" class="grid gap-8" aria-labelledby="component-colors-title" data-vf-ui-kit-section="component-colors">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">27 · Применение</p><h2 id="component-colors-title">Цвет в компонентах</h2><p class="mb-0 text-t4 text-fg-secondary">Акцент обозначает действие, статусный цвет — результат, Ink организует содержимое.</p></div>
-            <div class="flex flex-wrap items-center gap-4 rounded-lg border border-border bg-bg p-6">
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">27 · Применение</p><h2 id="component-colors-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Цвет в компонентах</h2><p class="mb-0 text-lg leading-7 text-slate-600">Акцент обозначает действие, статусный цвет — результат, нейтральный фон организует содержимое.</p></div>
+            <div class="flex flex-wrap items-center gap-4 rounded-lg border border-slate-200 bg-white p-6">
                 {% include 'website/components/_button.html.twig' with {label: 'Действие', variant: 'primary'} only %}
                 {% include 'website/components/_badge.html.twig' with {label: 'Готово', tone: 'success'} only %}
                 {% include 'website/components/_badge.html.twig' with {label: 'Проверьте', tone: 'warning'} only %}
@@ -96,7 +130,7 @@
         </section>
 
         <section id="section-previews" class="grid gap-8" aria-labelledby="section-previews-title" data-vf-ui-kit-section="section-previews">
-            <div class="max-w-content"><p class="text-t7 font-semibold text-accent-text">Секции сайта</p><h2 id="section-previews-title">Секции в действии</h2><p class="mb-0 text-t4 text-fg-secondary">Демонстрация использует те же partials, что публичные страницы. Полный каталог секций доступен отдельно.</p></div>
+            <div class="max-w-3xl"><p class="text-xs leading-5 font-semibold text-red-700">Секции сайта</p><h2 id="section-previews-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Секции в действии</h2><p class="mb-0 text-lg leading-7 text-slate-600">Демонстрация использует те же partials, что публичные страницы. Полный каталог секций доступен отдельно.</p></div>
             {% include 'website/components/_button.html.twig' with {label: 'Открыть все секции', href: path('ui_kit_sections'), variant: 'secondary'} only %}
         </section>
     </div>

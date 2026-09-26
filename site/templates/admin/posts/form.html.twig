@@ -3,41 +3,41 @@
 {% block title %}{{ post ? 'Редактирование' : 'Новая статья' }}{% endblock %}
 
 {% block body %}
-    <div class="toolbar">
-        <h1>{{ post ? post.title : 'Новая статья' }}</h1>
+    <div class="mb-4 flex flex-wrap gap-2">
+        <h1 class="mb-6 text-3xl font-bold">{{ post ? post.title : 'Новая статья' }}</h1>
         {% if post %}
-            <span class="badge badge-{{ post.status.value }}">{{ post.status.label }}</span>
+            <span class="inline-block rounded-full px-2 py-1 text-xs font-semibold {{ post.status.value == 'published' ? 'bg-green-700 text-white' : 'bg-slate-600 text-white' }}">{{ post.status.label }}</span>
         {% endif %}
     </div>
 
     {% if post %}
-        <div class="toolbar">
+        <div class="mb-4 flex flex-wrap gap-2">
             {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, status: post.status} only %}
-            <a href="{{ path('admin_post_preview', {id: post.id}) }}">Предпросмотр</a>
+            <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('admin_post_preview', {id: post.id}) }}">Предпросмотр</a>
             {% if post.status.value == 'published' %}
-                <a href="{{ path('gazeta_post', {slug: post.slug}) }}" target="_blank" rel="noopener">Открыть на сайте</a>
+                <a class="text-red-700 underline hover:text-red-800 focus-visible:outline-2 focus-visible:outline-red-700" href="{{ path('gazeta_post', {slug: post.slug}) }}" target="_blank" rel="noopener">Открыть на сайте</a>
             {% endif %}
         </div>
     {% endif %}
 
-    {{ form_start(form, {attr: {class: 'panel', novalidate: 'novalidate'}}) }}
+    {{ form_start(form, {attr: {'data-admin-post-form': '', class: 'max-w-5xl rounded-lg border border-slate-200 bg-white p-6', novalidate: 'novalidate'}}) }}
         {% if form.vars.errors|length > 0 %}
-            <div class="alert form-errors" role="alert">{{ form_errors(form) }}</div>
+            <div data-admin-form-errors class="rounded-lg border border-orange-300 bg-orange-50 p-4 text-sm text-orange-800" role="alert">{{ form_errors(form) }}</div>
         {% endif %}
 
         {% for field in [form.title, form.slug, form.excerpt, form.body, form.metaTitle, form.metaDescription] %}
-            <div class="form-row">
+            <div class="mb-4">
                 {{ form_label(field) }}
-                {{ form_widget(field) }}
+                {{ form_widget(field, {attr: field.vars.attr|merge({class: 'w-full rounded-md border border-slate-500 bg-white px-3 py-2 text-base'})}) }}
                 {{ form_help(field) }}
                 {{ form_errors(field) }}
             </div>
         {% endfor %}
 
         {{ form_rest(form) }}
-        <div class="actions">
-            <button type="submit">{{ post ? 'Сохранить' : 'Создать черновик' }}</button>
-            <a class="muted" href="{{ path('admin_post_list') }}">К списку</a>
+        <div class="flex flex-wrap gap-2">
+            <button class="rounded-md bg-red-700 px-4 py-2 font-semibold text-white hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-red-700" type="submit">{{ post ? 'Сохранить' : 'Создать черновик' }}</button>
+            <a class="text-sm text-slate-600" href="{{ path('admin_post_list') }}">К списку</a>
         </div>
     {{ form_end(form) }}
 {% endblock %}

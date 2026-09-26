@@ -98,7 +98,7 @@ final class AdminAuthTest extends WebTestCase
     {
         self::assertResponseRedirects('/admin/login');
         $client->followRedirect();
-        self::assertSelectorTextContains('.alert', $message);
+        self::assertSelectorTextContains('[role="alert"]', $message);
 
         $client->request('GET', '/admin');
         self::assertResponseRedirects('/admin/login');

@@ -1,45 +1,45 @@
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'bg-bg' %}
+{% set section_class = 'bg-white' %}
 {% set section_id = 'foundations' %}
 {% set labelled_by = 'foundations-title' %}
 {% set section_name = 'foundations-showcase' %}
 
 {% block section_content %}
-    {% if not catalog_embed|default(false) %}<div class="mb-8 max-w-content">
-        <p class="text-t7 font-medium text-accent-text uppercase">Design system v2</p>
-        <h2 id="foundations-title">Основа интерфейса</h2>
-        <p class="mb-0 text-t4 text-fg-secondary">Inter, Manrope и семантические токены одинаковы на каждой публичной странице.</p>
+    {% if not catalog_embed|default(false) %}<div class="mb-8 max-w-3xl">
+        <p class="text-xs leading-5 font-medium text-red-700 uppercase">Tailwind</p>
+        <h2 id="foundations-title" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">Основа интерфейса</h2>
+        <p class="mb-0 text-lg leading-7 text-slate-600">Стандартные классы Tailwind используются на каждой публичной странице.</p>
     </div>{% endif %}
 
     <div class="grid gap-12" data-vf-showcase="typography">
         <div class="grid gap-4">
-            <p class="mb-0 text-t7 text-fg-secondary">T1 · 36/44 mobile · 48/56 desktop</p>
-            <p class="mb-0 text-t1 font-extrabold">Финансы без догадок</p>
-            <p class="mb-0 text-t7 text-fg-secondary">T2 · 30/38 mobile · 36/44 desktop</p>
-            <p class="mb-0 text-t2 font-extrabold">Понятная система управления</p>
-            <p class="mb-0 text-t7 text-fg-secondary">T3 · 20/28</p>
-            <p class="mb-0 text-t3 font-bold">Данные для решений</p>
-            <p class="mb-0 text-t4">T4 — вводный текст страницы с увеличенным интерлиньяжем.</p>
-            <p class="mb-0 text-t5">T5 — основной текст, в том числе русский алфавит и цифры 2 450 000 ₽.</p>
-            <p class="mb-0 text-t6 text-fg-secondary">T6 — пояснения и элементы управления.</p>
-            <p class="mb-0 text-t7 text-fg-secondary">T7 — короткая подпись.</p>
-            <p class="mb-0 text-t8 font-extrabold">T8 — крупное числовое значение 1 234.</p>
+            <p class="mb-0 text-xs leading-5 text-slate-600">T1 · 36/44 mobile · 48/56 desktop</p>
+            <p class="mb-0 text-4xl leading-tight md:text-5xl font-extrabold">Финансы без догадок</p>
+            <p class="mb-0 text-xs leading-5 text-slate-600">T2 · 30/38 mobile · 36/44 desktop</p>
+            <p class="mb-0 text-3xl leading-tight md:text-4xl font-extrabold">Понятная система управления</p>
+            <p class="mb-0 text-xs leading-5 text-slate-600">T3 · 20/28</p>
+            <p class="mb-0 text-xl leading-7 font-bold">Данные для решений</p>
+            <p class="mb-0 text-lg leading-7">T4 — вводный текст страницы с увеличенным интерлиньяжем.</p>
+            <p class="mb-0 text-base leading-7">T5 — основной текст, в том числе русский алфавит и цифры 2 450 000 ₽.</p>
+            <p class="mb-0 text-sm leading-6 text-slate-600">T6 — пояснения и элементы управления.</p>
+            <p class="mb-0 text-xs leading-5 text-slate-600">T7 — короткая подпись.</p>
+            <p class="mb-0 text-3xl leading-tight font-extrabold">T8 — крупное числовое значение 1 234.</p>
         </div>
         {% if not catalog_typography_only|default(false) %}
         <div data-vf-showcase="colors">
-            <h3>Роли цвета</h3>
+            <h3 class="mb-3 text-xl font-bold leading-7">Роли цвета</h3>
             <div class="grid gap-6 md:grid-cols-2">
-                <div class="rounded-lg border border-border bg-bg p-6" data-vf-color-context="light">
-                    <p class="text-t7 font-semibold text-accent-text uppercase">Светлый контекст</p>
-                    <h4 class="text-fg">Текст на поверхности</h4>
-                    <p class="text-fg-secondary">Вторичный текст и разделение через границу.</p>
-                    <div class="flex gap-2" aria-hidden="true"><span class="size-8 rounded-sm bg-accent"></span><span class="size-8 rounded-sm bg-accent-subtle"></span><span class="size-8 rounded-sm bg-bg-muted"></span><span class="size-8 rounded-sm bg-border"></span></div>
+                <div class="rounded-lg border border-slate-200 bg-white p-6" data-vf-color-context="light">
+                    <p class="text-xs leading-5 font-semibold text-red-700 uppercase">Светлый контекст</p>
+                    <h4 class="mb-2 text-lg font-semibold leading-7 text-slate-950">Текст на поверхности</h4>
+                    <p class="text-slate-600">Вторичный текст и разделение через границу.</p>
+                    <div class="flex gap-2" aria-hidden="true"><span class="size-8 rounded-sm bg-red-700"></span><span class="size-8 rounded-sm bg-red-50"></span><span class="size-8 rounded-sm bg-slate-100"></span><span class="size-8 rounded-sm bg-slate-200"></span></div>
                 </div>
-                <div class="rounded-lg border border-border bg-bg p-6" data-vf-color-context="dark" data-theme="dark">
-                    <p class="text-t7 font-semibold text-accent-text uppercase">Тёмный контекст</p>
-                    <h4 class="text-fg">Текст на поверхности</h4>
-                    <p class="text-fg-secondary">Те же роли, другой набор семантических значений.</p>
-                    <div class="flex gap-2" aria-hidden="true"><span class="size-8 rounded-sm bg-accent"></span><span class="size-8 rounded-sm bg-accent-subtle"></span><span class="size-8 rounded-sm bg-bg-muted"></span><span class="size-8 rounded-sm bg-border"></span></div>
+                <div class="rounded-lg border border-slate-700 bg-slate-950 p-6 text-white" data-vf-color-context="dark">
+                    <p class="text-xs leading-5 font-semibold text-red-300 uppercase">Тёмный контекст</p>
+                    <h4 class="mb-2 text-lg font-semibold leading-7 text-white">Текст на поверхности</h4>
+                    <p class="text-slate-300">Текст на тёмном фоне остаётся читаемым.</p>
+                    <div class="flex gap-2" aria-hidden="true"><span class="size-8 rounded-sm bg-red-700"></span><span class="size-8 rounded-sm bg-red-50"></span><span class="size-8 rounded-sm bg-slate-100"></span><span class="size-8 rounded-sm bg-slate-200"></span></div>
                 </div>
             </div>
             <div class="mt-6 flex flex-wrap gap-3" data-vf-showcase="states">
@@ -50,10 +50,10 @@
             </div>
         </div>
         <div data-vf-showcase="spacing">
-            <h3>Шаги расстояния</h3>
-            <p class="text-fg-secondary">4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64 · 96 px</p>
+            <h3 class="mb-3 text-xl font-bold leading-7">Шаги расстояния</h3>
+            <p class="text-slate-600">4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64 · 96 px</p>
             <div class="flex flex-wrap items-end gap-4" aria-hidden="true">
-                <span class="h-4 w-1 rounded-xs bg-accent"></span><span class="h-4 w-2 rounded-xs bg-accent"></span><span class="h-4 w-3 rounded-xs bg-accent"></span><span class="h-4 w-4 rounded-xs bg-accent"></span><span class="h-4 w-5 rounded-xs bg-accent"></span><span class="h-4 w-6 rounded-xs bg-accent"></span><span class="h-4 w-8 rounded-xs bg-accent"></span><span class="h-4 w-10 rounded-xs bg-accent"></span><span class="h-4 w-12 rounded-xs bg-accent"></span><span class="h-4 w-16 rounded-xs bg-accent"></span><span class="h-4 w-24 rounded-xs bg-accent"></span>
+                <span class="h-4 w-1 rounded-xs bg-red-700"></span><span class="h-4 w-2 rounded-xs bg-red-700"></span><span class="h-4 w-3 rounded-xs bg-red-700"></span><span class="h-4 w-4 rounded-xs bg-red-700"></span><span class="h-4 w-5 rounded-xs bg-red-700"></span><span class="h-4 w-6 rounded-xs bg-red-700"></span><span class="h-4 w-8 rounded-xs bg-red-700"></span><span class="h-4 w-10 rounded-xs bg-red-700"></span><span class="h-4 w-12 rounded-xs bg-red-700"></span><span class="h-4 w-16 rounded-xs bg-red-700"></span><span class="h-4 w-24 rounded-xs bg-red-700"></span>
             </div>
         </div>
         {% endif %}

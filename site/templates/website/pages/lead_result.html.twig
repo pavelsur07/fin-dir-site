@@ -14,7 +14,7 @@
             : 'Исправьте данные и отправьте форму ещё раз. Быстрее всего связаться с нами в Telegram: @vashfindir_ru.',
         items: errors|map(message => {text: message}),
     } only %}
-    <div class="vf-container pb-12">
+    <div class="mx-auto w-full max-w-6xl px-4 md:px-8 pb-12">
         {% include 'website/components/_button.html.twig' with {label: 'Вернуться на страницу', href: back_url, variant: 'secondary'} only %}
     </div>
 {% endblock %}

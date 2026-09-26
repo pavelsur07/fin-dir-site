@@ -48,7 +48,7 @@ final class MarkdownRenderer
             ],
             // Таблица шире экрана прокручивается внутри обёртки, а не ломает страницу.
             'table' => [
-                'wrap' => ['enabled' => true, 'tag' => 'div', 'attributes' => ['class' => 'vf-table-wrap']],
+                'wrap' => ['enabled' => true, 'tag' => 'div', 'attributes' => ['class' => 'my-6 overflow-x-auto rounded-lg border border-slate-200']],
             ],
         ]);
         $environment->addExtension(new CommonMarkCoreExtension());
@@ -96,6 +96,36 @@ final class MarkdownRenderer
             }
         }
 
-        return new RenderedArticle($result->getContent(), $toc);
+        return new RenderedArticle($this->addTailwindClasses($result->getContent()), $toc);
+    }
+
+    private function addTailwindClasses(string $html): string
+    {
+        $classes = [
+            'h2' => 'mb-4 mt-10 text-3xl font-bold leading-tight',
+            'h3' => 'mb-3 mt-8 text-xl font-bold leading-7',
+            'p' => 'mb-4',
+            'ul' => 'mb-4 list-disc pl-6',
+            'ol' => 'mb-4 list-decimal pl-6',
+            'li' => 'mb-2',
+            'a' => 'text-red-700 underline hover:text-red-800',
+            'blockquote' => 'my-6 border-l-4 border-red-700 bg-red-50 p-4',
+            'pre' => 'my-6 overflow-x-auto rounded-lg bg-slate-900 p-4 text-sm text-white',
+            'code' => 'rounded bg-slate-100 px-1 text-sm',
+            'table' => 'w-full border-collapse text-left',
+            'th' => 'border-b border-slate-300 p-3 font-semibold',
+            'td' => 'border-b border-slate-200 p-3',
+            'hr' => 'my-8 border-t border-slate-200',
+        ];
+
+        return preg_replace_callback('/<(h2|h3|p|ul|ol|li|a|blockquote|pre|code|table|th|td|hr)(?=[\\s>])([^>]*)>/',
+            static function (array $match) use ($classes): string {
+                $tag = $match[1];
+                $attributes = $match[2];
+
+                return '<'.$tag.' class="'.$classes[$tag].'"'.$attributes.'>';
+            },
+            $html,
+        ) ?? $html;
     }
 }

@@ -76,7 +76,7 @@ final class AdminPostTest extends WebTestCase
         ]);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorTextContains('form.panel', 'Только латиница в нижнем регистре');
+        self::assertSelectorTextContains('form[data-admin-post-form]', 'Только латиница в нижнем регистре');
     }
 
     public function testTakenSlugIsShownAsFieldError(): void
@@ -91,7 +91,7 @@ final class AdminPostTest extends WebTestCase
         ]);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorTextContains('form.panel', 'Этот адрес уже занят');
+        self::assertSelectorTextContains('form[data-admin-post-form]', 'Этот адрес уже занят');
     }
 
     public function testStatusLifecycleThroughButtons(): void
@@ -146,14 +146,15 @@ final class AdminPostTest extends WebTestCase
         $crawler = $this->client->request('GET', '/admin/posts');
 
         $cell = $crawler->filter('tbody tr td')->last();
-        $toggle = $cell->filter('button.menu-toggle');
+        $toggle = $cell->filter('details > summary[data-admin-menu-toggle]');
         self::assertCount(1, $toggle);
         self::assertSame('Действия: Меню строки', $toggle->attr('aria-label'));
-        self::assertSame('post-actions-'.$id, $toggle->attr('popovertarget'));
+        self::assertSame('post-actions-'.$id, $toggle->attr('aria-controls'));
 
-        // Вне меню в ячейке только кнопка «…»; все действия -- внутри popover.
-        self::assertCount(1, $cell->filter('button, a')->reduce(static fn ($node) => null === $node->closest('.row-menu')));
-        $menu = $cell->filter('#post-actions-'.$id.'[popover]');
+        // Все действия находятся в раскрывающемся меню рядом с заголовком.
+        self::assertCount(1, $cell->filter('details'));
+        self::assertCount(0, $cell->filter('button, a')->reduce(static fn ($node) => null === $node->closest('[data-admin-row-menu]')));
+        $menu = $cell->filter('details > #post-actions-'.$id);
         self::assertSame($items, $menu->filter('a, button')->each(static fn ($node) => trim($node->text())));
         self::assertSame('/admin/posts/'.$id.'/edit', $menu->filter('a')->attr('href'));
         self::assertCount(\count($items) - 1, $menu->filter('form[method="post"] input[name="_token"]'));
@@ -180,7 +181,7 @@ final class AdminPostTest extends WebTestCase
         $this->client->request('GET', '/admin/posts/'.$id.'/edit');
         $this->client->submitForm('Сохранить', ['post[slug]' => 'taken']);
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorTextContains('form.panel', 'Этот адрес уже занят');
+        self::assertSelectorTextContains('form[data-admin-post-form]', 'Этот адрес уже занят');
 
         $this->client->request('GET', '/admin/posts/'.$id.'/edit');
         $this->client->submitForm('Сохранить', ['post[slug]' => 'new-slug']);
@@ -199,7 +200,7 @@ final class AdminPostTest extends WebTestCase
         $this->client->request('POST', '/admin/posts/'.$id.'/edit', $values);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorTextContains('.form-errors', 'Форма устарела');
+        self::assertSelectorTextContains('[data-admin-form-errors]', 'Форма устарела');
     }
 
     public function testListFilterAndSortSurvivePagination(): void
@@ -273,7 +274,7 @@ final class AdminPostTest extends WebTestCase
         $this->client->submit($staleForm, ['post[title]' => 'Второе окно']);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorTextContains('.form-errors', 'Статью изменили в другом окне');
+        self::assertSelectorTextContains('[data-admin-form-errors]', 'Статью изменили в другом окне');
     }
 
     public function testUnknownPostIsNotFound(): void

@@ -4,17 +4,17 @@
 {% set mobile_navigation_label = mobile_navigation_label|default('Мобильная навигация') %}
 {% set dialog_label = dialog_label|default('Меню') %}
 {% set brand_aria_label = brand_aria_label|default(brand ~ ' — на главную') %}
-<header class="border-b border-border bg-bg" data-vf-component="navbar">
-    <nav class="vf-container flex h-16 flex-nowrap items-center justify-between gap-4" aria-label="{{ navigation_label }}">
+<header class="border-b border-slate-200 bg-white" data-vf-component="navbar">
+    <nav class="mx-auto w-full max-w-6xl px-4 md:px-8 flex h-16 flex-nowrap items-center justify-between gap-4" aria-label="{{ navigation_label }}">
         <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}"><img src="/assets/brand/logo-light.png" alt="" width="148" height="50"></a>
-        <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-bg p-0 text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
+        <button class="flex size-11 shrink-0 items-center justify-center rounded-md border border-slate-500 bg-white p-0 text-slate-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
             <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
         </button>
         <div class="ml-auto hidden lg:flex lg:items-center lg:gap-6" data-vf-desktop-navigation>
             <ul class="flex items-center gap-6">
                 {% for item in items %}
                     <li>
-                        <a class="block py-2 font-medium no-underline hover:text-accent focus:text-accent{% if item.active|default(false) %} text-accent{% else %} text-fg{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                        <a class="block py-2 font-medium no-underline hover:text-red-700 focus:text-red-700{% if item.active|default(false) %} text-red-700{% else %} text-slate-950{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -24,19 +24,19 @@
         </div>
     </nav>
 
-    <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-fg lg:hidden" id="{{ drawer_id }}" aria-label="{{ dialog_label }}" data-state="closed" data-vf-menu-dialog>
-        <div class="navigation-drawer-width absolute inset-y-0 right-0 flex h-dvh flex-col overflow-y-auto overscroll-contain bg-bg shadow-md" data-vf-menu-panel>
-            <div class="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border px-4">
+    <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-slate-950 backdrop:bg-slate-950/60 lg:hidden" id="{{ drawer_id }}" aria-label="{{ dialog_label }}" data-state="closed" data-vf-menu-dialog>
+        <div class="absolute inset-y-0 right-0 flex h-dvh w-80 max-w-80 translate-x-full flex-col overflow-y-auto overscroll-contain bg-white shadow-md transition-transform duration-200 motion-reduce:transition-none" data-vf-menu-panel>
+            <div class="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-slate-200 px-4">
                 <a class="inline-flex items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}"><img src="/assets/brand/logo-light.png" alt="" width="148" height="50"></a>
-                <button class="flex size-control shrink-0 items-center justify-center rounded-md border border-border-strong bg-bg p-0 text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus" type="button" aria-label="Закрыть меню" data-vf-menu-close>
-                    <span class="text-t3 leading-none" aria-hidden="true">×</span>
+                <button class="flex size-11 shrink-0 items-center justify-center rounded-md border border-slate-500 bg-white p-0 text-slate-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700" type="button" aria-label="Закрыть меню" data-vf-menu-close>
+                    <span class="text-xl leading-7 font-bold leading-none" aria-hidden="true">×</span>
                 </button>
             </div>
             <nav class="px-4 py-4" aria-label="{{ mobile_navigation_label }}" data-vf-mobile-navigation>
                 <ul class="flex flex-col gap-2">
                     {% for item in items %}
                         <li>
-                            <a class="flex min-h-control items-center py-2 text-left font-medium no-underline hover:text-accent focus:text-accent{% if item.active|default(false) %} text-accent{% else %} text-fg{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                            <a class="flex min-h-11 items-center py-2 text-left font-medium no-underline hover:text-red-700 focus:text-red-700{% if item.active|default(false) %} text-red-700{% else %} text-slate-950{% endif %}" href="{{ item.href }}"{% if item.active|default(false) %} aria-current="page"{% endif %}>{{ item.label }}</a>
                         </li>
                     {% endfor %}
                 </ul>

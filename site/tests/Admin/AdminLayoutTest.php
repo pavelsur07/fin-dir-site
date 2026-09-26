@@ -38,14 +38,14 @@ final class AdminLayoutTest extends WebTestCase
         $this->client->request('GET', $path);
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorCount(3, '.sidebar nav.menu li');
-        self::assertSelectorCount(1, '.sidebar [aria-current="page"]');
-        self::assertSelectorTextContains('.sidebar [aria-current="page"]', $current);
-        self::assertSelectorExists('.sidebar form.account button[type="submit"]');
+        self::assertSelectorCount(3, '[data-admin-sidebar] nav[data-admin-menu] li');
+        self::assertSelectorCount(1, '[data-admin-sidebar] [aria-current="page"]');
+        self::assertSelectorTextContains('[data-admin-sidebar] [aria-current="page"]', $current);
+        self::assertSelectorExists('[data-admin-sidebar] form[data-admin-account] button[type="submit"]');
         // На узком экране то же меню раскрывается нативным details.
-        self::assertSelectorCount(3, 'details.mobile-bar nav.menu li');
-        self::assertSelectorTextContains('details.mobile-bar [aria-current="page"]', $current);
-        self::assertSelectorExists('a.skip-link[href="#main"]');
+        self::assertSelectorCount(3, 'details[data-admin-mobile-menu] nav[data-admin-menu] li');
+        self::assertSelectorTextContains('details[data-admin-mobile-menu] [aria-current="page"]', $current);
+        self::assertSelectorExists('a[href="#main"]');
         self::assertSelectorExists('main#main');
     }
 
@@ -59,14 +59,14 @@ final class AdminLayoutTest extends WebTestCase
 
         $this->client->request('GET', '/admin/posts/'.$post->id().'/edit');
 
-        self::assertSelectorTextContains('.sidebar [aria-current="page"]', 'Публикации');
+        self::assertSelectorTextContains('[data-admin-sidebar] [aria-current="page"]', 'Публикации');
     }
 
     public function testCounterShowsNewLeadsAndHidesAtZero(): void
     {
         $this->logIn();
         $this->client->request('GET', '/admin');
-        self::assertSelectorNotExists('.count');
+        self::assertSelectorNotExists('[data-admin-count]');
 
         $entityManager = self::getContainer()->get(EntityManagerInterface::class);
         $entityManager->persist(LeadBuilder::aLead()->withSubmissionId('00000000-0000-4000-8000-000000000001')->build());
@@ -75,10 +75,10 @@ final class AdminLayoutTest extends WebTestCase
         $entityManager->flush();
 
         $this->client->request('GET', '/admin');
-        self::assertSelectorTextSame('.sidebar a[href="/admin/leads"] .count [aria-hidden="true"]', '2');
+        self::assertSelectorTextSame('[data-admin-sidebar] a[href="/admin/leads"] [data-admin-count] [aria-hidden="true"]', '2');
         // Число -- для глаз, полный текст -- для экранных дикторов (aria-label на span не работает).
-        self::assertSelectorTextSame('.sidebar .count .visually-hidden', 'новых обращений: 2');
-        self::assertSelectorExists('details.mobile-bar summary .count');
+        self::assertSelectorTextSame('[data-admin-sidebar] [data-admin-count] .sr-only', 'новых обращений: 2');
+        self::assertSelectorExists('details[data-admin-mobile-menu] summary [data-admin-count]');
     }
 
     public function testLoginPageHasNoSidebar(): void
@@ -86,27 +86,24 @@ final class AdminLayoutTest extends WebTestCase
         $this->client->request('GET', '/admin/login');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorNotExists('.sidebar');
-        self::assertSelectorNotExists('.mobile-bar');
-        self::assertSelectorExists('form.card input[name="_username"]');
+        self::assertSelectorNotExists('[data-admin-sidebar]');
+        self::assertSelectorNotExists('[data-admin-mobile-menu]');
+        self::assertSelectorExists('form[action="/admin/login"] input[name="_username"]');
     }
 
-    public function testAssetsComeFromSeparateAdminFilesWithCurrentVersion(): void
+    public function testAdminUsesSharedTailwindStylesheet(): void
     {
         $this->client->request('GET', '/admin/login');
 
         self::assertSelectorNotExists('style');
         self::assertSelectorCount(1, 'link[rel="stylesheet"]');
-        self::assertSelectorCount(1, 'script');
-        // nginx отдаёт CSS/JS как immutable: версия обязана меняться вместе с файлами.
-        $directory = self::getContainer()->getParameter('kernel.project_dir').'/public/assets/admin/';
-        $css = file_get_contents($directory.'admin.css');
-        $js = file_get_contents($directory.'admin.js');
+        self::assertSelectorCount(0, 'script');
+        $root = self::getContainer()->getParameter('kernel.project_dir');
+        $css = file_get_contents($root.'/public/assets/website/app.css');
         self::assertIsString($css);
-        self::assertIsString($js);
-        $version = substr(hash('sha256', $css.$js), 0, 12);
-        self::assertSelectorExists(sprintf('link[rel="stylesheet"][href="/assets/admin/admin.css?v=%s"]', $version));
-        self::assertSelectorExists(sprintf('script[src="/assets/admin/admin.js?v=%s"][defer]', $version));
+        self::assertFileDoesNotExist($root.'/public/assets/admin/admin.css');
+        self::assertFileDoesNotExist($root.'/public/assets/admin/admin.js');
+        self::assertSelectorExists('link[rel="stylesheet"][href^="/assets/website/app.css?v="]');
     }
 
     private function logIn(): void
