@@ -7,7 +7,7 @@
 {% set labelled_by = section_id ~ '-title' %}
 {% set definition = lead_form(form|default('consultation')) %}
 
-<section class="max-w-xl space-y-4" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
+<section class="space-y-4" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
     <h2 class="text-2xl font-bold" id="{{ labelled_by }}">{{ title }}</h2>
     {% if text|default(null) %}<p>{{ text }}</p>{% endif %}
     <form class="space-y-4" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
