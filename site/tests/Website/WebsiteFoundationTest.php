@@ -29,8 +29,12 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorCount(1, 'h1', $path);
             // До новой дизайн-системы на сайте нет иконок, включая футер и cookie.
             self::assertSelectorCount(0, 'body svg', $path);
-            // Весь текст страницы -- в одной колонке читаемой ширины.
-            self::assertSelectorExists('main > div > div.max-w-3xl h1', $path);
+            // Текст страницы -- в колонке читаемой ширины; газета -- на всю ширину header и footer.
+            if ('/gazeta' === $path) {
+                self::assertSelectorNotExists('main .max-w-3xl', $path);
+            } else {
+                self::assertSelectorExists('main > div > div.max-w-3xl h1', $path);
+            }
         }
     }
 
