@@ -18,7 +18,7 @@ final class WebsiteFoundationTest extends WebTestCase
         }
     }
 
-    public function testPublicPagesHaveOneHeadingAndNoIconsInContent(): void
+    public function testPublicPagesHaveOneHeadingAndNoIcons(): void
     {
         $client = static::createClient();
 
@@ -27,9 +27,8 @@ final class WebsiteFoundationTest extends WebTestCase
 
             self::assertResponseIsSuccessful($path);
             self::assertSelectorCount(1, 'h1', $path);
-            // Иконки до новой дизайн-системы остаются только в футере.
-            self::assertSelectorCount(0, 'main svg', $path);
-            self::assertSelectorCount(0, '#cookieNotice svg', $path);
+            // До новой дизайн-системы на сайте нет иконок, включая футер и cookie.
+            self::assertSelectorCount(0, 'body svg', $path);
         }
     }
 
