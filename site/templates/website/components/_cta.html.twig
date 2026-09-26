@@ -1,7 +1,7 @@
-<div class="rounded-lg bg-accent p-4 text-fg-on-accent md:p-6" data-vf-component="cta">
+<div class="rounded-lg bg-red-700 p-4 text-white md:p-6" data-vf-component="cta">
     <div class="flex flex-wrap items-center justify-between gap-6">
-        <div class="max-w-content">
-            <h2 class="text-fg-on-accent" id="{{ heading_id }}">{{ title }}</h2>
+        <div class="max-w-3xl">
+            <h2 class="mb-4 text-3xl font-bold leading-tight md:text-4xl text-white" id="{{ heading_id }}">{{ title }}</h2>
             <p class="mb-0">{{ text }}</p>
         </div>
         {% include 'website/components/_button.html.twig' with {

@@ -2,17 +2,17 @@
    sticky, а не fixed: баннер последний в body, прилипает к низу экрана и при этом занимает
    место в потоке -- в конце страницы встаёт под футер и не закрывает его (WCAG 2.4.11). #}
 <div id="cookieNotice" class="pointer-events-none sticky bottom-4 z-50 my-4 opacity-0 translate-y-4 transition-all duration-250 data-visible:opacity-100 data-visible:translate-y-0" role="region" aria-labelledby="cookieTitle" hidden data-vf-component="cookie">
-    <div class="pointer-events-auto relative mx-auto w-full max-w-site rounded-lg border border-border bg-bg px-4 py-4 shadow-md md:px-6 md:py-4">
+    <div class="pointer-events-auto relative mx-auto w-full max-w-6xl rounded-lg border border-slate-200 bg-white px-4 py-4 shadow-md md:px-6 md:py-4">
         <div class="grid gap-4 md:flex md:items-center md:justify-between md:gap-6 md:pr-16">
             <div class="pr-12 md:pr-0">
-                <h2 id="cookieTitle" class="mb-2 text-t3">На сайте используются файлы cookie</h2>
-                <p id="cookieText" class="mb-0 text-t6 text-fg-secondary">Мы используем cookie и Яндекс Метрику, включая Вебвизор, чтобы сайт работал корректно, для аналитики и оценки рекламы. Продолжая пользоваться сайтом, вы соглашаетесь с <a class="text-accent hover:text-accent-hover" href="{{ privacy_href }}">политикой конфиденциальности</a>. Подробнее — в <a class="text-accent hover:text-accent-hover" href="{{ privacy_href }}#privacy-cookies">разделе о cookie</a>.</p>
+                <h2 id="cookieTitle" class="mb-2 text-xl leading-7 font-bold">На сайте используются файлы cookie</h2>
+                <p id="cookieText" class="mb-0 text-sm leading-6 text-slate-600">Мы используем cookie и Яндекс Метрику, включая Вебвизор, чтобы сайт работал корректно, для аналитики и оценки рекламы. Продолжая пользоваться сайтом, вы соглашаетесь с <a class="text-red-700 hover:text-red-800" href="{{ privacy_href }}">политикой конфиденциальности</a>. Подробнее — в <a class="text-red-700 hover:text-red-800" href="{{ privacy_href }}#privacy-cookies">разделе о cookie</a>.</p>
             </div>
             <div class="flex shrink-0 items-center justify-end md:justify-center">
                 {% include 'website/components/_button.html.twig' with {label: 'Принять', id: 'cookieAccept'} only %}
             </div>
         </div>
-        <button class="absolute right-4 top-4 inline-flex size-control items-center justify-center rounded-md border border-border-strong text-fg-secondary transition-colors hover:bg-bg-inverse hover:text-fg-inverse focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus md:right-6 md:top-6" type="button" id="cookieClose" aria-label="Закрыть уведомление о cookie">
+        <button class="absolute right-4 top-4 inline-flex size-11 items-center justify-center rounded-md border border-slate-500 text-slate-600 transition-colors hover:bg-slate-950 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 md:right-6 md:top-6" type="button" id="cookieClose" aria-label="Закрыть уведомление о cookie">
             {% include 'website/components/_icon.html.twig' with {name: 'close', size: 14} only %}
         </button>
     </div>

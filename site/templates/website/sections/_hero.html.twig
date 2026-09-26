@@ -1,16 +1,15 @@
 {% extends 'website/sections/_base.html.twig' %}
 {% set variant = variant|default('light') %}
-{% set section_class = variant == 'dark' ? 'bg-bg text-fg' : 'bg-bg-subtle text-fg' %}
-{% set theme = variant == 'dark' ? 'dark' : null %}
+{% set section_class = variant == 'dark' ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-950' %}
 {% set section_id = id|default('vf-hero') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'hero' %}
 
 {% block section_content %}
-    <div class="max-w-content" data-vf-variant="{{ variant }}">
-        {% if eyebrow|default(null) %}<p class="mb-4 text-t7 font-medium text-accent-text uppercase">{{ eyebrow }}</p>{% endif %}
-        <h1 class="text-fg" id="{{ labelled_by }}">{{ title }}</h1>
-        <p class="mb-0 text-t4 text-fg-secondary">{{ text }}</p>
+    <div class="max-w-3xl" data-vf-variant="{{ variant }}">
+        {% if eyebrow|default(null) %}<p class="mb-4 text-xs leading-5 font-medium text-red-700 uppercase">{{ eyebrow }}</p>{% endif %}
+        <h1 class="mb-4 text-4xl font-extrabold leading-tight md:text-5xl {{ variant == 'dark' ? 'text-white' : 'text-slate-950' }}" id="{{ labelled_by }}">{{ title }}</h1>
+        <p class="mb-0 text-lg leading-7 {{ variant == 'dark' ? 'text-slate-200' : 'text-slate-600' }}">{{ text }}</p>
         {% if primary_action|default(null) or secondary_action|default(null) %}
             <div class="mt-8 flex flex-wrap gap-3">
                 {% if primary_action|default(null) %}

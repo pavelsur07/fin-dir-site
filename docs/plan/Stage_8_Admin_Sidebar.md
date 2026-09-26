@@ -12,7 +12,7 @@
 - **счётчик новых обращений** у пункта «Обращения»;
 - сворачивать сайдбар **не нужно**.
 
-Админка остаётся временной Twig-админкой со своим inline-CSS: исключение из AGENTS.md §8,
+Админка остаётся временной Twig-админкой на Twig до появления React Admin:
 Stage 4. Публичный сайт, `SITE_RULES.md` и Tailwind это не затрагивает.
 
 ## Решения
@@ -45,7 +45,7 @@ Stage 4. Публичный сайт, `SITE_RULES.md` и Tailwind это не з
 
 ## Файлы
 
-- `site/templates/admin/layout.html.twig` — каркас, CSS сайдбара, мобильной полосы и рабочей зоны, массив меню.
+- `site/templates/admin/layout.html.twig` — каркас, сайдбар, мобильная полоса и рабочая зона, массив меню.
 - `site/templates/admin/_nav.html.twig` — новый: пункты меню, счётчик, пользователь и «Выйти».
 - `site/templates/admin/login.html.twig` — переопределение `page` вместо `header`.
 - `site/templates/admin/leads/_counter.html.twig` — новый.

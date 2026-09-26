@@ -3,14 +3,14 @@
 {% set feedback_id = id ~ '-feedback' %}
 {% set states = {
     default: '',
-    focus: 'border-focus outline-2 outline-offset-2 outline-focus',
+    focus: 'border-red-700 outline-2 outline-offset-2 outline-red-700',
     disabled: '',
-    error: 'border-error focus:border-error',
-    success: 'border-success focus:border-success',
+    error: 'border-orange-300 focus:border-orange-700',
+    success: 'border-green-300 focus:border-green-700',
 } %}
 <div class="grid min-w-0 gap-2" data-vf-component="textarea" data-vf-state="{{ state }}">
-    <label class="font-medium text-fg" for="{{ id }}">{{ label }}</label>
-    <textarea class="min-h-textarea w-full resize-y rounded-md border border-border-strong bg-bg px-3 py-2 text-fg focus:border-focus focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-invalid:border-error disabled:cursor-not-allowed disabled:opacity-disabled {{ states[state]|default('') }}{% if analytics_private|default(false) %} ym-disable-keys{% endif %}" id="{{ id }}" name="{{ name|default(id) }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>{{ value is defined ? value : '' }}</textarea>
-    {% if state == 'error' %}<div class="text-t6 text-error" id="{{ feedback_id }}">{{ feedback|default('Добавьте описание.') }}</div>{% endif %}
-    {% if state == 'success' %}<div class="text-t6 text-success" id="{{ feedback_id }}">{{ feedback|default('Текст принят.') }}</div>{% endif %}
+    <label class="font-medium text-slate-950" for="{{ id }}">{{ label }}</label>
+    <textarea class="min-h-32 w-full resize-y rounded-md border border-slate-500 bg-white px-3 py-2 text-slate-950 focus:border-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:border-orange-700 disabled:cursor-not-allowed disabled:opacity-50 {{ states[state]|default('') }}{% if analytics_private|default(false) %} ym-disable-keys{% endif %}" id="{{ id }}" name="{{ name|default(id) }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if required|default(false) %} required{% endif %}{% if disabled|default(false) %} disabled{% endif %}{% if state in ['error', 'success'] %} aria-describedby="{{ feedback_id }}"{% endif %}{% if state == 'error' %} aria-invalid="true"{% endif %}>{{ value is defined ? value : '' }}</textarea>
+    {% if state == 'error' %}<div class="text-sm leading-6 text-orange-800" id="{{ feedback_id }}">{{ feedback|default('Добавьте описание.') }}</div>{% endif %}
+    {% if state == 'success' %}<div class="text-sm leading-6 text-green-800" id="{{ feedback_id }}">{{ feedback|default('Текст принят.') }}</div>{% endif %}
 </div>

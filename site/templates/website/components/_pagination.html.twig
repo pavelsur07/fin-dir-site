@@ -4,7 +4,7 @@
     {% if prev_href %}
         {% include 'website/components/_button.html.twig' with {label: '← Новее', href: prev_href, variant: 'secondary'} only %}
     {% endif %}
-    <p class="mb-0 text-t6 text-fg-secondary">Страница {{ current }} из {{ pages }}</p>
+    <p class="mb-0 text-sm leading-6 text-slate-600">Страница {{ current }} из {{ pages }}</p>
     {% if next_href %}
         {% include 'website/components/_button.html.twig' with {label: 'Раньше →', href: next_href, variant: 'secondary'} only %}
     {% endif %}

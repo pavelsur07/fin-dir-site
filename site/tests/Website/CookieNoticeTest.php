@@ -31,8 +31,8 @@ final class CookieNoticeTest extends WebTestCase
 
         // Крестик позиционируется внутри карточки, а не от fixed-обёртки на всю ширину экрана.
         self::assertSelectorExists('#cookieNotice > div.relative #cookieClose.absolute');
-        // Touch target крестика -- не меньше 44px (SITE_RULES, --vf-control-min-height).
-        self::assertSelectorExists('#cookieClose.size-control');
+        // Touch target крестика -- не меньше 44px (Tailwind size-11).
+        self::assertSelectorExists('#cookieClose.size-11');
 
         $root = (string) self::getContainer()->getParameter('kernel.project_dir');
         $css = (string) file_get_contents($root.'/public/assets/website/app.css');

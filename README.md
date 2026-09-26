@@ -26,7 +26,7 @@ make ci        # весь набор, как в .github/workflows/ci.yml
 ```
 
 По отдельности: `make lint` (composer validate и audit, lint:yaml/twig/container),
-`make cs` (стиль, чинится через `make cs-fix`), `make phpstan` (level 8),
+`make cs` (форматирование кода, чинится через `make cs-fix`), `make phpstan` (level 8),
 `make deptrac` (границы слоёв), `make test` (PHPUnit; `CMD="--filter ..."` для
 точечного прогона).
 

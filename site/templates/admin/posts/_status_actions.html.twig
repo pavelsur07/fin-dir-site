@@ -4,7 +4,7 @@
     published: [['unpublish', 'Снять с публикации', 'secondary'], ['archive', 'В архив', 'secondary']],
     archived: [['restore', 'Вернуть в черновики', 'secondary']],
 } %}
-<div class="actions">
+<div class="flex flex-wrap gap-2">
     {% for transition in transitions[status.value] %}
         <form method="post" action="{{ path('admin_post_status', {id: id, action: transition[0]}) }}">
             <input type="hidden" name="_token" value="{{ csrf_token('post-status') }}">

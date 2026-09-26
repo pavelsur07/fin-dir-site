@@ -1,2 +1,2 @@
 {# aria-label на span без роли не озвучивается: число для глаз, текст -- для экранных дикторов. #}
-{% if count > 0 %}<span class="count"><span aria-hidden="true">{{ count }}</span><span class="visually-hidden">новых обращений: {{ count }}</span></span>{% endif %}
+{% if count > 0 %}<span data-admin-count class="inline-flex min-w-6 items-center justify-center rounded-full bg-white px-2 text-xs font-bold text-slate-950"><span aria-hidden="true">{{ count }}</span><span class="sr-only">новых обращений: {{ count }}</span></span>{% endif %}

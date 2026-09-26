@@ -5,7 +5,7 @@
     demo (true -- только показ на UI-kit: без action, отправка не выполняется).
 #}
 {% extends 'website/sections/_base.html.twig' %}
-{% set section_class = 'bg-bg' %}
+{% set section_class = 'bg-white' %}
 {% set section_id = id|default('vf-lead-form') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set section_name = 'lead-form' %}
@@ -14,18 +14,18 @@
 
 {% block section_content %}
     <div class="grid items-start gap-8 md:grid-cols-2" data-vf-layout="form-context">
-        <div class="max-w-content">
-            {% if eyebrow|default(null) %}<p class="mb-4 text-t7 font-medium text-fg-secondary uppercase">{{ eyebrow }}</p>{% endif %}
-            <h2 id="{{ labelled_by }}">{{ title }}</h2>
-            <p class="text-t4 text-fg-secondary">{{ text }}</p>
+        <div class="max-w-3xl">
+            {% if eyebrow|default(null) %}<p class="mb-4 text-xs leading-5 font-medium text-slate-600 uppercase">{{ eyebrow }}</p>{% endif %}
+            <h2 id="{{ labelled_by }}" class="mb-4 text-3xl font-bold leading-tight md:text-4xl">{{ title }}</h2>
+            <p class="text-lg leading-7 text-slate-600">{{ text }}</p>
             {% if context_items|default([]) %}
                 <ul class="grid gap-3" role="list">
-                    {% for item in context_items %}<li class="flex gap-3"><span class="text-fg-secondary" aria-hidden="true">—</span><span>{{ item }}</span></li>{% endfor %}
+                    {% for item in context_items %}<li class="flex gap-3"><span class="text-slate-600" aria-hidden="true">—</span><span>{{ item }}</span></li>{% endfor %}
                 </ul>
             {% endif %}
         </div>
 
-        <form class="grid gap-4 rounded-lg border border-border p-4 md:p-6"{% if demo %} data-vf-demo-form{% else %} method="post" action="{{ path('lead_submit') }}" data-vf-lead-form{% endif %} data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
+        <form class="grid gap-4 rounded-lg border border-slate-200 p-4 md:p-6"{% if demo %} data-vf-demo-form{% else %} method="post" action="{{ path('lead_submit') }}" data-vf-lead-form{% endif %} data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
             <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
             <input type="hidden" name="form" value="{{ definition.key }}">
             {# Заполняет JS: id отправки (защита от дублей), время открытия (антиспам), источник. #}
@@ -81,15 +81,15 @@
                     label: 'Согласен на обработку персональных данных',
                     required: true,
                 } only %}
-                <p class="mb-0 text-t6 text-fg-secondary"><a href="{{ path('consent') }}">Согласие на обработку данных</a> и <a href="{{ path('privacy') }}">политика конфиденциальности</a>.</p>
+                <p class="mb-0 text-sm leading-6 text-slate-600"><a class="text-red-700 underline" href="{{ path('consent') }}">Согласие на обработку данных</a> и <a class="text-red-700 underline" href="{{ path('privacy') }}">политика конфиденциальности</a>.</p>
             </div>
             {% include 'website/components/_button.html.twig' with {
                 label: action_label|default('Отправить заявку'),
                 type: demo ? 'button' : 'submit',
             } only %}
-            <p class="mb-0 rounded-md bg-success-bg p-3 text-t6 text-success" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
-            <p class="mb-0 rounded-md bg-error-bg p-3 text-t6 text-error" role="alert" data-vf-lead-error hidden></p>
-            {% if note|default(null) %}<p class="mb-0 text-t6 text-fg-secondary" data-vf-form-note>{{ note }}</p>{% endif %}
+            <p class="mb-0 rounded-md bg-green-50 p-3 text-sm leading-6 text-green-800" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
+            <p class="mb-0 rounded-md bg-orange-50 p-3 text-sm leading-6 text-orange-800" role="alert" data-vf-lead-error hidden></p>
+            {% if note|default(null) %}<p class="mb-0 text-sm leading-6 text-slate-600" data-vf-form-note>{{ note }}</p>{% endif %}
         </form>
     </div>
 {% endblock %}

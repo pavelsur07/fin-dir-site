@@ -1,6 +1,0 @@
-{% set logo_class = class|default('') %}
-{% if href|default(false) %}
-    <a class="vf-logo {{ logo_class }}" href="{{ href }}" aria-label="{{ label }}"><span class="vf-logo-sign">ВФ</span><span class="vf-logo-word">Ваш Финдир</span></a>
-{% else %}
-    <span class="vf-logo {{ logo_class }}"{% if preview|default(false) %} data-vf-logo-preview{% endif %}><span class="vf-logo-sign">ВФ</span><span class="vf-logo-word">Ваш Финдир</span></span>
-{% endif %}

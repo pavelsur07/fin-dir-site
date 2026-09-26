@@ -41,7 +41,7 @@
   - Grid: необязательные `item.href` (заголовок-ссылка вместо повторяющихся «Читать»), `item.meta` / `meta_datetime`, `pagination`;
   - роли Article List и Article;
   - компонент Pagination;
-  - custom utility `vf-article-body`: HTML из Markdown без классов оформляется по элементам, только на существующих tokens;
+  - HTML из Markdown выводится в семантическом контейнере статьи;
   - у секции Article есть `heading_level: 'h2'` для страниц, где H1 уже есть (UI-kit).
 - **Контроллер статьи** вызывает две Query и Markdown-адаптер. Это отступление от правила «один Query» (PATTERNS §6), но отдельный агрегирующий Query ради одной страницы был бы лишним.
 - **Навигация блога** вынесена в `pages/_blog_navigation.html.twig`. CTA в шапке ведёт на `/#lead-form` — раньше на страницах блога была битая ссылка `#lead-form`.

@@ -52,6 +52,9 @@
                 window.clearTimeout(closeTimer);
                 panel.removeEventListener('transitionend', finishClose);
 
+                panel.classList.remove('translate-x-0');
+                panel.classList.add('translate-x-full');
+
                 if (dialog.open) {
                     dialog.close();
                 }
@@ -72,6 +75,8 @@
 
                 restoreFocus = shouldRestoreFocus;
                 dialog.dataset.state = 'closing';
+                panel.classList.remove('translate-x-0');
+                panel.classList.add('translate-x-full');
 
                 if (reducedMotion.matches) {
                     finishClose();
@@ -103,6 +108,8 @@
                     }
 
                     dialog.dataset.state = 'open';
+                    panel.classList.remove('translate-x-full');
+                    panel.classList.add('translate-x-0');
                     closeButton.focus({ preventScroll: true });
                 });
             });
@@ -431,7 +438,7 @@
             }
 
             const feedback = document.createElement('div');
-            feedback.className = 'text-t6 text-error';
+            feedback.className = 'text-sm leading-6 text-orange-800';
             feedback.id = `${field.id}-feedback`;
             feedback.dataset.vfLeadFieldError = '';
             feedback.textContent = message;

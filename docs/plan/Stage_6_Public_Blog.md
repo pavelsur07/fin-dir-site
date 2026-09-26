@@ -12,8 +12,8 @@ Stage 6 выводит опубликованные статьи на сайт �
 - подпись всех статей — **«Редакция Ваш Финдир»**, поля автора в модели нет;
 - из `post-1` переносится **только текст**. Удаляются: фейковые просмотры «3 428», «Channel dashboard», битые рубрики `/blog/*`, «Поделиться» с неверным URL, ссылки «Пересказ в ИИ», заглушки «Похожие» с `href="#"`, картинки с Unsplash. Форма, которая шлёт данные на несуществующий `/landing/contact` и всё равно показывает «Спасибо», заменяется **CTA на Telegram**, как на главной.
 
-**Ограничения `SITE_RULES.md`, которые определяют дизайн:**
-- HTML из Markdown не несёт Tailwind-классов, а сканирование Tailwind ограничено `templates/website/`. Поэтому тело статьи стилизуется одним блоком custom CSS `.vf-article-body` через `@apply` на существующих tokens. Это обоснованный случай §11, фиксируется в `SITE_RULES.md`;
+**Ограничения публичного сайта:**
+- представление статьи использует стандартные классы Tailwind; HTML из Markdown остаётся семантическим;
 - JSON-LD для поста: `BlogPosting` + `BreadcrumbList`, только через `_json_ld.html.twig`, данные — из PHP (§15.2);
 - никаких фейковых данных (§7.4, §12), новый UI-паттерн — только через алгоритм §13 с обновлением `SITE_RULES.md` и `/ui-kit`;
 - после правки `app.css` нужны `make assets` и новый `vf_asset_version`.
@@ -39,7 +39,7 @@ Stage 6 выводит опубликованные статьи на сайт �
 - `HeadingPermalink` (`insert: none`, `apply_id_to_heading: true`) проставляет id заголовкам;
 - оглавление `toc` собирается из h2 по AST;
 - `#` в тексте понижается до h2, чтобы на странице был один H1;
-- таблица оборачивается в `div.vf-table-wrap`, чтобы на мобильных она прокручивалась по горизонтали;
+- таблица оборачивается в `div` со стандартными классами Tailwind, чтобы на мобильных она прокручивалась по горизонтали;
 - `html_input: strip` и `allow_unsafe_links: false` остаются.
 
 Этот же рендер использует админский предпросмотр, поэтому превью совпадает с сайтом.
@@ -63,7 +63,7 @@ Stage 6 выводит опубликованные статьи на сайт �
   - breadcrumb «Главная / Газета / заголовок»;
   - H1, анонс, строка `<time datetime>` · «Редакция Ваш Финдир»;
   - aside «Содержание», если h2 больше одного;
-  - тело статьи `div.vf-article-body` с `max-w-content`;
+  - тело статьи в контейнере ограниченной ширины;
   - «Читайте также» через `_grid` (`marker: article-preview`), если есть 2–4 другие статьи;
   - `sections/_cta.html.twig` с Telegram.
 - **SEO:**
@@ -72,11 +72,10 @@ Stage 6 выводит опубликованные статьи на сайт �
   - canonical, `og_type: article`;
   - JSON-LD из `PostStructuredData`.
 - **Навигация:** обе страницы переопределяют блок `navigation` с активной «Газетой», как сейчас.
-- **Расширения по SITE_RULES §13, минимальные:**
+- **Расширения представления:**
   1. Grid: необязательное поле `item.meta` (мелкий muted-текст для даты). Смысл Grid не меняется;
   2. новый компонент `components/_pagination.html.twig`: «← Новее / Старее →» и «Страница N из M» на production Button `outline-primary`, `nav aria-label`;
-  3. `.vf-article-body` в `app.css`: h2, h3, p, ul, ol, a, blockquote (callout на `brand-red-soft`), таблица, code;
-  4. во всех трёх случаях — правила в `SITE_RULES.md` (§5, §7.3, §11, §15.3) и показ на `/ui-kit`.
+  3. образцы представления размещаются на `/ui-kit`.
 
 ### Перенос `post-1`
 
@@ -88,7 +87,7 @@ Stage 6 выводит опубликованные статьи на сайт �
 
 ### Админка (небольшие правки)
 
-- Предпросмотр через `renderArticle` со стилями, близкими к сайту.
+- Предпросмотр через `renderArticle` через тот же шаблон статьи.
 - У опубликованной статьи ссылка «Открыть на сайте» в списке и на странице редактирования.
 
 ## Шаги
@@ -97,8 +96,8 @@ Stage 6 выводит опубликованные статьи на сайт �
 2. Adapter `renderArticle` + unit-тесты.
 3. Public Query и DTO, `PostStructuredData` + integration- и unit-тесты.
 4. Контроллеры `PostIndexController`, `PostShowController`, `SitemapController`; redirect в `routes.yaml`; удалить `PostController` и `public/sitemap.xml`.
-5. Шаблоны страниц, `_pagination`, `item.meta` в Grid, `.vf-article-body`; `make assets`, `make asset-version`, обновить `vf_asset_version`.
-6. `SITE_RULES.md` (§5, §7.3, §11, §15.3) и `/ui-kit` (пагинация, образец тела статьи).
+5. Шаблоны страниц, `_pagination`, `item.meta` в Grid; `make assets`, `make asset-version`, обновить `vf_asset_version`.
+6. `SITE_RULES.md` и `/ui-kit` (пагинация, образец тела статьи).
 7. Data-миграция `post-1`; `make migrate`.
 8. Админка: предпросмотр и ссылка на сайт.
 9. Тесты (ниже), `make ci`, E2E в dev.
@@ -110,7 +109,7 @@ Stage 6 выводит опубликованные статьи на сайт �
 |---|---|
 | Unit | `MarkdownRendererTest`: id заголовков, оглавление из h2, понижение `#`, обёртка таблицы, вырезание HTML и `javascript:`. `PostStructuredDataTest`: поля BlogPosting и BreadcrumbList, ISO-даты, fallback description |
 | Integration | `PublicPostListQueryTest`: только опубликованные, порядок, пагинация, `latestExcept`. `PublicPostQueryTest`: draft и archived → `PostNotFound`. `PublicPostSitemapQueryTest` |
-| Functional | `PublicBlogTest`: список без черновиков; статья 200 с H1, оглавлением, JSON-LD `BlogPosting` и `BreadcrumbList`, canonical, `og:type=article`; draft, archived и неизвестный slug → 404; `/gazeta/post-1` → 301 на новый адрес; `?page` вне диапазона → 404; `Cache-Control: public`, без `Set-Cookie`, 304 по `If-Modified-Since`; пустой список → empty state; `<script>` из Markdown не попадает на страницу. `SitemapTest`: статические URL и опубликованная статья есть, черновика нет. `BlogPostTest` и `WebsiteSeoTest` (sitemap) переписываются. `SmokeTest` пропускает redirect-маршруты. Существующие проверки SITE_RULES (inline CSS/JS, Bootstrap, arbitrary values, asset version) проходят на новых шаблонах |
+| Functional | `PublicBlogTest`: список без черновиков; статья 200 с H1, оглавлением, JSON-LD `BlogPosting` и `BreadcrumbList`, canonical, `og:type=article`; draft, archived и неизвестный slug → 404; `/gazeta/post-1` → 301 на новый адрес; `?page` вне диапазона → 404; `Cache-Control: public`, без `Set-Cookie`, 304 по `If-Modified-Since`; пустой список → empty state; `<script>` из Markdown не попадает на страницу. `SitemapTest`: статические URL и опубликованная статья есть, черновика нет. `BlogPostTest` и `WebsiteSeoTest` (sitemap) переписываются. `SmokeTest` пропускает redirect-маршруты. Проверки SITE_RULES проходят на новых шаблонах |
 | E2E | в dev: опубликовать статью в админке → она в `/gazeta` → открывается → в sitemap; снять с публикации → 404; `/gazeta/post-1` → 301. Браузерная проверка на 320/375/768/1024/1440 — если на сервере будет доступен браузер; иначе в отчёте честно пометить как не выполненную |
 
 ## Проверка
