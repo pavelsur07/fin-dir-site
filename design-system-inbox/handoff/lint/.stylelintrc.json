@@ -1,0 +1,28 @@
+{
+  "$comment": "Ваш Финдир · Stylelint. Любое значение цвета, отступа, радиуса, тени, шрифта и слоя — только через var(--vf-*).",
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "ignoreFiles": ["**/tokens/tokens.css", "**/dist/**"],
+  "rules": {
+    "color-no-hex": true,
+    "color-named": "never",
+    "function-disallowed-list": ["rgb", "rgba", "hsl", "hsla", "oklch", "color-mix"],
+    "declaration-no-important": true,
+    "selector-max-id": 0,
+    "selector-class-pattern": ["^(vf-[a-z0-9]+(-[a-z0-9]+)*(__[a-z0-9-]+)?(--[a-z0-9-]+)?|is-[a-z-]+)$", { "message": "Классы: vf-block__element--modifier" }],
+    "custom-property-pattern": ["^vf-[a-z0-9-]+$|^s$", { "message": "Переменные — только из пространства --vf-*" }],
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "/color$/", "fill", "stroke", "background", "background-color", "border-color", "outline-color",
+        "box-shadow", "z-index", "border-radius", "/^font$/", "font-family", "font-size",
+        "gap", "row-gap", "column-gap", "/^padding/", "/^margin/", "transition-duration", "animation-duration"
+      ],
+      {
+        "ignoreValues": ["0", "auto", "none", "inherit", "initial", "unset", "transparent", "currentColor", "100%", "50%", "1px solid"],
+        "ignoreFunctions": false,
+        "disableFix": true,
+        "message": "«${property}: ${value}» — используйте токен var(--vf-*) из tokens.css"
+      }
+    ]
+  }
+}

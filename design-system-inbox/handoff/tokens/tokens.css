@@ -1,0 +1,231 @@
+/* Ваш Финдир · Design Tokens v2.0
+   Сгенерировано из tokens.json (Style Dictionary). Не редактировать вручную.
+   Уровни: 1) примитивы --vf-{палитра}-{шаг}  2) семантика --vf-color-*  3) компонентные --vf-{компонент}-*
+   В коде продукта использовать ТОЛЬКО уровни 2 и 3. */
+
+:root {
+  /* ── 1. Примитивы: палитра ─────────────────────────── */
+  --vf-white: #FFFFFF;
+  --vf-ink-50: #F4F6F9;
+  --vf-ink-100: #E8EBF1;
+  --vf-ink-200: #D2D8E2;
+  --vf-ink-300: #AEB7C8;
+  --vf-ink-400: #8490A8;
+  --vf-ink-500: #5E6A85;
+  --vf-ink-600: #434F6B;
+  --vf-ink-700: #2E3953;
+  --vf-ink-800: #1F2840;
+  --vf-ink-900: #141B2E;
+  --vf-ink-950: #0B1020;
+  --vf-crimson-50: #FEF2F3;
+  --vf-crimson-100: #FDE4E7;
+  --vf-crimson-200: #FAC8CE;
+  --vf-crimson-300: #F59DA8;
+  --vf-crimson-400: #EE6B7C;
+  --vf-crimson-500: #E23B52;
+  --vf-crimson-600: #CC1A36;
+  --vf-crimson-700: #B00020;
+  --vf-crimson-800: #8A001B;
+  --vf-crimson-900: #5E0012;
+  --vf-crimson-950: #3D000B;
+
+  /* ── 2. Семантика: поверхности, текст, границы ─────── */
+  --vf-color-bg: var(--vf-white);
+  --vf-color-bg-subtle: var(--vf-ink-50);
+  --vf-color-bg-muted: var(--vf-ink-100);
+  --vf-color-bg-inverse: var(--vf-ink-950);
+  --vf-color-bg-inverse-raised: var(--vf-ink-900);
+  --vf-color-overlay: rgba(11, 16, 32, 0.56);
+
+  --vf-color-fg: var(--vf-ink-950);
+  --vf-color-fg-secondary: var(--vf-ink-600);
+  --vf-color-fg-muted: var(--vf-ink-500);
+  --vf-color-fg-disabled: var(--vf-ink-400);
+  --vf-color-fg-inverse: var(--vf-white);
+  --vf-color-fg-on-accent: var(--vf-white);
+
+  --vf-color-border: var(--vf-ink-200);
+  --vf-color-border-subtle: var(--vf-ink-100);
+  --vf-color-border-strong: var(--vf-ink-300);
+
+  --vf-color-accent: var(--vf-crimson-700);
+  --vf-color-accent-hover: var(--vf-crimson-800);
+  --vf-color-accent-active: var(--vf-crimson-900);
+  --vf-color-accent-text: var(--vf-crimson-700);
+  --vf-color-accent-subtle: var(--vf-crimson-100);
+  --vf-color-accent-subtle-fg: var(--vf-crimson-800);
+  --vf-color-focus: var(--vf-crimson-700);
+  --vf-color-focus-gap: var(--vf-white);
+
+  /* Статусы: fg — текст/иконка, bg — подложка, border — рамка */
+  --vf-color-success: #0F6B40;
+  --vf-color-success-bg: #E3F3EA;
+  --vf-color-success-border: #A8D9BD;
+  --vf-color-warning: #8A4B00;
+  --vf-color-warning-bg: #FFF2DB;
+  --vf-color-warning-border: #F5C979;
+  --vf-color-error: #B3300A;
+  --vf-color-error-bg: #FDECE6;
+  --vf-color-error-border: #F4B39E;
+  --vf-color-info: #1D4FA8;
+  --vf-color-info-bg: #E6EEFB;
+  --vf-color-info-border: #A9C2EE;
+
+  /* Данные / графики */
+  --vf-chart-1: #2E3953;
+  --vf-chart-2: #B00020;
+  --vf-chart-3: #3A7CA5;
+  --vf-chart-4: #D98E04;
+  --vf-chart-5: #2A9D8F;
+  --vf-chart-6: #7B5BA8;
+  --vf-chart-7: #8490A8;
+  --vf-chart-8: #6B8F3A;
+  --vf-chart-income: #1F9D63;
+  --vf-chart-expense: #AEB7C8;
+
+  /* ── Шрифты и типографика ──────────────────────────── */
+  --vf-font-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --vf-font-display: Manrope, Inter, system-ui, sans-serif;
+  --vf-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --vf-tracking-display: -0.02em;
+
+  --vf-t1: 800 48px/56px var(--vf-font-display);
+  --vf-t2: 800 36px/44px var(--vf-font-display);
+  --vf-t3: 700 20px/28px var(--vf-font-display);
+  --vf-t4: 400 18px/28px var(--vf-font-sans);
+  --vf-t5: 400 16px/26px var(--vf-font-sans);
+  --vf-t6: 500 14px/22px var(--vf-font-sans);
+  --vf-t7: 500 12px/18px var(--vf-font-sans);
+  --vf-t8: 800 30px/38px var(--vf-font-display);
+  --vf-t1-mobile: 800 36px/44px var(--vf-font-display);
+  --vf-t2-mobile: 800 30px/38px var(--vf-font-display);
+  --vf-font-button: 600 16px/26px var(--vf-font-sans);
+  --vf-font-button-sm: 600 14px/22px var(--vf-font-sans);
+  --vf-font-control: 400 16px/26px var(--vf-font-sans);
+  --vf-font-table: 400 14px/22px var(--vf-font-sans);
+  --vf-font-code: 400 13px/20px var(--vf-font-mono);
+
+  /* ── Отступы (модуль 4, шкала Tailwind) ────────────── */
+  --vf-space-0: 0;
+  --vf-space-0-5: 2px;
+  --vf-space-1: 4px;
+  --vf-space-2: 8px;
+  --vf-space-3: 12px;
+  --vf-space-4: 16px;
+  --vf-space-5: 20px;
+  --vf-space-6: 24px;
+  --vf-space-8: 32px;
+  --vf-space-10: 40px;
+  --vf-space-12: 48px;
+  --vf-space-16: 64px;
+  --vf-space-24: 96px;
+
+  /* ── Размеры контролов ─────────────────────────────── */
+  --vf-control-lg: 48px;
+  --vf-control-md: 40px;
+  --vf-control-sm: 32px;
+  --vf-touch-min: 44px;
+  --vf-icon-sm: 16px;
+  --vf-icon-md: 20px;
+  --vf-icon-lg: 24px;
+
+  /* ── Радиусы ───────────────────────────────────────── */
+  --vf-radius-none: 0;
+  --vf-radius-xs: 4px;
+  --vf-radius-sm: 8px;
+  --vf-radius-md: 12px;
+  --vf-radius-lg: 16px;
+  --vf-radius-xl: 24px;
+  --vf-radius-full: 9999px;
+
+  /* ── Тени ──────────────────────────────────────────── */
+  --vf-shadow-none: none;
+  --vf-shadow-sm: 0 1px 2px rgba(11, 16, 32, 0.06), 0 1px 3px rgba(11, 16, 32, 0.10);
+  --vf-shadow-md: 0 4px 12px -2px rgba(11, 16, 32, 0.12), 0 2px 4px rgba(11, 16, 32, 0.06);
+  --vf-shadow-lg: 0 24px 48px -12px rgba(11, 16, 32, 0.28);
+  --vf-shadow-focus: 0 0 0 2px var(--vf-color-focus-gap), 0 0 0 4px var(--vf-color-focus);
+
+  /* ── Анимация ──────────────────────────────────────── */
+  --vf-duration-instant: 0ms;
+  --vf-duration-fast: 120ms;
+  --vf-duration-base: 200ms;
+  --vf-duration-slow: 320ms;
+  --vf-duration-deliberate: 480ms;
+  --vf-ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --vf-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --vf-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Слои ──────────────────────────────────────────── */
+  --vf-z-base: 0;
+  --vf-z-sticky: 100;
+  --vf-z-dropdown: 200;
+  --vf-z-overlay: 300;
+  --vf-z-modal: 400;
+  --vf-z-toast: 500;
+  --vf-z-tooltip: 600;
+
+  /* ── Сетка ─────────────────────────────────────────── */
+  --vf-container-max: 1200px;
+  --vf-container-pad: 16px;
+  --vf-gutter: 16px;
+  --vf-measure: 720px; /* колонка текста статьи */
+
+  /* ── 3. Компонентные токены ────────────────────────── */
+  --vf-button-primary-bg: var(--vf-color-accent);
+  --vf-button-primary-bg-hover: var(--vf-color-accent-hover);
+  --vf-button-primary-bg-active: var(--vf-color-accent-active);
+  --vf-button-primary-fg: var(--vf-color-fg-on-accent);
+  --vf-button-secondary-border: var(--vf-color-border-strong);
+  --vf-button-secondary-bg-hover: var(--vf-color-bg-subtle);
+  --vf-input-bg: var(--vf-color-bg);
+  --vf-input-border: var(--vf-color-border-strong);
+  --vf-input-border-focus: var(--vf-color-accent);
+  --vf-input-ring: var(--vf-crimson-200);
+  --vf-card-bg: var(--vf-color-bg);
+  --vf-card-border: var(--vf-color-border);
+  --vf-logo-sign: var(--vf-ink-950);
+  --vf-logo-word: var(--vf-ink-950);
+}
+
+@media (min-width: 768px) {
+  :root { --vf-container-pad: 32px; --vf-gutter: 24px; }
+}
+@media (min-width: 1440px) {
+  :root { --vf-gutter: 32px; }
+}
+
+/* Тёмная тема и тёмные секции: переопределяется только семантика */
+[data-theme="dark"] {
+  --vf-color-bg: var(--vf-ink-950);
+  --vf-color-bg-subtle: var(--vf-ink-900);
+  --vf-color-bg-muted: var(--vf-ink-800);
+  --vf-color-bg-inverse: var(--vf-white);
+  --vf-color-fg: var(--vf-white);
+  --vf-color-fg-secondary: var(--vf-ink-200);
+  --vf-color-fg-muted: var(--vf-ink-300);
+  --vf-color-fg-disabled: var(--vf-ink-500);
+  --vf-color-fg-inverse: var(--vf-ink-950);
+  --vf-color-border: var(--vf-ink-700);
+  --vf-color-border-subtle: var(--vf-ink-800);
+  --vf-color-border-strong: var(--vf-ink-600);
+  --vf-color-accent-hover: var(--vf-crimson-600);
+  --vf-color-accent-active: var(--vf-crimson-500);
+  --vf-color-accent-text: var(--vf-crimson-400);
+  --vf-color-accent-subtle: var(--vf-crimson-950);
+  --vf-color-accent-subtle-fg: var(--vf-crimson-200);
+  --vf-color-focus: var(--vf-crimson-400);
+  --vf-color-focus-gap: var(--vf-ink-950);
+  --vf-input-ring: var(--vf-crimson-900);
+  --vf-card-bg: var(--vf-ink-900);
+  --vf-logo-sign: var(--vf-crimson-700);
+  --vf-logo-word: var(--vf-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --vf-duration-fast: 0ms;
+    --vf-duration-base: 0ms;
+    --vf-duration-slow: 0ms;
+    --vf-duration-deliberate: 0ms;
+  }
+}
