@@ -29,10 +29,10 @@ final class CookieNoticeTest extends WebTestCase
 
         self::assertSelectorExists('#cookieNotice[hidden].opacity-0.data-visible\\:opacity-100.data-visible\\:translate-y-0');
 
-        // Крестик позиционируется внутри карточки, а не от fixed-обёртки на всю ширину экрана.
+        // Кнопка «Закрыть» позиционируется внутри карточки, а не от fixed-обёртки на всю ширину экрана.
         self::assertSelectorExists('#cookieNotice > div.relative #cookieClose.absolute');
-        // Touch target крестика -- не меньше 44px (Tailwind size-11).
-        self::assertSelectorExists('#cookieClose.size-11');
+        // Touch target кнопки «Закрыть» -- не меньше 44px по высоте (Tailwind min-h-11).
+        self::assertSelectorExists('#cookieClose.min-h-11');
 
         $root = (string) self::getContainer()->getParameter('kernel.project_dir');
         $css = (string) file_get_contents($root.'/public/assets/website/app.css');

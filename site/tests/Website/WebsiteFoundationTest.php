@@ -18,6 +18,21 @@ final class WebsiteFoundationTest extends WebTestCase
         }
     }
 
+    public function testPublicPagesHaveOneHeadingAndNoIconsInContent(): void
+    {
+        $client = static::createClient();
+
+        foreach (['/', '/about', '/services', '/cases', '/partners', '/offer', '/privacy', '/consent', '/gazeta'] as $path) {
+            $client->request('GET', $path);
+
+            self::assertResponseIsSuccessful($path);
+            self::assertSelectorCount(1, 'h1', $path);
+            // Иконки до новой дизайн-системы остаются только в футере.
+            self::assertSelectorCount(0, 'main svg', $path);
+            self::assertSelectorCount(0, '#cookieNotice svg', $path);
+        }
+    }
+
     public function testWebsiteAssetsAreBuiltFromPinnedTailwind(): void
     {
         $root = dirname(__DIR__, 2);

@@ -1,4 +1,4 @@
-{% extends 'website/layouts/base.html.twig' %}
+{% extends 'website/layouts/page.html.twig' %}
 
 {% block title %}Партнёрам — Ваш Финдир{% endblock %}
 {% block description %}Сотрудничество для сервисов и экспертов.{% endblock %}
@@ -19,11 +19,7 @@
     } only %}
 {% endblock %}
 
-{% block body %}
-    <section class="py-12 md:py-16 lg:py-20" data-vf-section="partners">
-        <div class="mx-auto w-full max-w-6xl px-4 md:px-8">
-            <h1 class="mb-4 text-4xl leading-tight md:text-5xl font-extrabold">Партнёрам</h1>
-            <p class="max-w-3xl text-lg leading-7 text-slate-600">Раздел в разработке. Скоро здесь появится информация для партнёров.</p>
-        </div>
-    </section>
+{% block content %}
+    <h1 class="text-3xl font-bold">Партнёрам</h1>
+    <p>Раздел в разработке. Скоро здесь появится информация для партнёров.</p>
 {% endblock %}

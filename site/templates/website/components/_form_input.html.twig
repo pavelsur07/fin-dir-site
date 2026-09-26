@@ -1,5 +1,5 @@
 {# analytics_private: вебвизор Метрики не записывает ввод в поле (класс ym-disable-keys). #}
-<div class="grid min-w-0 gap-2" data-vf-component="form-input">
-    <label class="font-medium text-slate-950" for="{{ id }}">{{ label }}</label>
-    <input class="min-h-11 w-full rounded-md border border-slate-500 bg-white px-3 py-2 text-slate-950 focus:border-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-700 aria-invalid:border-orange-700 disabled:cursor-not-allowed disabled:opacity-50{% if analytics_private|default(false) %} ym-disable-keys{% endif %}" id="{{ id }}" name="{{ name|default(id) }}" type="{{ type|default('text') }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete|default(null) %} autocomplete="{{ autocomplete }}"{% endif %}{% if value is defined %} value="{{ value }}"{% endif %}{% if required|default(false) %} required{% endif %}>
+<div class="grid gap-1" data-vf-component="form-input">
+    <label for="{{ id }}">{{ label }}</label>
+    <input class="w-full border px-3 py-2 aria-invalid:border-orange-700{% if analytics_private|default(false) %} ym-disable-keys{% endif %}" id="{{ id }}" name="{{ name|default(id) }}" type="{{ type|default('text') }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if autocomplete|default(null) %} autocomplete="{{ autocomplete }}"{% endif %}{% if value is defined %} value="{{ value }}"{% endif %}{% if required|default(false) %} required{% endif %}>
 </div>

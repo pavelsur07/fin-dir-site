@@ -32,17 +32,4 @@ final class PrivacyPolicyTest extends WebTestCase
         self::assertStringNotContainsString('Предоставляя свои данные, Пользователь подтверждает согласие на получение', $main);
         self::assertStringNotContainsString('отчество', $main);
     }
-
-    /**
-     * Регрессия: элемент grid по умолчанию не уже самого длинного слова, и
-     * «конфиденциальности» растягивала hero до 444px на экране 375px.
-     */
-    public function testHeroFitsNarrowScreens(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/privacy');
-
-        self::assertSelectorExists('[data-vf-section="privacy-hero"] .grid > .min-w-0.lg\\:col-span-2 h1.hyphens-auto');
-        self::assertSelectorExists('[data-vf-section="privacy-hero"] .grid > .min-w-0.lg\\:col-span-1');
-    }
 }

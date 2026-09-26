@@ -31,8 +31,7 @@ final class PublicBlogTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('h1', 'Маркетплейс или интернет-магазин');
-        self::assertSelectorExists('[data-vf-section="article"] article .overflow-x-auto table');
-        self::assertSelectorExists('[data-vf-section="cta"] a[href="https://t.me/vashfindir_ru"]');
+        self::assertSelectorExists('article[data-vf-section="article"] .overflow-x-auto table');
         // Из старой вёрстки не переехали внешние картинки и форма, терявшая заявки.
         self::assertSelectorCount(0, 'main img');
         self::assertSelectorCount(0, 'main form');
@@ -89,13 +88,13 @@ final class PublicBlogTest extends WebTestCase
         $this->resetPosts(...$posts);
 
         $this->client->request('GET', '/gazeta');
-        self::assertSelectorCount(12, '[data-vf-section="article-list"] h3 a');
+        self::assertSelectorCount(12, '[data-vf-section="article-list"] h2 a');
         self::assertSelectorExists('[data-vf-component="pagination"] a[href="/gazeta?page=2"]');
         self::assertSelectorNotExists('[data-vf-component="pagination"] a[href="/gazeta"]');
 
         $this->client->request('GET', '/gazeta?page=2');
         self::assertResponseIsSuccessful();
-        self::assertSelectorCount(1, '[data-vf-section="article-list"] h3 a');
+        self::assertSelectorCount(1, '[data-vf-section="article-list"] h2 a');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta?page=2"]');
         self::assertSelectorExists('[data-vf-component="pagination"] a[href="/gazeta"]');
 
@@ -122,6 +121,8 @@ final class PublicBlogTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'Статья о ДДС');
+        self::assertSelectorTextContains('nav[data-vf-component="breadcrumb"] li[aria-current="page"]', 'Статья о ДДС');
+        self::assertSelectorExists('nav[data-vf-component="breadcrumb"] a[href="/gazeta"]');
         self::assertSelectorTextContains('title', 'Статья о ДДС — Ваш Финдир');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta/article"]');
         self::assertSelectorExists('meta[property="og:type"][content="article"]');
@@ -207,8 +208,8 @@ final class PublicBlogTest extends WebTestCase
 
         $this->client->request('GET', '/gazeta/semantic');
 
-        self::assertSelectorExists('[data-vf-section="article"] article h1');
-        self::assertSelectorExists('[data-vf-section="article"] article .leading-7');
+        self::assertSelectorExists('article[data-vf-section="article"] header h1');
+        self::assertSelectorCount(1, 'main article');
     }
 
     public function testArticleIsCacheableWithoutSession(): void

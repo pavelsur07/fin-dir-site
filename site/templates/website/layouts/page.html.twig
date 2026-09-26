@@ -1,0 +1,8 @@
+{% extends 'website/layouts/base.html.twig' %}
+
+{# Минимальный каркас страниц до внедрения новой дизайн-системы: только ширина и отступы. #}
+{% block body %}
+    <div class="mx-auto w-full max-w-6xl space-y-6 px-4 py-12 md:px-8">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}
