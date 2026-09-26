@@ -1,0 +1,67 @@
+/* Ваш Финдир · base.css — сброс, типографика, раскладка.
+   Подключать после tokens.css. Только var(--vf-*), без hex и произвольных px. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font: var(--vf-t5);
+  color: var(--vf-color-fg);
+  background: var(--vf-color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, svg, video { display: block; max-width: 100%; }
+[hidden] { display: none !important; } /* stylelint-disable-line declaration-no-important -- стандартный сброс атрибута hidden */
+button, input, select, textarea { font: inherit; color: inherit; }
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+
+a { color: var(--vf-color-accent-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--vf-color-accent-hover); }
+:focus-visible { outline: none; box-shadow: var(--vf-shadow-focus); border-radius: var(--vf-radius-xs); }
+
+/* ── Типографика ─────────────────────────────── */
+.vf-t1, .vf-t2, .vf-t3 { letter-spacing: var(--vf-tracking-display); hyphens: auto; text-wrap: balance; }
+.vf-t1 { font: var(--vf-t1-mobile); }
+.vf-t2 { font: var(--vf-t2-mobile); }
+.vf-t3 { font: var(--vf-t3); }
+.vf-t4 { font: var(--vf-t4); color: var(--vf-color-fg-secondary); text-wrap: pretty; }
+.vf-t5 { font: var(--vf-t5); text-wrap: pretty; }
+.vf-t6 { font: var(--vf-t6); }
+.vf-t7 { font: var(--vf-t7); }
+.vf-t8 { font: var(--vf-t8); font-variant-numeric: tabular-nums; }
+@media (min-width: 768px) {
+  .vf-t1 { font: var(--vf-t1); }
+  .vf-t2 { font: var(--vf-t2); }
+}
+.vf-muted { color: var(--vf-color-fg-muted); }
+.vf-secondary { color: var(--vf-color-fg-secondary); }
+.vf-accent { color: var(--vf-color-accent-text); }
+.vf-num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vf-eyebrow { font: var(--vf-t7); color: var(--vf-color-accent-text); }
+.vf-prose { max-width: var(--vf-measure); display: flex; flex-direction: column; gap: var(--vf-space-5); }
+.vf-prose > h2 { font: var(--vf-t2-mobile); letter-spacing: var(--vf-tracking-display); margin-top: var(--vf-space-6); }
+
+/* ── Раскладка: примитивы ─────────────────────── */
+.vf-container { width: 100%; max-width: calc(var(--vf-container-max) + 2 * var(--vf-container-pad)); margin-inline: auto; padding-inline: var(--vf-container-pad); }
+.vf-section { padding-block: var(--vf-space-16); }
+@media (min-width: 1024px) { .vf-section { padding-block: var(--vf-space-24); } }
+
+.vf-stack { display: flex; flex-direction: column; }
+.vf-cluster { display: flex; flex-wrap: wrap; align-items: center; }
+.vf-split { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+.vf-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--vf-grid-min, 280px)), 1fr)); }
+.vf-grid--sm { --vf-grid-min: 200px; }
+.vf-grid--lg { --vf-grid-min: 360px; }
+
+/* Шкала gap — единственный способ задать расстояние между соседями */
+.vf-gap-1 { gap: var(--vf-space-1); }
+.vf-gap-2 { gap: var(--vf-space-2); }
+.vf-gap-3 { gap: var(--vf-space-3); }
+.vf-gap-4 { gap: var(--vf-space-4); }
+.vf-gap-6 { gap: var(--vf-space-6); }
+.vf-gap-8 { gap: var(--vf-space-8); }
+.vf-gap-12 { gap: var(--vf-space-12); }
+.vf-gap-16 { gap: var(--vf-space-16); }
+
+.vf-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

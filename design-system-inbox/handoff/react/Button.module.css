@@ -1,0 +1,27 @@
+/* Button.module.css — то же, что .vf-btn в css/components.css, в формате CSS Modules. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--vf-space-2);
+  height: var(--vf-control-lg); padding-inline: var(--vf-space-6);
+  border: 1px solid transparent; border-radius: var(--vf-radius-md);
+  font: var(--vf-font-button); white-space: nowrap; cursor: pointer;
+  transition: background-color var(--vf-duration-fast) var(--vf-ease-out), border-color var(--vf-duration-fast) var(--vf-ease-out);
+}
+.btn:focus-visible { outline: none; box-shadow: var(--vf-shadow-focus); }
+.btn:disabled { background: var(--vf-color-bg-muted); color: var(--vf-color-fg-disabled); cursor: not-allowed; }
+.btn[data-loading] { pointer-events: none; }
+
+.md { height: var(--vf-control-md); padding-inline: var(--vf-space-4); border-radius: var(--vf-radius-sm); font: var(--vf-font-button-sm); }
+.sm { height: var(--vf-control-sm); padding-inline: var(--vf-space-3); border-radius: var(--vf-radius-sm); font: var(--vf-font-button-sm); }
+.block { width: 100%; }
+
+.primary { background: var(--vf-button-primary-bg); color: var(--vf-button-primary-fg); }
+.primary:hover { background: var(--vf-button-primary-bg-hover); }
+.primary:active { background: var(--vf-button-primary-bg-active); }
+.secondary { background: transparent; border-color: var(--vf-button-secondary-border); color: var(--vf-color-fg); }
+.secondary:hover { background: var(--vf-button-secondary-bg-hover); }
+.ghost { background: transparent; color: var(--vf-color-fg); }
+.ghost:hover { background: var(--vf-color-bg-subtle); }
+
+.label { display: inline-block; }
+.spinner { width: var(--vf-icon-md); height: var(--vf-icon-md); border-radius: var(--vf-radius-full); border: 2px solid currentColor; border-right-color: transparent; animation: spin 800ms linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }

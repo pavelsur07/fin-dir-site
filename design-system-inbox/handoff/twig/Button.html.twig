@@ -1,0 +1,29 @@
+{#
+  Symfony UX TwigComponent — зеркало React <Button>. Те же props, те же классы.
+  Использование: <twig:Button variant="primary" size="lg" :loading="false">Подключиться</twig:Button>
+  PHP-класс: src/Twig/Components/Button.php
+    #[AsTwigComponent]
+    final class Button {
+      public string $variant = 'primary'; // primary | secondary | ghost
+      public string $size = 'lg';         // lg | md | sm
+      public bool $loading = false;
+      public bool $block = false;
+      public ?string $href = null;        // если задан — рендерится <a>
+    }
+#}
+{% set classes = html_classes('vf-btn', 'vf-btn--' ~ variant, {
+  ('vf-btn--' ~ size): size != 'lg',
+  'vf-btn--block': block,
+}) %}
+{% if href %}
+  <a href="{{ href }}" {{ attributes.without('class', 'style').defaults({ class: classes }) }}>
+    <span class="vf-btn__label">{% block content %}{% endblock %}</span>
+  </a>
+{% else %}
+  <button type="{{ attributes.render('type') ?: 'button' }}"
+          {{ attributes.without('class', 'style', 'type').defaults({ class: classes }) }}
+          {% if loading %}aria-busy="true" data-loading="true"{% endif %}>
+    {% if loading %}<span class="vf-spinner" aria-hidden="true"></span>{% endif %}
+    <span class="vf-btn__label">{{ block('content') }}</span>
+  </button>
+{% endif %}

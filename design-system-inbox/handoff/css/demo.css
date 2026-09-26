@@ -1,0 +1,31 @@
+/* Стили ТОЛЬКО для витрины design-system.html (свотчи, образцы шкал). В продукт не подключается. */
+.demo-nav { display: flex; flex-wrap: wrap; gap: var(--vf-space-1) var(--vf-space-4); font: var(--vf-t6); }
+.demo-nav a { color: var(--vf-color-fg-secondary); text-decoration: none; }
+.demo-nav a:hover { color: var(--vf-color-fg); }
+.demo-head { padding-block: var(--vf-space-16) var(--vf-space-8); border-bottom: 1px solid var(--vf-color-border); }
+.demo-block { padding-block: var(--vf-space-12); border-bottom: 1px solid var(--vf-color-border-subtle); }
+.demo-ramp { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); border-radius: var(--vf-radius-lg); overflow: hidden; }
+.demo-sw { min-height: 96px; padding: var(--vf-space-3); display: flex; flex-direction: column; justify-content: flex-end; font: var(--vf-t7); }
+.demo-sw--light { color: var(--vf-ink-950); }
+.demo-sw--dark { color: var(--vf-white); }
+.sw-ink-50 { background: var(--vf-ink-50); } .sw-ink-100 { background: var(--vf-ink-100); } .sw-ink-200 { background: var(--vf-ink-200); }
+.sw-ink-300 { background: var(--vf-ink-300); } .sw-ink-400 { background: var(--vf-ink-400); } .sw-ink-500 { background: var(--vf-ink-500); }
+.sw-ink-600 { background: var(--vf-ink-600); } .sw-ink-700 { background: var(--vf-ink-700); } .sw-ink-800 { background: var(--vf-ink-800); }
+.sw-ink-900 { background: var(--vf-ink-900); } .sw-ink-950 { background: var(--vf-ink-950); }
+.sw-crimson-50 { background: var(--vf-crimson-50); } .sw-crimson-100 { background: var(--vf-crimson-100); } .sw-crimson-200 { background: var(--vf-crimson-200); }
+.sw-crimson-300 { background: var(--vf-crimson-300); } .sw-crimson-400 { background: var(--vf-crimson-400); } .sw-crimson-500 { background: var(--vf-crimson-500); }
+.sw-crimson-600 { background: var(--vf-crimson-600); } .sw-crimson-700 { background: var(--vf-crimson-700); } .sw-crimson-800 { background: var(--vf-crimson-800); }
+.sw-crimson-900 { background: var(--vf-crimson-900); } .sw-crimson-950 { background: var(--vf-crimson-950); }
+.demo-token { font: var(--vf-font-code); color: var(--vf-color-fg-muted); }
+.demo-row { display: grid; grid-template-columns: minmax(120px, 200px) minmax(0, 1fr); gap: var(--vf-space-6); align-items: baseline; padding-block: var(--vf-space-4); border-top: 1px solid var(--vf-color-border-subtle); }
+.demo-space { height: var(--vf-space-3); background: var(--vf-color-accent); border-radius: var(--vf-radius-xs); }
+.demo-space--1 { width: var(--vf-space-1); } .demo-space--2 { width: var(--vf-space-2); } .demo-space--3 { width: var(--vf-space-3); }
+.demo-space--4 { width: var(--vf-space-4); } .demo-space--6 { width: var(--vf-space-6); } .demo-space--8 { width: var(--vf-space-8); }
+.demo-space--12 { width: var(--vf-space-12); } .demo-space--16 { width: var(--vf-space-16); } .demo-space--24 { width: var(--vf-space-24); }
+.demo-shape { width: 96px; height: 64px; background: var(--vf-color-bg-muted); border: 1px solid var(--vf-color-border); }
+.demo-r-xs { border-radius: var(--vf-radius-xs); } .demo-r-sm { border-radius: var(--vf-radius-sm); } .demo-r-md { border-radius: var(--vf-radius-md); }
+.demo-r-lg { border-radius: var(--vf-radius-lg); } .demo-r-xl { border-radius: var(--vf-radius-xl); } .demo-r-full { border-radius: var(--vf-radius-full); width: 64px; }
+.demo-shadow { width: 160px; height: 96px; border-radius: var(--vf-radius-lg); background: var(--vf-color-bg); border: 1px solid var(--vf-color-border-subtle); }
+.demo-shadow--sm { box-shadow: var(--vf-shadow-sm); } .demo-shadow--md { box-shadow: var(--vf-shadow-md); } .demo-shadow--lg { box-shadow: var(--vf-shadow-lg); border: 0; }
+.demo-dark { background: var(--vf-color-bg); color: var(--vf-color-fg); border-radius: var(--vf-radius-xl); padding: var(--vf-space-8); }
+.demo-code { font: var(--vf-font-code); background: var(--vf-color-bg-subtle); border-radius: var(--vf-radius-md); padding: var(--vf-space-4); overflow: auto; margin: 0; }
