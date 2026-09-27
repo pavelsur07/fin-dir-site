@@ -34,6 +34,7 @@
 | `bg-slate-950` | `dark bg-surface` на контейнере |
 | `bg-slate-900` (блок кода в статье) | `dark bg-surface-muted text-fg` |
 | `bg-slate-700` · `hover:bg-slate-800` | `bg-surface-raised` · `hover:bg-surface-raised` |
+| `hover:bg-slate-950` (кнопка закрытия баннера cookie) | `hover:bg-surface-raised` — баннер использует `dark bg-surface`, hover на ink становится светлее |
 | `text-slate-300` · `hover:text-slate-200` | `text-fg-secondary` · `hover:text-fg` |
 | `border-slate-600` `border-slate-700` | `border-border-strong` · `border` |
 
@@ -53,6 +54,7 @@
 | Было | Стало |
 |---|---|
 | `focus-visible:outline-2 focus-visible:outline-red-700` (+ `outline-offset-*`) у кнопок и ссылок | `focus-visible:shadow-focus` |
+| `focus-visible:outline-white` (+ `focus-visible:outline-2` и `outline-offset-*`) в тёмном футере | `focus-visible:shadow-focus` — с классом `dark` используется focus-inverse |
 | то же у полей ввода | `focus:border-accent focus:shadow-focus-field` |
 | `aria-invalid:border-orange-700 aria-invalid:ring-2 aria-invalid:ring-orange-700` | `aria-invalid:border-error aria-invalid:shadow-error-field` |
 
