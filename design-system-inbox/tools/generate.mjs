@@ -58,7 +58,9 @@ const json = {
   duration: Object.fromEntries(d.durations.map((x) => [x.token, tok('duration', x.ms.replace(' ', ''), x.use)])),
   easing: Object.fromEntries(d.EA.map(([k, v, use]) => [k, tok('cubicBezier', v, use)])),
   breakpoint: { md: tok('dimension', '768px'), lg: tok('dimension', '1024px'), xl: tok('dimension', '1440px') },
-  container: { text: tok('dimension', '720px', 'текстовые блоки, колонка статьи'), page: tok('dimension', '1200px', 'контейнер страницы на ≥ 1440') },
+  container: { text: tok('dimension', '720px', 'текстовые блоки, колонка статьи'), page: tok('dimension', '1200px', 'контейнер страницы на ≥ 1440'),
+    sidebar: tok('dimension', '256px', 'боковое меню кабинета'),
+    'modal-sm': tok('dimension', '400px', 'модалка'), 'modal-md': tok('dimension', '560px', 'модалка'), 'modal-lg': tok('dimension', '720px', 'модалка') },
 };
 fs.writeFileSync(new URL('../tokens.json', import.meta.url), JSON.stringify(json, null, 2) + '\n');
 
@@ -130,6 +132,10 @@ w(`  --breakpoint-lg: 1024px;`);
 w(`  --breakpoint-xl: 1440px;`);
 w(`  --container-text: 720px;`);
 w(`  --container-page: 1200px;`);
+w(`  --container-sidebar: 256px;`);
+w(`  --container-modal-sm: 400px;`);
+w(`  --container-modal-md: 560px;`);
+w(`  --container-modal-lg: 720px;`);
 w();
 d.EA.forEach(([k, v]) => w(`  --ease-${k}: ${v};`));
 Object.entries(ASPECT).forEach(([k, v]) => w(`  --aspect-${k}: ${v};`));

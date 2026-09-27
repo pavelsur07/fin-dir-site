@@ -233,6 +233,10 @@
   --breakpoint-xl: 1440px;
   --container-text: 720px;
   --container-page: 1200px;
+  --container-sidebar: 256px;
+  --container-modal-sm: 400px;
+  --container-modal-md: 560px;
+  --container-modal-lg: 720px;
 
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);

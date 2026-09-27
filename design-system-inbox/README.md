@@ -2,34 +2,35 @@
 
 Пакет для внедрения на vashfindir.ru. Всё сгенерировано из `Design System.dc.html` v2.2 (раздел 29 «Единая таблица токенов»).
 
-| Файл | Что это |
+| Файл | Куда в проекте |
 |---|---|
-| `vf-theme.css` | Тема Tailwind v4: токены, тёмная тема, роли типографики, базовые стили |
-| `tokens.json` | Те же токены в формате W3C Design Tokens (для других платформ, писем, PDF) |
-| `eslint.config.js` | Линтер для JS/JSX: ловит классы вне системы |
-| `check-templates.mjs` | То же для Twig/HTML-шаблонов (ESLint их не читает) |
-| `tools/` | Перегенерация токенов из нового файла дизайн-системы |
+| `vf-theme.css` | `site/assets/styles/website/vf-theme.css` — тема Tailwind v4 |
+| `vf-fonts.css` | `site/assets/styles/website/vf-fonts.css` — @font-face |
+| `fonts/*.woff2` | `site/public/assets/fonts/` — Inter и Manrope, кириллица + латиница + ₽ |
+| `check-templates.mjs` | `scripts/check-templates.mjs` — проверка шаблонов |
+| `MIGRATION.md` | остаётся здесь — таблица замены текущих классов сайта |
+| `tokens.json`, `tools/` | остаются здесь — источник токенов и перегенерация |
 
-**Правило одно: `vf-theme.css` и `tokens.json` руками не редактируются.** Меняется дизайн-система → дизайнер присылает новый `Design System.dc.html` → перегенерируем.
+**Правило одно: `vf-theme.css` и `tokens.json` руками не редактируются.** Меняется дизайн-система → дизайнер присылает новый `Design System.dc.html` → перегенерируем (раздел 6).
 
 ---
 
 ## 1. Подключение
 
-```bash
-npm i -D tailwindcss@4 @tailwindcss/cli   # или @tailwindcss/vite / @tailwindcss/postcss
-npm i @fontsource-variable/inter @fontsource-variable/manrope
-```
+npm в проекте не нужен: Tailwind собирается standalone CLI (`make assets`), шрифты лежат файлами.
 
 ```css
-/* assets/styles/app.css */
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/manrope";
-@import "tailwindcss";
-@import "vf-theme.css";
+/* site/assets/styles/website/app.css */
+@import "tailwindcss" source(none);
+@import "./vf-fonts.css";
+@import "./vf-theme.css";
+@source "../../../templates/website";
+@source "../../../templates/admin";
+@source "../../../assets/scripts/website";
+@source "../../../src/Publication/Adapter";
 ```
 
-Шрифты ставятся из npm и отдаются с нашего домена: кириллица включена, запросов к Google Fonts нет.
+Шрифты подключаются по абсолютному пути `/assets/fonts/…`, поэтому лежат вне `site/public/assets/website/` и не мешают `make assets-check`.
 
 ## 2. Что делает тема
 
@@ -45,7 +46,7 @@ npm i @fontsource-variable/inter @fontsource-variable/manrope
 | `md:` `lg:` `xl:` | `sm:` `2xl:` |
 | `max-w-text` `max-w-page` | `max-w-md` |
 
-Tailwind v4 всё равно собирает произвольные значения (`p-[13px]`, `bg-[#123456]`), `duration-300`, `border-3`, `ring-2`. Их ловят линтер и `check-templates.mjs` (раздел 5).
+Tailwind v4 всё равно собирает произвольные значения (`p-[13px]`, `bg-[#123456]`), `duration-300`, `border-3`, `ring-2`. Их ловит `check-templates.mjs` (раздел 5).
 
 ## 3. Шпаргалка: система → классы
 
@@ -102,30 +103,29 @@ Hover primary на ink «светлее, а не темнее» получает
 | Фокус кнопки / на ink / поля / ошибка поля | `focus-visible:shadow-focus` · `shadow-focus-inverse` · `focus:border-accent focus:shadow-focus-field` · `border-error shadow-error-field` |
 | Тени | `shadow-sm` `shadow-md` `shadow-lg` |
 | Анимация | `transition-colors duration-fast ease-out` · `duration-base` `-slow` `-deliberate` `-instant` · `ease-in` `ease-standard` · `animate-spin` `animate-skeleton` |
-| Контейнеры | `max-w-text` (720) · `max-w-page` (1200) |
+| Контейнеры | `max-w-text` (720) · `max-w-page` (1200) · `w-sidebar` (256) · `max-w-modal-sm` / `-md` / `-lg` (400 / 560 / 720) |
 | Пропорции медиа | `aspect-video` (16:9) `aspect-photo` (3:2) `aspect-portrait` (4:5) `aspect-screenshot` (16:10) `aspect-square` |
 
 Фокус тоже переключается в `.dark`: `shadow-focus` и `shadow-focus-field` на ink сами берут crimson 400 и crimson 900.
 
 ## 4. Порядок работ
 
-1. Подключить тему и шрифты. Собрать проект — всё, что «пропало» из вёрстки, это классы вне системы: заменить на токены.
-2. Собрать базовые компоненты **до страниц**: `Logo` (по формулам раздела 00, единственное место с «нестандартными» размерами), `Button`, `Input`, `Badge`, `Chip`, функция `money()` из раздела 11. Каждый — во всех состояниях раздела 10.
-3. Шапка и подвал: они на всех страницах и сразу проверяют токены.
-4. Hero главной, затем остальные страницы — только из компонентов.
-5. Страницы со слотами `⟨…⟩` и людьми без подписанного согласия не публикуются (раздел 30, «Открыто»).
+Все шаги — в одной ветке. С момента подключения темы текущие стандартные классы перестают собираться, поэтому ветка вливается только после миграции всех файлов по `MIGRATION.md`.
 
-## 5. Проверки в CI
+## 5. Проверки
 
 ```bash
-npx eslint .                                                   # JS/JSX
-npx @tailwindcss/cli -i assets/styles/app.css -o build/app.css
-node check-templates.mjs build/app.css templates                # Twig/HTML
+make assets
+node scripts/check-templates.mjs site/public/assets/website/app.css \
+  site/templates site/assets/scripts/website site/src/Publication/Adapter
 ```
 
-`check-templates.mjs` падает (exit 1), если в `class="…"` есть класс, которого нет в собранном CSS, или запрещённое значение. Twig-вставки `{{ … }}` и `{% … %}` пропускаются. Классы-хуки для JS называйте с префиксом `js-` — они игнорируются.
+Скрипт (Node 20+, без зависимостей) падает с кодом 1, если:
+- в `class="…"` Twig-шаблона есть класс, которого нет в собранном CSS (`p-7`, `text-sm`);
+- в любой строке Twig, PHP или JS встречается класс стандартной темы Tailwind (`bg-slate-50`, `text-red-700`) — так ловятся тернарники в `{{ … }}`, массивы `MarkdownRenderer` и классы в `navigation.js`;
+- есть произвольное значение `[…]`, `duration-N`, `border-N` кроме 2, `ring-*`, `outline-N`.
 
-Дополнительно рекомендую скриншотные тесты (Playwright или Storybook + Chromatic) и `@axe-core/playwright` для контраста.
+Можно передать отдельные файлы — удобно при миграции по частям. Классы-хуки с префиксом `js-`, а также `ym-` (Метрика) игнорируются.
 
 ## 6. Обновление токенов
 
