@@ -3,7 +3,7 @@
     <ul class="grid gap-1">
         {% for item in menu %}
             <li>
-                <a class="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-white no-underline hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-white {{ route starts with item.active_prefix ? 'bg-red-700' : '' }}" href="{{ path(item.route) }}"{{ route starts with item.active_prefix ? ' aria-current="page"' }}>
+                <a class="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-white no-underline hover:bg-surface-raised focus-visible:shadow-focus {{ route starts with item.active_prefix ? 'bg-accent-fill' : '' }}" href="{{ path(item.route) }}"{{ route starts with item.active_prefix ? ' aria-current="page"' }}>
                     <span>{{ item.label }}</span>
                     {% if item.counter|default(false) %}{{ counter }}{% endif %}
                 </a>
@@ -11,8 +11,8 @@
         {% endfor %}
     </ul>
 </nav>
-<form data-admin-account class="mt-auto grid gap-2 border-t border-slate-700 px-2 pt-4" method="post" action="{{ logout_path('admin') }}">
-    <span class="text-sm text-slate-300">{{ app.user.userIdentifier }}</span>
+<form data-admin-account class="mt-auto grid gap-2 border-t px-2 pt-4" method="post" action="{{ logout_path('admin') }}">
+    <span class="type-t6 text-fg-secondary">{{ app.user.userIdentifier }}</span>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-    <button type="submit" class="rounded-md border border-slate-500 bg-white px-4 py-2 text-slate-950 hover:bg-slate-50">Выйти</button>
+    <button type="submit" class="rounded-md border border-border-strong bg-surface-raised px-4 py-2 text-fg hover:bg-surface-muted">Выйти</button>
 </form>

@@ -2,8 +2,8 @@
 {% set channels = {paid: 'реклама', cpc: 'реклама', organic: 'поиск', social: 'соцсети', referral: 'другой сайт', direct: 'прямой заход'} %}
 {% set parts = [channels[touch.channel] ?? touch.channel ?? null, [touch.source ?? null, touch.medium ?? null]|filter(v => v)|join(' / '), touch.campaign ?? null]|filter(v => v) %}
 {{ parts ? parts|join(', ') : '—' }}
-{% if touch.ts is defined %}<span class="text-sm text-slate-600">· {{ touch.ts|date('d.m.Y H:i') }}</span>{% endif %}
-{% if touch.landing is defined %}<br><span class="text-sm text-slate-600">вход:</span> {{ touch.landing }}{% endif %}
-{% if touch.referrer is defined %}<br><span class="text-sm text-slate-600">реферер:</span> {{ touch.referrer }}{% endif %}
-{% if touch.content is defined or touch.term is defined %}<br><span class="text-sm text-slate-600">объявление / запрос:</span> {{ [touch.content ?? null, touch.term ?? null]|filter(v => v)|join(' / ') }}{% endif %}
-{% for key, value in touch.click ?? {} %}<br><span class="text-sm text-slate-600">{{ key }}:</span> {{ value }}{% endfor %}
+{% if touch.ts is defined %}<span class="type-t6 text-fg-secondary">· {{ touch.ts|date('d.m.Y H:i') }}</span>{% endif %}
+{% if touch.landing is defined %}<br><span class="type-t6 text-fg-secondary">вход:</span> {{ touch.landing }}{% endif %}
+{% if touch.referrer is defined %}<br><span class="type-t6 text-fg-secondary">реферер:</span> {{ touch.referrer }}{% endif %}
+{% if touch.content is defined or touch.term is defined %}<br><span class="type-t6 text-fg-secondary">объявление / запрос:</span> {{ [touch.content ?? null, touch.term ?? null]|filter(v => v)|join(' / ') }}{% endif %}
+{% for key, value in touch.click ?? {} %}<br><span class="type-t6 text-fg-secondary">{{ key }}:</span> {{ value }}{% endfor %}
