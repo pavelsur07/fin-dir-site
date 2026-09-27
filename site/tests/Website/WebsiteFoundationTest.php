@@ -75,14 +75,22 @@ final class WebsiteFoundationTest extends WebTestCase
         }
     }
 
-    public function testNavigationCtaFromServicesReachesTheHomeLeadForm(): void
+    public function testNavigationContainsRequestedItemsAndAccountCta(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/services');
+        $crawler = $client->request('GET', '/services');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/#lead-form"]');
-        self::assertSelectorExists('[data-vf-mobile-navigation] a[href="/#lead-form"]');
+        foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
+            self::assertSame(
+                ['Услуги', 'Кейсы', 'Газета', 'Партнёрам', 'О Компании'],
+                $crawler->filter($menu.' ul a')->each(static fn ($link): string => trim($link->text())),
+            );
+            self::assertSelectorExists($menu.' a[href="https://app.vashfindir.ru/"]');
+            self::assertSelectorTextContains($menu.' a[href="https://app.vashfindir.ru/"]', 'Личный кабинет');
+            self::assertSelectorCount(1, $menu.' [data-vf-component="button"]');
+        }
+        self::assertStringNotContainsString('Записаться на встречу', $crawler->filter('header')->text());
     }
 
     public function testNavigationHighlightsTheSameItemInBothMenus(): void
