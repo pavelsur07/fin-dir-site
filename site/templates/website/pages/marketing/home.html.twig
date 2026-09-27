@@ -23,6 +23,20 @@
 
 {% block body %}
     {% include 'website/sections/_hero.html.twig' with {} only %}
+    {% include 'website/sections/_pain_points.html.twig' with {
+        title: 'Из всей этой схемы непонятно, куда надо надавить — и прибыль вырастет',
+        subtitle: 'Так чаще всего говорят собственники на диагностике. Обычно за этим стоит одно из этого:',
+        points: [
+            {icon: 'wallet', text: 'По бухгалтерии прибыль есть, а денег на счёте нет'},
+            {icon: 'trending-up', text: 'Выручка растёт, а кассовые разрывы случаются всё чаще'},
+            {icon: 'chart-no-axes-column', text: 'Упёрлись в потолок: работаете много, а выручка и прибыль не растут'},
+            {icon: 'user-plus', text: 'Непонятно, можно ли нанимать людей в штат или это опасно для денег'},
+            {icon: 'file-check', text: 'Отчёты есть, но им не доверяете и не знаете, что с ними делать'},
+            {icon: 'circle-help', text: 'Решения принимаются на интуиции, а не на цифрах'},
+            {icon: 'list-todo', text: 'Много мелких решений и суеты, а до важного руки не доходят'},
+            {icon: 'calendar-check', text: 'Планы ставятся на глаз, и непонятно, как контролировать их выполнение'},
+        ],
+    } only %}
     <div class="mx-auto w-full max-w-page px-4 py-16 md:px-8 md:py-24">
         {% include 'website/sections/_lead_form.html.twig' with {
             id: 'lead-form',

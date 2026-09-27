@@ -21,7 +21,7 @@ final class WebsiteFoundationTest extends WebTestCase
         }
     }
 
-    public function testPublicPagesHaveOneHeadingAndNoIcons(): void
+    public function testPublicPagesHaveOneHeadingAndHomepageHasDecorativeIcons(): void
     {
         $client = static::createClient();
 
@@ -33,8 +33,10 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertFalse($client->getResponse()->headers->has('Set-Cookie'), $path);
             self::assertSelectorExists('meta[name="description"]', $path);
             self::assertSelectorExists('link[rel="canonical"]', $path);
-            // До новой дизайн-системы на сайте нет иконок, включая футер и cookie.
-            self::assertSelectorCount(0, 'body svg', $path);
+            self::assertSelectorCount('/' === $path ? 8 : 0, 'body svg', $path);
+            if ('/' === $path) {
+                self::assertSelectorCount(8, 'main section[aria-labelledby="home-pain-points-title"] svg[aria-hidden="true"]');
+            }
             // Главная имеет полноширинный hero; текст остальных страниц остаётся в общем контейнере.
             self::assertSelectorExists('/' === $path ? 'main > section > div.max-w-page h1' : 'main > div.max-w-page > div:not([class*="max-w-"]) h1', $path);
         }
