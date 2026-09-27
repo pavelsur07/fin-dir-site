@@ -70,6 +70,12 @@ jobs:
               working-directory: .
               run: make assets-check
 
+            - name: Check design system classes
+              working-directory: .
+              run: >-
+                  node scripts/check-templates.mjs site/public/assets/website/app.css
+                  site/templates site/assets/scripts/website site/src/Publication/Adapter
+
             - name: Lint YAML
               run: php bin/console lint:yaml config
 
