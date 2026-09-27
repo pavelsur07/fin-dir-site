@@ -1,4 +1,6 @@
 @import "tailwindcss" source(none);
+@import "./vf-fonts.css";
+@import "./vf-theme.css";
 @source "../../../templates/website";
 @source "../../../templates/admin";
 @source "../../../assets/scripts/website";

@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 final class TailwindOnlyTest extends TestCase
 {
-    public function testApplicationUsesOnlyUnmodifiedTailwind(): void
+    public function testApplicationUsesOnlyDesignSystemTheme(): void
     {
         $root = dirname(__DIR__, 2);
         $css = (string) file_get_contents($root.'/assets/styles/website/app.css');
-        self::assertSame("@import \"tailwindcss\" source(none);\n@source \"../../../templates/website\";\n@source \"../../../templates/admin\";\n@source \"../../../assets/scripts/website\";\n@source \"../../../src/Publication/Adapter\";\n", $css);
+        self::assertSame("@import \"tailwindcss\" source(none);\n@import \"./vf-fonts.css\";\n@import \"./vf-theme.css\";\n@source \"../../../templates/website\";\n@source \"../../../templates/admin\";\n@source \"../../../assets/scripts/website\";\n@source \"../../../src/Publication/Adapter\";\n", $css);
         self::assertFileDoesNotExist($root.'/public/assets/admin/admin.css');
         self::assertFileDoesNotExist($root.'/public/assets/admin/admin.js');
         self::assertFileDoesNotExist($root.'/assets/scripts/website/ui-kit-logo.js');

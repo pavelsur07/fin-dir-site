@@ -36,7 +36,7 @@ final class WebsiteFoundationTest extends WebTestCase
             // До новой дизайн-системы на сайте нет иконок, включая футер и cookie.
             self::assertSelectorCount(0, 'body svg', $path);
             // Контент всех страниц использует ту же базовую ширину, что шапка и футер.
-            self::assertSelectorExists('main > div.max-w-6xl > div:not([class*="max-w-"]) h1', $path);
+            self::assertSelectorExists('main > div.max-w-page > div:not([class*="max-w-"]) h1', $path);
         }
     }
 
@@ -46,7 +46,8 @@ final class WebsiteFoundationTest extends WebTestCase
         $source = (string) file_get_contents($root.'/assets/styles/website/app.css');
         $compiled = (string) file_get_contents($root.'/public/assets/website/app.css');
         self::assertStringContainsString('@import "tailwindcss" source(none);', $source);
-        self::assertStringContainsString('.bg-red-700', $compiled);
+        self::assertStringContainsString('.bg-accent-fill', $compiled);
+        self::assertStringNotContainsString('.bg-red-700', $compiled);
         self::assertStringContainsString('.translate-x-full', $compiled);
         self::assertStringNotContainsString('@import "tailwindcss"', $compiled);
 

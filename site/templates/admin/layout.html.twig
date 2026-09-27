@@ -1,4 +1,4 @@
-{% set vf_asset_version = '0988d9b73bba' %}
+{% set vf_asset_version = 'fab94ae1bcbc' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-950">
+<body class="bg-surface-muted text-fg">
 {% block page %}
     {% set route = app.request.attributes.get('_route') ?? '' %}
     {# Один список разделов: новый раздел админки -- одна строка здесь. #}
@@ -20,25 +20,25 @@
     ] %}
     {# Счётчик считается один раз (фрагмент-контроллер) и выводится в обоих местах меню. #}
     {% set counter %}{{ render(controller('App\\Lead\\Controller\\Admin\\LeadCounterController')) }}{% endset %}
-    <a class="fixed left-4 top-2 z-20 -translate-y-24 rounded bg-white px-3 py-2 text-slate-950 focus:translate-y-0" href="#main">К содержимому</a>
+    <a class="fixed left-4 top-2 z-20 -translate-y-24 rounded-md bg-white px-3 py-2 text-fg focus:translate-y-0" href="#main">К содержимому</a>
     <div class="flex min-h-screen">
-        <div data-admin-sidebar class="sticky top-0 hidden h-screen w-60 shrink-0 flex-col overflow-y-auto bg-slate-950 px-4 py-6 text-white lg:flex">
+        <div data-admin-sidebar class="dark sticky top-0 hidden h-screen w-sidebar shrink-0 flex-col overflow-y-auto bg-surface px-4 py-6 text-white lg:flex">
             <a class="mb-6 block font-bold text-white no-underline" href="{{ path('admin_dashboard') }}">Ваш Финдир <small>Админка</small></a>
             {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
         </div>
         <div class="min-w-0 flex-1">
             {# Узкий экран: сайдбар скрыт, меню раскрывается нативным details без JS. #}
-            <details data-admin-mobile-menu class="sticky top-0 z-10 bg-slate-950 p-4 text-white lg:hidden">
+            <details data-admin-mobile-menu class="dark sticky top-0 z-10 bg-surface p-4 text-white lg:hidden">
                 <summary>
                     {# Бренд скрыт от дикторов: кнопка должна называться «Меню», а не всей строкой. #}
                     <span class="mb-6 block font-bold text-white no-underline" aria-hidden="true">Ваш Финдир · Админка</span>
-                    <span class="inline-flex items-center rounded border border-slate-400 px-3 py-1">Меню{{ counter }}</span>
+                    <span class="inline-flex items-center rounded-md border border-border-strong px-3 py-1">Меню{{ counter }}</span>
                 </summary>
                 {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
             </details>
             <main class="p-4 lg:p-8" id="main">
                 {% for message in app.flashes('success') %}
-                    <p class="rounded-lg border border-green-300 bg-green-50 p-4 text-green-800" role="status">{{ message }}</p>
+                    <p class="rounded-lg border border-success-border bg-success-bg p-4 text-success" role="status">{{ message }}</p>
                 {% endfor %}
                 {% block body %}{% endblock %}
             </main>

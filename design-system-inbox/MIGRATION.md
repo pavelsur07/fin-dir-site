@@ -14,6 +14,7 @@
 | `border-slate-200` | `border-border-subtle` — разделители (`border-b`, `border-t`, `hr`); просто `border` — рамка контейнера | цвет рамки по умолчанию уже `border` |
 | `border-slate-300` `border-slate-400` `border-slate-500` | `border-border-strong` | поля, контурные кнопки |
 | `bg-red-700` | `bg-accent-fill` | |
+| `bg-red-50` (цитата `blockquote` в Markdown) | `bg-surface-muted` | блок-врезка на ink 50; акцент только у левой полосы |
 | `hover:bg-red-800` | `hover:bg-accent-fill-hover` | |
 | `active:bg-red-900` | `active:bg-accent-fill-active` | |
 | `border-red-700` · `hover:border-red-800` · `active:border-red-900` | `border-accent` · `hover:border-accent-fill-hover` · `active:border-accent-fill-active` | |
@@ -34,6 +35,8 @@
 | `bg-slate-950` | `dark bg-surface` на контейнере |
 | `bg-slate-900` (блок кода в статье) | `dark bg-surface-muted text-fg` |
 | `bg-slate-700` · `hover:bg-slate-800` | `bg-surface-raised` · `hover:bg-surface-raised` |
+| `hover:bg-slate-950` (кнопка закрытия баннера cookie) | `hover:bg-surface-raised` — баннер использует `dark bg-surface`, hover на ink становится светлее |
+| `bg-white text-slate-950` внутри `dark` | счётчики → `bg-accent-fill text-on-accent`; кнопки → `bg-surface-raised text-fg` |
 | `text-slate-300` · `hover:text-slate-200` | `text-fg-secondary` · `hover:text-fg` |
 | `border-slate-600` `border-slate-700` | `border-border-strong` · `border` |
 
@@ -53,6 +56,7 @@
 | Было | Стало |
 |---|---|
 | `focus-visible:outline-2 focus-visible:outline-red-700` (+ `outline-offset-*`) у кнопок и ссылок | `focus-visible:shadow-focus` |
+| `focus-visible:outline-white` в любой тёмной области с классом `dark` (+ `focus-visible:outline-2` и `outline-offset-*`) | `focus-visible:shadow-focus` — с классом `dark` используется focus-inverse |
 | то же у полей ввода | `focus:border-accent focus:shadow-focus-field` |
 | `aria-invalid:border-orange-700 aria-invalid:ring-2 aria-invalid:ring-orange-700` | `aria-invalid:border-error aria-invalid:shadow-error-field` |
 

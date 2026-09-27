@@ -5,7 +5,7 @@
 {% block robots %}noindex, nofollow{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-bold">{{ success ? 'Спасибо, заявка отправлена' : 'Заявка не отправлена' }}</h1>
+    <h1 class="type-t2 md:type-t1">{{ success ? 'Спасибо, заявка отправлена' : 'Заявка не отправлена' }}</h1>
     <p>{{ success
         ? 'Мы свяжемся с вами в ближайшее время по указанному контакту.'
         : 'Исправьте данные и отправьте форму ещё раз. Быстрее всего связаться с нами в Telegram: @vashfindir_ru.' }}</p>

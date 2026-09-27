@@ -5,7 +5,7 @@
 {% block robots %}noindex, follow{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-bold">Сервис временно не отвечает</h1>
+    <h1 class="type-t2 md:type-t1">Сервис временно не отвечает</h1>
     <p>Это техническая ошибка на нашей стороне. Попробуйте обновить страницу через 1–2 минуты. Если ошибка повторяется, напишите нам в <a class="underline" href="https://t.me/vashfindir" target="_blank" rel="noopener">Telegram</a> или на <a class="underline" href="mailto:hello@vashfindir.ru">hello@vashfindir.ru</a>.</p>
     <p><a class="underline" href="{{ app.request.requestUri }}">Обновить страницу</a> · <a class="underline" href="{{ path('home') }}">На главную</a></p>
 {% endblock %}

@@ -438,7 +438,7 @@
             }
 
             const feedback = document.createElement('div');
-            feedback.className = 'text-sm leading-6 text-orange-800';
+            feedback.className = 'type-t7 font-medium text-error';
             feedback.id = `${field.id}-feedback`;
             feedback.dataset.vfLeadFieldError = '';
             feedback.textContent = message;

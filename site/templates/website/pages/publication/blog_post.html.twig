@@ -25,14 +25,14 @@
     {# body_html -- выход MarkdownRenderer, безопасен для |raw. #}
     <article class="space-y-6" data-vf-section="article">
         <header class="space-y-2">
-            <h1 class="text-3xl font-bold">{{ post.title }}</h1>
+            <h1 class="type-t2 md:type-t1">{{ post.title }}</h1>
             {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
             <p><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time> · Редакция Ваш Финдир</p>
         </header>
 
         {% if article.toc|length > 1 %}
             <nav aria-labelledby="article-toc-title">
-                <h2 class="text-xl font-bold" id="article-toc-title">Содержание</h2>
+                <h2 class="type-t3" id="article-toc-title">Содержание</h2>
                 <ol class="list-decimal pl-6">
                     {% for entry in article.toc %}<li><a class="underline" href="#{{ entry.id }}">{{ entry.title }}</a></li>{% endfor %}
                 </ol>
@@ -47,7 +47,7 @@
     {# Не меньше двух подтверждённых материалов; меньше -- блок не показываем. #}
     {% if related|length >= 2 %}
         <section class="space-y-4" id="related" aria-labelledby="related-title" data-vf-section="article-preview">
-            <h2 class="text-2xl font-bold" id="related-title">Ещё статьи о финансовом учёте</h2>
+            <h2 class="type-t2-article" id="related-title">Ещё статьи о финансовом учёте</h2>
             <ul class="list-disc pl-6">
                 {% for item in related %}
                     <li><a class="underline" href="{{ path('gazeta_post', {slug: item.slug}) }}">{{ item.title }}</a> — <time datetime="{{ item.publishedAt|date('Y-m-d') }}">{{ item.publishedAt|date('d.m.Y') }}</time></li>

@@ -8,14 +8,14 @@
 {% block active_navigation %}gazeta{% endblock %}
 
 {% block content %}
-    <h1 class="text-3xl font-bold">Газета</h1>
+    <h1 class="type-t2 md:type-t1">Газета</h1>
     <p>Разборы финансового учёта для селлеров: ДДС, ОПиУ, Баланс, unit-экономика и управленческие решения.</p>
 
     {% if pager.nbResults > 0 %}
         <ul class="space-y-6" data-vf-section="article-list">
             {% for post in pager.currentPageResults %}
                 <li>
-                    <h2 class="text-xl font-bold"><a class="underline" href="{{ path('gazeta_post', {slug: post.slug}) }}">{{ post.title }}</a></h2>
+                    <h2 class="type-t3"><a class="underline" href="{{ path('gazeta_post', {slug: post.slug}) }}">{{ post.title }}</a></h2>
                     <p><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time></p>
                     {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
                 </li>

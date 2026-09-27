@@ -79,7 +79,7 @@
 
 {% block content %}
     <header class="space-y-2" data-vf-section="consent-hero">
-        <h1 class="text-3xl font-bold">Согласие на обработку персональных данных</h1>
+        <h1 class="type-t2 md:type-t1">Согласие на обработку персональных данных</h1>
         <p>Редакция документа: {{ consent_version }}. Действует с {{ consent_version|date('d.m.Y') }}</p>
         <p>Отправляя заявку на сайте и отмечая поле «Согласен на обработку персональных данных», пользователь даёт согласие на обработку своих персональных данных в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных» на условиях ниже.</p>
     </header>
@@ -87,7 +87,7 @@
     <article class="space-y-6" data-vf-section="consent-document">
         {% for section in sections %}
             <section class="space-y-2" id="{{ section.id }}">
-                <h2 class="text-xl font-bold">{{ section.label }}. {{ section.title }}</h2>
+                <h2 class="type-t3">{{ section.label }}. {{ section.title }}</h2>
                 {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
             </section>
         {% endfor %}

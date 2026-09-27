@@ -1,0 +1,2 @@
+@AGENTS.md
+@SITE_RULES.md
