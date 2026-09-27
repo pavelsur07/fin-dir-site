@@ -29,10 +29,9 @@ final class CookieNoticeTest extends WebTestCase
 
         self::assertSelectorExists('#cookieNotice[hidden].opacity-0.data-visible\\:opacity-100.data-visible\\:translate-y-0');
 
-        // Кнопка «Закрыть» позиционируется внутри карточки, а не от fixed-обёртки на всю ширину экрана.
-        self::assertSelectorExists('#cookieNotice > div.relative #cookieClose.absolute');
-        // Touch target кнопки «Закрыть» -- не меньше 44px по высоте (токен min-h-control-touch).
-        self::assertSelectorExists('#cookieClose.min-h-control-touch');
+        self::assertSelectorExists('#cookieNotice > div.dark.border-t.border-border');
+        self::assertSelectorExists('#cookieNotice .flex.gap-3 #cookieAccept.flex-1.h-control-lg');
+        self::assertSelectorExists('#cookieNotice .flex.gap-3 #cookieClose.flex-1.h-control-lg[data-vf-variant="outline"][aria-label="Закрыть уведомление о cookie"]');
 
         $root = (string) self::getContainer()->getParameter('kernel.project_dir');
         $css = (string) file_get_contents($root.'/public/assets/website/app.css');
@@ -77,7 +76,7 @@ final class CookieNoticeTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
 
-        self::assertSelectorExists('body > #cookieNotice.sticky.bottom-4');
+        self::assertSelectorExists('body > #cookieNotice.sticky.bottom-0');
         self::assertSelectorNotExists('#cookieNotice.fixed');
         // sticky держит место в конце потока, только если после баннера нет контента.
         $elements = array_values(array_filter(
