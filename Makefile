@@ -13,7 +13,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
-        assets assets-watch asset-version assets-check lint cs cs-fix phpstan test test-db ci \
+        assets assets-watch asset-version assets-check ds-check lint cs cs-fix phpstan test test-db ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -112,6 +112,10 @@ assets-check:
 		echo 'Compiled website assets are stale. Run make assets.' >&2; \
 		exit 1; \
 	}
+
+# Проверка всех классов сайта, админки, JS и Markdown по собранной теме.
+ds-check: assets-check
+	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/website/app.css site/templates site/assets/scripts/website site/src/Publication/Adapter
 
 # --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
 

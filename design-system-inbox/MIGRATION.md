@@ -14,6 +14,7 @@
 | `border-slate-200` | `border-border-subtle` — разделители (`border-b`, `border-t`, `hr`); просто `border` — рамка контейнера | цвет рамки по умолчанию уже `border` |
 | `border-slate-300` `border-slate-400` `border-slate-500` | `border-border-strong` | поля, контурные кнопки |
 | `bg-red-700` | `bg-accent-fill` | |
+| `bg-red-50` (цитата `blockquote` в Markdown) | `bg-surface-muted` | блок-врезка на ink 50; акцент только у левой полосы |
 | `hover:bg-red-800` | `hover:bg-accent-fill-hover` | |
 | `active:bg-red-900` | `active:bg-accent-fill-active` | |
 | `border-red-700` · `hover:border-red-800` · `active:border-red-900` | `border-accent` · `hover:border-accent-fill-hover` · `active:border-accent-fill-active` | |
