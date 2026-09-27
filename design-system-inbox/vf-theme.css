@@ -1,0 +1,416 @@
+/* Ваш Финдир · дизайн-система v2.2 · тема для Tailwind CSS v4
+   Сгенерировано из tokens.json — не редактировать вручную.
+   Подключение: @import "tailwindcss"; @import "./vf-theme.css";  */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 1. Семантические переменные: светлая тема и .dark (на <html> или на любом блоке на ink) */
+:root {
+  --fg: #0B1020;
+  --fg-secondary: #434F6B;
+  --fg-muted: #5E6A85;
+  --fg-disabled: #8490A8;
+  --accent: #B00020;
+  --accent-fill: #B00020;
+  --accent-fill-hover: #8A001B;
+  --accent-fill-active: #5E0012;
+  --on-accent: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-muted: #F4F6F9;
+  --surface-raised: #FFFFFF;
+  --border-subtle: #E8EBF1;
+  --border: #D2D8E2;
+  --border-strong: #AEB7C8;
+  --focus-ring: #FAC8CE;
+  --overlay: rgba(11,16,32,.56);
+  --success: #0F6B40;
+  --success-bg: #E3F3EA;
+  --success-border: #A8D9BD;
+  --warning: #8A4B00;
+  --warning-bg: #FFF2DB;
+  --warning-border: #F5C979;
+  --error: #B3300A;
+  --error-bg: #FDECE6;
+  --error-border: #F4B39E;
+  --info: #1D4FA8;
+  --info-bg: #E6EEFB;
+  --info-border: #A9C2EE;
+}
+.dark {
+  --fg: #FFFFFF;
+  --fg-secondary: #D2D8E2;
+  --fg-muted: #AEB7C8;
+  --fg-disabled: #5E6A85;
+  --accent: #EE6B7C;
+  --accent-fill-hover: #CC1A36;
+  --accent-fill-active: #CC1A36;
+  --surface: #0B1020;
+  --surface-muted: #141B2E;
+  --surface-raised: #1F2840;
+  --border-subtle: #1F2840;
+  --border: #2E3953;
+  --border-strong: #434F6B;
+  --focus-ring: #5E0012;
+  --success: #4FB883;
+  --success-bg: #10261C;
+  --success-border: #10261C;
+  --warning: #F5C979;
+  --warning-bg: #2A200D;
+  --warning-border: #2A200D;
+  --error: #E98A6B;
+  --error-bg: #2B150F;
+  --error-border: #2B150F;
+  --info: #A9C2EE;
+  --info-bg: #0F1B33;
+  --info-border: #0F1B33;
+}
+
+/* 2. Тема. Каждое пространство имён сбрасывается: стандартные red-500, p-7, rounded-2xl, shadow-xl и т. п. не существуют. */
+@theme {
+  --*: initial;
+
+  /* Значения по умолчанию, которые сбросил --*: initial */
+  --default-transition-duration: 120ms;
+  --default-transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  --default-font-family: var(--font-sans);
+  --default-mono-font-family: var(--font-mono);
+
+  /* Примитивы — только внутри компонентов; в разметке страниц используйте семантику */
+  --color-white: #FFFFFF;
+  --color-ink-50: #F4F6F9;
+  --color-ink-100: #E8EBF1;
+  --color-ink-200: #D2D8E2;
+  --color-ink-300: #AEB7C8;
+  --color-ink-400: #8490A8;
+  --color-ink-500: #5E6A85;
+  --color-ink-600: #434F6B;
+  --color-ink-700: #2E3953;
+  --color-ink-800: #1F2840;
+  --color-ink-900: #141B2E;
+  --color-ink-950: #0B1020;
+  --color-crimson-50: #FEF2F3;
+  --color-crimson-100: #FDE4E7;
+  --color-crimson-200: #FAC8CE;
+  --color-crimson-300: #F59DA8;
+  --color-crimson-400: #EE6B7C;
+  --color-crimson-500: #E23B52;
+  --color-crimson-600: #CC1A36;
+  --color-crimson-700: #B00020;
+  --color-crimson-800: #8A001B;
+  --color-crimson-900: #5E0012;
+  --color-crimson-950: #3D000B;
+  --color-success-400: #4FB883;
+  --color-error-400: #E98A6B;
+  --color-chart-1: #2E3953;
+  --color-chart-2: #B00020;
+  --color-chart-3: #3A7CA5;
+  --color-chart-4: #D98E04;
+  --color-chart-5: #2A9D8F;
+  --color-chart-6: #7B5BA8;
+  --color-chart-7: #8490A8;
+  --color-chart-8: #6B8F3A;
+  --color-chart-income: #1F9D63;
+  --color-chart-expense: #AEB7C8;
+
+  /* Отступы: только шкала раздела 07 (без --spacing базы, поэтому p-7, gap-9 не собираются) */
+  --spacing-0\.5: 2px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-24: 96px;
+  --spacing-0: 0px;
+  --spacing-px: 1px;
+  /* Высоты контролов и размеры иконок: h-control-lg, size-icon-md */
+  --spacing-control-xs: 24px;
+  --spacing-control-sm: 32px;
+  --spacing-control-md: 40px;
+  --spacing-control-touch: 44px;
+  --spacing-control-lg: 48px;
+  --spacing-control-xl: 56px;
+  --spacing-icon-sm: 16px;
+  --spacing-icon-md: 20px;
+  --spacing-icon-lg: 24px;
+  --spacing-icon-xl: 32px;
+
+  --radius-none: 0;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(11,16,32,.06), 0 1px 3px rgba(11,16,32,.10);
+  --shadow-md: 0 4px 12px -2px rgba(11,16,32,.12), 0 2px 4px rgba(11,16,32,.06);
+  --shadow-lg: 0 24px 48px -12px rgba(11,16,32,.28);
+  --shadow-focus: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+  --shadow-focus-inverse: 0 0 0 2px #0B1020, 0 0 0 4px #EE6B7C;
+  --shadow-focus-field: inset 0 0 0 1px var(--accent), 0 0 0 4px var(--focus-ring);
+  --shadow-error-field: inset 0 0 0 1px var(--error);
+
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-display: "Manrope Variable", Manrope, "Inter Variable", Inter, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+
+  /* Роли T-шкалы: text-t1 задаёт размер, интерлиньяж, трекинг и базовый вес */
+  --text-t1: 48px;
+  --text-t1--line-height: 56px;
+  --text-t1--letter-spacing: -0.02em;
+  --text-t1--font-weight: 800;
+  --text-t2: 36px;
+  --text-t2--line-height: 44px;
+  --text-t2--letter-spacing: -0.02em;
+  --text-t2--font-weight: 800;
+  --text-t2-article: 30px;
+  --text-t2-article--line-height: 38px;
+  --text-t2-article--letter-spacing: -0.02em;
+  --text-t2-article--font-weight: 800;
+  --text-t3: 20px;
+  --text-t3--line-height: 28px;
+  --text-t3--letter-spacing: -0.02em;
+  --text-t3--font-weight: 700;
+  --text-t3-num: 20px;
+  --text-t3-num--line-height: 28px;
+  --text-t3-num--letter-spacing: 0;
+  --text-t3-num--font-weight: 800;
+  --text-h4: 16px;
+  --text-h4--line-height: 26px;
+  --text-h4--letter-spacing: -0.02em;
+  --text-h4--font-weight: 700;
+  --text-h4-num: 16px;
+  --text-h4-num--line-height: 26px;
+  --text-h4-num--letter-spacing: 0;
+  --text-h4-num--font-weight: 800;
+  --text-t4: 18px;
+  --text-t4--line-height: 28px;
+  --text-t4--letter-spacing: 0;
+  --text-t4--font-weight: 400;
+  --text-t5: 16px;
+  --text-t5--line-height: 26px;
+  --text-t5--letter-spacing: 0;
+  --text-t5--font-weight: 400;
+  --text-t6: 14px;
+  --text-t6--line-height: 22px;
+  --text-t6--letter-spacing: 0;
+  --text-t6--font-weight: 400;
+  --text-t7: 12px;
+  --text-t7--line-height: 18px;
+  --text-t7--letter-spacing: 0;
+  --text-t7--font-weight: 400;
+  --text-t8: 30px;
+  --text-t8--line-height: 38px;
+  --text-t8--letter-spacing: 0;
+  --text-t8--font-weight: 800;
+  --text-t-code: 24px;
+  --text-t-code--line-height: 32px;
+  --text-t-code--letter-spacing: 0;
+  --text-t-code--font-weight: 800;
+  --text-t-mono: 14px;
+  --text-t-mono--line-height: 22px;
+  --text-t-mono--letter-spacing: 0;
+  --text-t-mono--font-weight: 400;
+  --text-t-mono-sm: 12px;
+  --text-t-mono-sm--line-height: 18px;
+  --text-t-mono-sm--letter-spacing: 0;
+  --text-t-mono-sm--font-weight: 500;
+
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+  --container-text: 720px;
+  --container-page: 1200px;
+
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --aspect-video: 16 / 9;
+  --aspect-photo: 3 / 2;
+  --aspect-portrait: 4 / 5;
+  --aspect-screenshot: 16 / 10;
+  --animate-spin: spin 800ms linear infinite;
+  --animate-skeleton: vf-skeleton 1500ms ease-in-out infinite;
+}
+
+/* 3. Семантические цвета как утилиты: bg-surface, text-fg, border-border-strong, bg-accent-fill … */
+@theme inline {
+  --color-fg: var(--fg);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-disabled: var(--fg-disabled);
+  --color-accent: var(--accent);
+  --color-accent-fill: var(--accent-fill);
+  --color-accent-fill-hover: var(--accent-fill-hover);
+  --color-accent-fill-active: var(--accent-fill-active);
+  --color-on-accent: var(--on-accent);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-raised: var(--surface-raised);
+  --color-border-subtle: var(--border-subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-focus-ring: var(--focus-ring);
+  --color-overlay: var(--overlay);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-success-border: var(--success-border);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-border: var(--warning-border);
+  --color-error: var(--error);
+  --color-error-bg: var(--error-bg);
+  --color-error-border: var(--error-border);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-info-border: var(--info-border);
+}
+
+/* 4. Полные роли одним классом: семейство + размер + вес + трекинг + tnum. Предпочтительный способ. */
+@utility type-t1 {
+  font-family: var(--font-display);
+  font-size: var(--text-t1);
+  line-height: var(--text-t1--line-height);
+  letter-spacing: var(--text-t1--letter-spacing);
+  font-weight: var(--text-t1--font-weight);
+}
+@utility type-t2 {
+  font-family: var(--font-display);
+  font-size: var(--text-t2);
+  line-height: var(--text-t2--line-height);
+  letter-spacing: var(--text-t2--letter-spacing);
+  font-weight: var(--text-t2--font-weight);
+}
+@utility type-t2-article {
+  font-family: var(--font-display);
+  font-size: var(--text-t2-article);
+  line-height: var(--text-t2-article--line-height);
+  letter-spacing: var(--text-t2-article--letter-spacing);
+  font-weight: var(--text-t2-article--font-weight);
+}
+@utility type-t3 {
+  font-family: var(--font-display);
+  font-size: var(--text-t3);
+  line-height: var(--text-t3--line-height);
+  letter-spacing: var(--text-t3--letter-spacing);
+  font-weight: var(--text-t3--font-weight);
+}
+@utility type-t3-num {
+  font-family: var(--font-display);
+  font-size: var(--text-t3-num);
+  line-height: var(--text-t3-num--line-height);
+  letter-spacing: var(--text-t3-num--letter-spacing);
+  font-weight: var(--text-t3-num--font-weight);
+  font-variant-numeric: tabular-nums;
+}
+@utility type-h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  line-height: var(--text-h4--line-height);
+  letter-spacing: var(--text-h4--letter-spacing);
+  font-weight: var(--text-h4--font-weight);
+}
+@utility type-h4-num {
+  font-family: var(--font-display);
+  font-size: var(--text-h4-num);
+  line-height: var(--text-h4-num--line-height);
+  letter-spacing: var(--text-h4-num--letter-spacing);
+  font-weight: var(--text-h4-num--font-weight);
+  font-variant-numeric: tabular-nums;
+}
+@utility type-t4 {
+  font-family: var(--font-sans);
+  font-size: var(--text-t4);
+  line-height: var(--text-t4--line-height);
+  letter-spacing: var(--text-t4--letter-spacing);
+  font-weight: var(--text-t4--font-weight);
+}
+@utility type-t5 {
+  font-family: var(--font-sans);
+  font-size: var(--text-t5);
+  line-height: var(--text-t5--line-height);
+  letter-spacing: var(--text-t5--letter-spacing);
+  font-weight: var(--text-t5--font-weight);
+}
+@utility type-t6 {
+  font-family: var(--font-sans);
+  font-size: var(--text-t6);
+  line-height: var(--text-t6--line-height);
+  letter-spacing: var(--text-t6--letter-spacing);
+  font-weight: var(--text-t6--font-weight);
+}
+@utility type-t7 {
+  font-family: var(--font-sans);
+  font-size: var(--text-t7);
+  line-height: var(--text-t7--line-height);
+  letter-spacing: var(--text-t7--letter-spacing);
+  font-weight: var(--text-t7--font-weight);
+}
+@utility type-t8 {
+  font-family: var(--font-display);
+  font-size: var(--text-t8);
+  line-height: var(--text-t8--line-height);
+  letter-spacing: var(--text-t8--letter-spacing);
+  font-weight: var(--text-t8--font-weight);
+  font-variant-numeric: tabular-nums;
+}
+@utility type-t-code {
+  font-family: var(--font-display);
+  font-size: var(--text-t-code);
+  line-height: var(--text-t-code--line-height);
+  letter-spacing: var(--text-t-code--letter-spacing);
+  font-weight: var(--text-t-code--font-weight);
+  font-variant-numeric: tabular-nums;
+}
+@utility type-t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-t-mono);
+  line-height: var(--text-t-mono--line-height);
+  letter-spacing: var(--text-t-mono--letter-spacing);
+  font-weight: var(--text-t-mono--font-weight);
+}
+@utility type-t-mono-sm {
+  font-family: var(--font-mono);
+  font-size: var(--text-t-mono-sm);
+  line-height: var(--text-t-mono-sm--line-height);
+  letter-spacing: var(--text-t-mono-sm--letter-spacing);
+  font-weight: var(--text-t-mono-sm--font-weight);
+}
+
+/* 5. Длительности раздела 20: duration-fast и т. д. */
+@utility duration-instant { transition-duration: 0ms; }
+@utility duration-fast { transition-duration: 120ms; }
+@utility duration-base { transition-duration: 200ms; }
+@utility duration-slow { transition-duration: 320ms; }
+@utility duration-deliberate { transition-duration: 480ms; }
+
+@keyframes vf-skeleton { 50% { opacity: 0.6; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 6. База */
+@layer base {
+  *, ::before, ::after, ::backdrop { border-color: var(--border); }  /* v4 по умолчанию currentColor */
+  html { font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
+  body { background: var(--surface); color: var(--fg); -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  :focus-visible { outline: none; }  /* кольцо рисуют компоненты: shadow-focus / shadow-focus-field */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 1ms !important;
+      transition-duration: 120ms !important;
+      transition-property: opacity, color, background-color, border-color !important;
+    }
+  }
+}
