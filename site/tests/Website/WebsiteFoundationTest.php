@@ -36,7 +36,7 @@ final class WebsiteFoundationTest extends WebTestCase
             // До новой дизайн-системы на сайте нет иконок, включая футер и cookie.
             self::assertSelectorCount(0, 'body svg', $path);
             // Контент всех страниц использует ту же базовую ширину, что шапка и футер.
-            self::assertSelectorExists('main > div.max-w-6xl > div:not([class*="max-w-"]) h1', $path);
+            self::assertSelectorExists('main > div.max-w-page > div:not([class*="max-w-"]) h1', $path);
         }
     }
 
