@@ -1,13 +1,14 @@
 {% set variant = variant|default('primary') %}
 {% set variants = {
     primary: 'bg-accent-fill text-on-accent hover:bg-accent-fill-hover active:bg-accent-fill-active',
+    outline: 'border border-border-strong bg-surface text-fg hover:bg-surface-muted active:bg-surface-raised',
 } %}
 {% set classes = 'inline-flex h-control-lg items-center justify-center gap-2 rounded-md px-6 type-t5 font-semibold no-underline transition-colors duration-fast motion-reduce:transition-none focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-50 ' ~ variants[variant]|default(variants.primary) %}
 {% if class|default(null) %}{% set classes = classes ~ ' ' ~ class %}{% endif %}
 {% if full_mobile|default(false) %}{% set classes = classes ~ ' w-full md:w-auto' %}{% endif %}
 
 {% if href|default(null) %}
-    <a class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %} href="{{ href }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}</a>
+    <a class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %}{% if aria_label|default(null) %} aria-label="{{ aria_label }}"{% endif %} href="{{ href }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}</a>
 {% else %}
-    <button class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %} type="{{ type|default('button') }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}</button>
+    <button class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %}{% if aria_label|default(null) %} aria-label="{{ aria_label }}"{% endif %} type="{{ type|default('button') }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}</button>
 {% endif %}
