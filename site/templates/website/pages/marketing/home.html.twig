@@ -1,7 +1,7 @@
 {% extends 'website/layouts/page.html.twig' %}
 
-{% block title %}Финансовый директор на аутсорсинге для селлеров маркетплейсов — Ваш Финдир{% endblock %}
-{% block description %}ДДС, ОПиУ, Баланс, планирование и unit-экономика для селлеров Wildberries и Ozon. Финансовый директор на аутсорсинге и SaaS-платформа «Ваш Финдир».{% endblock %}
+{% block title %}Ваш финансовый директор на аутсорсинге — Ваш Финдир{% endblock %}
+{% block description %}Для собственников, которые хотят расти в прибыли, а не только в выручке. Разберём ваши цифры на 45-минутной экскурсии.{% endblock %}
 
 {% block json_ld %}
     {{ parent() }}
@@ -15,19 +15,21 @@
                 provider: {'@id': vf_site_url ~ '/#organization'},
                 areaServed: 'RU',
                 url: vf_site_url,
-                description: 'ДДС, ОПиУ, Баланс, планирование и unit-экономика для селлеров маркетплейсов Wildberries и Ozon.',
+                description: 'Финансовый директор на аутсорсинге для собственников, которые хотят расти в прибыли, а не только в выручке.',
             },
         ],
     } only %}
 {% endblock %}
 
-{% block content %}
-    <h1 class="type-t2 md:type-t1">Финансовый директор на аутсорсинге для селлеров маркетплейсов</h1>
-
-    {% include 'website/sections/_lead_form.html.twig' with {
-        id: 'lead-form',
-        title: 'Получить консультацию',
-        form: 'consultation',
-        action_label: 'Получить консультацию',
-    } only %}
+{% block body %}
+    {% include 'website/sections/_hero.html.twig' with {} only %}
+    <div class="mx-auto w-full max-w-page px-4 py-16 md:px-8 md:py-24">
+        {% include 'website/sections/_lead_form.html.twig' with {
+            id: 'lead-form',
+            title: 'Записаться на экскурсию',
+            form: 'consultation',
+            action_label: 'Отправить заявку',
+            note: '45 минут. Разберём на ваших цифрах. Без продажи с порога.',
+        } only %}
+    </div>
 {% endblock %}
