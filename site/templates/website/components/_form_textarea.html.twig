@@ -1,5 +1,5 @@
 {# analytics_private: вебвизор Метрики не записывает ввод в поле (класс ym-disable-keys). #}
 <div class="grid gap-1" data-vf-component="textarea">
     <label for="{{ id }}">{{ label }}</label>
-    <textarea class="w-full border px-3 py-2 aria-invalid:border-orange-700{% if analytics_private|default(false) %} ym-disable-keys{% endif %}" id="{{ id }}" name="{{ name|default(id) }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if required|default(false) %} required{% endif %}>{{ value is defined ? value : '' }}</textarea>
+    <textarea class="w-full border px-3 py-2 aria-invalid:border-error aria-invalid:shadow-error-field{% if analytics_private|default(false) %} ym-disable-keys{% endif %}" id="{{ id }}" name="{{ name|default(id) }}"{% if placeholder|default(null) %} placeholder="{{ placeholder }}"{% endif %}{% if required|default(false) %} required{% endif %}>{{ value is defined ? value : '' }}</textarea>
 </div>

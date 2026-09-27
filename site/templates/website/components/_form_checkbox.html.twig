@@ -1,4 +1,4 @@
 <div class="flex items-start gap-2" data-vf-component="checkbox">
-    <input class="aria-invalid:ring-2 aria-invalid:ring-orange-700" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
+    <input class="aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
     <label for="{{ id }}">{{ label }}</label>
 </div>

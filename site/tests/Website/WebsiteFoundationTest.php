@@ -46,7 +46,8 @@ final class WebsiteFoundationTest extends WebTestCase
         $source = (string) file_get_contents($root.'/assets/styles/website/app.css');
         $compiled = (string) file_get_contents($root.'/public/assets/website/app.css');
         self::assertStringContainsString('@import "tailwindcss" source(none);', $source);
-        self::assertStringContainsString('.bg-red-700', $compiled);
+        self::assertStringContainsString('.bg-accent-fill', $compiled);
+        self::assertStringNotContainsString('.bg-red-700', $compiled);
         self::assertStringContainsString('.translate-x-full', $compiled);
         self::assertStringNotContainsString('@import "tailwindcss"', $compiled);
 
