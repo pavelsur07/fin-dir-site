@@ -38,6 +38,8 @@ final class WebsiteFoundationTest extends WebTestCase
                 self::assertSelectorCount(8, 'main section[aria-labelledby="home-pain-points-title"] svg[aria-hidden="true"]');
                 self::assertSelectorCount(7, 'main section[aria-labelledby="home-fit-title"] svg[aria-hidden="true"]');
                 self::assertSelectorExists('main section[aria-labelledby="home-process-title"] > div > h2#home-process-title');
+                self::assertSelectorExists('main section[aria-labelledby="home-trust-data-title"] > div > h2#home-trust-data-title');
+                self::assertSelectorExists('main section[aria-labelledby="home-profit-path-title"] > div > h2#home-profit-path-title');
             }
             // Главная имеет полноширинный hero; текст остальных страниц остаётся в общем контейнере.
             self::assertSelectorExists('/' === $path ? 'main > section > div.max-w-page h1' : 'main > div.max-w-page > div:not([class*="max-w-"]) h1', $path);
