@@ -162,6 +162,15 @@
         });
     };
 
+    // Тень липкой шапки после начала прокрутки: JS ставит только атрибут, оформление — data-scrolled:* в разметке.
+    const initializeStickyHeader = () => {
+        document.querySelectorAll('[data-vf-component="navbar"]').forEach((header) => {
+            const update = () => header.toggleAttribute('data-scrolled', window.scrollY > 0);
+            update();
+            window.addEventListener('scroll', update, { passive: true });
+        });
+    };
+
     const initializeCookieNotice = () => {
         const cookieNotice = document.getElementById('cookieNotice');
         const cookieAccept = document.getElementById('cookieAccept');
@@ -197,8 +206,10 @@
             window.requestAnimationFrame(() => {
                 const rect = target.getBoundingClientRect();
                 const overlap = rect.bottom - cookieNotice.firstElementChild.getBoundingClientRect().top;
-                // Верх элемента не уводим за экран: большой контейнер (main после skip link) не прокручивается.
-                const distance = Math.min(overlap + 16, rect.top - 16);
+                // Верх элемента не уводим за экран и под липкую шапку (scroll-padding-top у html):
+                // большой контейнер (main после skip link) не прокручивается.
+                const topInset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+                const distance = Math.min(overlap + 16, rect.top - topInset - 16);
                 if (overlap > 0 && distance > 0) {
                     window.scrollBy({ top: distance, behavior: 'instant' });
                 }
@@ -558,6 +569,7 @@
 
     const initialize = () => {
         initializeMenu();
+        initializeStickyHeader();
         initializeCookieNotice();
         initializeAttribution();
         initializeLeadForms();
