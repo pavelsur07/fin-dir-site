@@ -1,0 +1,14 @@
+<section class="bg-surface py-16 md:py-24" aria-labelledby="home-process-title">
+    <div class="mx-auto max-w-page px-4 md:px-8">
+        <h2 id="home-process-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <ol class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {% for step in steps %}
+                <li class="{{ loop.last ? 'flex flex-col gap-2 rounded-b-lg border-t-2 border-fg bg-surface-muted px-4 pt-4 pb-4' : 'flex flex-col gap-2 border-t-2 border-fg pt-4' }}">
+                    <span class="type-t-mono-sm text-fg-muted" aria-hidden="true">{{ step.number }}</span>
+                    <h3 class="type-h4 text-fg">{{ step.title }}</h3>
+                    <p class="type-t6 text-fg-secondary">{{ step.text }}</p>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>

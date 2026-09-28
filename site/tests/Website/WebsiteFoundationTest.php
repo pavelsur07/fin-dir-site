@@ -33,9 +33,11 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertFalse($client->getResponse()->headers->has('Set-Cookie'), $path);
             self::assertSelectorExists('meta[name="description"]', $path);
             self::assertSelectorExists('link[rel="canonical"]', $path);
-            self::assertSelectorCount('/' === $path ? 8 : 0, 'body svg', $path);
+            self::assertSelectorCount('/' === $path ? 15 : 0, 'body svg', $path);
             if ('/' === $path) {
                 self::assertSelectorCount(8, 'main section[aria-labelledby="home-pain-points-title"] svg[aria-hidden="true"]');
+                self::assertSelectorCount(7, 'main section[aria-labelledby="home-fit-title"] svg[aria-hidden="true"]');
+                self::assertSelectorExists('main section[aria-labelledby="home-process-title"] > div > h2#home-process-title');
             }
             // Главная имеет полноширинный hero; текст остальных страниц остаётся в общем контейнере.
             self::assertSelectorExists('/' === $path ? 'main > section > div.max-w-page h1' : 'main > div.max-w-page > div:not([class*="max-w-"]) h1', $path);

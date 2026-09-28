@@ -1,0 +1,35 @@
+<section class="bg-surface-muted py-16 md:py-24" aria-labelledby="home-fit-title">
+    <div class="mx-auto max-w-page px-4 md:px-8">
+        <h2 id="home-fit-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            <div class="rounded-lg bg-surface p-6 shadow-sm md:p-8">
+                <h3 class="mb-4 type-h4 text-fg">{{ fit.title }}</h3>
+                <ul class="flex flex-col gap-3">
+                    {% for item in fit.items %}
+                        <li class="flex gap-3 type-t6 text-fg">
+                            {% include 'website/components/_icon.html.twig' with {
+                                name: 'check',
+                                class: 'size-icon-md shrink-0 text-success',
+                            } only %}
+                            <span>{{ item }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="rounded-lg border border-border p-6 md:p-8">
+                <h3 class="mb-4 type-h4 text-fg">{{ not_fit.title }}</h3>
+                <ul class="flex flex-col gap-3">
+                    {% for item in not_fit.items %}
+                        <li class="flex gap-3 type-t6 text-fg">
+                            {% include 'website/components/_icon.html.twig' with {
+                                name: 'x',
+                                class: 'size-icon-md shrink-0 text-fg-muted',
+                            } only %}
+                            <span>{{ item }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
