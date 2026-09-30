@@ -1,4 +1,4 @@
-/* Ваш Финдир · дизайн-система v2.2 · тема для Tailwind CSS v4
+/* Ваш Финдир · дизайн-система v2.3 · тема для Tailwind CSS v4
    Сгенерировано из tokens.json — не редактировать вручную.
    Подключение: @import "tailwindcss"; @import "./vf-theme.css";  */
 
@@ -231,12 +231,16 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1440px;
-  --container-text: 720px;
-  --container-page: 1200px;
-  --container-sidebar: 256px;
+  --container-container: 1200px;
+  --container-article: 1120px;
+  --container-title: 800px;
+  --container-measure: 720px;
+  --container-lead: 520px;
   --container-modal-sm: 400px;
   --container-modal-md: 560px;
   --container-modal-lg: 720px;
+  --container-sidebar: 256px;
+  --container-crumb: 240px;
 
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -399,6 +403,12 @@
 @utility duration-base { transition-duration: 200ms; }
 @utility duration-slow { transition-duration: 320ms; }
 @utility duration-deliberate { transition-duration: 480ms; }
+
+/* 5а. Ширины и ограничения раздела 29, которых нет в пространстве --container-* */
+@utility max-w-toc { max-width: 280px; }
+@utility min-w-toc { min-width: 240px; }
+@utility max-h-cover { max-height: 520px; }
+@utility min-w-table { min-width: 400px; }
 
 @keyframes vf-skeleton { 50% { opacity: 0.6; } }
 @keyframes spin { to { transform: rotate(360deg); } }

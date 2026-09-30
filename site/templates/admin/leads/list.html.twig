@@ -29,7 +29,7 @@
     </form>
 
     {% if pager.nbResults == 0 %}
-        <p class="max-w-page rounded-lg border bg-white p-6">Обращений не найдено.</p>
+        <p class="max-w-container rounded-lg border bg-white p-6">Обращений не найдено.</p>
     {% else %}
         {% set token = csrf_token('lead-admin') %}
         {# Куда вернуться после действия из меню: тот же список с фильтрами. Удаление и смена

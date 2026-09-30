@@ -1,4 +1,4 @@
-# Миграция классов сайта на тему «Ваш Финдир» v2.2
+# Миграция классов сайта на тему «Ваш Финдир» v2.3
 
 Тема заменяет стандартную тему Tailwind, поэтому эти классы перестают собираться. Таблица покрывает все 61 класс, которые сейчас есть в `site/templates`, `site/assets/scripts/website` и `site/src/Publication/Adapter` (проверено сборкой).
 
@@ -81,8 +81,13 @@
 | Было | Стало | Примечание |
 |---|---|---|
 | `min-h-11` · `size-11` | `min-h-control-touch` · `size-control-touch` | зона касания 44 |
-| `max-w-6xl` `max-w-5xl` | `max-w-page` | 1200 |
-| `max-w-3xl` | `max-w-text` | 720 |
+| `max-w-6xl` `max-w-5xl` `max-w-page` | `max-w-container` | 1200; в v2.3 `page` переименован в `container` |
+| `max-w-3xl` `max-w-text` | `max-w-measure` | 720; в v2.3 `text` переименован в `measure` |
+| `max-w-sidebar` (последний пункт крошек) | `max-w-crumb` | 240, ellipsis |
+| `min-w-modal-md` (таблица в статье) | `min-w-table` | 400, уже — горизонтальный скролл |
+| (без токена) обложка статьи | `max-h-cover` | 520, формат 16:9 |
+| (без токена) hero статьи · H1-блок · лид | `max-w-article` · `max-w-title` · `max-w-lead` | 1120 · 800 · 520 |
+| `w-sidebar` (панель статьи) | `min-w-toc` `max-w-toc` | 240–280; `w-sidebar` остаётся для бокового меню кабинета |
 | `w-60` (меню админки) | `w-sidebar` | 256 |
 | `min-w-52` (колонка таблицы админки) | `min-w-sidebar` | |
 | `min-h-32` (textarea админки) | `min-h-24` | |

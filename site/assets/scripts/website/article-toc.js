@@ -6,6 +6,8 @@
     const INACTIVE_LINK = ['font-medium', 'text-fg-muted'];
     const ACTIVE_DOT = 'bg-accent-fill';
     const INACTIVE_DOT = 'bg-border';
+    const ACTIVE_SEGMENT = 'bg-accent-fill';
+    const INACTIVE_SEGMENT = 'bg-border-subtle';
 
     const initializeArticleToc = () => {
         const body = document.querySelector('[data-vf-article-body]');
@@ -15,21 +17,22 @@
             return;
         }
 
-        // Заголовки, у которых есть пункт оглавления (в списке не больше 7), в порядке документа.
-        const ids = [...new Set(links.map((link) => link.getAttribute('href').slice(1)))];
-        const headings = ids
-            .map((id) => document.getElementById(id))
-            .filter((heading) => heading instanceof HTMLElement && body.contains(heading))
-            .sort((first, second) => (first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+        // Все H2 статьи в порядке документа: в оглавлении их не больше 7, но счётчик считает все.
+        const headings = [...body.querySelectorAll('h2[id]')];
 
         if (headings.length === 0) {
             return;
         }
 
         const progress = [...document.querySelectorAll('.js-toc-progress')];
-        let activeId = null;
+        const segments = [...document.querySelectorAll('.js-toc-segment')];
+        const end = document.querySelector('.js-toc-end');
+        let activeIndex = -1;
+        let atEnd = false;
 
         const render = () => {
+            const activeId = activeIndex === -1 ? null : headings[activeIndex].id;
+
             links.forEach((link) => {
                 const active = link.getAttribute('href') === `#${activeId}`;
                 const dot = link.querySelector('.js-toc-dot');
@@ -49,34 +52,55 @@
                 }
             });
 
-            const index = headings.findIndex((heading) => heading.id === activeId);
+            // Пройденные разделы и текущий закрашены, остальные нет.
+            segments.forEach((segment, index) => {
+                const passed = index <= activeIndex;
+
+                segment.classList.remove(passed ? INACTIVE_SEGMENT : ACTIVE_SEGMENT);
+                segment.classList.add(passed ? ACTIVE_SEGMENT : INACTIVE_SEGMENT);
+            });
+
             progress.forEach((element) => {
-                element.textContent = index === -1 ? '' : `${index + 1} из ${headings.length}`;
+                element.textContent = `${activeIndex + 1} из ${headings.length}`;
             });
         };
 
-        // Активен последний заголовок, который дошёл до линии под шапкой.
+        // Активен последний заголовок, дошедший до линии под шапкой; у конца текста -- последний H2.
         const update = () => {
-            let current = null;
+            let current = -1;
 
-            headings.forEach((heading) => {
-                if (heading.getBoundingClientRect().top <= HEADER_OFFSET) {
-                    current = heading.id;
-                }
-            });
+            // scrollY > 0: у короткой статьи конец виден сразу, но до прокрутки активного раздела ещё нет.
+            if (atEnd && window.scrollY > 0) {
+                current = headings.length - 1;
+            } else {
+                headings.forEach((heading, index) => {
+                    if (heading.getBoundingClientRect().top <= HEADER_OFFSET) {
+                        current = index;
+                    }
+                });
+            }
 
-            if (current !== activeId) {
-                activeId = current;
+            if (current !== activeIndex) {
+                activeIndex = current;
                 render();
             }
         };
 
         // Полоса от линии под шапкой вниз: заголовок пересекает её верхнюю границу при каждой смене активного.
-        const observer = new IntersectionObserver(update, {
+        const headingObserver = new IntersectionObserver(update, {
             rootMargin: `-${HEADER_OFFSET}px 0px -60% 0px`,
         });
 
-        headings.forEach((heading) => observer.observe(heading));
+        headings.forEach((heading) => headingObserver.observe(heading));
+
+        // Короткий последний раздел не дойдёт до линии: когда виден конец текста, он активен.
+        if (end instanceof HTMLElement) {
+            new IntersectionObserver((entries) => {
+                atEnd = entries.some((entry) => entry.isIntersecting);
+                update();
+            }).observe(end);
+        }
+
         update();
     };
 

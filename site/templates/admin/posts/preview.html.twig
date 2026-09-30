@@ -8,7 +8,7 @@
         <span class="inline-block rounded-full px-2 py-1 type-t7 font-semibold {{ post.status.value == 'published' ? 'bg-success-bg text-success' : 'bg-surface-muted text-fg-secondary' }}">{{ post.status.label }}</span>
     </div>
 
-    <article class="max-w-text rounded-lg border bg-white p-6">
+    <article class="max-w-measure rounded-lg border bg-white p-6">
         <h1 class="mb-6 type-t2-article">{{ post.title }}</h1>
         {% if post.excerpt %}<p class="type-t6 text-fg-secondary">{{ post.excerpt }}</p>{% endif %}
         {# body_html -- выход MarkdownRenderer: HTML из текста вырезан, небезопасные ссылки отброшены. #}

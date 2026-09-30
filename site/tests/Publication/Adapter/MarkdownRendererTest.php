@@ -74,12 +74,29 @@ final class MarkdownRendererTest extends TestCase
 
     public function testCalloutKindIsDetectedByLeadingLabel(): void
     {
-        $markdown = "> **Короткий вывод:** а\n\n> **Best practice:** б\n\n> **Главный вопрос не про оборот.**\n\n> Без метки\n";
+        $markdown = "> **Короткий вывод:** а\n\n> **Важно:** б\n\n> **Best practice:** в\n\n> **Главный вопрос не про оборот.**\n\n> Без метки\n";
         $html = new MarkdownRenderer()->renderArticle($markdown)->html;
 
         self::assertSame(1, substr_count($html, 'data-vf-callout="summary"'));
-        self::assertSame(1, substr_count($html, 'data-vf-callout="practice"'));
-        self::assertSame(2, substr_count($html, 'data-vf-callout="key"'));
+        self::assertSame(1, substr_count($html, 'data-vf-callout="info"'));
+        self::assertSame(3, substr_count($html, 'data-vf-callout="note"'));
+        // Врезок ровно три вида: success-цвета в статьях не используются.
+        self::assertStringNotContainsString('success', $html);
+    }
+
+    public function testCalloutLabelBecomesTitleAndIconMatchesKind(): void
+    {
+        $html = new MarkdownRenderer()->renderArticle("> **Важно:** Срок не продлевается.\n\n> **Совет:** Считайте на данных прошлого года.\n\n> **Коротко:** тезис\n")->html;
+
+        // Метка без двоеточия -- отдельный заголовок, текст -- отдельный абзац.
+        self::assertMatchesRegularExpression('/data-vf-callout-title="info"[^>]*><strong>Важно<\/strong><\/p>/', $html);
+        self::assertMatchesRegularExpression('/data-vf-callout-part="info"[^>]*>Срок не продлевается\.<\/p>/', $html);
+        // info -- иконка info, «Совет» -- лампочка (в ней есть path «M9 18h6»), «Коротко» -- без иконки.
+        self::assertSame(2, substr_count($html, '<svg'));
+        self::assertStringContainsString('M12 16v-4', $html);
+        self::assertStringContainsString('M9 18h6', $html);
+        // Каждый открытый внутренний контейнер закрыт.
+        self::assertSame(substr_count($html, '<div'), substr_count($html, '</div>'));
     }
 
     public function testFaqQuestionsAreMarkedOnlyInsideFaqSection(): void
