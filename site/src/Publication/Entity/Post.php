@@ -43,6 +43,10 @@ class Post
     #[ORM\Column(length: 170, nullable: true)]
     private ?string $metaDescription;
 
+    /** Свой заголовок формы вопроса под статьёй; пусто -- общий заголовок из настроек. */
+    #[ORM\Column(length: 120, nullable: true)]
+    private ?string $formTitle;
+
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
@@ -65,6 +69,7 @@ class Post
         ?string $metaTitle,
         ?string $metaDescription,
         \DateTimeImmutable $now,
+        ?string $formTitle = null,
     ) {
         $this->title = self::requireTitle($title);
         $this->slug = self::requireSlug($slug);
@@ -72,6 +77,7 @@ class Post
         $this->body = $body;
         $this->metaTitle = $metaTitle;
         $this->metaDescription = $metaDescription;
+        $this->formTitle = $formTitle;
         $this->createdAt = $now;
         $this->updatedAt = $now;
     }
@@ -83,6 +89,7 @@ class Post
         ?string $metaTitle,
         ?string $metaDescription,
         \DateTimeImmutable $now,
+        ?string $formTitle = null,
     ): void {
         if (PostStatus::PUBLISHED === $this->status && '' === trim($body)) {
             throw new \InvalidArgumentException('Published post body must not be empty.');
@@ -93,6 +100,7 @@ class Post
         $this->body = $body;
         $this->metaTitle = $metaTitle;
         $this->metaDescription = $metaDescription;
+        $this->formTitle = $formTitle;
         $this->updatedAt = $now;
     }
 

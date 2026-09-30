@@ -1,5 +1,8 @@
 parameters:
   vf.site_url: 'https://vashfindir.ru'
+  # Форма вопроса в панели и под статьёй: общий текст. Свой заголовок задаётся у публикации (Post::formTitle).
+  vf.article_form.title: 'Вопрос по вашей ситуации?'
+  vf.article_form.text: 'Консультант ответит в Telegram или перезвонит в течение часа.'
   # Пусто -- уведомления о заявках выключены, заявки всё равно сохраняются.
   env(TELEGRAM_BOT_TOKEN): ''
   env(TELEGRAM_LEAD_CHAT_ID): ''

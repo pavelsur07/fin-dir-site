@@ -39,6 +39,7 @@ final class PostCreator
             $input->metaTitle,
             $input->metaDescription,
             $this->clock->now(),
+            $input->formTitle,
         );
         $this->posts->save($post);
 

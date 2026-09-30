@@ -20,6 +20,7 @@ final class PostBuilder
     private \DateTimeImmutable $createdAt;
     private PostStatus $status = PostStatus::DRAFT;
     private ?\DateTimeImmutable $publishedAt = null;
+    private ?string $formTitle = null;
 
     private function __construct()
     {
@@ -52,6 +53,13 @@ final class PostBuilder
         return $this;
     }
 
+    public function withFormTitle(string $formTitle): self
+    {
+        $this->formTitle = $formTitle;
+
+        return $this;
+    }
+
     public function createdAt(string $at): self
     {
         $this->createdAt = new \DateTimeImmutable($at);
@@ -76,7 +84,7 @@ final class PostBuilder
 
     public function build(): Post
     {
-        $post = new Post($this->title, $this->slug, $this->excerpt, $this->body, null, null, $this->createdAt);
+        $post = new Post($this->title, $this->slug, $this->excerpt, $this->body, null, null, $this->createdAt, $this->formTitle);
 
         // Состояние собирается штатными переходами Entity, а не reflection:
         // builder не обходит бизнес-правила.

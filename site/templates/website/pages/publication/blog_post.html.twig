@@ -57,25 +57,35 @@
                 {{ article.html|raw }}
             </div>
 
-            {% if has_toc %}
-                <aside class="hidden lg:sticky lg:top-sticky lg:block lg:w-full lg:min-w-toc lg:max-w-toc lg:shrink-0 lg:self-start">
-                    <nav class="rounded-lg border p-5" aria-label="Содержание">
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="type-t6 font-semibold text-fg">Содержание</span>
-                            <span class="js-toc-progress type-t7 tabular-nums text-fg-muted">0 из {{ article.toc|length }}</span>
-                        </div>
-                        {# Сегмент на каждый H2; при больше чем 7 разделах полосы нет, остаётся счётчик. #}
-                        {% if article.toc|length <= 7 %}
-                            <div class="mt-3 flex gap-1" aria-hidden="true">
-                                {% for entry in article.toc %}<span class="js-toc-segment h-1 flex-1 rounded-full bg-border-subtle transition-colors duration-fast ease-out"></span>{% endfor %}
+            {# Панель с lg: оглавление липкое внутри своей колонки (прокручивается вместе со страницей до формы), форма -- внизу панели.
+               Оглавление и форма вместе выше невысокого экрана и обрезали бы кнопку, поэтому липко только оглавление.
+               Ниже lg оглавление -- аккордеон сверху, форма -- под статьёй. #}
+            <aside class="hidden lg:flex lg:w-full lg:min-w-toc lg:max-w-toc lg:shrink-0 lg:flex-col lg:gap-4 lg:self-stretch">
+                <div class="grow">
+                    {% if has_toc %}
+                        <nav class="rounded-lg border p-5 lg:sticky lg:top-sticky" aria-label="Содержание">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="type-t6 font-semibold text-fg">Содержание</span>
+                                <span class="js-toc-progress type-t7 tabular-nums text-fg-muted">0 из {{ article.toc|length }}</span>
                             </div>
-                        {% endif %}
-                        <div class="mt-3">
-                            {% include 'website/components/_article_toc_list.html.twig' with {entries: article.toc} only %}
-                        </div>
-                    </nav>
-                </aside>
-            {% endif %}
+                            {# Сегмент на каждый H2; при больше чем 7 разделах полосы нет, остаётся счётчик. #}
+                            {% if article.toc|length <= 7 %}
+                                <div class="mt-3 flex gap-1" aria-hidden="true">
+                                    {% for entry in article.toc %}<span class="js-toc-segment h-1 flex-1 rounded-full bg-border-subtle transition-colors duration-fast ease-out"></span>{% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="mt-3">
+                                {% include 'website/components/_article_toc_list.html.twig' with {entries: article.toc} only %}
+                            </div>
+                        </nav>
+                    {% endif %}
+                </div>
+                {% include 'website/sections/_article_question.html.twig' with {id: 'article-question-panel', title: question_form.title, text: question_form.text} only %}
+            </aside>
+        </div>
+
+        <div class="max-w-measure lg:hidden">
+            {% include 'website/sections/_article_question.html.twig' with {id: 'article-question-bottom', title: question_form.title, text: question_form.text} only %}
         </div>
     </article>
 

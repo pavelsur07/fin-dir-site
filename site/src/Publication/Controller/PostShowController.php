@@ -24,6 +24,8 @@ final class PostShowController extends AbstractController
         PublicPostListQuery $list,
         MarkdownRenderer $markdown,
         #[Autowire('%vf.site_url%')] string $siteUrl,
+        #[Autowire('%vf.article_form.title%')] string $defaultFormTitle,
+        #[Autowire('%vf.article_form.text%')] string $formText,
     ): Response {
         $post = $posts->getBySlug($slug);
 
@@ -39,6 +41,7 @@ final class PostShowController extends AbstractController
             'post' => $post,
             'article' => $markdown->renderArticle($post->body),
             'related' => $list->latestExcept($post->id, self::RELATED_LIMIT),
+            'question_form' => ['title' => $post->formTitle ?: $defaultFormTitle, 'text' => $formText],
             'canonical_url' => $url,
             'schema' => PostStructuredData::build($post, $url, $siteUrl.$this->generateUrl('gazeta_index'), $siteUrl),
         ], $response);

@@ -21,6 +21,7 @@ final readonly class PublicPostView
         public ?string $metaDescription,
         public \DateTimeImmutable $publishedAt,
         public \DateTimeImmutable $updatedAt,
+        public ?string $formTitle = null,
     ) {
     }
 

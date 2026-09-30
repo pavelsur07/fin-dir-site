@@ -4,10 +4,10 @@
 {% set mobile_navigation_label = mobile_navigation_label|default('Мобильная навигация') %}
 {% set dialog_label = dialog_label|default('Меню') %}
 {% set brand_aria_label = brand_aria_label|default(brand ~ ' — на главную') %}
-{# Липкая шапка по дизайн-системе (16.1): высота h-header-compact (64), с lg h-header (72), тень sm после начала прокрутки (data-scrolled ставит navigation.js).
+{# Липкая шапка по дизайн-системе (16.1): высота h-header-compact (64), с lg h-header (72), после прокрутки на 72px и с lg снова 64 (data-compact), тень sm после начала прокрутки (data-scrolled): оба атрибута ставит navigation.js.
    Активный раздел: aria-current, text-fg, font-semibold и полоса 2px accent-fill на нижней кромке пункта; пункт во всю высоту шапки, hover-плашка только h-control-md. #}
-<header class="sticky top-0 z-40 border-b border-border-subtle bg-white transition-shadow duration-base data-scrolled:shadow-sm print:static" data-vf-component="navbar">
-    <nav class="mx-auto w-full max-w-container px-4 md:px-8 flex h-header-compact flex-nowrap items-center justify-between gap-4 lg:h-header" aria-label="{{ navigation_label }}">
+<header class="group/header sticky top-0 z-40 border-b border-border-subtle bg-white transition-shadow duration-base data-scrolled:shadow-sm print:static" data-vf-component="navbar">
+    <nav class="mx-auto w-full max-w-container px-4 md:px-8 flex h-header-compact flex-nowrap items-center justify-between gap-4 transition-all duration-fast ease-out motion-reduce:transition-none lg:h-header lg:group-data-compact/header:h-header-compact" aria-label="{{ navigation_label }}">
         <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}">
             {% include 'website/components/_logo.html.twig' with {s: 24, class: 'md:hidden'} only %}
             {% include 'website/components/_logo.html.twig' with {s: 32, class: 'hidden md:block'} only %}
@@ -20,7 +20,7 @@
                 {% for item in items %}
                     {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
                     <li class="flex">
-                        <a class="group relative flex items-center self-stretch type-t6 font-medium no-underline focus-visible:shadow-focus{% if is_active %} font-semibold text-fg{% else %} text-fg-secondary hover:text-fg{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
+                        <a class="group relative flex items-center self-stretch type-t6 font-medium no-underline focus-visible:shadow-focus text-fg{% if is_active %} font-semibold{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
                             <span class="flex h-control-md items-center rounded-sm px-3 group-hover:bg-surface-muted">{{ item.label }}</span>
                             {% if is_active %}<span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
                         </a>
@@ -48,7 +48,7 @@
                     {% for item in items %}
                         {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
                         <li>
-                            <a class="flex min-h-control-touch items-center py-2 text-left type-t5 no-underline focus-visible:shadow-focus{% if is_active %} font-semibold text-fg{% else %} font-medium text-fg-secondary hover:text-fg{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                            <a class="flex min-h-control-touch items-center py-2 text-left type-t5 no-underline focus-visible:shadow-focus text-fg {% if is_active %}font-semibold{% else %}font-medium{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>{{ item.label }}</a>
                         </li>
                     {% endfor %}
                 </ul>

@@ -34,9 +34,17 @@ final class PublicBlogTest extends WebTestCase
         self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"][aria-current="page"]');
         self::assertSelectorExists('[data-vf-mobile-navigation] a[href="/gazeta"][aria-current="page"]');
         self::assertSelectorExists('article[data-vf-section="article"] .overflow-x-auto table');
-        // Из старой вёрстки не переехали внешние картинки и форма, терявшая заявки.
+        // Из старой вёрстки не переехали внешние картинки; обложки у публикации нет -- блока нет.
         self::assertSelectorCount(0, 'main img');
-        self::assertSelectorCount(0, 'main form');
+        self::assertSelectorCount(0, 'article figure');
+        // Форма вопроса: одна в панели (с lg) и одна под статьёй (ниже lg), обе на POST /lead с CSRF и согласием.
+        self::assertSelectorCount(2, 'main form[data-vf-lead-form][action="/lead"]');
+        self::assertSelectorExists('article aside form#article-question-panel-form, article aside form[aria-labelledby="article-question-panel-title"]');
+        self::assertSelectorExists('article > div.lg\\:hidden form[aria-labelledby="article-question-bottom-title"]');
+        self::assertSelectorCount(2, 'main form input[name="_token"]');
+        self::assertSelectorCount(2, 'main form input[name="agreement"][required]');
+        self::assertSelectorTextContains('#article-question-panel-title', 'Вопрос по вашей ситуации?');
+        self::assertSelectorTextContains('article aside form p', 'Консультант ответит в Telegram или перезвонит в течение часа.');
 
         // Правила SITE_RULES §2, §11 на отрендеренной странице, а не только в шаблонах.
         $html = $crawler->html();
@@ -146,8 +154,26 @@ final class PublicBlogTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/gazeta/short');
         self::assertResponseIsSuccessful();
-        self::assertCount(0, $crawler->filter('article aside'));
+        self::assertCount(0, $crawler->filter('article aside nav'));
         self::assertCount(0, $crawler->filter('article details'));
+        // Форма вопроса остаётся и без оглавления.
+        self::assertCount(1, $crawler->filter('article aside form'));
+    }
+
+    public function testPostCanOverrideQuestionFormTitle(): void
+    {
+        $this->resetPosts(
+            PostBuilder::aPost()->withSlug('with-title')->withFormTitle('Вопрос по НДС для вашей компании?')->published('2026-02-01 10:00')->build(),
+        );
+
+        $this->client->request('GET', '/gazeta/with-title');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('#article-question-panel-title', 'Вопрос по НДС для вашей компании?');
+        self::assertSelectorTextContains('#article-question-bottom-title', 'Вопрос по НДС для вашей компании?');
+        self::assertSelectorTextNotContains('main', 'Вопрос по вашей ситуации?');
+        // Подзаголовок общий.
+        self::assertSelectorTextContains('#article-question-panel-title + p', 'Консультант ответит в Telegram');
     }
 
     public function testArticlePageHasSeoTocAndStructuredData(): void
@@ -175,8 +201,8 @@ final class PublicBlogTest extends WebTestCase
         self::assertCount(2, $crawler->filter('aside nav a.js-toc-link[href^="#section-"]'));
         self::assertCount(2, $crawler->filter('details nav a.js-toc-link[href^="#section-"]'));
         self::assertSelectorExists('script[src^="/assets/website/article-toc.js?v="]');
-        // Раздел 26: панель липкая (top-sticky), колонка слева и панель справа (justify-between), H2 с scroll-mt-sticky.
-        self::assertSelectorExists('article aside.lg\\:sticky.lg\\:top-sticky.lg\\:min-w-toc.lg\\:max-w-toc');
+        // Раздел 26: оглавление липкое (top-sticky) в колонке панели, форма внизу панели; колонка слева и панель справа (justify-between), H2 с scroll-mt-sticky.
+        self::assertSelectorExists('article aside.lg\\:min-w-toc.lg\\:max-w-toc.lg\\:self-stretch > div.grow > nav.lg\\:sticky.lg\\:top-sticky');
         self::assertSelectorExists('article > div.lg\\:flex.lg\\:justify-between.lg\\:gap-10 > [data-vf-article-body].max-w-measure');
         self::assertSelectorExists('[data-vf-article-body] h2.scroll-mt-sticky');
         // Ниже lg -- аккордеон (не sticky): строка control-xl, пункты control-touch, chevron поворачивается за duration-fast.

@@ -58,6 +58,25 @@ final class PostWriteScenariosTest extends KernelTestCase
         self::getContainer()->get(PostStatusChanger::class)->publish($id);
     }
 
+    public function testFormTitleIsStoredEditedAndCleared(): void
+    {
+        $input = $this->input('Статья с формой');
+        $input->formTitle = 'Вопрос по налогам?';
+        $id = $this->creator()->create($input);
+        self::assertSame('Вопрос по налогам?', $this->editData()->get($id)->formTitle);
+
+        $edit = PostInput::fromEditData($this->editData()->get($id));
+        $edit->formTitle = 'Другой вопрос?';
+        $this->editor()->edit($id, $edit);
+        self::assertSame('Другой вопрос?', $this->editData()->get($id)->formTitle);
+
+        // Пустое значение возвращает общий заголовок.
+        $edit = PostInput::fromEditData($this->editData()->get($id));
+        $edit->formTitle = null;
+        $this->editor()->edit($id, $edit);
+        self::assertNull($this->editData()->get($id)->formTitle);
+    }
+
     public function testExplicitTakenSlugIsRejected(): void
     {
         $this->persist(PostBuilder::aPost()->withSlug('taken')->build());

@@ -22,6 +22,7 @@ final readonly class PostEditData
         public PostStatus $status,
         public ?\DateTimeImmutable $publishedAt,
         public int $version,
+        public ?string $formTitle = null,
     ) {
     }
 

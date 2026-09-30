@@ -25,7 +25,7 @@
             <div data-admin-form-errors class="rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
         {% endif %}
 
-        {% for field in [form.title, form.slug, form.excerpt, form.body, form.metaTitle, form.metaDescription] %}
+        {% for field in [form.title, form.slug, form.excerpt, form.body, form.metaTitle, form.metaDescription, form.formTitle] %}
             <div class="mb-4">
                 {{ form_label(field) }}
                 {{ form_widget(field, {attr: field.vars.attr|merge({class: 'w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5'})}) }}

@@ -45,6 +45,7 @@ final class PostEditor
                 $input->metaTitle,
                 $input->metaDescription,
                 $now,
+                $input->formTitle,
             );
 
             if ('' !== $slug && $slug !== $post->slug()) {
