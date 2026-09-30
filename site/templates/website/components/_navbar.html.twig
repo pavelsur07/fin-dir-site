@@ -4,9 +4,10 @@
 {% set mobile_navigation_label = mobile_navigation_label|default('Мобильная навигация') %}
 {% set dialog_label = dialog_label|default('Меню') %}
 {% set brand_aria_label = brand_aria_label|default(brand ~ ' — на главную') %}
-{# Липкая шапка по дизайн-системе: высота 64, тень sm после начала прокрутки (data-scrolled ставит navigation.js). #}
+{# Липкая шапка по дизайн-системе (16.1): высота h-header-compact (64), с lg h-header (72), тень sm после начала прокрутки (data-scrolled ставит navigation.js).
+   Активный раздел: aria-current, text-fg, font-semibold и полоса 2px accent-fill на нижней кромке пункта; пункт во всю высоту шапки, hover-плашка только h-control-md. #}
 <header class="sticky top-0 z-40 border-b border-border-subtle bg-white transition-shadow duration-base data-scrolled:shadow-sm print:static" data-vf-component="navbar">
-    <nav class="mx-auto w-full max-w-container px-4 md:px-8 flex h-16 flex-nowrap items-center justify-between gap-4" aria-label="{{ navigation_label }}">
+    <nav class="mx-auto w-full max-w-container px-4 md:px-8 flex h-header-compact flex-nowrap items-center justify-between gap-4 lg:h-header" aria-label="{{ navigation_label }}">
         <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}">
             {% include 'website/components/_logo.html.twig' with {s: 24, class: 'md:hidden'} only %}
             {% include 'website/components/_logo.html.twig' with {s: 32, class: 'hidden md:block'} only %}
@@ -14,26 +15,29 @@
         <button class="flex size-control-touch shrink-0 items-center justify-center rounded-md border border-border-strong bg-white p-0 text-fg focus-visible:shadow-focus lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
             <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
         </button>
-        <div class="ml-auto hidden lg:flex lg:items-center lg:gap-6" data-vf-desktop-navigation>
-            <ul class="flex items-center gap-6">
+        <div class="ml-auto hidden lg:flex lg:items-center lg:gap-6 lg:self-stretch" data-vf-desktop-navigation>
+            <ul class="flex items-stretch gap-1 self-stretch">
                 {% for item in items %}
-                    <li>
-                        <a class="block py-2 font-medium no-underline hover:text-accent-fill-hover focus:text-accent{% if (item.key|default(null) == active_key and active_key is not empty) %} text-accent{% else %} text-fg{% endif %}" href="{{ item.href }}"{% if (item.key|default(null) == active_key and active_key is not empty) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                    {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
+                    <li class="flex">
+                        <a class="group relative flex items-center self-stretch type-t6 font-medium no-underline focus-visible:shadow-focus{% if is_active %} font-semibold text-fg{% else %} text-fg-secondary hover:text-fg{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
+                            <span class="flex h-control-md items-center rounded-sm px-3 group-hover:bg-surface-muted">{{ item.label }}</span>
+                            {% if is_active %}<span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
             {% if cta|default(null) %}
-                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'outline', class: 'ml-2'} only %}
+                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'outline', size: 'md'} only %}
             {% endif %}
         </div>
     </nav>
 
     <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-fg backdrop:bg-overlay lg:hidden" id="{{ drawer_id }}" aria-label="{{ dialog_label }}" data-state="closed" data-vf-menu-dialog>
         <div class="absolute inset-y-0 right-0 flex h-dvh w-full translate-x-full flex-col overflow-y-auto overscroll-contain bg-white shadow-md transition-transform duration-base motion-reduce:transition-none" data-vf-menu-panel>
-            <div class="flex h-16 shrink-0 items-center justify-between gap-4 border-b border-border-subtle px-4">
+            <div class="flex h-header-compact shrink-0 items-center justify-between gap-4 border-b border-border-subtle px-4">
                 <a class="inline-flex items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}">
-                    {% include 'website/components/_logo.html.twig' with {s: 24, class: 'md:hidden'} only %}
-                    {% include 'website/components/_logo.html.twig' with {s: 32, class: 'hidden md:block'} only %}
+                    {% include 'website/components/_logo.html.twig' with {s: 32} only %}
                 </a>
                 <button class="flex size-control-touch shrink-0 items-center justify-center rounded-md border border-border-strong bg-white p-0 text-fg focus-visible:shadow-focus" type="button" aria-label="Закрыть меню" data-vf-menu-close>
                     <span class="type-t3" aria-hidden="true">×</span>
@@ -42,14 +46,15 @@
             <nav class="px-4 py-4" aria-label="{{ mobile_navigation_label }}" data-vf-mobile-navigation>
                 <ul class="flex flex-col gap-2">
                     {% for item in items %}
+                        {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
                         <li>
-                            <a class="flex min-h-control-touch items-center py-2 text-left font-medium no-underline hover:text-accent-fill-hover focus:text-accent{% if (item.key|default(null) == active_key and active_key is not empty) %} text-accent{% else %} text-fg{% endif %}" href="{{ item.href }}"{% if (item.key|default(null) == active_key and active_key is not empty) %} aria-current="page"{% endif %}>{{ item.label }}</a>
+                            <a class="flex min-h-control-touch items-center py-2 text-left type-t5 no-underline focus-visible:shadow-focus{% if is_active %} font-semibold text-fg{% else %} font-medium text-fg-secondary hover:text-fg{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>{{ item.label }}</a>
                         </li>
                     {% endfor %}
                 </ul>
                 {% if cta|default(null) %}
                     <div class="mt-6">
-                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'outline', full_mobile: true} only %}
+                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'outline', size: 'md', full_mobile: true} only %}
                     </div>
                 {% endif %}
             </nav>

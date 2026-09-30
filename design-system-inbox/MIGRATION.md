@@ -81,12 +81,13 @@
 | Было | Стало | Примечание |
 |---|---|---|
 | `min-h-11` · `size-11` | `min-h-control-touch` · `size-control-touch` | зона касания 44 |
-| `max-w-6xl` `max-w-5xl` `max-w-page` | `max-w-container` | 1200; в v2.3 `page` переименован в `container` |
+| `max-w-6xl` `max-w-5xl` `max-w-page` `max-w-article` | `max-w-container` | 1200; в v2.3 `page` переименован в `container`, `article` удалён (алиас до v2.4) |
 | `max-w-3xl` `max-w-text` | `max-w-measure` | 720; в v2.3 `text` переименован в `measure` |
 | `max-w-sidebar` (последний пункт крошек) | `max-w-crumb` | 240, ellipsis |
 | `min-w-modal-md` (таблица в статье) | `min-w-table` | 400, уже — горизонтальный скролл |
 | (без токена) обложка статьи | `max-h-cover` | 520, формат 16:9 |
-| (без токена) hero статьи · H1-блок · лид | `max-w-article` · `max-w-title` · `max-w-lead` | 1120 · 800 · 520 |
+| (без токена) H1-блок · лид | `max-w-title` · `max-w-lead` | 800 · 520 |
+| `h-16` (шапка), `top-24` / `scroll-mt-6` (липкая панель и H2 под шапкой) | `h-header-compact lg:h-header` · `top-sticky` · `scroll-mt-sticky` | 64 / 72 · 88 / 96 (шапка + 24) |
 | `w-sidebar` (панель статьи) | `min-w-toc` `max-w-toc` | 240–280; `w-sidebar` остаётся для бокового меню кабинета |
 | `w-60` (меню админки) | `w-sidebar` | 256 |
 | `min-w-52` (колонка таблицы админки) | `min-w-sidebar` | |

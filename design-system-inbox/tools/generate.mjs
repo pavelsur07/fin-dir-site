@@ -35,18 +35,42 @@ const tok = (type, value, description, dark) => {
   return t;
 };
 
-// Ширины и ограничения (SZ): имена классов берём из файла дизайн-системы, не придумываем.
+// Ширины, высоты и отступы (SZ): имена классов берём из файла дизайн-системы, не придумываем.
+// Ячейка класса бывает составной: «top-sticky · scroll-mt-sticky (< 1024)» → два класса, примечание отбрасываем.
 // max-w-* и w-* с уникальным именем → --container-<имя> (Tailwind сам строит max-w-/min-w-/w-).
-// min-w-*, max-h-* и имена, общие для двух классов (max-w-toc / min-w-toc), пространство
+// min-w-*, max-h-*, h-* и имена, общие для двух классов (max-w-toc / min-w-toc), пространство
 // --container-* выразить не может (min-w-toc получил бы 280, max-h-* его не читает) → @utility.
-const SZ = d.SZ.map(([name, size, cls, use]) => {
-  const [, prop, key] = cls.match(/^(max-w|min-w|w|max-h)-(.+)$/);
-  return { name, size, cls, use, prop, key };
-});
-const CSS_PROP = { 'max-w': 'max-width', 'min-w': 'min-width', w: 'width', 'max-h': 'max-height' };
-const isShared = (row) => SZ.some((other) => other !== row && other.key === row.key);
-const SZ_THEME = SZ.filter((row) => (row.prop === 'max-w' || row.prop === 'w') && !isShared(row));
-const SZ_UTILITY = SZ.filter((row) => !SZ_THEME.includes(row));
+// top-* и scroll-mt-* читают шкалу --spacing: sticky-offset (≥ 1024) и sticky-offset-compact (< 1024)
+// сводятся к одной переменной --spacing-sticky (по умолчанию compact, с lg — основное значение).
+const classesOf = (cell) => cell.split('·').map((c) => c.replace(/\(.*?\)/g, '').trim()).filter(Boolean);
+const SZ = d.SZ.flatMap(([name, size, cell, use]) => classesOf(cell).map((cls) => {
+  const m = cls.match(/^(max-w|min-w|w|max-h|h|top|scroll-mt)-(.+)$/);
+  if (!m) throw new Error(`SZ «${name}»: класс «${cls}» не разобран`);
+  return { name, size, cls, use, prop: m[1], key: m[2] };
+}));
+const CSS_PROP = { 'max-w': 'max-width', 'min-w': 'min-width', w: 'width', 'max-h': 'max-height', h: 'height' };
+const STICKY = SZ.filter((row) => row.prop === 'top' || row.prop === 'scroll-mt');
+const SIZING = SZ.filter((row) => !STICKY.includes(row));
+const isShared = (row) => SIZING.some((other) => other !== row && other.key === row.key);
+const SZ_THEME = SIZING.filter((row) => (row.prop === 'max-w' || row.prop === 'w') && !isShared(row));
+const SZ_UTILITY = SIZING.filter((row) => !SZ_THEME.includes(row));
+
+const stickyNames = [...new Set(STICKY.map((row) => row.name))];
+const stickyKeys = [...new Set(STICKY.map((row) => row.key))];
+if (stickyNames.length !== 2 || stickyKeys.length !== 1 || !stickyNames.some((n) => n.endsWith('-compact'))) {
+  throw new Error('SZ: ожидаются sticky-offset и sticky-offset-compact с общими классами top-/scroll-mt-');
+}
+const STICKY_KEY = stickyKeys[0];
+const STICKY_COMPACT = STICKY.find((row) => row.name.endsWith('-compact')).size;
+const STICKY_WIDE = STICKY.find((row) => !row.name.endsWith('-compact')).size;
+
+// Алиасы старых имён до v2.4 (changelog 2.3/5, 2.3/6): max-w-text → measure, max-w-page и max-w-article → container.
+const ALIASES = { text: 'measure', page: 'container', article: 'container' };
+const sizeOf = (name) => {
+  const row = SZ.find((r) => r.name === name);
+  if (!row) throw new Error(`SZ: нет «${name}» для алиаса`);
+  return row.size;
+};
 const json = {
   $description: `Ваш Финдир — токены дизайн-системы v${VERSION}. Сгенерировано из раздела 29, не править вручную.`,
   color: {
@@ -142,6 +166,10 @@ w(`  --breakpoint-md: 768px;`);
 w(`  --breakpoint-lg: 1024px;`);
 w(`  --breakpoint-xl: 1440px;`);
 SZ_THEME.forEach((row) => w(`  --container-${row.key}: ${px(row.size)};`));
+w(`  /* Алиасы старых имён до v2.4: в шаблонах использовать новые */`);
+Object.entries(ALIASES).forEach(([old, current]) => w(`  --container-${old}: ${px(sizeOf(current))};`));
+w(`  /* Липкий отступ: шапка + 24. По умолчанию < 1024, с lg -- основное значение, переопределение в @layer base */`);
+w(`  --spacing-${STICKY_KEY}: ${px(STICKY_COMPACT)};`);
 w();
 d.EA.forEach(([k, v]) => w(`  --ease-${k}: ${v};`));
 Object.entries(ASPECT).forEach(([k, v]) => w(`  --aspect-${k}: ${v};`));
@@ -181,6 +209,7 @@ w(`  *, ::before, ::after, ::backdrop { border-color: var(--border); }  /* v4 п
 w(`  html { font-family: var(--font-sans); font-variant-numeric: tabular-nums; }`);
 w(`  body { background: var(--surface); color: var(--fg); -webkit-font-smoothing: antialiased; }`);
 w(`  a { color: var(--accent); }`);
+w(`  @media (min-width: 1024px) { :root { --spacing-${STICKY_KEY}: ${px(STICKY_WIDE)}; } }`);
 w(`  :focus-visible { outline: none; }  /* кольцо рисуют компоненты: shadow-focus / shadow-focus-field */`);
 w(`  @media (prefers-reduced-motion: reduce) {`);
 w(`    *, *::before, *::after {`);

@@ -148,6 +148,19 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
       </sc-for>
     </div>
   </div>
+  <div style="border-radius:16px;border:1px solid #D2D8E2;overflow:auto">
+    <div style="min-width:760px">
+      <div style="padding:16px 24px;background:#F4F6F9;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline"><span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Готовые размеры для веба · SVG в кривых</span><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">viewBox = край знака и край слова, без прозрачных полей</span></div>
+      <div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr)) minmax(0,1.6fr);gap:12px;padding:8px 24px;font:500 12px/18px Inter,sans-serif;color:#5E6A85"><span>S</span><span>R</span><span>«ВФ»</span><span>Слово</span><span>Зазор</span><span>Ширина</span><span>Поле</span><span>Где</span><span>Файлы</span></div>
+      <sc-for list="{{ logoFixed }}" as="r" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr)) minmax(0,1.6fr);gap:12px;padding:8px 24px;border-top:1px solid #E8EBF1;align-items:center;font:400 14px/22px Inter,sans-serif;font-variant-numeric:tabular-nums">
+          <span style="font-weight:600">{{ r.S }}</span><span>{{ r.R }}</span><span>{{ r.VF }}</span><span>{{ r.WM }}</span><span>{{ r.GAP }}</span><span>{{ r.W }}</span><span>{{ r.M }}</span><span style="color:#5E6A85">{{ r.where }}</span>
+          <span style="display:flex;gap:12px"><a href="{{ r.light }}" download="download">светлый</a><a href="{{ r.dark }}" download="download">тёмный</a></span>
+        </div>
+      </sc-for>
+      <div style="padding:12px 24px;border-top:1px solid #E8EBF1;font:400 14px/22px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Значения R, кеглей и зазора — производные формул раздела 00, в токены не выносятся. Вставляйте SVG как есть: &lt;img height="S"&gt; или inline. Охранное поле задаётся отступами вокруг, в файле его нет. Только знак: <a href="assets/logo/svg/mark-light.svg" download="download">mark-light.svg</a> · <a href="assets/logo/svg/mark-dark.svg" download="download">mark-dark.svg</a> (S 32, масштабируется).</div>
+    </div>
+  </div>
   <div style="border-radius:16px;background:#0B1020;padding:32px;display:flex;flex-direction:column;gap:16px">
     <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#FFFFFF">Генерация в коде</span>
     <span style="font:400 16px/26px Inter,sans-serif;color:#D2D8E2">В вебе логотип собирается компонентом из формул (текст остаётся векторным и чётким на любом экране). PNG — для писем и сторонних площадок, генерируются скриптом <a href="assets/logo/gen_logo.py" style="color:#EE6B7C">gen_logo.py</a> с суперсэмплингом 4×.</span>
@@ -984,6 +997,27 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
     </div>
   </div>
   <p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;text-wrap:pretty">Ошибки платежей никогда не показываются исчезающим тостом. Одновременно — не больше трёх тостов, новые сверху. Тосты и алерты объявляются через aria-live="polite", ошибки — "assertive".</p>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <span id="ds-15-cookie" style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;scroll-margin-top:96px">Cookie-баннер</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+      <div style="position:relative;border-radius:16px;background:#F4F6F9;border:1px solid #D2D8E2;min-height:320px;overflow:hidden">
+        <span style="position:absolute;top:16px;left:16px;font:500 12px/18px Inter,sans-serif;color:#5E6A85">Страница · десктоп, слева снизу, отступ 4 (16)</span>
+        <div role="dialog" aria-label="Файлы cookie" style="position:absolute;left:16px;bottom:16px;right:16px;max-width:400px;border-radius:16px;background:#FFFFFF;border:1px solid #E8EBF1;box-shadow:0 4px 12px -2px rgba(11,16,32,.12),0 2px 4px rgba(11,16,32,.06);padding:20px;display:flex;flex-direction:column;gap:16px">
+          <span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Мы используем cookie, чтобы сайт работал и чтобы понимать, какие страницы полезны. <a href="#">Подробнее</a></span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button style="height:40px;padding:0 16px;border:1px solid #AEB7C8;border-radius:8px;background:#FFFFFF;font:600 14px/22px Inter,sans-serif;color:#0B1020;cursor:pointer" style-hover="background:#F4F6F9">Только необходимые</button>
+            <button style="height:40px;padding:0 16px;border:0;border-radius:8px;background:#B00020;font:600 14px/22px Inter,sans-serif;color:#FFFFFF;cursor:pointer" style-hover="background:#8A001B">Принять</button>
+          </div>
+        </div>
+      </div>
+      <div style="border-radius:16px;border:1px solid #D2D8E2;overflow:hidden">
+        <sc-for list="{{ cookieSpec }}" as="r" hint-placeholder-count="9">
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:8px 24px;border-bottom:1px solid #E8EBF1;font:400 14px/22px Inter,sans-serif"><span style="color:#5E6A85">{{ r.k }}</span><span style="font-weight:500;text-align:right;text-wrap:pretty">{{ r.v }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="ds-16" data-screen-label="16" style="display:flex;flex-direction:column;gap:32px">
@@ -1081,6 +1115,20 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
           </sc-for>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+    <div style="border-radius:16px;border:1px solid #D2D8E2;padding:24px;display:flex;flex-direction:column;gap:16px">
+      <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Пункт меню: состояния</span>
+      <div style="display:flex;flex-direction:column;gap:16px"><div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Шапка 72 · обычный · hover · текущий</span><div style="height:72px;border-bottom:1px solid #D2D8E2;display:flex;align-items:stretch;gap:4px;background:#FFFFFF"><a href="#" style="position:relative;display:flex;align-items:center;text-decoration:none"><span style="height:40px;padding:0 12px;border-radius:8px;display:flex;align-items:center;font:500 14px/22px Inter,sans-serif;color:#0B1020;">Тарифы</span></a><a href="#" style="position:relative;display:flex;align-items:center;text-decoration:none"><span style="height:40px;padding:0 12px;border-radius:8px;display:flex;align-items:center;font:500 14px/22px Inter,sans-serif;color:#0B1020;background:#F4F6F9;">Тарифы</span></a><a href="#" aria-current="page" style="position:relative;display:flex;align-items:center;text-decoration:none"><span style="height:40px;padding:0 12px;border-radius:8px;display:flex;align-items:center;font:600 14px/22px Inter,sans-serif;color:#0B1020;">Газета</span><span style="position:absolute;left:12px;right:12px;bottom:0;height:2px;border-radius:9999px;background:#B00020"></span></a></div></div><div style="display:flex;flex-direction:column;gap:4px"><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Шапка 64 · обычный · hover · текущий</span><div style="height:64px;border-bottom:1px solid #D2D8E2;display:flex;align-items:stretch;gap:4px;background:#FFFFFF"><a href="#" style="position:relative;display:flex;align-items:center;text-decoration:none"><span style="height:40px;padding:0 12px;border-radius:8px;display:flex;align-items:center;font:500 14px/22px Inter,sans-serif;color:#0B1020;">Тарифы</span></a><a href="#" style="position:relative;display:flex;align-items:center;text-decoration:none"><span style="height:40px;padding:0 12px;border-radius:8px;display:flex;align-items:center;font:500 14px/22px Inter,sans-serif;color:#0B1020;background:#F4F6F9;">Тарифы</span></a><a href="#" aria-current="page" style="position:relative;display:flex;align-items:center;text-decoration:none"><span style="height:40px;padding:0 12px;border-radius:8px;display:flex;align-items:center;font:600 14px/22px Inter,sans-serif;color:#0B1020;">Газета</span><span style="position:absolute;left:12px;right:12px;bottom:0;height:2px;border-radius:9999px;background:#B00020"></span></a></div></div></div>
+      <span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Текущий раздел: текст fg, вес 600, полоса 2 px accent-fill, прижата к нижней кромке шапки при любой её высоте (72 и 64): пункт растягивается на высоту шапки (align-self: stretch), полоса — bottom: 0 внутри пункта; фон hover — только на внутренней плашке 40. aria-current="page". Crimson-текст в меню не используется: crimson = действие, а не место. Раздел активен и на вложенных страницах (/gazeta/статья → «Газета»).</span>
+    </div>
+    <div style="border-radius:16px;border:1px solid #D2D8E2;overflow:hidden">
+      <div style="padding:16px 24px;background:#F4F6F9;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Шапка — решение v2.3</div>
+      <sc-for list="{{ headerSpec }}" as="r" hint-placeholder-count="7">
+        <div style="display:flex;justify-content:space-between;gap:16px;padding:8px 24px;border-top:1px solid #E8EBF1;font:400 14px/22px Inter,sans-serif"><span style="color:#5E6A85">{{ r.k }}</span><span style="font-weight:500;text-align:right;text-wrap:pretty">{{ r.v }}</span></div>
+      </sc-for>
     </div>
   </div>
 
@@ -1222,7 +1270,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
             <li style="display:flex;align-items:center;gap:8px"><a href="#" style="color:#434F6B;padding:4px 0">Главная</a><span aria-hidden="true" style="width:16px;height:16px;flex:none;background:#8490A8;-webkit-mask:{{ m.chevronRight }};mask:{{ m.chevronRight }}"></span></li>
             <li style="display:flex;align-items:center;gap:8px"><a href="#" style="color:#434F6B;padding:4px 0">Блог</a><span aria-hidden="true" style="width:16px;height:16px;flex:none;background:#8490A8;-webkit-mask:{{ m.chevronRight }};mask:{{ m.chevronRight }}"></span></li>
             <li style="display:flex;align-items:center;gap:8px"><a href="#" style="color:#434F6B;padding:4px 0">Налоги</a><span aria-hidden="true" style="width:16px;height:16px;flex:none;background:#8490A8;-webkit-mask:{{ m.chevronRight }};mask:{{ m.chevronRight }}"></span></li>
-            <li aria-current="page" style="color:#0B1020;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">НДС для УСН в 2026 году</li>
+            <li aria-current="page" style="color:#0B1020;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">НДС для УСН в 2026 году</li>
           </ol>
         </nav>
         <h1 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;text-wrap:balance">НДС для УСН в 2026 году: кто платит и как не переплатить</h1>
@@ -2315,7 +2363,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
       <span style="height:40px;padding:0 16px;border-radius:8px;background:#B00020;color:#FFFFFF;display:flex;align-items:center;font:600 14px/22px Inter,sans-serif">Подключиться</span>
     </div>
 
-    <header style="padding:24px 32px 40px;display:flex;flex-direction:column;gap:24px;max-width:1120px">
+    <header style="padding:24px 32px 40px;display:flex;flex-direction:column;gap:24px">
       <nav aria-label="Хлебные крошки"><ol style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font:500 14px/22px Inter,sans-serif">
         <li style="display:flex;align-items:center;gap:8px"><a href="#" style="color:#434F6B">Главная</a><span aria-hidden="true" style="width:16px;height:16px;flex:none;background:#8490A8;-webkit-mask:{{ m.chevronRight }};mask:{{ m.chevronRight }}"></span></li>
         <li style="display:flex;align-items:center;gap:8px"><a href="#" style="color:#434F6B">Блог</a><span aria-hidden="true" style="width:16px;height:16px;flex:none;background:#8490A8;-webkit-mask:{{ m.chevronRight }};mask:{{ m.chevronRight }}"></span></li>
@@ -2341,7 +2389,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
       </figure>
     </header>
 
-    <div style="padding:0 32px 64px;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,280px);gap:40px;align-items:start;max-width:1120px">
+    <div style="padding:0 32px 64px;display:grid;grid-template-columns:minmax(0,720px) minmax(240px,280px);justify-content:space-between;column-gap:40px;align-items:start">
       <article style="min-width:0;max-width:720px;display:flex;flex-direction:column;gap:20px">
         <div style="border-radius:16px;background:#F4F6F9;padding:24px;display:flex;flex-direction:column;gap:12px">
           <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Коротко</span>
@@ -2351,14 +2399,14 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
             <li>Выбор ставки фиксируется надолго — посчитайте до начала квартала.</li>
           </ul>
         </div>
-        <h2 id="art-s1" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:24px">Кто должен платить НДС на УСН</h2>
+        <h2 id="art-s1" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:96px">Кто должен платить НДС на УСН</h2>
         <p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#0B1020;text-wrap:pretty">Упрощенка больше не означает автоматическое освобождение от НДС. Обязанность появляется, когда доход за год превышает порог, — с первого числа следующего месяца.</p>
         <p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#0B1020;text-wrap:pretty">Проверьте доход нарастающим итогом: в кабинете он считается автоматически и показывает, сколько осталось до порога.</p>
         <figure style="margin:8px 0;display:flex;flex-direction:column;gap:8px">
           <div style="aspect-ratio:16 / 10;border-radius:12px;border:1px solid #D2D8E2;background:#F4F6F9;display:flex;align-items:flex-end;padding:12px;font:500 12px/18px Inter,sans-serif;color:#5E6A85">Скриншот интерфейса · реальные пропорции, обводка ink 200</div>
           <figcaption style="font:500 14px/22px Inter,sans-serif;color:#5E6A85">Счётчик дохода до порога в разделе «Налоги»</figcaption>
         </figure>
-        <h2 id="art-s2" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:24px">Ставки 5 и 7 % или общая 20 %</h2>
+        <h2 id="art-s2" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:96px">Ставки 5 и 7 % или общая 20 %</h2>
         <p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#0B1020;text-wrap:pretty">Пониженные ставки проще в учёте, но не дают вычета. Общая выгоднее, если большинство поставщиков сами платят НДС.</p>
         <div style="border-radius:12px;border:1px solid #D2D8E2;overflow:auto">
           <table style="width:100%;min-width:400px;border-collapse:collapse;font:400 14px/22px Inter,sans-serif;font-variant-numeric:tabular-nums">
@@ -2385,7 +2433,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
           <span style="width:20px;height:20px;flex:none;margin-top:4px;background:#5E6A85;-webkit-mask:{{ m3.circleHelp }};mask:{{ m3.circleHelp }}"></span>
           <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 16px/26px Inter,sans-serif;color:#0B1020">Главный вопрос</span><span style="font:400 16px/26px Inter,sans-serif;color:#434F6B">Сколько НДС вы получите к вычету от поставщиков за год?</span></div>
         </div>
-        <h2 id="art-s3" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:24px">Как выбрать выгодную ставку</h2>
+        <h2 id="art-s3" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:96px">Как выбрать выгодную ставку</h2>
         <p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#0B1020;text-wrap:pretty">Сравните долю закупок у плательщиков НДС. Если она выше половины выручки, общая ставка с вычетом часто оказывается дешевле.</p>
         <figure style="margin:8px 0;display:grid;grid-template-columns:96px minmax(0,1fr);gap:20px;align-items:center;padding:24px;border-radius:16px;border:1px solid #D2D8E2">
           <div style="aspect-ratio:4 / 5;border-radius:12px;background:#E8EBF1;overflow:hidden"></div>
@@ -2395,7 +2443,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
           </blockquote>
         </figure>
         <figure style="margin:8px 0;display:flex;flex-direction:column;gap:8px"><div style="aspect-ratio:3 / 2;border-radius:12px;background:#E8EBF1;display:flex;align-items:flex-end;padding:12px;font:500 12px/18px Inter,sans-serif;color:#5E6A85;">Фото в тексте · 3:2</div><figcaption style="font:500 14px/22px Inter,sans-serif;color:#5E6A85">Фото — реальная сцена работы команды, не сток</figcaption></figure>
-        <h2 id="art-s4" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:24px">Что сделать до конца квартала</h2>
+        <h2 id="art-s4" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:96px">Что сделать до конца квартала</h2>
         <ol style="margin:0;padding:0 0 0 24px;display:flex;flex-direction:column;gap:8px;font:400 16px/26px Inter,sans-serif">
           <li>Проверить доход нарастающим итогом.</li>
           <li>Посчитать три сценария: 5 %, 7 % и 20 % с вычетом.</li>
@@ -2405,7 +2453,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
           <span style="width:20px;height:20px;flex:none;margin-top:4px;background:#5E6A85;-webkit-mask:{{ m3.lightbulb }};mask:{{ m3.lightbulb }}"></span>
           <div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 16px/26px Inter,sans-serif;color:#0B1020">Совет</span><span style="font:400 16px/26px Inter,sans-serif;color:#434F6B">Посчитайте сценарии на данных прошлого года — так видно реальную долю вычетов, а не прогноз.</span></div>
         </div>
-        <h2 id="art-s5" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:24px">Частые вопросы</h2>
+        <h2 id="art-s5" style="margin:24px 0 0;padding-top:4px;font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;hyphens:auto;scroll-margin-top:96px">Частые вопросы</h2>
         <div style="display:flex;flex-direction:column;border-top:1px solid #E8EBF1">
           <sc-for list="{{ faq }}" as="f" hint-placeholder-count="3">
             <details style="border-bottom:1px solid #E8EBF1">
@@ -2425,7 +2473,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
         </div>
       </article>
 
-      <aside style="min-width:0;position:sticky;top:24px;display:flex;flex-direction:column;gap:16px">
+      <aside style="min-width:0;position:sticky;top:96px;display:flex;flex-direction:column;gap:16px">
         <nav aria-label="Содержание" style="border-radius:16px;border:1px solid #D2D8E2;padding:20px;display:flex;flex-direction:column;gap:12px">
           <div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span style="font:600 14px/22px Inter,sans-serif">Содержание</span><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;font-variant-numeric:tabular-nums">{{ tocProgress }}</span></div>
           <div aria-hidden="true" style="display:flex;gap:4px"><sc-for list="{{ toc }}" as="t" hint-placeholder-count="4"><span style="flex:1;height:4px;border-radius:9999px;background:{{ t.seg }};transition:background-color 120ms ease-out"></span></sc-for></div>
@@ -2486,6 +2534,41 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
         <div style="border-radius:16px;background:#141B2E;padding:24px;display:flex;flex-direction:column;gap:12px"><span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#FFFFFF">Коротко</span><span style="font:400 16px/26px Inter,sans-serif;color:#FFFFFF">Три тезиса до первого H2.</span></div>
         <div style="border-radius:12px;background:#0F1B33;border:1px solid #0F1B33;padding:16px;display:flex;gap:12px"><span style="width:20px;height:20px;flex:none;margin-top:4px;background:#A9C2EE;-webkit-mask:{{ m.info }};mask:{{ m.info }}"></span><div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 16px/26px Inter,sans-serif;color:#A9C2EE">Важно</span><span style="font:400 16px/26px Inter,sans-serif;color:#D2D8E2">Вернуться на пониженную ставку — только через несколько лет.</span></div></div>
         <div style="border-radius:12px;background:#141B2E;border:1px solid #2E3953;padding:16px;display:flex;gap:12px"><span style="width:20px;height:20px;flex:none;margin-top:4px;background:#AEB7C8;-webkit-mask:{{ m3.circleHelp }};mask:{{ m3.circleHelp }}"></span><div style="display:flex;flex-direction:column;gap:4px"><span style="font:600 16px/26px Inter,sans-serif;color:#FFFFFF">Главный вопрос</span><span style="font:400 16px/26px Inter,sans-serif;color:#D2D8E2">Сколько НДС вы получите к вычету?</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Оглавление ниже 1024 px</span>
+    <p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;text-wrap:pretty">Аккордеон над «Коротко», отступ до него 6 (24). Ширина — колонка текста: 100 % внутри padding страницы 4 (16), не шире max-w-measure 720. Рамка border, radius md 12. Строка-заголовок control-xl 56 — вся строка кнопка, chevron-down 20 поворачивается на 180° за fast 120 ms. Пункты — control-touch 44. Клик по пункту сворачивает аккордеон и прокручивает к H2. Не sticky.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+      <div style="width:100%;max-width:360px;border-radius:24px;border:1px solid #D2D8E2;background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box">
+        <span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Свёрнуто (по умолчанию)</span>
+        <nav aria-label="Содержание" style="border-radius:12px;border:1px solid #D2D8E2;background:#FFFFFF">
+          <div aria-expanded="false" style="min-height:56px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="display:flex;gap:8px;align-items:baseline"><span style="font:600 14px/22px Inter,sans-serif;color:#0B1020">Содержание</span><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;font-variant-numeric:tabular-nums">2 из 5</span></span>
+            <span aria-hidden="true" style="width:20px;height:20px;flex:none;background:#5E6A85;-webkit-mask:{{ m2.chevronDown }};mask:{{ m2.chevronDown }}"></span>
+          </div>
+          <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+            <div aria-hidden="true" style="display:flex;gap:4px"><sc-for list="{{ mToc }}" as="t" hint-placeholder-count="5"><span style="flex:1;height:4px;border-radius:9999px;background:{{ t.seg }}"></span></sc-for></div>
+            
+          </div>
+        </nav>
+        <div style="border-radius:16px;background:#F4F6F9;padding:16px;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#0B1020">Коротко</div>
+      </div>
+      <div style="width:100%;max-width:360px;border-radius:24px;border:1px solid #D2D8E2;background:#FFFFFF;padding:16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box">
+        <span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Развёрнуто</span>
+        <nav aria-label="Содержание" style="border-radius:12px;border:1px solid #D2D8E2;background:#FFFFFF">
+          <div aria-expanded="true" style="min-height:56px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="display:flex;gap:8px;align-items:baseline"><span style="font:600 14px/22px Inter,sans-serif;color:#0B1020">Содержание</span><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;font-variant-numeric:tabular-nums">2 из 5</span></span>
+            <span aria-hidden="true" style="width:20px;height:20px;flex:none;background:#5E6A85;transform:rotate(180deg);-webkit-mask:{{ m2.chevronDown }};mask:{{ m2.chevronDown }}"></span>
+          </div>
+          <div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+            <div aria-hidden="true" style="display:flex;gap:4px"><sc-for list="{{ mToc }}" as="t" hint-placeholder-count="5"><span style="flex:1;height:4px;border-radius:9999px;background:{{ t.seg }}"></span></sc-for></div>
+            <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column"><sc-for list="{{ mToc }}" as="t" hint-placeholder-count="5"><li style="min-height:44px;display:flex;gap:8px;align-items:center;font:{{ t.weight }} 14px/22px Inter,sans-serif;color:{{ t.color }}"><span style="width:6px;height:6px;border-radius:999px;background:{{ t.dot }};flex:none"></span>{{ t.label }}</li></sc-for></ol>
+          </div>
+        </nav>
+        <div style="border-radius:16px;background:#F4F6F9;padding:16px;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#0B1020">Коротко</div>
       </div>
     </div>
   </div>
@@ -2558,7 +2641,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
 
 <section id="ds-29" data-screen-label="29" style="display:flex;flex-direction:column;gap:32px">
   <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
-    <span style="font:500 12px/18px Inter,sans-serif;color:#B00020">29 · Токены v2.1</span>
+    <span style="font:500 12px/18px Inter,sans-serif;color:#B00020">29 · Токены v2.3</span>
     <h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Единая таблица токенов</h2>
     <p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Источник правды для кода: имена ровно те, что в tokens.css и tailwind.config (раздел 28 собирается из этой таблицы). Любое значение в макетах 01–27 есть здесь. Если значения нет — это ошибка макета, а не повод завести токен.</p>
   </div>
@@ -2613,10 +2696,13 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
 class Component extends DCLogic {
   componentDidMount() {
     this._spy = () => {
-      const ids = ['art-s1', 'art-s2', 'art-s3', 'art-s4'];
+      const ids = ['art-s1', 'art-s2', 'art-s3', 'art-s4', 'art-s5'];
       let a = -1;
       ids.forEach((id, i) => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < 160) a = i; });
-      if (a >= 0 && a !== this.state.tocActive) this.setState({ tocActive: a });
+      const art = document.getElementById('art-s5');
+      const end = art && art.closest('article');
+      if (end && end.getBoundingClientRect().bottom <= window.innerHeight) a = ids.length - 1;
+      if (a !== this.state.tocActive) this.setState({ tocActive: a });
     };
     window.addEventListener('scroll', this._spy, { passive: true });
   }
@@ -3120,6 +3206,8 @@ money(48000, { sign: true }); // +48 000,00 ₽`;
       { k: 'Зазор знак → слово', f: 'S × 12/38', v: '48' }, { k: 'Выравнивание', f: 'по центру знака', v: '—' },
       { k: 'Охранное поле', f: 'cap «ВФ» + S × 0,06', v: '≈ 49' }
     ];
+    const logoFixed = [[24, 5, 9, 11, 8, 99, 7, 'шапка моб'], [28, 6, 10, 13, 9, 116, 9, 'подвал'], [32, 7, 12, 15, 10, 133, 11, 'шапка, меню кабинета'], [40, 8, 15, 19, 13, 168, 13, 'письма']]
+      .map(([S, R, VF, WM, GAP, W, M, where]) => ({ S, R, VF, WM, GAP, W, M: '≈ ' + M, where, light: 'assets/logo/svg/logo-light-s' + S + '.svg', dark: 'assets/logo/svg/logo-dark-s' + S + '.svg' }));
     const logoPlaces = [
       { k: 'Шапка сайта', v: 'S 32 · моб 24' }, { k: 'Боковое меню кабинета', v: 'S 32, тёмная версия' },
       { k: 'Подвал', v: 'S 28' }, { k: 'Письма', v: 'S 40, PNG 2×' }, { k: 'PDF-документы', v: 'знак 10 мм' },
@@ -3274,10 +3362,11 @@ const Logo = ({ s = 32, dark = false }) => {
 <\/script>`;
     m3.link = L('link');
     const tocItems = [['art-s1', 'Кто должен платить НДС'], ['art-s2', 'Ставки 5, 7 и 20 %'], ['art-s3', 'Как выбрать ставку'], ['art-s4', 'Что сделать до конца квартала'], ['art-s5', 'Частые вопросы']];
-    const activeToc = st.tocActive ?? 0;
+    const activeToc = st.tocActive ?? -1;
     const toc = tocItems.map(([id, label], i) => ({ label, href: '#' + id, current: i === activeToc ? 'true' : 'false',
       weight: i === activeToc ? 600 : 500, color: i === activeToc ? '#0B1020' : '#5E6A85', dot: i === activeToc ? '#B00020' : '#D2D8E2', seg: i <= activeToc ? '#B00020' : '#E8EBF1',
-      go: e => { e.preventDefault(); const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 24, behavior: 'smooth' }); set({ tocActive: i }); } }));
+      go: e => { e.preventDefault(); const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: 'smooth' }); set({ tocActive: i }); } }));
+    const mToc = tocItems.map(([id, label], i) => ({ label, seg: i <= 1 ? '#B00020' : '#E8EBF1', weight: i === 1 ? 600 : 500, color: i === 1 ? '#0B1020' : '#5E6A85', dot: i === 1 ? '#B00020' : '#D2D8E2' }));
     const mediaRatios = [
       { ratio: '16:9', css: '16 / 9', use: 'Обложка статьи', note: '1600 × 900; OG-картинка 1200 × 630' },
       { ratio: '16:9', css: '16 / 9', use: 'Схема, иллюстрация', note: 'на всю колонку, 720 × 405' },
@@ -3298,10 +3387,10 @@ const Logo = ({ s = 32, dark = false }) => {
       { name: 'Вопрос / Совет', cls: 'callout-note', tokens: 'bg surface-muted · border border · иконка fg-muted · заголовок fg · текст fg-secondary · radius md 12 · p 4 (16)', icon: 'circle-help «Главный вопрос», «Три вопроса» · lightbulb «Совет» · T5 600', when: 'Вопрос читателю или практический совет. Бывшие «Best practice», «Главный вопрос», «Три вопроса»' }
     ];
     const articleGrid = [
-      { k: 'Страница', v: 'max-w-article 1120' }, { k: 'Колонка текста', v: 'max-w-measure 720 (≈ 70 знаков)' }, { k: 'Боковая панель', v: 'toc-min 240 – toc 280, sticky, top 24' },
-      { k: 'Колонка ↔ панель', v: '10 (40)' }, { k: 'Абзацы', v: 'T5 16/26, между абзацами 5 (20)' },
-      { k: 'H2 в статье', v: 'T2-article 30/38, сверху 48, снизу 20' }, { k: 'H3 в статье', v: 'T3 700 20/28, сверху 32, снизу 12' }, { k: 'Вопрос FAQ', v: 'H4 700 16/26 в summary, min-h 48' }, { k: 'Медиа', v: 'отступ 24 сверху и снизу' }, { k: 'Обложка', v: '16:9, max-h-cover 520' }, { k: 'Таблица', v: 'min-w-table 400, шире колонки — горизонтальный скролл' }, { k: 'Крошки', v: 'последний пункт max-w-crumb 240, ellipsis + title' }, { k: 'Прогресс', v: '1 сегмент на H2, до 7; > 7 — только «N из M»' },
-      { k: 'Hero → текст', v: '40' }, { k: 'Ниже 1024 px', v: 'панель под статьёй, оглавление — аккордеоном вверху' }
+      { k: 'Страница', v: 'max-w-container 1200, поля 8 (32) — как шапка' }, { k: 'Колонка текста', v: 'max-w-measure 720, у левого края (= край логотипа)' }, { k: 'Боковая панель', v: 'toc-min 240 – toc 280, у правого края (= край кнопок шапки), top-sticky' }, { k: 'Липкий отступ', v: 'sticky-offset = header-h + 24: 96 (≥ 1024) · 88 (< 1024)' },
+      { k: 'Колонка ↔ панель', v: 'остаток: 136 при 1200, минимум 10 (40)' }, { k: 'Абзацы', v: 'T5 16/26, между абзацами 5 (20)' },
+      { k: 'H2 в статье', v: 'T2-article 30/38, сверху 48, снизу 20' }, { k: 'H3 в статье', v: 'T3 700 20/28, сверху 32, снизу 12' }, { k: 'Вопрос FAQ', v: 'H4 700 16/26 в summary, min-h 48' }, { k: 'Медиа', v: 'отступ 24 сверху и снизу' }, { k: 'Обложка', v: '16:9, max-h-cover 520' }, { k: 'Таблица', v: 'min-w-table 400, шире колонки — горизонтальный скролл' }, { k: 'Крошки', v: 'последний пункт max-w-crumb 240, ellipsis + title' }, { k: 'Прогресс', v: '1 сегмент на H2, до 7; > 7 — только «N из M»; до первого H2 — «0 из N», все сегменты border-subtle' }, { k: 'Активный пункт', v: 'последний H2, чей верх выше 160 px; у конца статьи — последний пункт' }, { k: 'Ниже 1024 px', v: 'оглавление-аккордеон над «Коротко», ширина колонки (100 %, ≤ max-w-measure 720), не sticky; форма — под статьёй' },
+      { k: 'Hero → текст', v: '40' }
     ];
     const articlePageRules = [
       { tag: 'Hero', title: 'Автор и дата — в первом экране', text: 'Имя, должность, квалификация, дата публикации и обновления. Для налоговых тем это главный сигнал, что статье можно верить.' },
@@ -3310,6 +3399,8 @@ const Logo = ({ s = 32, dark = false }) => {
       { tag: 'Текст', title: 'Ритм и ширина', text: 'Колонка до 720 px, абзацы 2–4 предложения, H2 каждые 300–400 слов. Выключка только по левому краю.' },
       { tag: 'Медиа', title: 'Медиа поясняет, а не украшает', text: 'Каждое изображение с подписью и alt. Скриншоты — без обрезки и с обводкой, фото — реальные. Ленивая загрузка ниже первого экрана.' },
       { tag: 'Панель', title: 'Оглавление с активным пунктом', text: 'Только H2, до 7 пунктов, подсветка текущего раздела. Прогресс — сегменты по числу H2: пройденные и текущий accent-fill, остальные border-subtle, gap 4, высота 4. Больше 7 H2 — полосы нет, только «N из M».' },
+      { tag: 'Панель', title: 'Компактная форма', text: 'callout нет: bg surface-muted, radius lg 16, p 5 (20), gap 3 (12). Заголовок H4, пояснение T6 fg-secondary, поле и кнопка control-lg 48, согласие T7. Одно поле. Ниже 1024 px — под статьёй на ширину колонки.' },
+      { tag: 'Hero', title: 'Обложка', text: '16:9, radius lg 16, ширина — колонка hero внутри max-w-container 1200 с полями 8 (32), max-h-cover 520, object-fit: cover. Без текста поверх, alt обязателен, загрузка eager + fetchpriority high. OG — отдельный файл 1200 × 630.' },
       { tag: 'Текст', title: 'H3 и FAQ', text: 'H3 — подраздел внутри H2, в оглавление не попадает. Вопросы FAQ — в разметке h3 внутри summary, визуально роль H4: 5–8 вопросов на 20 px читались бы как второй уровень оглавления.' },
       { tag: 'Текст', title: 'Не больше одной врезки подряд', text: 'Врезка — после абзаца, не сразу после заголовка. Success-цвета в статьях не используются: зелёный значит «операция выполнена», а не «хорошая идея».' },
       { tag: 'Панель', title: 'Форма — по теме статьи', text: 'Одно поле и вопрос в контексте: «Вопрос по НДС?». Форма в панели не всплывает и не мигает — без поп-апов поверх текста.' },
@@ -3337,7 +3428,6 @@ const Logo = ({ s = 32, dark = false }) => {
     const typeRoles = ROLES.map(([key, name, fam, w, fs, lh, ls, use]) => ({ key, spec: name + ' · ' + fam + ' ' + fs + '/' + lh, w, ls, use }));
     const SZ = [
       ['container', 1200, 'max-w-container', 'контейнер сайта'],
-      ['article', 1120, 'max-w-article', 'страница статьи: hero и сетка колонка + панель'],
       ['title', 800, 'max-w-title', 'H1 в hero'],
       ['measure', 720, 'max-w-measure', 'колонка текста, текстовые блоки'],
       ['lead', 520, 'max-w-lead', 'лиды в hero, текст CTA-блока'],
@@ -3349,7 +3439,11 @@ const Logo = ({ s = 32, dark = false }) => {
       ['sidebar', 256, 'w-sidebar', 'боковое меню кабинета'],
       ['crumb', 240, 'max-w-crumb', 'последний пункт хлебных крошек, ellipsis'],
       ['cover', 520, 'max-h-cover', 'обложка статьи 16:9'],
-      ['table', 400, 'min-w-table', 'таблица в статье; уже — горизонтальный скролл']
+      ['table', 400, 'min-w-table', 'таблица в статье; уже — горизонтальный скролл'],
+      ['header', 72, 'h-header', 'шапка сайта ≥ 1024; ниже и при прокрутке — 64'],
+      ['header-compact', 64, 'h-header-compact', 'шапка < 1024 и после прокрутки 72 px'],
+      ['sticky-offset', 96, 'top-sticky · scroll-mt-sticky', '≥ 1024: header 72 + 24. При сжатии шапки не меняется'],
+      ['sticky-offset-compact', 88, 'top-sticky · scroll-mt-sticky (< 1024)', '< 1024: header-compact 64 + 24']
     ];
     const CH = [['control-xs', 24, 'кнопка «…» в крошках, счётчики-кнопки'], ['control-sm', 32, 'пункты оглавления, компактные чипы, иконка-кнопка в тулбаре'], ['control-md', 40, 'кнопки второго уровня, компактные поля и строки, пункты меню кабинета'], ['control-touch', 44, 'минимальная зона касания: иконки-кнопки, соцсети, мобильная навигация'], ['control-lg', 48, 'primary/secondary кнопки, поля ввода, строка таблицы'], ['control-xl', 56, 'ячейки OTP, пункты мобильного меню']];
     const IC = [['icon-sm', 16, 'с T6/T7, в таблицах, галочка чекбокса'], ['icon-md', 20, 'с T5, в кнопках и полях, «Поделиться»'], ['icon-lg', 24, 'навигация, соцсети в плитке 44'], ['icon-xl', 32, 'пустые состояния и экраны результата, в круге 56']];
@@ -3379,10 +3473,22 @@ const Logo = ({ s = 32, dark = false }) => {
       { id: 'tk-size', title: 'Ширины и ограничения', note: 'max-w-*, max-h-*, min-w-*', colA: 'px', colB: 'Tailwind', rows: SZ.map(([k, v, tw, u]) => rw(k, v + 'px', tw, u)) },
       { id: 'tk-bp', title: 'Брейкпоинты', note: 'раздел 07', colA: 'min-width', colB: 'Tailwind', rows: [rw('md', '768px', 'md:', 'планшет, 8 колонок'), rw('lg', '1024px', 'lg:', 'десктоп, 12 колонок'), rw('xl', '1440px', 'xl:', 'широкий, контейнер 1200')] }
     ];
+    const TOKENS = { version: '2.3', ink, crimson, extraColors: { 'success-400': '#4FB883', 'error-400': '#E98A6B' }, chart: CHART,
+      semantic: SEM.map(r => ({ name: r[0], light: r[1], dark: r[2], use: r[3] })),
+      spacing: SP.map(([k, v]) => ({ name: k, px: v })), radius: radii.map(r => ({ name: r.token, value: r.css })),
+      borderWidth: { DEFAULT: '1px', 2: '2px' }, shadow: SH,
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Manrope', 'Inter', 'system-ui', 'sans-serif'], mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'] },
+      text: ROLES.map(r => ({ name: r[0], family: r[2], weights: r[3], size: r[4], lineHeight: r[5], tracking: r[6].startsWith('-') ? '-0.02em' : '0' })),
+      controlHeight: CH.map(([k, v]) => ({ name: k, px: v })), iconSize: IC.map(([k, v]) => ({ name: k, px: v })),
+      size: SZ.map(([k, v, tw]) => ({ name: k, px: v, utility: tw })),
+      renamed: { 'max-w-text': 'max-w-measure', 'max-w-page': 'max-w-container', 'max-w-article': 'max-w-container' },
+      layout: { headerH: 72, headerHCompact: 64, stickyGap: 24, stickyOffset: 96, stickyOffsetCompact: 88, compactBelow: '1024px' },
+      duration: durations.map(d => ({ name: d.token, value: d.ms.replace(' ', '') })), ease: EA.map(([k, v]) => ({ name: k, value: v.replace(/ /g, '') })),
+      breakpoint: { md: '768px', lg: '1024px', xl: '1440px' } };
     const key = k => /^([a-z]\w*|\d+)$/.test(k) ? k : "'" + k + "'";
     const obj = (o, ind) => '{\n' + Object.entries(o).map(([k, v]) => ind + '  ' + key(k) + ': ' + v + ',').join('\n') + '\n' + ind + '}';
     const q = v => "'" + v + "'";
-    const code = `/* tokens.css · v2.1 — собрано из таблицы раздела 29 */
+    const code = `/* tokens.css · v2.3 — собрано из таблицы раздела 29 */
 :root {
 ${SEM.map(r => '  --' + r[0] + ': ' + r[1] + ';').join('\n')}
 }
@@ -3426,11 +3532,25 @@ ${SEM.map(r => '        ' + key(r[0]) + ": 'var(--" + r[0] + ")',").join('\n')}
   },
 };`;
     const changelog = [
+      ['2.3/6', 'статья: блок 1120 с полями (внутри 1056), шапка 1200 — края не совпадают', 'контейнер статьи = шапки (1200, поля 32); колонка у левого края, панель у правого, зазор — остаток ≥ 40; max-w-article удалён (алиас → container)', '26, 29'],
+      ['2.3/6', 'шапка: 72 против 64, кнопки 48/12 · 52/8, активный пункт не описан', 'h-header 72 / 64; кнопки 40/8; активный — fg 600 + полоса 2 px accent-fill', '16'],
+      ['2.3/6', 'sticky top 24 и scroll-margin 24 под липкой шапкой', 'sticky-offset 96 (≥ 1024) · 88 (< 1024): top-sticky, scroll-mt-sticky', '26, 29'],
+      ['2.3/6', 'логотип только PNG с полями ≈ 9,6 px', 'SVG в кривых S 24 / 28 / 32 / 40 + знак, без полей; таблица размеров', '00'],
+      ['2.3/6', 'крошки: 280 в 16.4, 240 в 26', 'max-w-crumb 240 везде', '16.4'],
+      ['2.3/6', 'cookie-баннера нет', 'макет и правила', '15'],
+      ['2.3/6', 'код раздела 28 подписан v2.1', 'v2.3', '28'],
+      ['2.3/5', 'max-w-text 720 · max-w-page 1200', 'переименованы: max-w-measure · max-w-container; старые имена — алиасы до v2.4', '28, 29, шаблоны'],
+      ['2.3/5', 'changelog: «w-12 (96)»', 'w-24 (96) — опечатка, 12 = 48', '30'],
+      ['2.3/5', 'scroll-spy: art-s1…s4, пятый пункт не активируется', 'все H2; у конца статьи активен последний', '26'],
+      ['2.3/5', 'состояние до первого H2 не описано', '«0 из N», все сегменты border-subtle, счётчик не скрываем', '26'],
+      ['2.3/5', 'оглавление ниже 1024 px — только строка в сетке', 'макет аккордеона: свёрнуто / развёрнуто, 56 / 44, ширина колонки', '26'],
+      ['2.3/5', 'компактная форма, обложка — без правил', 'правила в «Лучших практиках» 26; «Коротко» — callout-summary', '26'],
+      ['2.3/5', 'заголовок 29 «Токены v2.1»', '«Токены v2.3»', '29'],
       ['2.3/1', 'врезки: «Коротко», «Важно» + в статьях ещё «Best practice» (success), «Главный вопрос», «Три вопроса»', 'три вида: callout-summary, callout-info, callout-note (circle-help / lightbulb); success в статьях запрещён; примеры для светлой и тёмной темы', '26'],
       ['2.3/2', 'обложка max-height 520 без токена', 'max-h-cover 520', '26, 29'],
       ['2.3/2', 'таблица min-width 420 (в коде 560 по модалке)', 'min-w-table 400', '26, 29'],
       ['2.3/2', 'последний пункт крошек 240 без токена', 'max-w-crumb 240 (sidebar 256 не используем — другой смысл)', '26, 29'],
-      ['2.3/2', 'hero статьи 1056, H1 800, CTA 360, фото цитаты 120 — без токенов', 'max-w-article 1120, max-w-title 800, max-w-lead 520, w-12 (96)', '26'],
+      ['2.3/2', 'hero статьи 1056, H1 800, CTA 360, фото цитаты 120 — без токенов', 'max-w-article 1120, max-w-title 800, max-w-lead 520, w-24 (96)', '26'],
       ['2.3/2', 'ширины в разделе 29 не описаны', 'группа «Ширины и ограничения», maxWidth/maxHeight/minWidth в config', '28, 29'],
       ['2.3/3', 'плавная полоса прогресса width: N %', 'сегменты по числу H2 (до 7): accent-fill / border-subtle; > 7 — только «N из M»', '26'],
       ['2.3/4', 'H3 в статье не описан', 'T3 700 20/28, сверху 32, снизу 12; в оглавление не входит', '26'],
@@ -3485,15 +3605,36 @@ ${SEM.map(r => '        ' + key(r[0]) + ": 'var(--" + r[0] + ")',").join('\n')}
       ['14', '«ответ за 7 минут», «320 экскурсий»', 'удалено', '19, 23, 25.4'],
       ['14', 'ссылки t.me, max.ru, vk', '#, до подтверждения адресов', '09, 23']
     ].map(([n, was, now, where]) => ({ n, was, now, where }));
+    const headerSpec = [
+      { k: 'Версия', v: 'макет 16.1 — эталон; плоское меню допустимо, пока у разделов нет подстраниц' },
+      { k: 'Высота', v: 'h-header 72 ≥ 1024; 64 ниже и после прокрутки на 72 px' },
+      { k: 'Контейнер', v: 'max-w-container 1200, поля 8 (32)' },
+      { k: 'Пункты меню', v: 'T6 500 14/22, control-md 40, radius sm 8, gap 1 (4)' },
+      { k: 'Кнопки', v: '«Войти» outline + «Подключиться» primary, control-md 40, radius sm 8' },
+      { k: 'Клиент вошёл', v: 'одна кнопка «Личный кабинет» outline 40/8 вместо двух' },
+      { k: '48/12 и 52/8', v: '48/12 — CTA на странице, не в шапке; 52/8 нет в шкале' },
+      { k: 'Липкая шапка', v: 'surface, border-subtle снизу, shadow sm после прокрутки' }
+    ];
+    const cookieSpec = [
+      { k: 'Позиция', v: 'fixed, слева снизу, отступ 4 (16); < 768 — снизу на всю ширину минус 16' },
+      { k: 'Ширина', v: 'max-w-modal-sm 400' },
+      { k: 'Фон · рамка', v: 'surface-raised · border-subtle' },
+      { k: 'Радиус · тень', v: 'lg 16 · shadow md' },
+      { k: 'Отступы', v: 'p 5 (20), gap 4 (16)' },
+      { k: 'Текст', v: 'T6 400 fg-secondary, ссылка на политику' },
+      { k: 'Кнопки', v: 'две равные, control-md 40, radius sm 8: «Только необходимые» outline · «Принять» primary' },
+      { k: 'Поведение', v: 'без затемнения и крестика, не блокирует страницу; появление fade base 200; выбор хранится 12 мес.' },
+      { k: 'Слой', v: 'над контентом и липкой шапкой, под модалками' }
+    ];
     const openQuestions = [
       'Продукт: есть ли в кабинете платежи с СМС-кодом (разделы 12, 13, 17)? Если нет — пометить «будущее» и убрать «требование ЦБ» и «даже сотрудникам банка».',
       'Реальные данные для слотов ⟨…⟩: реквизиты, реестр, телефон, почта, домен, каналы. Каждой цифре — источник и дата (21.4).',
       'Согласия: фото founder_cut.png и люди в 19, 25, 26 (Морозова, Павлов, Громова, Лебедев) — пока остаются только внутри плашек «пример».',
       'margin-top 312 в 16.2 — подложка демо под открытое меню, не отступ компонента. В код не переносится.',
-      'Вне задачи: шапка 72 против 64; кнопка 48/12 против 52/8.',
-      'handoff/tokens.json и tokens.css ещё на v2.0 — перегенерировать из раздела 28.'
+      'Шаблоны страниц /gazeta (рубрики, пагинация), «Кейсы», «О компании» — отдельная задача, в v2.3 не входят.',
+      'handoff/tokens.* устарели: источник токенов — tools/extract.cjs → tokens.json → tools/generate.mjs → vf-theme.css.'
     ];
-    return { faq, callouts, toc, tocPct: ((activeToc + 1) / tocItems.length * 100) + '%', tocProgress: (activeToc + 1) + ' из ' + tocItems.length,
+    return { headerSpec, cookieSpec, logoFixed, faq, callouts, toc, mToc, mTocOpen: !!st.mTocOpen, mTocClosed: !st.mTocOpen, mTocRot: st.mTocOpen ? 'rotate(180deg)' : 'none', toggleMToc: () => set({ mTocOpen: !st.mTocOpen }), tocProgress: Math.max(0, activeToc + 1) + ' из ' + tocItems.length, tokens: TOKENS,
       mediaRatios, articleGrid, articlePageRules, crumbSpec, crumbRules, crumbCode, tourPoints, tourSpec, roleChips, turnChips, topicChips, timeChips, contactTabs, leadFields, leadRules,
       roleOther: (st.leadRole ?? '') === 'Другое', contactPhone: ct === 'phone', contactTg: ct === 'tg',
       subDone: !!st.subDone, subNotDone: !st.subDone, subscribe: () => set({ subDone: true }), subReset: () => set({ subDone: false }),

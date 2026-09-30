@@ -1,10 +1,10 @@
-{# Пункты оглавления статьи: только H2, не больше 7. Вход: entries -- [{id, title}].
+{# Пункты оглавления статьи: только H2, не больше 7. Вход: entries -- [{id, title}], touch -- высота пункта 44 (аккордеон ниже lg) вместо 32 (панель).
    Без JS все пункты «неактивные» и работают как якоря; активный пункт ставит article-toc.js. #}
 <ol class="flex flex-col">
     {% for entry in entries|slice(0, 7) %}
         <li>
-            <a class="js-toc-link flex min-h-control-sm items-start gap-2 rounded-xs py-1 type-t6 font-medium text-fg-muted hover:text-fg focus-visible:shadow-focus" href="#{{ entry.id }}">
-                <span class="js-toc-dot mt-2 size-2 shrink-0 rounded-full bg-border" aria-hidden="true"></span>
+            <a class="js-toc-link flex {% if touch|default(false) %}min-h-control-touch items-center{% else %}min-h-control-sm items-start{% endif %} gap-2 rounded-xs py-1 type-t6 font-medium text-fg-muted hover:text-fg focus-visible:shadow-focus" href="#{{ entry.id }}">
+                <span class="js-toc-dot {% if not touch|default(false) %}mt-2 {% endif %}size-2 shrink-0 rounded-full bg-border" aria-hidden="true"></span>
                 <span>{{ entry.title }}</span>
             </a>
         </li>

@@ -1,7 +1,7 @@
-{% set vf_asset_version = 'e4be26a6b04c' %}
+{% set vf_asset_version = '60fc10a94f89' %}
 <!doctype html>
-{# scroll-pt-16 = высота липкой шапки: якоря, skip link и фокус с клавиатуры не уходят под неё. #}
-<html lang="ru" class="scroll-pt-16">
+{# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
     <meta name="twitter:image" content="{{ block('og_image') }}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon-v2.svg">
-    {# Manrope 800 набрано слово и «ВФ» логотипа: без предзагрузки знак меняет начертание после загрузки шрифта. #}
+    {# Manrope набраны заголовки страниц: без предзагрузки H1 меняет начертание после загрузки шрифта. #}
     <link rel="preload" href="/assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 

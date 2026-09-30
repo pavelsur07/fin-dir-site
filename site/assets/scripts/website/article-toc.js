@@ -1,6 +1,7 @@
 (() => {
-    // Заголовок после перехода по якорю встаёт на 88px: scroll-pt-16 у html (шапка) + scroll-mt-6 у H2; +8px запас на дробные пиксели.
-    const HEADER_OFFSET = 96;
+    // Активен последний H2, чей верх выше этой линии от верха окна (раздел 26). Заголовок после перехода по якорю
+    // встаёт на scroll-mt-sticky (88/96px) и попадает под неё.
+    const ACTIVE_LINE = 160;
 
     const ACTIVE_LINK = ['font-semibold', 'text-fg'];
     const INACTIVE_LINK = ['font-medium', 'text-fg-muted'];
@@ -75,7 +76,7 @@
                 current = headings.length - 1;
             } else {
                 headings.forEach((heading, index) => {
-                    if (heading.getBoundingClientRect().top <= HEADER_OFFSET) {
+                    if (heading.getBoundingClientRect().top <= ACTIVE_LINE) {
                         current = index;
                     }
                 });
@@ -88,8 +89,10 @@
         };
 
         // Полоса от линии под шапкой вниз: заголовок пересекает её верхнюю границу при каждой смене активного.
+        // threshold 1: событие в тот момент, когда заголовок перестаёт быть целиком в полосе, то есть пересекает линию.
         const headingObserver = new IntersectionObserver(update, {
-            rootMargin: `-${HEADER_OFFSET}px 0px -60% 0px`,
+            rootMargin: `-${ACTIVE_LINE}px 0px -60% 0px`,
+            threshold: [0, 1],
         });
 
         headings.forEach((heading) => headingObserver.observe(heading));
@@ -100,6 +103,20 @@
                 atEnd = entries.some((entry) => entry.isIntersecting);
                 update();
             }).observe(end);
+        }
+
+        // Аккордеон ниже lg: выбор пункта сворачивает его и прокручивает к заголовку уже по свёрнутой раскладке.
+        const accordion = document.querySelector('[data-vf-toc-accordion]');
+        if (accordion instanceof HTMLDetailsElement) {
+            accordion.addEventListener('click', (event) => {
+                const link = event.target instanceof Element ? event.target.closest('.js-toc-link') : null;
+                if (!link) {
+                    return;
+                }
+                event.preventDefault();
+                accordion.open = false;
+                window.location.hash = link.getAttribute('href');
+            });
         }
 
         update();
