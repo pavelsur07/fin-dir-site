@@ -58,6 +58,11 @@ final class PostType extends AbstractType
                 'attr' => ['rows' => 2],
                 'help' => 'До 170 символов. Пусто — берётся анонс.',
             ])
+            ->add('formTitle', TextType::class, [
+                'label' => 'Заголовок формы вопроса',
+                'required' => false,
+                'help' => 'До 120 символов. Пусто — общий заголовок формы под статьёй и в панели.',
+            ])
             ->add('version', HiddenType::class, [
                 // На редактировании версия обязательна: без неё не поймать параллельную правку.
                 'constraints' => $options['is_edit'] ? [new NotNull(message: 'Форма устарела. Обновите страницу.')] : [],

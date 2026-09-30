@@ -162,12 +162,37 @@
         });
     };
 
-    // Тень липкой шапки после начала прокрутки: JS ставит только атрибут, оформление — data-scrolled:* в разметке.
+    // Липкая шапка: JS ставит только атрибуты, оформление -- data-scrolled:* и group-data-compact:* в разметке.
+    // data-scrolled -- тень после начала прокрутки; data-compact -- сжатие 72 -> 64 после прокрутки на 72px.
+    // Слушатель пассивный, работа раз в кадр. Порог сжатия с гистерезисом 8px (разница высот): иначе смена высоты
+    // шапки сдвигает прокрутку (scroll anchoring) и шапка дёргалась бы у порога.
     const initializeStickyHeader = () => {
+        const compactAt = 72;
+        const hysteresis = 8;
+
         document.querySelectorAll('[data-vf-component="navbar"]').forEach((header) => {
-            const update = () => header.toggleAttribute('data-scrolled', window.scrollY > 0);
+            let frame = 0;
+            let compact = false;
+
+            const update = () => {
+                frame = 0;
+                const offset = window.scrollY;
+
+                if (compact) {
+                    compact = offset > compactAt - hysteresis;
+                } else {
+                    compact = offset > compactAt;
+                }
+                header.toggleAttribute('data-scrolled', offset > 0);
+                header.toggleAttribute('data-compact', compact);
+            };
+
             update();
-            window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('scroll', () => {
+                if (frame === 0) {
+                    frame = window.requestAnimationFrame(update);
+                }
+            }, { passive: true });
         });
     };
 

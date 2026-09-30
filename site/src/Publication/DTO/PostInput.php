@@ -36,6 +36,10 @@ final class PostInput
     #[Assert\Length(max: 170)]
     public ?string $metaDescription = null;
 
+    /** Свой заголовок формы вопроса под статьёй. Пусто -- общий заголовок. */
+    #[Assert\Length(max: 120)]
+    public ?string $formTitle = null;
+
     /** Версия, с которой открыли форму: ловит одновременное редактирование. */
     public ?int $version = null;
 
@@ -48,6 +52,7 @@ final class PostInput
         $input->body = $data->body;
         $input->metaTitle = $data->metaTitle;
         $input->metaDescription = $data->metaDescription;
+        $input->formTitle = $data->formTitle;
         $input->version = $data->version;
 
         return $input;

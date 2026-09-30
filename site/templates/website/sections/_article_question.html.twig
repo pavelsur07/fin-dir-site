@@ -1,0 +1,39 @@
+{#
+    Форма вопроса по теме статьи (раздел 26): карточка в липкой панели и под статьёй ниже lg.
+    Отправляет на POST /lead той же формой consultation, что и остальные заявки (CSRF stateless, honeypot, согласие).
+    Вход: id -- префикс id полей (на странице две формы), title, text.
+#}
+{% set labelled_by = id ~ '-title' %}
+<form class="flex flex-col gap-3 rounded-lg bg-surface-muted p-5" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="consultation" aria-labelledby="{{ labelled_by }}" novalidate>
+    <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
+    <input type="hidden" name="form" value="consultation">
+    {# Заполняет JS: id отправки (защита от дублей), время открытия (антиспам), источник. #}
+    <input type="hidden" name="submission_id" value="">
+    <input type="hidden" name="fill_ms" value="">
+    <input type="hidden" name="page_url" value="">
+    <input type="hidden" name="referrer" value="">
+    {# Honeypot: человек поле не видит и не заполняет; заполнил -- бот. #}
+    <div class="hidden" aria-hidden="true">
+        <label for="{{ id }}-website">Сайт компании</label>
+        <input id="{{ id }}-website" name="website" type="text" value="" tabindex="-1" autocomplete="off">
+    </div>
+
+    <h2 class="type-h4 text-fg" id="{{ labelled_by }}">{{ title }}</h2>
+    <p class="type-t6 text-fg-secondary">{{ text }}</p>
+
+    <div class="flex flex-col gap-1" data-vf-component="form-input">
+        <label class="type-t6 font-medium text-fg" for="{{ id }}-name">Имя</label>
+        <input class="ym-disable-keys h-control-lg w-full rounded-md border border-border-strong bg-surface px-4 type-t5 text-fg focus:border-accent focus:shadow-focus-field aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}-name" name="name" type="text" autocomplete="name" placeholder="Как к вам обращаться" required>
+    </div>
+    <div class="flex flex-col gap-1" data-vf-component="form-input">
+        <label class="type-t6 font-medium text-fg" for="{{ id }}-contact">Телефон, email или Telegram</label>
+        <input class="ym-disable-keys h-control-lg w-full rounded-md border border-border-strong bg-surface px-4 type-t5 text-fg focus:border-accent focus:shadow-focus-field aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}-contact" name="contact" type="text" placeholder="+7 900 000-00-00 или @username" required>
+    </div>
+    <div class="flex items-start gap-2" data-vf-component="checkbox">
+        <input class="mt-1 size-icon-sm shrink-0 aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}-agreement" name="agreement" type="checkbox" required>
+        <label class="type-t7 text-fg-secondary" for="{{ id }}-agreement">Согласен на обработку персональных данных (<a class="underline" href="{{ path('consent') }}">согласие</a>, <a class="underline" href="{{ path('privacy') }}">политика конфиденциальности</a>)</label>
+    </div>
+    {% include 'website/components/_button.html.twig' with {label: 'Задать вопрос', type: 'submit', class: 'w-full'} only %}
+    <p class="type-t6 text-success" role="status" data-vf-lead-success hidden>Спасибо! Вопрос отправлен, мы свяжемся с вами в ближайшее время.</p>
+    <p class="type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
+</form>
