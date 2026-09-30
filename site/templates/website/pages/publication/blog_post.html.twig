@@ -49,12 +49,15 @@
         {% endif %}
 
         <div class="lg:flex lg:items-start lg:gap-10">
-            <div class="w-full min-w-0 max-w-measure">
-                <div class="type-t5 text-fg" data-vf-article-body>
-                    {{ article.html|raw }}
+            {# Колонка занимает всё место рядом с панелью, текст в ней -- measure: панель прижата к правому краю страницы. #}
+            <div class="min-w-0 lg:flex-1">
+                <div class="max-w-measure">
+                    <div class="type-t5 text-fg" data-vf-article-body>
+                        {{ article.html|raw }}
+                    </div>
+                    {# Конец текста: когда он виден, активен последний H2 (article-toc.js). #}
+                    <div class="js-toc-end h-px" aria-hidden="true"></div>
                 </div>
-                {# Конец текста: когда он виден, активен последний H2 (article-toc.js). #}
-                <div class="js-toc-end h-px" aria-hidden="true"></div>
             </div>
 
             {% if has_toc %}
