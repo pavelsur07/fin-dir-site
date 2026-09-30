@@ -1,0 +1,12 @@
+{# Пункты оглавления статьи: только H2, не больше 7. Вход: entries -- [{id, title}].
+   Без JS все пункты «неактивные» и работают как якоря; активный пункт ставит article-toc.js. #}
+<ol class="flex flex-col">
+    {% for entry in entries|slice(0, 7) %}
+        <li>
+            <a class="js-toc-link flex min-h-control-sm items-start gap-2 rounded-xs py-1 type-t6 font-medium text-fg-muted hover:text-fg focus-visible:shadow-focus" href="#{{ entry.id }}">
+                <span class="js-toc-dot mt-2 size-2 shrink-0 rounded-full bg-border" aria-hidden="true"></span>
+                <span>{{ entry.title }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ol>

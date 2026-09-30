@@ -12,37 +12,60 @@
 
 {% block active_navigation %}gazeta{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/assets/website/article-toc.js?v={{ vf_asset_version }}" defer></script>
+{% endblock %}
+
 {% block content %}
     {# Совпадает с BreadcrumbList в JSON-LD статьи. #}
     <nav aria-label="Хлебные крошки" data-vf-component="breadcrumb">
         <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 type-t6 text-fg-secondary">
             <li><a class="rounded-xs hover:text-accent focus-visible:shadow-focus" href="{{ path('home') }}">Главная</a></li>
-            <li aria-hidden="true">/</li>
+            <li class="flex" aria-hidden="true">{% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm text-fg-disabled'} only %}</li>
             <li><a class="rounded-xs hover:text-accent focus-visible:shadow-focus" href="{{ path('gazeta_index') }}">Газета</a></li>
-            <li aria-hidden="true">/</li>
+            <li class="flex" aria-hidden="true">{% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm text-fg-disabled'} only %}</li>
             <li class="max-w-sidebar truncate text-fg" aria-current="page">{{ post.title }}</li>
         </ol>
     </nav>
 
     {# body_html -- выход MarkdownRenderer, безопасен для |raw. #}
-    <article class="max-w-text space-y-8" data-vf-section="article">
-        <header class="space-y-4">
+    <article class="space-y-8" data-vf-section="article">
+        <header class="max-w-text space-y-4">
             <h1 class="type-t2 md:type-t1 hyphens-auto text-balance text-fg">{{ post.title }}</h1>
             {% if post.excerpt %}<p class="type-t4 text-pretty text-fg-secondary">{{ post.excerpt }}</p>{% endif %}
             <p class="type-t6 tabular-nums text-fg-muted"><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time>{% if post.wasUpdated %} · Обновлено <time datetime="{{ post.updatedAt|date('Y-m-d') }}">{{ post.updatedAt|date('d.m.Y') }}</time>{% endif %} · {{ post.readingMinutes }} мин чтения · Редакция Ваш Финдир</p>
         </header>
 
-        {% if article.toc|length > 1 %}
-            <nav class="rounded-md bg-surface-muted p-6" aria-labelledby="article-toc-title">
-                <h2 class="type-t3 text-fg" id="article-toc-title">Содержание</h2>
-                <ol class="mt-4 list-decimal space-y-2 pl-6 type-t5 text-fg-secondary">
-                    {% for entry in article.toc %}<li><a class="rounded-xs text-accent hover:text-accent-fill-hover focus-visible:shadow-focus" href="#{{ entry.id }}">{{ entry.title }}</a></li>{% endfor %}
-                </ol>
-            </nav>
+        {% set has_toc = article.toc|length > 1 %}
+        {% if has_toc %}
+            {# Ниже lg оглавление -- раскрывающийся блок над текстом; с lg его заменяет панель. #}
+            <details class="max-w-text rounded-lg border p-5 lg:hidden">
+                <summary class="cursor-pointer rounded-xs type-t6 font-semibold text-fg focus-visible:shadow-focus">Содержание</summary>
+                <nav class="mt-3" aria-label="Содержание">
+                    {% include 'website/components/_article_toc_list.html.twig' with {entries: article.toc} only %}
+                </nav>
+            </details>
         {% endif %}
 
-        <div class="type-t5 text-fg">
-            {{ article.html|raw }}
+        <div class="lg:flex lg:items-start lg:gap-10">
+            <div class="w-full min-w-0 max-w-text type-t5 text-fg" data-vf-article-body>
+                {{ article.html|raw }}
+            </div>
+
+            {% if has_toc %}
+                <aside class="hidden lg:sticky lg:top-24 lg:block lg:w-sidebar lg:shrink-0 lg:self-start">
+                    <nav class="rounded-lg border p-5" aria-label="Содержание">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="type-t6 font-semibold text-fg">Содержание</span>
+                            <span class="js-toc-progress type-t7 tabular-nums text-fg-muted"></span>
+                        </div>
+                        <div class="mt-3">
+                            {% include 'website/components/_article_toc_list.html.twig' with {entries: article.toc} only %}
+                        </div>
+                    </nav>
+                </aside>
+            {% endif %}
         </div>
     </article>
 
