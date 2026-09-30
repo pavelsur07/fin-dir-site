@@ -48,20 +48,14 @@
             </details>
         {% endif %}
 
+        {# Колонка и панель -- пара у левого края контейнера: между ними gap-10, свободное место остаётся справа. #}
         <div class="lg:flex lg:items-start lg:gap-10">
-            {# Колонка занимает всё место рядом с панелью, текст в ней -- measure: панель прижата к правому краю страницы. #}
-            <div class="min-w-0 lg:flex-1">
-                <div class="max-w-measure">
-                    <div class="type-t5 text-fg" data-vf-article-body>
-                        {{ article.html|raw }}
-                    </div>
-                    {# Конец текста: когда он виден, активен последний H2 (article-toc.js). #}
-                    <div class="js-toc-end h-px" aria-hidden="true"></div>
-                </div>
+            <div class="type-t5 w-full min-w-0 max-w-measure text-fg" data-vf-article-body>
+                {{ article.html|raw }}
             </div>
 
             {% if has_toc %}
-                <aside class="hidden lg:sticky lg:top-24 lg:block lg:w-full lg:min-w-toc lg:max-w-toc lg:self-start">
+                <aside class="hidden lg:sticky lg:top-24 lg:block lg:w-full lg:min-w-toc lg:max-w-toc lg:shrink-0 lg:self-start">
                     <nav class="rounded-lg border p-5" aria-label="Содержание">
                         <div class="flex items-center justify-between gap-2">
                             <span class="type-t6 font-semibold text-fg">Содержание</span>

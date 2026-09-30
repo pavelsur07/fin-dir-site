@@ -99,6 +99,37 @@ final class MarkdownRendererTest extends TestCase
         self::assertSame(substr_count($html, '<div'), substr_count($html, '</div>'));
     }
 
+    public function testLegacyLabelsGetSectionTitlesAndBodyStartsWithCapital(): void
+    {
+        $html = new MarkdownRenderer()->renderArticle("> **Best practice:** сравнивать каналы по CM1. Иначе смешаются товары.\n\n> **Короткий вывод:** один тезис без списка\n")->html;
+
+        self::assertMatchesRegularExpression('/data-vf-callout-title="note"[^>]*><strong>Совет<\/strong><\/p>/', $html);
+        self::assertStringContainsString('>Сравнивать каналы по CM1. Иначе смешаются товары.</p>', $html);
+        self::assertMatchesRegularExpression('/data-vf-callout-title="summary"[^>]*><strong>Коротко<\/strong><\/p>/', $html);
+        // «Совет» -- лампочка; иконка «Коротко» отсутствует.
+        self::assertStringContainsString('M9 18h6', $html);
+        self::assertSame(1, substr_count($html, '<svg'));
+    }
+
+    public function testSummarySentencesBecomeBulletList(): void
+    {
+        $html = new MarkdownRenderer()->renderArticle("> **Короткий вывод:** маркетплейс быстрее запускается. Интернет-магазин даёт больше контроля. Мультиканальность требует учёта.\n")->html;
+
+        self::assertSame(3, substr_count($html, '<li'));
+        self::assertMatchesRegularExpression('/<ul class="[^"]*list-disc[^"]*" data-vf-callout-part="summary">/', $html);
+        self::assertStringContainsString('>Маркетплейс быстрее запускается.', $html);
+        self::assertStringContainsString('Мультиканальность требует учёта.', $html);
+    }
+
+    public function testSummaryWithOneOrTooManySentencesStaysParagraph(): void
+    {
+        $one = new MarkdownRenderer()->renderArticle("> **Короткий вывод:** только одно предложение.\n")->html;
+        $five = new MarkdownRenderer()->renderArticle("> **Короткий вывод:** Раз. Два. Три. Четыре. Пять.\n")->html;
+
+        self::assertSame(0, substr_count($one, '<li'));
+        self::assertSame(0, substr_count($five, '<li'));
+    }
+
     public function testFaqQuestionsAreMarkedOnlyInsideFaqSection(): void
     {
         $markdown = "## Раздел\n\n### Не вопрос\n\nтекст\n\n## Частые вопросы\n\n### Первый?\n\nОтвет\n\n### Второй?\n\nОтвет\n";
