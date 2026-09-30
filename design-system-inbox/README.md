@@ -1,6 +1,6 @@
-# Дизайн-система «Ваш Финдир» v2.2 → Tailwind CSS v4
+# Дизайн-система «Ваш Финдир» v2.3 → Tailwind CSS v4
 
-Пакет для внедрения на vashfindir.ru. Всё сгенерировано из `Design System.dc.html` v2.2 (раздел 29 «Единая таблица токенов»).
+Пакет для внедрения на vashfindir.ru. Всё сгенерировано из `Design System.dc.html` v2.3 (раздел 29 «Единая таблица токенов»).
 
 | Файл | Куда в проекте |
 |---|---|
@@ -44,7 +44,7 @@ npm в проекте не нужен: Tailwind собирается standalone 
 | `shadow-md` `shadow-focus-field` | `shadow-xl` |
 | `type-t1` `text-t5` `font-semibold` | `text-sm` `text-2xl` `font-black` `leading-tight` |
 | `md:` `lg:` `xl:` | `sm:` `2xl:` |
-| `max-w-text` `max-w-page` | `max-w-md` |
+| `max-w-measure` `max-w-container` `max-w-article` `min-w-table` `max-h-cover` | `max-w-md` `max-h-96` |
 
 Tailwind v4 всё равно собирает произвольные значения (`p-[13px]`, `bg-[#123456]`), `duration-300`, `border-3`, `ring-2`. Их ловит `check-templates.mjs` (раздел 5).
 
@@ -103,7 +103,7 @@ Hover primary на ink «светлее, а не темнее» получает
 | Фокус кнопки / на ink / поля / ошибка поля | `focus-visible:shadow-focus` · `shadow-focus-inverse` · `focus:border-accent focus:shadow-focus-field` · `border-error shadow-error-field` |
 | Тени | `shadow-sm` `shadow-md` `shadow-lg` |
 | Анимация | `transition-colors duration-fast ease-out` · `duration-base` `-slow` `-deliberate` `-instant` · `ease-in` `ease-standard` · `animate-spin` `animate-skeleton` |
-| Контейнеры | `max-w-text` (720) · `max-w-page` (1200) · `w-sidebar` (256) · `max-w-modal-sm` / `-md` / `-lg` (400 / 560 / 720) |
+| Ширины и ограничения (раздел 29, группа «Ширины и ограничения») | `max-w-container` (1200) · `max-w-article` (1120) · `max-w-title` (800) · `max-w-measure` (720) · `max-w-lead` (520) · `max-w-toc` / `min-w-toc` (280 / 240) · `max-w-crumb` (240) · `max-h-cover` (520) · `min-w-table` (400) · `w-sidebar` (256) · `max-w-modal-sm` / `-md` / `-lg` (400 / 560 / 720) |
 | Пропорции медиа | `aspect-video` (16:9) `aspect-photo` (3:2) `aspect-portrait` (4:5) `aspect-screenshot` (16:10) `aspect-square` |
 
 Фокус тоже переключается в `.dark`: `shadow-focus` и `shadow-focus-field` на ink сами берут crimson 400 и crimson 900.

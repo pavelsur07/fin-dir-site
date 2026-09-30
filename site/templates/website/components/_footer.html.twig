@@ -1,11 +1,11 @@
 <footer class="dark bg-surface py-12 text-fg-secondary md:py-16" data-vf-component="footer">
-    <div class="mx-auto flex w-full max-w-page flex-col gap-10 px-4 md:px-8">
+    <div class="mx-auto flex w-full max-w-container flex-col gap-10 px-4 md:px-8">
         <div class="grid gap-10 border-b border-border-subtle pb-10 md:grid-cols-2">
             <div class="flex flex-col items-start gap-5">
                 <a class="inline-flex items-center no-underline focus-visible:shadow-focus" href="{{ brand_href }}" aria-label="{{ brand }} — на главную">
                     <img src="/assets/brand/logo-dark.png" alt="" width="148" height="50" loading="lazy">
                 </a>
-                <p class="max-w-text type-t6 text-fg-muted">{{ description }}</p>
+                <p class="max-w-measure type-t6 text-fg-muted">{{ description }}</p>
                 <div class="flex flex-wrap gap-4" role="group" aria-label="Социальные сети">
                     {% for social in socials %}
                         <a class="type-t6 text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ social.href }}" target="_blank" rel="noopener noreferrer">{{ social.label }}</a>

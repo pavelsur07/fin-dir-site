@@ -12,7 +12,7 @@
 
     {% for message in app.flashes('error') %}<p class="rounded-lg border border-error-border bg-error-bg p-4 text-error" role="alert">{{ message }}</p>{% endfor %}
 
-    <div class="max-w-page rounded-lg border bg-white p-6">
+    <div class="max-w-container rounded-lg border bg-white p-6">
         <dl class="grid gap-2 md:grid-cols-2">
             <dt>Получено</dt><dd>{{ lead.createdAt|date('d.m.Y H:i') }}</dd>
             <dt>Форма</dt><dd>{{ forms[lead.formKey].title ?? lead.formKey }}</dd>
@@ -52,7 +52,7 @@
     </div>
 
     <h2 class="mb-3 mt-8 type-t3">Работа с обращением</h2>
-    <form class="max-w-page rounded-lg border bg-white p-6" method="post" action="{{ path('admin_lead_update', {id: lead.id}) }}">
+    <form class="max-w-container rounded-lg border bg-white p-6" method="post" action="{{ path('admin_lead_update', {id: lead.id}) }}">
         <input type="hidden" name="_token" value="{{ token }}">
         <input type="hidden" name="version" value="{{ lead.version }}">
         <div class="mb-4">
@@ -69,7 +69,7 @@
     </form>
 
     <h2 class="mb-3 mt-8 type-t3">Заметки</h2>
-    <form class="max-w-page rounded-lg border bg-white p-6" method="post" action="{{ path('admin_lead_note', {id: lead.id}) }}">
+    <form class="max-w-container rounded-lg border bg-white p-6" method="post" action="{{ path('admin_lead_note', {id: lead.id}) }}">
         <input type="hidden" name="_token" value="{{ token }}">
         <div class="mb-4">
             <label class="grid gap-1 font-medium" for="lead-note">Новая заметка</label>
@@ -93,7 +93,7 @@
     {% endif %}
 
     <h2 class="mb-3 mt-8 type-t3">Удаление</h2>
-    <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="max-w-page rounded-lg border bg-white p-6" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
+    <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="max-w-container rounded-lg border bg-white p-6" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
         <input type="hidden" name="_token" value="{{ token }}">
         <p class="type-t6 text-fg-secondary">Удаляет обращение и заметки без возможности восстановления — например, по запросу человека на удаление персональных данных.</p>
         <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Удалить обращение</button>

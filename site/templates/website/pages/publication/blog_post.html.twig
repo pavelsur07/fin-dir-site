@@ -25,13 +25,13 @@
             <li class="flex" aria-hidden="true">{% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm text-fg-disabled'} only %}</li>
             <li><a class="rounded-xs hover:text-accent focus-visible:shadow-focus" href="{{ path('gazeta_index') }}">Газета</a></li>
             <li class="flex" aria-hidden="true">{% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm text-fg-disabled'} only %}</li>
-            <li class="max-w-sidebar truncate text-fg" aria-current="page">{{ post.title }}</li>
+            <li class="max-w-crumb truncate text-fg" aria-current="page" title="{{ post.title }}">{{ post.title }}</li>
         </ol>
     </nav>
 
     {# body_html -- выход MarkdownRenderer, безопасен для |raw. #}
-    <article class="space-y-8" data-vf-section="article">
-        <header class="max-w-text space-y-4">
+    <article class="max-w-article space-y-8" data-vf-section="article">
+        <header class="max-w-title space-y-4">
             <h1 class="type-t2 md:type-t1 hyphens-auto text-balance text-fg">{{ post.title }}</h1>
             {% if post.excerpt %}<p class="type-t4 text-pretty text-fg-secondary">{{ post.excerpt }}</p>{% endif %}
             <p class="type-t6 tabular-nums text-fg-muted"><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time>{% if post.wasUpdated %} · Обновлено <time datetime="{{ post.updatedAt|date('Y-m-d') }}">{{ post.updatedAt|date('d.m.Y') }}</time>{% endif %} · {{ post.readingMinutes }} мин чтения · Редакция Ваш Финдир</p>
@@ -40,7 +40,7 @@
         {% set has_toc = article.toc|length > 1 %}
         {% if has_toc %}
             {# Ниже lg оглавление -- раскрывающийся блок над текстом; с lg его заменяет панель. #}
-            <details class="max-w-text rounded-lg border p-5 lg:hidden">
+            <details class="max-w-measure rounded-lg border p-5 lg:hidden">
                 <summary class="cursor-pointer rounded-xs type-t6 font-semibold text-fg focus-visible:shadow-focus">Содержание</summary>
                 <nav class="mt-3" aria-label="Содержание">
                     {% include 'website/components/_article_toc_list.html.twig' with {entries: article.toc} only %}
@@ -49,17 +49,27 @@
         {% endif %}
 
         <div class="lg:flex lg:items-start lg:gap-10">
-            <div class="w-full min-w-0 max-w-text type-t5 text-fg" data-vf-article-body>
-                {{ article.html|raw }}
+            <div class="w-full min-w-0 max-w-measure">
+                <div class="type-t5 text-fg" data-vf-article-body>
+                    {{ article.html|raw }}
+                </div>
+                {# Конец текста: когда он виден, активен последний H2 (article-toc.js). #}
+                <div class="js-toc-end h-px" aria-hidden="true"></div>
             </div>
 
             {% if has_toc %}
-                <aside class="hidden lg:sticky lg:top-24 lg:block lg:w-sidebar lg:shrink-0 lg:self-start">
+                <aside class="hidden lg:sticky lg:top-24 lg:block lg:w-full lg:min-w-toc lg:max-w-toc lg:self-start">
                     <nav class="rounded-lg border p-5" aria-label="Содержание">
                         <div class="flex items-center justify-between gap-2">
                             <span class="type-t6 font-semibold text-fg">Содержание</span>
-                            <span class="js-toc-progress type-t7 tabular-nums text-fg-muted"></span>
+                            <span class="js-toc-progress type-t7 tabular-nums text-fg-muted">0 из {{ article.toc|length }}</span>
                         </div>
+                        {# Сегмент на каждый H2; при больше чем 7 разделах полосы нет, остаётся счётчик. #}
+                        {% if article.toc|length <= 7 %}
+                            <div class="mt-3 flex gap-1" aria-hidden="true">
+                                {% for entry in article.toc %}<span class="js-toc-segment h-1 flex-1 rounded-full bg-border-subtle transition-colors duration-fast ease-out"></span>{% endfor %}
+                            </div>
+                        {% endif %}
                         <div class="mt-3">
                             {% include 'website/components/_article_toc_list.html.twig' with {entries: article.toc} only %}
                         </div>
@@ -71,7 +81,7 @@
 
     {# Не меньше двух подтверждённых материалов; меньше -- блок не показываем. #}
     {% if related|length >= 2 %}
-        <section class="max-w-text space-y-4" id="related" aria-labelledby="related-title" data-vf-section="article-preview">
+        <section class="max-w-measure space-y-4" id="related" aria-labelledby="related-title" data-vf-section="article-preview">
             <h2 class="type-t2-article text-fg" id="related-title">Ещё статьи о финансовом учёте</h2>
             <ul class="list-disc space-y-2 pl-6 type-t5">
                 {% for item in related %}

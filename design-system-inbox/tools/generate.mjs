@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 
 const d = JSON.parse(fs.readFileSync(new URL('./raw.json', import.meta.url)));
-const VERSION = '2.2';
+const VERSION = d.VERSION;
 const px = (n) => (n === 0 ? '0' : `${n}px`);
 const esc = (k) => String(k).replace('.', '\\.');
 
@@ -34,6 +34,19 @@ const tok = (type, value, description, dark) => {
   if (dark !== undefined && dark !== value) t.$extensions = { 'ru.vashfindir.dark': dark };
   return t;
 };
+
+// Ширины и ограничения (SZ): имена классов берём из файла дизайн-системы, не придумываем.
+// max-w-* и w-* с уникальным именем → --container-<имя> (Tailwind сам строит max-w-/min-w-/w-).
+// min-w-*, max-h-* и имена, общие для двух классов (max-w-toc / min-w-toc), пространство
+// --container-* выразить не может (min-w-toc получил бы 280, max-h-* его не читает) → @utility.
+const SZ = d.SZ.map(([name, size, cls, use]) => {
+  const [, prop, key] = cls.match(/^(max-w|min-w|w|max-h)-(.+)$/);
+  return { name, size, cls, use, prop, key };
+});
+const CSS_PROP = { 'max-w': 'max-width', 'min-w': 'min-width', w: 'width', 'max-h': 'max-height' };
+const isShared = (row) => SZ.some((other) => other !== row && other.key === row.key);
+const SZ_THEME = SZ.filter((row) => (row.prop === 'max-w' || row.prop === 'w') && !isShared(row));
+const SZ_UTILITY = SZ.filter((row) => !SZ_THEME.includes(row));
 const json = {
   $description: `Ваш Финдир — токены дизайн-системы v${VERSION}. Сгенерировано из раздела 29, не править вручную.`,
   color: {
@@ -58,9 +71,7 @@ const json = {
   duration: Object.fromEntries(d.durations.map((x) => [x.token, tok('duration', x.ms.replace(' ', ''), x.use)])),
   easing: Object.fromEntries(d.EA.map(([k, v, use]) => [k, tok('cubicBezier', v, use)])),
   breakpoint: { md: tok('dimension', '768px'), lg: tok('dimension', '1024px'), xl: tok('dimension', '1440px') },
-  container: { text: tok('dimension', '720px', 'текстовые блоки, колонка статьи'), page: tok('dimension', '1200px', 'контейнер страницы на ≥ 1440'),
-    sidebar: tok('dimension', '256px', 'боковое меню кабинета'),
-    'modal-sm': tok('dimension', '400px', 'модалка'), 'modal-md': tok('dimension', '560px', 'модалка'), 'modal-lg': tok('dimension', '720px', 'модалка') },
+  container: Object.fromEntries(d.SZ.map(([name, size, cls, use]) => [name, tok('dimension', px(size), `${cls} — ${use}`)])),
 };
 fs.writeFileSync(new URL('../tokens.json', import.meta.url), JSON.stringify(json, null, 2) + '\n');
 
@@ -130,12 +141,7 @@ w();
 w(`  --breakpoint-md: 768px;`);
 w(`  --breakpoint-lg: 1024px;`);
 w(`  --breakpoint-xl: 1440px;`);
-w(`  --container-text: 720px;`);
-w(`  --container-page: 1200px;`);
-w(`  --container-sidebar: 256px;`);
-w(`  --container-modal-sm: 400px;`);
-w(`  --container-modal-md: 560px;`);
-w(`  --container-modal-lg: 720px;`);
+SZ_THEME.forEach((row) => w(`  --container-${row.key}: ${px(row.size)};`));
 w();
 d.EA.forEach(([k, v]) => w(`  --ease-${k}: ${v};`));
 Object.entries(ASPECT).forEach(([k, v]) => w(`  --aspect-${k}: ${v};`));
@@ -162,6 +168,9 @@ d.ROLES.forEach(([k, name, fam, wt]) => {
 w();
 w(`/* 5. Длительности раздела 20: duration-fast и т. д. */`);
 d.durations.forEach((x) => w(`@utility duration-${x.token} { transition-duration: ${x.ms.replace(' ', '')}; }`));
+w();
+w(`/* 5а. Ширины и ограничения раздела 29, которых нет в пространстве --container-* */`);
+SZ_UTILITY.forEach((row) => w(`@utility ${row.cls} { ${CSS_PROP[row.prop]}: ${px(row.size)}; }`));
 w();
 w(`@keyframes vf-skeleton { 50% { opacity: 0.6; } }`);
 w(`@keyframes spin { to { transform: rotate(360deg); } }`);

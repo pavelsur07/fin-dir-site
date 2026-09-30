@@ -20,7 +20,7 @@
         </div>
     {% endif %}
 
-    {{ form_start(form, {attr: {'data-admin-post-form': '', class: 'max-w-page rounded-lg border bg-white p-6', novalidate: 'novalidate'}}) }}
+    {{ form_start(form, {attr: {'data-admin-post-form': '', class: 'max-w-container rounded-lg border bg-white p-6', novalidate: 'novalidate'}}) }}
         {% if form.vars.errors|length > 0 %}
             <div data-admin-form-errors class="rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
         {% endif %}
