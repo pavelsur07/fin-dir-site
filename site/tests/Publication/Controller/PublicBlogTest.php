@@ -158,10 +158,9 @@ final class PublicBlogTest extends WebTestCase
         self::assertCount(2, $crawler->filter('aside nav a.js-toc-link[href^="#section-"]'));
         self::assertCount(2, $crawler->filter('details nav a.js-toc-link[href^="#section-"]'));
         self::assertSelectorExists('script[src^="/assets/website/article-toc.js?v="]');
-        // Счётчик до первого H2 -- «0 из N», сегмент прогресса на каждый H2, маркер конца текста для скрипта.
+        // Счётчик до первого H2 -- «0 из N» и сегмент прогресса на каждый H2.
         self::assertSelectorTextSame('article aside .js-toc-progress', '0 из 2');
         self::assertCount(2, $crawler->filter('article aside .js-toc-segment'));
-        self::assertSelectorExists('article .js-toc-end');
         self::assertCount(0, $crawler->filter('[data-vf-section="article"] article script'));
 
         $types = [];

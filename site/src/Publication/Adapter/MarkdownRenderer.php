@@ -9,6 +9,9 @@ use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\BlockQuote;
 use League\CommonMark\Extension\CommonMark\Node\Block\Heading;
+use League\CommonMark\Extension\CommonMark\Node\Block\ListBlock;
+use League\CommonMark\Extension\CommonMark\Node\Block\ListData;
+use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Strong;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
@@ -44,6 +47,16 @@ final class MarkdownRenderer
         self::ICON_HELP => '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
         self::ICON_TIP => '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
     ];
+
+    // Старые метки врезок -> заголовки раздела 26 (v2.3).
+    private const array TITLE_ALIASES = [
+        'короткий вывод' => 'Коротко',
+        'best practice' => 'Совет',
+    ];
+
+    // В «Коротко» тезисами считаются 2–4 предложения; больше или меньше -- остаётся абзац.
+    private const int SUMMARY_MIN_ITEMS = 2;
+    private const int SUMMARY_MAX_ITEMS = 4;
 
     // Таблица шире экрана прокручивается внутри обёртки, а не ломает страницу.
     private const array TABLE_WRAPPER_ATTRIBUTES = [
@@ -256,10 +269,15 @@ final class MarkdownRenderer
                     $title->appendChild($strong);
                     $last = $strong->lastChild();
                     if ($last instanceof Text) {
-                        $last->setLiteral(rtrim($last->getLiteral(), ': '));
+                        $literal = rtrim($last->getLiteral(), ': ');
+                        $last->setLiteral(self::TITLE_ALIASES[mb_strtolower($literal)] ?? $literal);
                     }
                     if ($rest instanceof Text) {
-                        $rest->setLiteral(ltrim($rest->getLiteral()));
+                        // Текст после метки начинается с заглавной: «сравнивать…» -> «Сравнивать…».
+                        $rest->setLiteral(self::capitalize(ltrim($rest->getLiteral())));
+                    }
+                    if (self::CALLOUT_SUMMARY === $kind) {
+                        $this->splitSummaryIntoList($paragraph);
                     }
                 }
                 $title->data->set('attributes/data-vf-callout-title', $kind);
@@ -271,6 +289,44 @@ final class MarkdownRenderer
                 }
             }
         }
+    }
+
+    /**
+     * Тезисы «Коротко»: абзац из простого текста в 2–4 предложения становится маркированным списком.
+     */
+    private function splitSummaryIntoList(Paragraph $paragraph): void
+    {
+        $text = '';
+        foreach ($paragraph->children() as $child) {
+            if (!$child instanceof Text) {
+                return;
+            }
+            $text .= $child->getLiteral();
+        }
+
+        $sentences = preg_split('/(?<=[.!?])\s+(?=\p{Lu})/u', trim($text)) ?: [];
+        if (\count($sentences) < self::SUMMARY_MIN_ITEMS || \count($sentences) > self::SUMMARY_MAX_ITEMS) {
+            return;
+        }
+
+        $data = new ListData();
+        $data->type = ListBlock::TYPE_BULLET;
+        $data->bulletChar = '-';
+        $list = new ListBlock($data);
+        $list->setTight(true);
+        foreach ($sentences as $sentence) {
+            $item = new ListItem($data);
+            $line = new Paragraph();
+            $line->appendChild(new Text(self::capitalize($sentence)));
+            $item->appendChild($line);
+            $list->appendChild($item);
+        }
+        $paragraph->replaceWith($list);
+    }
+
+    private static function capitalize(string $text): string
+    {
+        return mb_strtoupper(mb_substr($text, 0, 1)).mb_substr($text, 1);
     }
 
     /**

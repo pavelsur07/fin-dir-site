@@ -26,7 +26,8 @@
 
         const progress = [...document.querySelectorAll('.js-toc-progress')];
         const segments = [...document.querySelectorAll('.js-toc-segment')];
-        const end = document.querySelector('.js-toc-end');
+        // Конец текста -- последний блок статьи: пока он виден, активен последний H2.
+        const end = body.lastElementChild;
         let activeIndex = -1;
         let atEnd = false;
 
