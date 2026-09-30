@@ -40,7 +40,8 @@ final class MarkdownRendererTest extends TestCase
     {
         $article = new MarkdownRenderer()->renderArticle("| A | B |\n|---|---|\n| 1 | 2 |\n");
 
-        self::assertStringContainsString('<div class="my-6 overflow-x-auto rounded-lg border"><table class="w-full border-collapse text-left">', $article->html);
+        self::assertMatchesRegularExpression('/<div class="[^"]*overflow-x-auto[^"]*"[^>]*tabindex="0"[^>]*role="region"[^>]*><table /', $article->html);
+        self::assertStringContainsString('scope="col"', $article->html);
     }
 
     public function testImagesAreReplacedByAltText(): void
@@ -64,11 +65,31 @@ final class MarkdownRendererTest extends TestCase
     {
         $article = new MarkdownRenderer()->renderArticle("## Раздел\n\n- Пункт\n\n1. Первый\n\n> Цитата\n\n```php\necho 1;\n```\n");
 
-        self::assertStringContainsString('<h2 class="mb-4 mt-10 type-t2-article', $article->html);
-        self::assertStringContainsString('<ul class="mb-4 list-disc pl-6">', $article->html);
-        self::assertStringContainsString('<ol class="mb-4 list-decimal pl-6">', $article->html);
-        self::assertStringContainsString('<blockquote class="my-6 border-l-2 border-accent bg-surface-muted p-4"', $article->html);
-        self::assertStringContainsString('<pre class="my-6 overflow-x-auto rounded-lg dark bg-surface-muted p-4 type-t6 text-fg"', $article->html);
+        self::assertMatchesRegularExpression('/<h2 class="[^"]*type-t2-article[^"]*"/', $article->html);
+        self::assertMatchesRegularExpression('/<ul class="[^"]*list-disc[^"]*">/', $article->html);
+        self::assertMatchesRegularExpression('/<ol class="[^"]*list-decimal[^"]*">/', $article->html);
+        self::assertMatchesRegularExpression('/<blockquote class="[^"]+"/', $article->html);
+        self::assertMatchesRegularExpression('/<pre class="[^"]*\bdark\b[^"]*"/', $article->html);
+    }
+
+    public function testCalloutKindIsDetectedByLeadingLabel(): void
+    {
+        $markdown = "> **Короткий вывод:** а\n\n> **Best practice:** б\n\n> **Главный вопрос не про оборот.**\n\n> Без метки\n";
+        $html = new MarkdownRenderer()->renderArticle($markdown)->html;
+
+        self::assertSame(1, substr_count($html, 'data-vf-callout="summary"'));
+        self::assertSame(1, substr_count($html, 'data-vf-callout="practice"'));
+        self::assertSame(2, substr_count($html, 'data-vf-callout="key"'));
+    }
+
+    public function testFaqQuestionsAreMarkedOnlyInsideFaqSection(): void
+    {
+        $markdown = "## Раздел\n\n### Не вопрос\n\nтекст\n\n## Частые вопросы\n\n### Первый?\n\nОтвет\n\n### Второй?\n\nОтвет\n";
+        $html = new MarkdownRenderer()->renderArticle($markdown)->html;
+
+        self::assertSame(2, substr_count($html, 'data-vf-faq="question"'));
+        self::assertMatchesRegularExpression('/<h3 class="[^"]*"[^>]*id="section-[^"]+"[^>]*>Не вопрос<\/h3>/', $html);
+        self::assertDoesNotMatchRegularExpression('/data-vf-faq="question"[^>]*>Не вопрос/', $html);
     }
 
     public function testRawHtmlAndUnsafeLinksAreDropped(): void
