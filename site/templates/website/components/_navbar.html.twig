@@ -18,9 +18,10 @@
         <div class="ml-auto hidden lg:flex lg:items-center lg:gap-6 lg:self-stretch" data-vf-desktop-navigation>
             <ul class="flex items-stretch gap-1 self-stretch">
                 {% for item in items %}
+                    {# Одно условие задаёт всё: aria-current, font-semibold и полосу -- полосы без атрибута и наоборот не бывает. #}
                     {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
                     <li class="flex">
-                        <a class="group relative flex items-center self-stretch type-t6 font-medium no-underline focus-visible:shadow-focus text-fg{% if is_active %} font-semibold{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
+                        <a class="group relative flex items-center self-stretch type-t6 no-underline focus-visible:shadow-focus text-fg {% if is_active %}font-semibold{% else %}font-medium{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
                             <span class="flex h-control-md items-center rounded-sm px-3 group-hover:bg-surface-muted">{{ item.label }}</span>
                             {% if is_active %}<span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
                         </a>

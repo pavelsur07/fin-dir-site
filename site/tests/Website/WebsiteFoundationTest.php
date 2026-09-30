@@ -144,6 +144,31 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"][aria-current="page"]');
     }
 
+    /**
+     * На каждом разделе ровно один aria-current="page" и в десктопной шапке, и в мобильном меню; полоса, font-semibold
+     * и атрибут завязаны на одно условие: полосы без атрибута и атрибута без оформления не бывает.
+     */
+    public function testActiveItemHasExactlyOneAriaCurrentAndMatchingStyling(): void
+    {
+        $client = static::createClient();
+        foreach (['/services' => 'Услуги', '/cases' => 'Кейсы', '/about' => 'О Компании', '/gazeta' => 'Газета', '/partners' => 'Партнёрам'] as $path => $label) {
+            $crawler = $client->request('GET', $path);
+            self::assertResponseIsSuccessful($path);
+            foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
+                self::assertSelectorCount(1, $menu.' a[aria-current="page"]', $path.' '.$menu);
+                self::assertSame($label, trim($crawler->filter($menu.' a[aria-current="page"]')->text()), $path.' '.$menu);
+            }
+            self::assertSelectorCount(1, '[data-vf-desktop-navigation] ul span.absolute.bg-accent-fill', $path);
+            self::assertSelectorCount(1, '[data-vf-desktop-navigation] ul a[aria-current="page"] > span.absolute.bg-accent-fill', $path);
+            self::assertSelectorNotExists('[data-vf-desktop-navigation] ul a:not([aria-current]) > span.absolute', $path);
+            foreach (['[data-vf-desktop-navigation] ul', '[data-vf-mobile-navigation] ul'] as $list) {
+                self::assertSelectorCount(1, $list.' a.font-semibold', $path);
+                self::assertSelectorNotExists($list.' a.font-semibold:not([aria-current])', $path);
+                self::assertSelectorNotExists($list.' a[aria-current]:not(.font-semibold)', $path);
+            }
+        }
+    }
+
     public function testHomepageHasOneFooter(): void
     {
         $client = static::createClient();

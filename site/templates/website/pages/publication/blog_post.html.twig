@@ -60,7 +60,7 @@
             {# Панель с lg: оглавление липкое внутри своей колонки (прокручивается вместе со страницей до формы), форма -- внизу панели.
                Оглавление и форма вместе выше невысокого экрана и обрезали бы кнопку, поэтому липко только оглавление.
                Ниже lg оглавление -- аккордеон сверху, форма -- под статьёй. #}
-            <aside class="hidden lg:flex lg:w-full lg:min-w-toc lg:max-w-toc lg:shrink-0 lg:flex-col lg:gap-4 lg:self-stretch">
+            <aside class="hidden lg:flex lg:w-full lg:min-w-toc lg:max-w-toc lg:shrink-0 lg:flex-col lg:gap-4 lg:self-stretch" aria-label="Панель статьи">
                 <div class="grow">
                     {% if has_toc %}
                         <nav class="rounded-lg border p-5 lg:sticky lg:top-sticky" aria-label="Содержание">

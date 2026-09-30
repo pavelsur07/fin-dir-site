@@ -160,6 +160,28 @@ final class PublicBlogTest extends WebTestCase
         self::assertCount(1, $crawler->filter('article aside form'));
     }
 
+    /**
+     * Вложенная страница статьи подсвечивает «Газета»: ровно один aria-current="page" в десктопной шапке и в мобильном меню
+     * (третий -- последняя крошка). Панель статьи -- <aside> с подписью, внутри nav «Содержание».
+     */
+    public function testArticlePageHighlightsGazetaInBothMenusAndHasLabelledPanel(): void
+    {
+        $this->resetPosts(
+            PostBuilder::aPost()->withSlug('nav-article')->withBody("## Первый\n\nТекст.\n\n## Второй\n\nТекст.")->published('2026-02-01 10:00')->build(),
+        );
+
+        $crawler = $this->client->request('GET', '/gazeta/nav-article');
+
+        self::assertResponseIsSuccessful();
+        foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
+            self::assertSelectorCount(1, $menu.' a[aria-current="page"]', $menu);
+            self::assertSame('Газета', trim($crawler->filter($menu.' a[aria-current="page"]')->text()), $menu);
+        }
+        self::assertSelectorCount(1, '[data-vf-desktop-navigation] ul span.absolute.bg-accent-fill');
+        self::assertSelectorCount(1, 'nav[data-vf-component="breadcrumb"] li[aria-current="page"]');
+        self::assertSelectorExists('article aside[aria-label="Панель статьи"] nav[aria-label="Содержание"]');
+    }
+
     public function testPostCanOverrideQuestionFormTitle(): void
     {
         $this->resetPosts(
