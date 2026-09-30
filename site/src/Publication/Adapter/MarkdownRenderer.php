@@ -40,7 +40,7 @@ final class MarkdownRenderer
         'role' => 'region',
         'aria-label' => 'Таблица',
     ];
-    private const string TABLE_CLASS = 'w-full min-w-modal-md border-collapse text-left type-t6';
+    private const string TABLE_CLASS = 'w-full min-w-modal-md border-collapse text-left tabular-nums type-t6';
 
     private readonly MarkdownConverter $converter;
 
@@ -122,10 +122,10 @@ final class MarkdownRenderer
     private function addTailwindClasses(string $html): string
     {
         $classes = [
-            'h2' => 'mb-4 mt-10 type-t2-article md:type-t2 text-fg',
+            'h2' => 'mb-4 mt-12 scroll-mt-24 type-t2-article text-fg',
             'h3' => 'mb-3 mt-8 type-t3 text-fg',
-            'p' => 'mb-4 last:mb-0',
-            'ul' => 'mb-4 list-disc pl-6 last:mb-0',
+            'p' => 'mb-5 text-pretty last:mb-0',
+            'ul' => 'mb-4 list-disc pl-5 last:mb-0',
             'ol' => 'mb-4 list-decimal pl-6 last:mb-0',
             'li' => 'mb-2 last:mb-0',
             'a' => 'text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus',
@@ -133,8 +133,8 @@ final class MarkdownRenderer
             'pre' => 'my-6 overflow-x-auto rounded-lg dark bg-surface-muted p-4 type-t6 text-fg',
             'code' => 'rounded-xs bg-surface-muted px-1 type-t6',
             'table' => self::TABLE_CLASS,
-            'th' => 'border-b border-border-strong bg-surface-muted p-3 type-t6 font-semibold text-fg',
-            'td' => 'border-b border-border-subtle p-3 align-top type-t6 text-fg-secondary',
+            'th' => 'border-b border-border-strong bg-surface-muted px-4 py-3 type-t6 font-medium text-fg-muted',
+            'td' => 'border-b border-border-subtle px-4 py-3 align-top type-t6 text-fg',
             'hr' => 'my-8 border-t border-border-subtle',
         ];
         $calloutClasses = [

@@ -9,6 +9,8 @@ namespace App\Publication\Query\PublicPost;
  */
 final readonly class PublicPostView
 {
+    private const int WORDS_PER_MINUTE = 200;
+
     public function __construct(
         public int $id,
         public string $slug,
@@ -30,5 +32,23 @@ final readonly class PublicPostView
     public function seoDescription(): ?string
     {
         return $this->metaDescription ?? $this->excerpt;
+    }
+
+    /**
+     * «Обновлено» показываем, только если правка была в другой календарный день, чем публикация.
+     */
+    public function wasUpdated(): bool
+    {
+        return $this->updatedAt->format('Y-m-d') !== $this->publishedAt->format('Y-m-d');
+    }
+
+    /**
+     * Время чтения: слова Markdown-текста / 200, вверх, не меньше минуты.
+     */
+    public function readingMinutes(): int
+    {
+        $words = preg_match_all('/[\p{L}\p{N}]+/u', $this->body);
+
+        return max(1, (int) ceil(($words ?: 0) / self::WORDS_PER_MINUTE));
     }
 }
