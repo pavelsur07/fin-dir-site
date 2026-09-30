@@ -27,20 +27,37 @@ final class CookieNoticeTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/');
 
-        self::assertSelectorExists('#cookieNotice[hidden].opacity-0.data-visible\\:opacity-100.data-visible\\:translate-y-0');
-
-        self::assertSelectorExists('#cookieNotice > div.dark.border-t.border-border');
-        self::assertSelectorExists('#cookieNotice .flex.gap-3 #cookieAccept.flex-1.h-control-lg');
-        self::assertSelectorExists('#cookieNotice .flex.gap-3 #cookieClose.flex-1.h-control-lg[data-vf-variant="outline"][aria-label="Закрыть уведомление о cookie"]');
+        // Раздел 15: появление fade (только opacity), карточка surface-raised с рамкой border-subtle, radius lg, shadow md.
+        self::assertSelectorExists('#cookieNotice[hidden].opacity-0.data-visible\\:opacity-100.duration-base');
+        self::assertSelectorNotExists('#cookieNotice.translate-y-4');
+        self::assertSelectorExists('#cookieNotice > div.rounded-lg.border.border-border-subtle.bg-surface-raised.shadow-md.p-5.gap-4');
+        // Две равные кнопки 40/8: «Только необходимые» (outline) и «Принять» (primary); крестика и затемнения нет.
+        self::assertSelectorExists('#cookieNotice .flex.gap-2 #cookieNecessary.flex-1.h-control-md.rounded-sm[data-vf-variant="outline"]');
+        self::assertSelectorExists('#cookieNotice .flex.gap-2 #cookieAccept.flex-1.h-control-md.rounded-sm[data-vf-variant="primary"]');
+        self::assertSelectorNotExists('#cookieClose, #cookieNotice button[aria-label*="Закрыть"], #cookieNotice .bg-overlay');
 
         $root = (string) self::getContainer()->getParameter('kernel.project_dir');
         $css = (string) file_get_contents($root.'/public/assets/website/app.css');
         self::assertStringContainsString('.data-visible\\:opacity-100[data-visible]', $css);
-        self::assertStringContainsString('.data-visible\\:translate-y-0[data-visible]', $css);
 
         $script = (string) file_get_contents($root.'/assets/scripts/website/navigation.js');
         self::assertStringContainsString('cookieNotice.dataset.visible', $script);
         self::assertStringNotContainsString('is-visible', $script);
+    }
+
+    /**
+     * Выбор хранится 12 месяцев, со сроком; старый ключ «принято» не заставляет показывать баннер заново.
+     */
+    public function testChoiceIsStoredForTwelveMonthsWithLegacyMigration(): void
+    {
+        $script = (string) file_get_contents(self::getContainer()->getParameter('kernel.project_dir').'/assets/scripts/website/navigation.js');
+
+        self::assertStringContainsString("const cookieStorageKey = 'vf_cookie_choice'", $script);
+        self::assertStringContainsString('365 * 24 * 60 * 60 * 1000', $script);
+        self::assertStringContainsString('stored.expires > Date.now()', $script);
+        self::assertStringContainsString("chooseCookies('necessary')", $script);
+        self::assertStringContainsString("chooseCookies('all')", $script);
+        self::assertStringContainsString("localStorage.getItem(legacyStorageKey) === '1'", $script);
     }
 
     /**
@@ -53,8 +70,7 @@ final class CookieNoticeTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/');
 
-        self::assertSelectorExists('#cookieNotice[role="region"][aria-labelledby="cookieTitle"]');
-        self::assertSelectorExists('#cookieTitle');
+        self::assertSelectorExists('#cookieNotice[role="region"][aria-label="Уведомление о cookie"]');
         self::assertSelectorNotExists('#cookieNotice[role="dialog"], #cookieNotice[aria-live], #cookieNotice[aria-describedby]');
         // Сюда возвращается фокус после закрытия баннера.
         self::assertSelectorExists('main#main-content[tabindex="-1"]');
@@ -76,9 +92,10 @@ final class CookieNoticeTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
 
-        self::assertSelectorExists('body > #cookieNotice.sticky.bottom-0');
-        self::assertSelectorNotExists('#cookieNotice.fixed');
-        // sticky держит место в конце потока, только если после баннера нет контента.
+        // Раздел 15: карточка fixed слева снизу с отступом 16 (ниже md -- на всю ширину минус 16), над липкой шапкой z-40.
+        self::assertSelectorExists('body > #cookieNotice.fixed.bottom-4.inset-x-4.z-50.md\\:right-auto.md\\:max-w-modal-sm');
+        self::assertSelectorNotExists('#cookieNotice.sticky');
+        // Баннер остаётся последним элементом body.
         $elements = array_values(array_filter(
             $crawler->filter('body > *')->each(static fn ($node): string => $node->nodeName().'#'.$node->attr('id')),
             static fn (string $element): bool => !str_starts_with($element, 'script#'),
@@ -89,6 +106,8 @@ final class CookieNoticeTest extends WebTestCase
 
         $script = (string) file_get_contents(self::getContainer()->getParameter('kernel.project_dir').'/assets/scripts/website/navigation.js');
         self::assertStringContainsString("document.addEventListener('focusin', keepFocusAboveNotice)", $script);
+        // Карточка у левого края мешает только тому, что пересекается с ней по горизонтали.
+        self::assertStringContainsString('rect.left < card.right && rect.right > card.left', $script);
         // Только клавиатурный фокус: докрутка под мышью увела бы клик мимо цели.
         self::assertStringContainsString("target.matches(':focus-visible')", $script);
         self::assertStringContainsString("target.closest('dialog[open]')", $script);

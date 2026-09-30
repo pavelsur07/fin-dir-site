@@ -232,7 +232,6 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1440px;
   --container-container: 1200px;
-  --container-article: 1120px;
   --container-title: 800px;
   --container-measure: 720px;
   --container-lead: 520px;
@@ -241,6 +240,12 @@
   --container-modal-lg: 720px;
   --container-sidebar: 256px;
   --container-crumb: 240px;
+  /* Алиасы старых имён до v2.4: в шаблонах использовать новые */
+  --container-text: 720px;
+  --container-page: 1200px;
+  --container-article: 1200px;
+  /* Липкий отступ: шапка + 24. По умолчанию < 1024, с lg -- основное значение, переопределение в @layer base */
+  --spacing-sticky: 88px;
 
   --ease-out: cubic-bezier(0.2, 0, 0, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -409,6 +414,8 @@
 @utility min-w-toc { min-width: 240px; }
 @utility max-h-cover { max-height: 520px; }
 @utility min-w-table { min-width: 400px; }
+@utility h-header { height: 72px; }
+@utility h-header-compact { height: 64px; }
 
 @keyframes vf-skeleton { 50% { opacity: 0.6; } }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -419,6 +426,7 @@
   html { font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
   body { background: var(--surface); color: var(--fg); -webkit-font-smoothing: antialiased; }
   a { color: var(--accent); }
+  @media (min-width: 1024px) { :root { --spacing-sticky: 96px; } }
   :focus-visible { outline: none; }  /* кольцо рисуют компоненты: shadow-focus / shadow-focus-field */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

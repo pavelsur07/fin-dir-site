@@ -110,6 +110,23 @@ final class PublicBlogTest extends WebTestCase
         self::assertResponseStatusCodeSame(400);
     }
 
+    /**
+     * Поведение скролл-шпиона проверить в PHP нельзя, но правила раздела 26 зафиксированы в скрипте:
+     * линия 160px, все H2, у конца статьи активен последний, «0 из N» до первого H2, аккордеон сворачивается по клику.
+     */
+    public function testScrollSpyScriptKeepsSectionRules(): void
+    {
+        $script = (string) file_get_contents(self::getContainer()->getParameter('kernel.project_dir').'/assets/scripts/website/article-toc.js');
+
+        self::assertStringContainsString('const ACTIVE_LINE = 160;', $script);
+        self::assertStringContainsString("body.querySelectorAll('h2[id]')", $script);
+        self::assertStringContainsString('body.lastElementChild', $script);
+        self::assertStringContainsString('current = headings.length - 1;', $script);
+        self::assertStringContainsString('`${activeIndex + 1} из ${headings.length}`', $script);
+        self::assertStringContainsString('accordion.open = false;', $script);
+        self::assertStringNotContainsString('.style', $script);
+    }
+
     public function testTocListsAtMostSevenSectionsAndIsHiddenForSingleSection(): void
     {
         $sections = '';
@@ -158,6 +175,15 @@ final class PublicBlogTest extends WebTestCase
         self::assertCount(2, $crawler->filter('aside nav a.js-toc-link[href^="#section-"]'));
         self::assertCount(2, $crawler->filter('details nav a.js-toc-link[href^="#section-"]'));
         self::assertSelectorExists('script[src^="/assets/website/article-toc.js?v="]');
+        // Раздел 26: панель липкая (top-sticky), колонка слева и панель справа (justify-between), H2 с scroll-mt-sticky.
+        self::assertSelectorExists('article aside.lg\\:sticky.lg\\:top-sticky.lg\\:min-w-toc.lg\\:max-w-toc');
+        self::assertSelectorExists('article > div.lg\\:flex.lg\\:justify-between.lg\\:gap-10 > [data-vf-article-body].max-w-measure');
+        self::assertSelectorExists('[data-vf-article-body] h2.scroll-mt-sticky');
+        // Ниже lg -- аккордеон (не sticky): строка control-xl, пункты control-touch, chevron поворачивается за duration-fast.
+        self::assertSelectorExists('article details[data-vf-toc-accordion].lg\\:hidden.rounded-md.border > summary.h-control-xl');
+        self::assertSelectorExists('article details[data-vf-toc-accordion] svg.group-open\\:rotate-180.duration-fast.size-icon-md');
+        self::assertSelectorExists('article details[data-vf-toc-accordion] a.js-toc-link.min-h-control-touch');
+        self::assertSelectorNotExists('article details.sticky');
         // Счётчик до первого H2 -- «0 из N» и сегмент прогресса на каждый H2.
         self::assertSelectorTextSame('article aside .js-toc-progress', '0 из 2');
         self::assertCount(2, $crawler->filter('article aside .js-toc-segment'));

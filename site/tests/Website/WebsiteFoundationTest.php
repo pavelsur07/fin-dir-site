@@ -33,10 +33,10 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertFalse($client->getResponse()->headers->has('Set-Cookie'), $path);
             self::assertSelectorExists('meta[name="description"]', $path);
             self::assertSelectorExists('link[rel="canonical"]', $path);
-            // Декоративные иконки; логотип (data-vf-logo) -- отдельный SVG-компонент и считается ниже.
-            self::assertSelectorCount('/' === $path ? 15 : 0, 'body svg:not([data-vf-logo])', $path);
-            // Шапка (24 и 32), мобильное меню (24 и 32) и подвал (28) -- ссылки с доступным именем, сам SVG скрыт.
-            self::assertSelectorCount(5, 'svg[data-vf-logo][aria-hidden="true"]', $path);
+            // Инлайновые SVG -- только декоративные иконки; логотип -- файлы SVG в <img>.
+            self::assertSelectorCount('/' === $path ? 15 : 0, 'body svg', $path);
+            // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем.
+            self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
             if ('/' === $path) {
                 self::assertSelectorCount(8, 'main section[aria-labelledby="home-pain-points-title"] svg[aria-hidden="true"]');
                 self::assertSelectorCount(7, 'main section[aria-labelledby="home-fit-title"] svg[aria-hidden="true"]');
@@ -116,6 +116,32 @@ final class WebsiteFoundationTest extends WebTestCase
                 }
             }
         }
+    }
+
+    /**
+     * Шапка по разделу 16.1: высота 64 / 72 с lg, пункты во всю высоту с плашкой 40/8, активный раздел --
+     * aria-current, fg 600 и полоса 2px accent-fill на нижней кромке; crimson-текста в меню нет, кнопка 40/8.
+     */
+    public function testHeaderFollowsDesignSystemAndActiveItemHasNoCrimsonText(): void
+    {
+        $client = static::createClient();
+        // Вложенная страница статьи подсвечивает «Газета».
+        $client->request('GET', '/gazeta');
+        self::assertResponseIsSuccessful();
+
+        self::assertSelectorExists('header nav.h-header-compact.lg\\:h-header');
+        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"][aria-current="page"].font-semibold.text-fg.self-stretch');
+        self::assertSelectorCount(1, '[data-vf-desktop-navigation] a[aria-current="page"] > span.absolute.inset-x-3.bottom-0.h-0\\.5.rounded-full.bg-accent-fill');
+        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"] > span.h-control-md.rounded-sm');
+        // Crimson-текст и акцентный hover в меню убраны (мобильное меню тоже).
+        self::assertSelectorNotExists('[data-vf-desktop-navigation] a.text-accent, [data-vf-mobile-navigation] a.text-accent');
+        self::assertSelectorNotExists('[data-vf-desktop-navigation] a[class*="hover:text-accent"], [data-vf-mobile-navigation] a[class*="hover:text-accent"]');
+        // Кнопка шапки 40/8, а не 48/12.
+        self::assertSelectorExists('[data-vf-desktop-navigation] [data-vf-component="button"].h-control-md.rounded-sm');
+        self::assertSelectorNotExists('header [data-vf-component="button"].h-control-lg');
+
+        $client->request('GET', '/gazeta/marketpleys-ili-internet-magazin');
+        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"][aria-current="page"]');
     }
 
     public function testHomepageHasOneFooter(): void

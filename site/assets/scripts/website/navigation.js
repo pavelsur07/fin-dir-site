@@ -174,22 +174,36 @@
     const initializeCookieNotice = () => {
         const cookieNotice = document.getElementById('cookieNotice');
         const cookieAccept = document.getElementById('cookieAccept');
-        const cookieClose = document.getElementById('cookieClose');
-        const cookieStorageKey = 'vf_cookie_notice_accepted';
+        const cookieNecessary = document.getElementById('cookieNecessary');
+        // Выбор хранится 12 месяцев: {choice: 'all' | 'necessary', expires: мс}. Старый ключ '1' -- «принять» без срока.
+        const cookieStorageKey = 'vf_cookie_choice';
+        const legacyStorageKey = 'vf_cookie_notice_accepted';
+        const choiceLifetime = 365 * 24 * 60 * 60 * 1000;
 
-        const hasAcceptedCookies = () => {
+        const saveCookieChoice = (choice) => {
             try {
-                return window.localStorage.getItem(cookieStorageKey) === '1';
+                window.localStorage.setItem(cookieStorageKey, JSON.stringify({ choice, expires: Date.now() + choiceLifetime }));
+                window.localStorage.removeItem(legacyStorageKey);
             } catch (error) {
-                return false;
+                console.warn('Не удалось сохранить выбор cookie в localStorage.', error);
             }
         };
 
-        const saveCookieAcceptance = () => {
+        const hasCookieChoice = () => {
             try {
-                window.localStorage.setItem(cookieStorageKey, '1');
+                const stored = JSON.parse(window.localStorage.getItem(cookieStorageKey));
+                if (stored && typeof stored.expires === 'number' && stored.expires > Date.now()) {
+                    return true;
+                }
+                if (window.localStorage.getItem(legacyStorageKey) === '1') {
+                    saveCookieChoice('all');
+
+                    return true;
+                }
+
+                return false;
             } catch (error) {
-                console.warn('Не удалось сохранить согласие cookie в localStorage.', error);
+                return false;
             }
         };
 
@@ -205,7 +219,9 @@
             }
             window.requestAnimationFrame(() => {
                 const rect = target.getBoundingClientRect();
-                const overlap = rect.bottom - cookieNotice.firstElementChild.getBoundingClientRect().top;
+                // Карточка у левого нижнего угла: мешает только элементу, который пересекается с ней и по горизонтали.
+                const card = cookieNotice.firstElementChild.getBoundingClientRect();
+                const overlap = rect.left < card.right && rect.right > card.left ? rect.bottom - card.top : 0;
                 // Верх элемента не уводим за экран и под липкую шапку (scroll-padding-top у html):
                 // большой контейнер (main после skip link) не прокручивается.
                 const topInset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
@@ -217,12 +233,12 @@
         };
 
         const showCookieNotice = () => {
-            if (!cookieNotice || hasAcceptedCookies()) {
+            if (!cookieNotice || hasCookieChoice()) {
                 return;
             }
             cookieNotice.hidden = false;
             document.addEventListener('focusin', keepFocusAboveNotice);
-            // Reflow фиксирует стартовое состояние (opacity-0, translate-y-4), иначе переход не проигрывается.
+            // Reflow фиксирует стартовое состояние (opacity-0), иначе fade не проигрывается.
             // data-visible включает data-visible:* варианты Tailwind в разметке баннера.
             void cookieNotice.offsetHeight;
             cookieNotice.dataset.visible = '';
@@ -245,17 +261,17 @@
             }, 250);
         };
 
-        const acceptCookies = () => {
-            saveCookieAcceptance();
+        const chooseCookies = (choice) => () => {
+            saveCookieChoice(choice);
             hideCookieNotice();
         };
 
         if (cookieAccept) {
-            cookieAccept.addEventListener('click', acceptCookies);
+            cookieAccept.addEventListener('click', chooseCookies('all'));
         }
 
-        if (cookieClose) {
-            cookieClose.addEventListener('click', hideCookieNotice);
+        if (cookieNecessary) {
+            cookieNecessary.addEventListener('click', chooseCookies('necessary'));
         }
 
         showCookieNotice();

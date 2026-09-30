@@ -1,22 +1,7 @@
-{# Логотип «Ваш Финдир» по формулам раздела 00 дизайн-системы (v2.3): знак s×s и слово, Manrope 800.
-   Вход: s -- сторона знака (шапка 32, моб. 24; подвал 28; меню кабинета 32), dark -- версия для тёмного фона,
-   class -- необязательные классы на svg (например, md:hidden).
-   Размеры считаются здесь и идут атрибутами SVG: inline-стили запрещены (SITE_RULES.md).
-   Цвета версий заданы параметром dark, а не темой: примитивы ink/crimson здесь допустимы (базовый компонент).
-   Ссылку с aria-label ставит вызывающий шаблон, сам SVG скрыт от дикторов. #}
+{# Логотип «Ваш Финдир»: SVG в кривых из дизайн-системы v2.3 (раздел 00, assets/logo/svg), без прозрачных полей.
+   Вход: s -- сторона знака (24, 28, 32 или 40), dark -- версия для тёмного фона, class -- классы на img, lazy -- loading="lazy".
+   Размеры: шапка 32 (моб. 24), мобильное меню 32, подвал 28, меню кабинета 32 тёмная, письма 40.
+   Ширина файла фиксирована дизайн-системой (logoFixed). Ссылку с aria-label ставит вызывающий шаблон, картинка декоративная. #}
+{% set widths = {24: 99, 28: 116, 32: 133, 40: 168} %}
 {% set s = s|default(32) %}
-{% set k = s / 38 %}
-{% set radius = (8 * k)|round %}
-{% set vf_size = (14 * k)|round %}
-{% set word_size = (18 * k)|round %}
-{% set gap = (12 * k)|round %}
-{# Ширина слова «Ваш Финдир» при кегле 18, Manrope 800: 110.0 (getComputedTextLength в браузере, 11003 при кегле 1800). #}
-{# +2 -- запас на округление глифов при мелком кегле. #}
-{% set word_width = (110.1 * word_size / 18)|round(0, 'ceil') + 2 %}
-{% set sign_fill = dark|default(false) ? 'fill-crimson-700' : 'fill-ink-950' %}
-{% set word_fill = dark|default(false) ? 'fill-white' : 'fill-ink-950' %}
-<svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 overflow-visible {{ class|default('') }}" width="{{ s + gap + word_width }}" height="{{ s }}" viewBox="0 0 {{ s + gap + word_width }} {{ s }}" aria-hidden="true" focusable="false" data-vf-logo>
-    <rect width="{{ s }}" height="{{ s }}" rx="{{ radius }}" class="{{ sign_fill }}" />
-    <text x="{{ s / 2 }}" y="{{ s / 2 }}" text-anchor="middle" dominant-baseline="central" font-size="{{ vf_size }}" class="font-display font-extrabold fill-white">ВФ</text>
-    <text x="{{ s + gap }}" y="{{ s / 2 }}" dominant-baseline="central" font-size="{{ word_size }}" class="font-display font-extrabold {{ word_fill }}">Ваш Финдир</text>
-</svg>
+<img class="shrink-0 {{ class|default('') }}" src="/assets/brand/logo-{{ dark|default(false) ? 'dark' : 'light' }}-s{{ s }}.svg" alt="" width="{{ widths[s] }}" height="{{ s }}"{% if lazy|default(false) %} loading="lazy"{% endif %} data-vf-logo>
