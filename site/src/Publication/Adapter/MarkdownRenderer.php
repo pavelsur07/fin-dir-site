@@ -122,7 +122,7 @@ final class MarkdownRenderer
     private function addTailwindClasses(string $html): string
     {
         $classes = [
-            'h2' => 'mb-4 mt-12 scroll-mt-24 type-t2-article text-fg',
+            'h2' => 'mb-5 mt-12 scroll-mt-6 type-t2-article text-fg first:mt-0',
             'h3' => 'mb-3 mt-8 type-t3 text-fg',
             'p' => 'mb-5 text-pretty last:mb-0',
             'ul' => 'mb-4 list-disc pl-5 last:mb-0',

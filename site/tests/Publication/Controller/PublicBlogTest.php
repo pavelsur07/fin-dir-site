@@ -110,6 +110,26 @@ final class PublicBlogTest extends WebTestCase
         self::assertResponseStatusCodeSame(400);
     }
 
+    public function testTocListsAtMostSevenSectionsAndIsHiddenForSingleSection(): void
+    {
+        $sections = '';
+        for ($i = 1; $i <= 9; ++$i) {
+            $sections .= "## Раздел {$i}\n\nТекст.\n\n";
+        }
+        $this->resetPosts(
+            PostBuilder::aPost()->withSlug('long')->withBody($sections)->published('2026-02-01 10:00')->build(),
+            PostBuilder::aPost()->withSlug('short')->withBody("## Единственный\n\nТекст.")->published('2026-02-02 10:00')->build(),
+        );
+
+        $crawler = $this->client->request('GET', '/gazeta/long');
+        self::assertCount(7, $crawler->filter('article aside nav a.js-toc-link'));
+
+        $crawler = $this->client->request('GET', '/gazeta/short');
+        self::assertResponseIsSuccessful();
+        self::assertCount(0, $crawler->filter('article aside'));
+        self::assertCount(0, $crawler->filter('article details'));
+    }
+
     public function testArticlePageHasSeoTocAndStructuredData(): void
     {
         $this->resetPosts(
@@ -131,7 +151,10 @@ final class PublicBlogTest extends WebTestCase
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta/article"]');
         self::assertSelectorExists('meta[property="og:type"][content="article"]');
         self::assertSelectorExists('time[datetime="2026-02-01"]');
-        self::assertCount(2, $crawler->filter('[data-vf-section="article"] nav ol a[href^="#section-"]'));
+        // Один список пунктов выводится дважды: в панели (с lg) и в раскрывающемся блоке (ниже lg).
+        self::assertCount(2, $crawler->filter('aside nav a.js-toc-link[href^="#section-"]'));
+        self::assertCount(2, $crawler->filter('details nav a.js-toc-link[href^="#section-"]'));
+        self::assertSelectorExists('script[src^="/assets/website/article-toc.js?v="]');
         self::assertCount(0, $crawler->filter('[data-vf-section="article"] article script'));
 
         $types = [];

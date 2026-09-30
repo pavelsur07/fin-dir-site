@@ -63,7 +63,7 @@ final class WebsiteFoundationTest extends WebTestCase
         }
         $wrapper = (string) file_get_contents($wrapperPath);
         self::assertStringContainsString("TAILWIND_VERSION='4.3.3'", $wrapper);
-        foreach (['analytics.js', 'navigation.js', 'metrika.js'] as $script) {
+        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js'] as $script) {
             self::assertSame(file_get_contents($root.'/assets/scripts/website/'.$script), file_get_contents($root.'/public/assets/website/'.$script));
         }
     }
@@ -72,7 +72,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js'] as $asset) {
             $contents .= (string) file_get_contents($root.'/public/assets/website/'.$asset);
         }
         $version = substr(hash('sha256', $contents), 0, 12);
