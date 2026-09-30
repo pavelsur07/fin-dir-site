@@ -32,6 +32,16 @@ final class MarkdownRenderer
     private const string CALLOUT_PRACTICE = 'practice';
     private const string CALLOUT_KEY = 'key';
 
+    // Таблица шире экрана прокручивается внутри обёртки, а не ломает страницу.
+    // TODO: ждём токен от дизайнера (мин. ширина таблицы, п.3): min-w-modal-md взят временно.
+    private const array TABLE_WRAPPER_ATTRIBUTES = [
+        'class' => 'my-6 overflow-x-auto rounded-md border focus-visible:shadow-focus',
+        'tabindex' => '0',
+        'role' => 'region',
+        'aria-label' => 'Таблица',
+    ];
+    private const string TABLE_CLASS = 'w-full min-w-modal-md border-collapse text-left type-t6';
+
     private readonly MarkdownConverter $converter;
 
     public function __construct()
@@ -54,9 +64,8 @@ final class MarkdownRenderer
                 'noopener' => 'external',
                 'noreferrer' => 'external',
             ],
-            // Таблица шире экрана прокручивается внутри обёртки, а не ломает страницу.
             'table' => [
-                'wrap' => ['enabled' => true, 'tag' => 'div', 'attributes' => ['class' => 'my-6 overflow-x-auto rounded-md border focus-visible:shadow-focus', 'tabindex' => '0', 'role' => 'region', 'aria-label' => 'Таблица']],
+                'wrap' => ['enabled' => true, 'tag' => 'div', 'attributes' => self::TABLE_WRAPPER_ATTRIBUTES],
             ],
         ]);
         $environment->addExtension(new CommonMarkCoreExtension());
@@ -123,7 +132,7 @@ final class MarkdownRenderer
             'blockquote' => 'my-6 rounded-md border-l-2 border-border-strong bg-surface-muted p-6',
             'pre' => 'my-6 overflow-x-auto rounded-lg dark bg-surface-muted p-4 type-t6 text-fg',
             'code' => 'rounded-xs bg-surface-muted px-1 type-t6',
-            'table' => 'w-full min-w-modal-md border-collapse text-left type-t6',
+            'table' => self::TABLE_CLASS,
             'th' => 'border-b border-border-strong bg-surface-muted p-3 type-t6 font-semibold text-fg',
             'td' => 'border-b border-border-subtle p-3 align-top type-t6 text-fg-secondary',
             'hr' => 'my-8 border-t border-border-subtle',
