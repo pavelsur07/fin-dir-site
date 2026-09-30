@@ -1,4 +1,4 @@
-{% set vf_asset_version = '09c74e7124f7' %}
+{% set vf_asset_version = 'd1320f86f31f' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -7,6 +7,8 @@
     <meta name="robots" content="noindex, nofollow">
     <title>{% block title %}Админка{% endblock %} — Ваш Финдир</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    {# Manrope 800 набрано слово и «ВФ» логотипа: без предзагрузки знак меняет начертание после загрузки шрифта. #}
+    <link rel="preload" href="/assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 </head>
 <body class="bg-surface-muted text-fg">
@@ -23,7 +25,10 @@
     <a class="fixed left-4 top-2 z-20 -translate-y-24 rounded-md bg-white px-3 py-2 text-fg focus:translate-y-0" href="#main">К содержимому</a>
     <div class="flex min-h-screen">
         <div data-admin-sidebar class="dark sticky top-0 hidden h-screen w-sidebar shrink-0 flex-col overflow-y-auto bg-surface px-4 py-6 text-white lg:flex">
-            <a class="mb-6 block font-bold text-white no-underline" href="{{ path('admin_dashboard') }}">Ваш Финдир <small>Админка</small></a>
+            <a class="mb-6 flex items-center gap-3 no-underline" href="{{ path('admin_dashboard') }}" aria-label="Ваш Финдир — Админка">
+                {% include 'website/components/_logo.html.twig' with {s: 32, dark: true} only %}
+                <span class="type-t7 text-fg-secondary">Админка</span>
+            </a>
             {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
         </div>
         <div class="min-w-0 flex-1">
@@ -31,7 +36,10 @@
             <details data-admin-mobile-menu class="dark sticky top-0 z-10 bg-surface p-4 text-white lg:hidden">
                 <summary>
                     {# Бренд скрыт от дикторов: кнопка должна называться «Меню», а не всей строкой. #}
-                    <span class="mb-6 block font-bold text-white no-underline" aria-hidden="true">Ваш Финдир · Админка</span>
+                    <span class="mb-6 flex items-center gap-3" aria-hidden="true">
+                        {% include 'website/components/_logo.html.twig' with {s: 24, dark: true} only %}
+                        <span class="type-t7 text-fg-secondary">Админка</span>
+                    </span>
                     <span class="inline-flex items-center rounded-md border border-border-strong px-3 py-1">Меню{{ counter }}</span>
                 </summary>
                 {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}

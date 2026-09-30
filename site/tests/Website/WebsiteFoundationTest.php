@@ -33,7 +33,10 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertFalse($client->getResponse()->headers->has('Set-Cookie'), $path);
             self::assertSelectorExists('meta[name="description"]', $path);
             self::assertSelectorExists('link[rel="canonical"]', $path);
-            self::assertSelectorCount('/' === $path ? 15 : 0, 'body svg', $path);
+            // Декоративные иконки; логотип (data-vf-logo) -- отдельный SVG-компонент и считается ниже.
+            self::assertSelectorCount('/' === $path ? 15 : 0, 'body svg:not([data-vf-logo])', $path);
+            // Шапка (24 и 32), мобильное меню (24 и 32) и подвал (28) -- ссылки с доступным именем, сам SVG скрыт.
+            self::assertSelectorCount(5, 'svg[data-vf-logo][aria-hidden="true"]', $path);
             if ('/' === $path) {
                 self::assertSelectorCount(8, 'main section[aria-labelledby="home-pain-points-title"] svg[aria-hidden="true"]');
                 self::assertSelectorCount(7, 'main section[aria-labelledby="home-fit-title"] svg[aria-hidden="true"]');
