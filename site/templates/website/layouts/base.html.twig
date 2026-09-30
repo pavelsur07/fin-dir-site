@@ -1,4 +1,4 @@
-{% set vf_asset_version = '09c74e7124f7' %}
+{% set vf_asset_version = 'd1320f86f31f' %}
 <!doctype html>
 {# scroll-pt-16 = высота липкой шапки: якоря, skip link и фокус с клавиатуры не уходят под неё. #}
 <html lang="ru" class="scroll-pt-16">
@@ -23,6 +23,8 @@
     <meta name="twitter:image" content="{{ block('og_image') }}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon-v2.svg">
+    {# Manrope 800 набрано слово и «ВФ» логотипа: без предзагрузки знак меняет начертание после загрузки шрифта. #}
+    <link rel="preload" href="/assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 
     <script src="/assets/website/analytics.js?v={{ vf_asset_version }}" defer></script>
