@@ -1,0 +1,30 @@
+{#
+    Секция «Команда». Карточка сотрудника — раздел 19 дизайн-системы (фото 4:5, имя, должность, опыт).
+    Аргументы: title, subtitle, people [{name, role, experience, photo, zoom}].
+    photo пустое — плейсхолдер с инициалами. zoom — приблизить кадр у вырезанной фигуры в полный рост.
+#}
+<section class="bg-surface py-16 md:py-24" aria-labelledby="home-team-title">
+    <div class="mx-auto max-w-container px-4 md:px-8">
+        <h2 id="home-team-title" class="type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <p class="mt-3 mb-12 max-w-measure type-t4 text-fg-secondary">{{ subtitle }}</p>
+        <ul class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            {% for person in people %}
+                {% set initials = person.name|replace({'[': '', ']': ''})|split(' ')|map(word => word|first|upper)|join('')|slice(0, 2) %}
+                <li class="flex flex-col gap-4">
+                    <div class="flex aspect-portrait items-center justify-center overflow-hidden rounded-lg bg-border-subtle">
+                        {% if person.photo|default(null) %}
+                            <img class="size-full object-cover object-top{{ person.zoom|default(false) ? ' origin-top scale-150' : '' }}" src="{{ person.photo }}" alt="{{ person.name }}, {{ person.role|lower }}" width="1122" height="1402" loading="lazy" decoding="async">
+                        {% else %}
+                            <span class="type-t2 text-fg-secondary" aria-hidden="true">{{ initials }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-0.5">
+                        <h3 class="type-h4 text-fg">{{ person.name }}</h3>
+                        <p class="type-t6 font-medium text-fg-muted">{{ person.role }}</p>
+                        <p class="mt-1 type-t7 font-medium text-fg-secondary">{{ person.experience }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
