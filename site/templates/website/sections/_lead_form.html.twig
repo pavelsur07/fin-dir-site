@@ -11,7 +11,7 @@
 {% set definition = lead_form(form|default('consultation')) %}
 {% set with_contact_type = definition.key == 'excursion' %}
 
-<section class="bg-surface-muted" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
+<section class="scroll-mt-16 bg-surface-muted" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
     <div class="mx-auto grid w-full max-w-container items-start gap-8 px-4 py-16 md:grid-cols-2 md:gap-x-12 md:px-8 md:py-24">
         {# Левая колонка: на мобильном «contents» -- блоки встают в общую сетку (описание → форма → сотрудник), с md -- одна колонка. #}
         <div class="contents md:flex md:flex-col md:gap-8">
@@ -37,7 +37,9 @@
             {% endif %}
             {% if person|default(null) %}
                 <figure class="flex items-end gap-5 rounded-lg border border-border-subtle bg-surface p-5 order-3">
-                    <img class="aspect-4/5 w-24 shrink-0 rounded-md bg-surface-raised object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
+                    <div class="aspect-4/5 w-24 shrink-0 overflow-hidden rounded-md bg-border-subtle">
+                        <img class="size-full origin-top scale-150 object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
+                    </div>
                     <div class="flex min-w-0 flex-col gap-2">
                         {% if person.quote|default(null) %}<blockquote class="type-t6 text-fg">«{{ person.quote }}»</blockquote>{% endif %}
                         <figcaption class="flex flex-col">
@@ -49,7 +51,7 @@
             {% endif %}
         </div>
         <form class="flex flex-col gap-6 order-2 rounded-xl bg-surface p-8 shadow-md md:order-none" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ form_title|default(null) ? section_id ~ '-form-title' : labelled_by }}" novalidate>
-            {% if form_title|default(null) %}<h3 class="type-h4 text-fg" id="{{ section_id }}-form-title">{{ form_title }}</h3>{% endif %}
+            {% if form_title|default(null) %}<h3 class="type-t3 text-fg" id="{{ section_id }}-form-title">{{ form_title }}</h3>{% endif %}
             <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
             <input type="hidden" name="form" value="{{ definition.key }}">
             {# Заполняет JS: id отправки (защита от дублей), время открытия (антиспам), источник. #}
@@ -105,8 +107,8 @@
                         name: 'contact_type',
                         legend: 'Как с вами связаться',
                         options: [
-                            {value: 'phone', label: 'Телефон', checked: true, attrs: {'data-vf-placeholder': '+7 900 000-00-00', 'data-vf-inputmode': 'tel', 'data-vf-autocomplete': 'tel'}},
-                            {value: 'telegram', label: 'Telegram', attrs: {'data-vf-placeholder': '@username', 'data-vf-inputmode': 'text', 'data-vf-autocomplete': 'off'}},
+                            {value: 'phone', label: 'Телефон', icon: 'phone', checked: true, attrs: {'data-vf-placeholder': '+7 900 000-00-00', 'data-vf-inputmode': 'tel', 'data-vf-autocomplete': 'tel'}},
+                            {value: 'telegram', label: 'Telegram', icon: 'telegram', attrs: {'data-vf-placeholder': '@username', 'data-vf-inputmode': 'text', 'data-vf-autocomplete': 'off'}},
                         ],
                     } only %}
                     {% include 'website/components/_form_input.html.twig' with {

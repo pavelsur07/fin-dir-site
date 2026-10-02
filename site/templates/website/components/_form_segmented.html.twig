@@ -1,11 +1,14 @@
-{# Сегментированный переключатель на radio. options: [{value, label, checked, attrs: {data-…: …}}]; attrs читает JS. #}
+{# Сегментированный переключатель на radio. options: [{value, label, icon, checked, attrs: {data-…: …}}]; attrs читает JS. #}
 <fieldset class="flex flex-col" data-vf-component="segmented">
     <legend class="mb-2 type-t6 font-medium text-fg">{{ legend }}</legend>
-    <div class="flex gap-1 rounded-md bg-surface-raised p-1">
+    <div class="flex gap-1 rounded-md bg-border-subtle p-1">
         {% for option in options %}
             <label class="flex-1 cursor-pointer">
                 <input class="peer sr-only" id="{{ id }}-{{ loop.index }}" name="{{ name }}" type="radio" value="{{ option.value }}"{% if option.checked|default(false) %} checked{% endif %}{% for attr, value in option.attrs|default({}) %} {{ attr }}="{{ value }}"{% endfor %}>
-                <span class="flex h-control-md items-center justify-center rounded-sm type-t6 font-semibold text-fg-secondary transition-colors duration-fast peer-checked:bg-surface peer-checked:text-fg peer-checked:shadow-sm peer-focus-visible:shadow-focus motion-reduce:transition-none">{{ option.label }}</span>
+                <span class="flex h-control-md items-center justify-center gap-2 rounded-sm type-t6 font-semibold text-fg-secondary transition-colors duration-fast peer-checked:bg-surface peer-checked:text-fg peer-checked:shadow-sm peer-focus-visible:shadow-focus motion-reduce:transition-none">
+                    {% if option.icon|default(null) %}{% include 'website/components/_icon.html.twig' with {name: option.icon, class: 'size-icon-sm'} only %}{% endif %}
+                    {{ option.label }}
+                </span>
             </label>
         {% endfor %}
     </div>
