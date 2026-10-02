@@ -28,10 +28,11 @@ final class LeadSubmitTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorExists('form[data-vf-lead-form][method="post"][action="/lead"] button[type="submit"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="consultation"]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="excursion"]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="contact_type"][value="phone"][checked]');
         self::assertSelectorExists('form[data-vf-lead-form] input[name="website"][tabindex="-1"]');
         // Вебвизор Метрики не записывает ввод персональных данных.
-        foreach (['input[name="name"]', 'input[name="contact"]', 'textarea[name="task"]'] as $field) {
+        foreach (['input[name="name"]', 'input[name="contact"]', 'input[name="answers[role_other]"]'] as $field) {
             self::assertSelectorExists('form[data-vf-lead-form] '.$field.'.ym-disable-keys');
         }
         self::assertStringNotContainsString('демо-режиме', $crawler->filter('main')->text());
@@ -99,6 +100,62 @@ final class LeadSubmitTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(201);
         self::assertSame(['Wildberries', 'больше 20 млн ₽', 'Финдиректор на аутсорсе'], array_column($this->onlyLead()->answers(), 'answerLabel'));
+    }
+
+    public function testExcursionFormStoresRoleTurnoverAndFreeTextRole(): void
+    {
+        $this->post($this->excursionFields([
+            'answers' => ['role' => 'other', 'role_other' => 'Операционный директор', 'turnover' => '2m_10m'],
+        ]));
+
+        self::assertResponseStatusCodeSame(201);
+        $lead = $this->onlyLead();
+        self::assertSame(['Другое', 'Операционный директор', '2–10 млн ₽'], array_column($lead->answers(), 'answerLabel'));
+        self::assertSame('excursion', $lead->formKey());
+    }
+
+    public function testExcursionFormAcceptsTelegramContact(): void
+    {
+        $this->post($this->excursionFields(['contact_type' => 'telegram', 'contact' => '@anna_sokolova']));
+
+        self::assertResponseStatusCodeSame(201);
+    }
+
+    public function testExcursionFormValidatesAnswersAndContactByType(): void
+    {
+        $this->post($this->excursionFields([
+            'contact_type' => 'phone',
+            'contact' => 'anna sokolova',
+            'answers' => ['role' => 'other', 'role_other' => ' ', 'turnover' => ''],
+        ]));
+
+        self::assertResponseStatusCodeSame(422);
+        $errors = json_decode((string) $this->client->getResponse()->getContent(), true)['errors'];
+        self::assertSame('Укажите телефон в формате +7 900 000-00-00.', $errors['contact']);
+        self::assertArrayHasKey('answers[role_other]', $errors);
+        self::assertArrayHasKey('answers[turnover]', $errors);
+        self::assertSame(0, $this->leadCount());
+
+        $this->post($this->excursionFields(['contact_type' => 'telegram', 'contact' => '+7 900 123-45-67']));
+        self::assertResponseStatusCodeSame(422);
+        self::assertStringContainsString('@', json_decode((string) $this->client->getResponse()->getContent(), true)['errors']['contact']);
+    }
+
+    public function testUnknownContactTypeIsRejected(): void
+    {
+        $this->post($this->excursionFields(['contact_type' => 'fax']));
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertArrayHasKey('contact_type', json_decode((string) $this->client->getResponse()->getContent(), true)['errors']);
+    }
+
+    public function testConsultationFormIsNotAffectedByExcursionRules(): void
+    {
+        // Форма в статьях: без роли, оборота и типа контакта; контакт в любом виде.
+        $this->post($this->fields(['contact' => '@anna_sokolova']));
+
+        self::assertResponseStatusCodeSame(201);
+        self::assertSame([], $this->onlyLead()->answers());
     }
 
     public function testInvalidSubmissionReturnsFieldErrors(): void
@@ -226,6 +283,20 @@ final class LeadSubmitTest extends WebTestCase
             'page_url' => '/',
             'utm_source' => 'telegram',
         ], $override);
+    }
+
+    /**
+     * @param array<array-key, mixed> $override
+     *
+     * @return array<array-key, mixed>
+     */
+    private function excursionFields(array $override = []): array
+    {
+        return array_replace($this->fields([
+            'form' => 'excursion',
+            'contact_type' => 'phone',
+            'answers' => ['role' => 'owner', 'turnover' => 'under_2m'],
+        ]), $override);
     }
 
     /**

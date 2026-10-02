@@ -27,6 +27,19 @@ final class LeadFormCatalog
     {
         return [
             'consultation' => new LeadFormDefinition('consultation', 'Консультация'),
+            'excursion' => new LeadFormDefinition('excursion', 'Экскурсия', [
+                new LeadQuestion('role', 'Роль в компании', [
+                    'owner' => 'Собственник или владелец',
+                    'cfo' => 'Финансовый директор',
+                    'accountant' => 'Бухгалтер',
+                    'other' => 'Другое',
+                ], 'other', 'Роль своими словами'),
+                new LeadQuestion('turnover', 'Оборот компании в месяц', [
+                    'under_2m' => 'до 2 млн ₽',
+                    '2m_10m' => '2–10 млн ₽',
+                    'over_10m' => 'более 10 млн ₽',
+                ]),
+            ]),
             'diagnostics' => new LeadFormDefinition('diagnostics', 'Диагностика', [
                 new LeadQuestion('channel', 'Где продаёте?', [
                     'wildberries' => 'Wildberries',

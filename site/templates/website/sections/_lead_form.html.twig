@@ -1,38 +1,55 @@
 {#
     Lead Form -- виджет формы обращения (Stage 7). Отправляет на POST /lead.
-    Вход: form ('consultation' | 'diagnostics' -- ключ LeadFormCatalog), title,
-    optional: id, text, action_label, note.
     Раскладка -- паттерн 25.4 ДС (экскурсия): секция на всю ширину, слева описание, справа карточка формы.
+    Вход: form ('consultation' | 'excursion' | 'diagnostics' -- ключ LeadFormCatalog), title,
+    optional: id, text, badge, points [{icon, title, text}], person {name, role, quote, image, alt},
+    form_title, action_label, note.
+    Вопросы формы выводятся чипами из LeadFormCatalog; «Другое» (otherOption) открывает поле своими словами.
 #}
 {% set section_id = id|default('vf-lead-form') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set definition = lead_form(form|default('consultation')) %}
+{% set with_contact_type = definition.key == 'excursion' %}
 
-{% set points = [
-    {icon: 'calendar-check', title: '45 минут'},
-    {icon: 'chart-no-axes-column', title: 'Разберём на ваших цифрах'},
-    {icon: 'check', title: 'Без продажи с порога'},
-] %}
 <section class="bg-surface-muted" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
     <div class="mx-auto grid w-full max-w-container items-start gap-8 px-4 py-16 md:grid-cols-2 md:gap-x-12 md:px-8 md:py-24">
-        <div class="flex flex-col gap-8">
-            <div class="flex flex-col gap-4">
-                <span class="self-start whitespace-nowrap rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary">Экскурсия · 45 минут</span>
+        {# Левая колонка: на мобильном «contents» -- блоки встают в общую сетку (описание → форма → сотрудник), с md -- одна колонка. #}
+        <div class="contents md:flex md:flex-col md:gap-8">
+            <div class="order-1 flex flex-col gap-4">
+                {% if badge|default(null) %}<span class="self-start whitespace-nowrap rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary">{{ badge }}</span>{% endif %}
                 <h2 class="type-t2 text-fg" id="{{ labelled_by }}">{{ title }}</h2>
                 {% if text|default(null) %}<p class="type-t4 text-fg-secondary">{{ text }}</p>{% endif %}
             </div>
-            <ul class="flex flex-col">
-                {% for point in points %}
-                    <li class="flex items-center gap-4 border-t border-border py-4">
-                        <span class="flex size-control-md shrink-0 items-center justify-center rounded-sm bg-surface text-accent">
-                            {% include 'website/components/_icon.html.twig' with {name: point.icon, class: 'size-icon-md'} only %}
-                        </span>
-                        <span class="type-t5 font-semibold text-fg">{{ point.title }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
+            {% if points|default([]) is not empty %}
+                <ul class="order-1 flex flex-col">
+                    {% for point in points %}
+                        <li class="flex gap-4 border-t border-border py-4">
+                            <span class="flex size-control-md shrink-0 items-center justify-center rounded-sm bg-surface text-accent">
+                                {% include 'website/components/_icon.html.twig' with {name: point.icon, class: 'size-icon-md'} only %}
+                            </span>
+                            <div class="flex flex-col gap-1">
+                                <span class="type-t5 font-semibold text-fg">{{ point.title }}</span>
+                                {% if point.text|default(null) %}<span class="type-t6 text-fg-secondary">{{ point.text }}</span>{% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if person|default(null) %}
+                <figure class="flex items-end gap-5 rounded-lg border border-border-subtle bg-surface p-5 order-3">
+                    <img class="aspect-4/5 w-24 shrink-0 rounded-md bg-surface-raised object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
+                    <div class="flex min-w-0 flex-col gap-2">
+                        {% if person.quote|default(null) %}<blockquote class="type-t6 text-fg">«{{ person.quote }}»</blockquote>{% endif %}
+                        <figcaption class="flex flex-col">
+                            <span class="type-t6 font-semibold text-fg">{{ person.name }}</span>
+                            <span class="type-t7 font-medium text-fg-muted">{{ person.role }}</span>
+                        </figcaption>
+                    </div>
+                </figure>
+            {% endif %}
         </div>
-        <form class="md:col-start-2 md:row-span-2 md:row-start-1 flex flex-col gap-6 rounded-xl bg-surface p-8 shadow-md" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ labelled_by }}" novalidate>
+        <form class="flex flex-col gap-6 order-2 rounded-xl bg-surface p-8 shadow-md md:order-none" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ form_title|default(null) ? section_id ~ '-form-title' : labelled_by }}" novalidate>
+            {% if form_title|default(null) %}<h3 class="type-h4 text-fg" id="{{ section_id }}-form-title">{{ form_title }}</h3>{% endif %}
             <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
             <input type="hidden" name="form" value="{{ definition.key }}">
             {# Заполняет JS: id отправки (защита от дублей), время открытия (антиспам), источник. #}
@@ -49,56 +66,91 @@
             {% include 'website/components/_form_input.html.twig' with {
                 id: section_id ~ '-name',
                 name: 'name',
-                label: 'Имя',
+                label: 'Как вас зовут',
                 required: true,
-                autocomplete: 'name',
-                placeholder: 'Как к вам обращаться',
-                analytics_private: true,
-            } only %}
-            {% include 'website/components/_form_input.html.twig' with {
-                id: section_id ~ '-contact',
-                name: 'contact',
-                label: 'Телефон, email или Telegram',
-                required: true,
-                placeholder: 'Телефон, email или @telegram',
+                autocomplete: 'given-name',
+                placeholder: 'Имя',
                 analytics_private: true,
             } only %}
             {% for question in definition.questions %}
-                {% set options = [{value: '', label: 'Выберите вариант'}] %}
+                {% set options = [] %}
                 {% for value, label in question.options %}{% set options = options|merge([{value: value, label: label}]) %}{% endfor %}
-                {% include 'website/components/_form_select.html.twig' with {
-                    id: section_id ~ '-' ~ question.key,
-                    name: 'answers[' ~ question.key ~ ']',
-                    label: question.label,
-                    required: true,
-                    options: options,
-                } only %}
+                <div class="flex flex-col gap-2">
+                    {% include 'website/components/_form_chips.html.twig' with {
+                        id: section_id ~ '-' ~ question.key,
+                        name: 'answers[' ~ question.key ~ ']',
+                        legend: question.label,
+                        options: options,
+                        required: true,
+                    } only %}
+                    {% if question.otherOption %}
+                        {# Без JS поле видно всегда; скрипт прячет его, пока не выбрано «Другое». #}
+                        <div data-vf-other-field data-vf-other-for="answers[{{ question.key }}]" data-vf-other-value="{{ question.otherOption }}">
+                            {% include 'website/components/_form_input.html.twig' with {
+                                id: section_id ~ '-' ~ question.key ~ '-other',
+                                name: 'answers[' ~ question.key ~ '_other]',
+                                label: question.otherLabel,
+                                label_hidden: true,
+                                placeholder: 'Например, операционный директор',
+                                analytics_private: true,
+                            } only %}
+                        </div>
+                    {% endif %}
+                </div>
             {% endfor %}
-            {% include 'website/components/_form_textarea.html.twig' with {
-                id: section_id ~ '-task',
-                name: 'task',
-                label: 'Коротко о задаче',
-                placeholder: 'Контекст для первого разговора',
-                analytics_private: true,
-            } only %}
-            {% set agreement_links %}<a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('consent') }}">Согласие на обработку данных</a> и <a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('privacy') }}">политика конфиденциальности</a>.{% endset %}
+            {% if with_contact_type %}
+                <div class="flex flex-col gap-2">
+                    {% include 'website/components/_form_segmented.html.twig' with {
+                        id: section_id ~ '-contact-type',
+                        name: 'contact_type',
+                        legend: 'Как с вами связаться',
+                        options: [
+                            {value: 'phone', label: 'Телефон', checked: true, attrs: {'data-vf-placeholder': '+7 900 000-00-00', 'data-vf-inputmode': 'tel', 'data-vf-autocomplete': 'tel'}},
+                            {value: 'telegram', label: 'Telegram', attrs: {'data-vf-placeholder': '@username', 'data-vf-inputmode': 'text', 'data-vf-autocomplete': 'off'}},
+                        ],
+                    } only %}
+                    {% include 'website/components/_form_input.html.twig' with {
+                        id: section_id ~ '-contact',
+                        name: 'contact',
+                        label: 'Телефон или Telegram',
+                        label_hidden: true,
+                        required: true,
+                        placeholder: '+7 900 000-00-00',
+                        analytics_private: true,
+                        attrs: {'data-vf-contact-input': '', inputmode: 'tel', autocomplete: 'tel'},
+                    } only %}
+                </div>
+            {% else %}
+                {% include 'website/components/_form_input.html.twig' with {
+                    id: section_id ~ '-contact',
+                    name: 'contact',
+                    label: 'Телефон, email или Telegram',
+                    required: true,
+                    placeholder: 'Телефон, email или @telegram',
+                    analytics_private: true,
+                } only %}
+                {% include 'website/components/_form_textarea.html.twig' with {
+                    id: section_id ~ '-task',
+                    name: 'task',
+                    label: 'Коротко о задаче',
+                    placeholder: 'Контекст для первого разговора',
+                    analytics_private: true,
+                } only %}
+            {% endif %}
+            {% set agreement_label %}Согласен на <a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('consent') }}" target="_blank" rel="noopener">обработку персональных данных</a>{% endset %}
+            {% set agreement_links %}<a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('privacy') }}" target="_blank" rel="noopener">Политика конфиденциальности</a>{% endset %}
             {% include 'website/components/_form_checkbox.html.twig' with {
                 id: section_id ~ '-agreement',
                 name: 'agreement',
                 label: 'Согласен на обработку персональных данных',
+                label_html: agreement_label,
                 note_html: agreement_links,
                 required: true,
             } only %}
             {% include 'website/components/_button.html.twig' with {label: action_label|default('Отправить заявку'), type: 'submit', class: 'w-full'} only %}
             <p class="rounded-md border border-success-border bg-success-bg p-4 type-t6 text-success" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
             <p class="rounded-md border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
-            </form>
-        <figure class="md:col-start-1 md:row-start-2 flex w-fit items-center gap-4 rounded-lg border border-border-subtle bg-surface p-5">
-            <img class="aspect-4/5 w-24 shrink-0 rounded-md bg-surface-raised object-cover object-top" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" loading="lazy">
-            <figcaption class="flex flex-col">
-                <span class="type-t6 font-semibold text-fg">Павел Новиков</span>
-                <span class="type-t7 font-medium text-fg-muted">Управляющий партнёр</span>
-            </figcaption>
-        </figure>
+            {% if note|default(null) %}<p class="type-t7 text-center text-fg-muted" data-vf-form-note>{{ note }}</p>{% endif %}
+        </form>
     </div>
 </section>

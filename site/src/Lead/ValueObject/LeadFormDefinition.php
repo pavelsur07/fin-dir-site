@@ -20,6 +20,8 @@ final readonly class LeadFormDefinition
     ) {
     }
 
+    public const int OTHER_MAX_LENGTH = 100;
+
     /**
      * Проверяет ответы и возвращает их снимок с подписями: обращение остаётся
      * читаемым, даже если вопрос потом переформулируют.
@@ -51,6 +53,27 @@ final readonly class LeadFormDefinition
                 'answer' => $answer,
                 'answerLabel' => $question->options[$answer],
             ];
+
+            if (null === $question->otherOption || $answer !== $question->otherOption) {
+                continue;
+            }
+
+            $otherKey = $question->key.'_other';
+            $other = $answers[$otherKey] ?? null;
+            $other = \is_string($other) ? trim($other) : '';
+
+            if ('' === $other) {
+                $errors[$otherKey] = 'Уточните, пожалуйста.';
+            } elseif (mb_strlen($other) > self::OTHER_MAX_LENGTH) {
+                $errors[$otherKey] = \sprintf('Не длиннее %d символов.', self::OTHER_MAX_LENGTH);
+            } else {
+                $snapshot[] = [
+                    'question' => $otherKey,
+                    'questionLabel' => $question->otherLabel ?? $question->label,
+                    'answer' => $other,
+                    'answerLabel' => $other,
+                ];
+            }
         }
 
         return ['snapshot' => $snapshot, 'errors' => $errors];
