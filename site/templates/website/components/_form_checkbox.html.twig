@@ -1,4 +1,8 @@
+{# note_html: готовая разметка под подписью (ссылки); подпись label остаётся дословной -- её цитирует /consent. #}
 <div class="flex items-start gap-3" data-vf-component="checkbox">
-    <input class="mt-1 focus-visible:shadow-focus size-icon-md shrink-0 aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
-    <label class="type-t7 text-fg-secondary" for="{{ id }}">{{ label }}</label>
+    <input class="mt-0 focus-visible:shadow-focus aria-invalid:border-error aria-invalid:shadow-error-field size-icon-md shrink-0" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
+    <div class="flex flex-col gap-1">
+        <label class="type-t7 text-fg-secondary" for="{{ id }}">{{ label }}</label>
+        {% if note_html|default(null) %}<p class="type-t7 text-fg-secondary">{{ note_html }}</p>{% endif %}
+    </div>
 </div>
