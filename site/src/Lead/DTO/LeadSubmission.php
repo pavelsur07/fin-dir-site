@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Lead\DTO;
 
+use App\Lead\ValueObject\ContactType;
 use App\Lead\ValueObject\LeadFormCatalog;
+use App\Lead\ValueObject\NormalizedContact;
 use App\Lead\ValueObject\WebAddress;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -34,6 +36,12 @@ final class LeadSubmission
     #[Assert\NotBlank(message: 'Укажите телефон, email или Telegram.')]
     #[Assert\Length(min: 5, max: 200, minMessage: 'Слишком короткий контакт.', maxMessage: 'Не длиннее 200 символов.')]
     public string $contact = '';
+
+    /**
+     * Способ связи, выбранный в форме: 'phone' | 'telegram'. Пусто -- форма без
+     * переключателя, контакт принимается в любом виде (телефон, email, Telegram).
+     */
+    public ?string $contactType = null;
 
     #[Assert\Length(max: 2000, maxMessage: 'Не длиннее 2000 символов.')]
     public ?string $task = null;
@@ -75,6 +83,28 @@ final class LeadSubmission
     public ?string $ymClientId = null;
 
     #[Assert\Callback]
+    public function validateContactType(ExecutionContextInterface $context): void
+    {
+        if (null === $this->contactType) {
+            return;
+        }
+
+        $expected = ContactType::tryFrom($this->contactType);
+        if (!\in_array($expected, [ContactType::PHONE, ContactType::TELEGRAM], true)) {
+            $context->buildViolation('Выберите, как с вами связаться.')->atPath('contactType')->addViolation();
+
+            return;
+        }
+        if ('' === $this->contact || NormalizedContact::fromRaw($this->contact)->type === $expected) {
+            return;
+        }
+
+        $context->buildViolation(ContactType::PHONE === $expected
+            ? 'Укажите телефон в формате +7 900 000-00-00.'
+            : 'Укажите имя пользователя с @, без пробелов, от 5 символов.')->atPath('contact')->addViolation();
+    }
+
+    #[Assert\Callback]
     public function validateAnswers(ExecutionContextInterface $context): void
     {
         if ('' === $this->form) {
@@ -105,6 +135,7 @@ final class LeadSubmission
         $submission->submissionId = (string) $string('submission_id');
         $submission->name = (string) $string('name');
         $submission->contact = (string) $string('contact');
+        $submission->contactType = $string('contact_type') ?: null;
         $submission->task = $string('task');
         $submission->agreement = \in_array($string('agreement'), ['1', 'on', 'true'], true);
         $submission->answers = \is_array($data['answers'] ?? null) ? $data['answers'] : [];

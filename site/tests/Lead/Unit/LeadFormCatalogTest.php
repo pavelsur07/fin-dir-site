@@ -44,6 +44,30 @@ final class LeadFormCatalogTest extends TestCase
         self::assertSame(['channel', 'turnover', 'need'], array_keys($result['errors']));
     }
 
+    public function testExcursionOtherRoleRequiresFreeText(): void
+    {
+        $form = LeadFormCatalog::get('excursion');
+
+        $missing = $form->snapshot(['role' => 'other', 'turnover' => 'under_2m']);
+        self::assertSame(['role_other'], array_keys($missing['errors']));
+
+        $tooLong = $form->snapshot(['role' => 'other', 'role_other' => str_repeat('я', 101), 'turnover' => 'under_2m']);
+        self::assertSame(['role_other'], array_keys($tooLong['errors']));
+
+        $ok = $form->snapshot(['role' => 'other', 'role_other' => '  Операционный директор ', 'turnover' => '2m_10m']);
+        self::assertSame([], $ok['errors']);
+        self::assertSame(['role', 'role_other', 'turnover'], array_column($ok['snapshot'], 'question'));
+        self::assertSame('Операционный директор', $ok['snapshot'][1]['answer']);
+    }
+
+    public function testExcursionIgnoresFreeTextWhenRoleIsNotOther(): void
+    {
+        $result = LeadFormCatalog::get('excursion')->snapshot(['role' => 'cfo', 'role_other' => 'мусор', 'turnover' => 'over_10m']);
+
+        self::assertSame([], $result['errors']);
+        self::assertSame(['role', 'turnover'], array_column($result['snapshot'], 'question'));
+    }
+
     public function testUnknownFormIsRejected(): void
     {
         self::assertFalse(LeadFormCatalog::has('unknown'));

@@ -478,7 +478,12 @@
         };
 
         const showFieldError = (form, name, message) => {
-            const field = form.elements.namedItem(name);
+            let field = form.elements.namedItem(name);
+
+            // Группа radio (чипы, переключатель): ошибка относится к группе, фокус -- на первую кнопку.
+            if (field instanceof RadioNodeList) {
+                field = field[0];
+            }
 
             if (!(field instanceof HTMLElement) || field.type === 'hidden') {
                 return false;
@@ -521,7 +526,31 @@
             });
         }
 
+        // Поле «Другое» и подсказка контакта зависят от выбранных radio. Без JS поле «Другое»
+        // видно всегда, чтобы форма отправлялась; прячет его только скрипт.
+        const syncConditionalFields = (form) => {
+            const other = form.querySelector('[data-vf-other-field]');
+            if (other) {
+                const trigger = form.querySelector(`input[name="${other.dataset.vfOtherFor}"]:checked`);
+                const needed = Boolean(trigger) && trigger.value === other.dataset.vfOtherValue;
+                other.hidden = !needed;
+                other.querySelector('input').disabled = !needed;
+            }
+
+            const contact = form.querySelector('[data-vf-contact-input]');
+            const type = form.querySelector('input[name="contact_type"]:checked');
+            if (contact && type) {
+                contact.placeholder = type.dataset.vfPlaceholder || contact.placeholder;
+                contact.setAttribute('inputmode', type.dataset.vfInputmode || 'text');
+                contact.setAttribute('autocomplete', type.dataset.vfAutocomplete || 'off');
+            }
+        };
+
         document.querySelectorAll('[data-vf-lead-form]').forEach((form) => {
+            syncConditionalFields(form);
+            form.addEventListener('change', () => syncConditionalFields(form));
+            form.addEventListener('reset', () => setTimeout(() => syncConditionalFields(form)));
+
             const success = form.querySelector('[data-vf-lead-success]');
             const failure = form.querySelector('[data-vf-lead-error]');
             const submit = form.querySelector('[type="submit"]');

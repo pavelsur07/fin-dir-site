@@ -23,6 +23,7 @@ final class LeadSubmitController extends AbstractController
     private const array FIELD_NAMES = [
         'submissionId' => 'submission_id',
         'fillMs' => 'fill_ms',
+        'contactType' => 'contact_type',
         'pageUrl' => 'page_url',
     ];
 
