@@ -5,7 +5,7 @@
         {% for option in options %}
             <label class="cursor-pointer">
                 <input class="peer sr-only" id="{{ id }}-{{ loop.index }}" name="{{ name }}" type="radio" value="{{ option.value }}"{% if required|default(false) %} required{% endif %}{% if option.checked|default(false) %} checked{% endif %}>
-                <span class="inline-flex h-control-md items-center rounded-full border border-border-strong bg-surface px-4 type-t6 font-medium text-fg transition-colors duration-fast hover:bg-surface-muted peer-checked:border-fg peer-checked:bg-fg peer-checked:text-surface peer-focus-visible:shadow-focus motion-reduce:transition-none">{{ option.label }}</span>
+                <span class="inline-flex h-control-md items-center rounded-full border border-border-strong bg-surface px-4 type-t6 font-medium text-fg transition-colors duration-fast peer-not-checked:hover:bg-surface-muted peer-checked:border-fg peer-checked:bg-fg peer-checked:text-surface peer-focus-visible:shadow-focus motion-reduce:transition-none">{{ option.label }}</span>
             </label>
         {% endfor %}
     </div>
