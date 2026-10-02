@@ -1,4 +1,4 @@
-<div class="flex items-start gap-2" data-vf-component="checkbox">
-    <input class="aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
-    <label for="{{ id }}">{{ label }}</label>
+<div class="flex items-start gap-3" data-vf-component="checkbox">
+    <input class="mt-1 focus-visible:shadow-focus size-icon-md shrink-0 aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}" name="{{ name|default(id) }}" type="checkbox"{% if checked|default(false) %} checked{% endif %}{% if required|default(false) %} required{% endif %}>
+    <label class="type-t7 text-fg-secondary" for="{{ id }}">{{ label }}</label>
 </div>

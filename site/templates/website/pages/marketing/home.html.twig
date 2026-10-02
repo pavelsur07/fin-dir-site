@@ -98,13 +98,11 @@
         ],
         note: 'Данные демо-компании.',
     } only %}
-    <div class="mx-auto w-full max-w-container px-4 py-16 md:px-8 md:py-24">
-        {% include 'website/sections/_lead_form.html.twig' with {
-            id: 'lead-form',
-            title: 'Записаться на экскурсию',
-            form: 'consultation',
-            action_label: 'Отправить заявку',
-            note: '45 минут. Разберём на ваших цифрах. Без продажи с порога.',
-        } only %}
-    </div>
+    {% include 'website/sections/_lead_form.html.twig' with {
+        id: 'lead-form',
+        title: 'Записаться на экскурсию',
+        text: 'Разберём ваши цифры и покажем, куда надавить, чтобы выросла прибыль.',
+        form: 'consultation',
+        action_label: 'Отправить заявку',
+    } only %}
 {% endblock %}
