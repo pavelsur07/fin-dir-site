@@ -60,7 +60,7 @@
                 name: 'contact',
                 label: 'Телефон, email или Telegram',
                 required: true,
-                placeholder: '+7 900 000-00-00',
+                placeholder: 'Телефон, email или @telegram',
                 analytics_private: true,
             } only %}
             {% for question in definition.questions %}
@@ -81,21 +81,20 @@
                 placeholder: 'Контекст для первого разговора',
                 analytics_private: true,
             } only %}
-            <div class="flex flex-col gap-2">
-                {% include 'website/components/_form_checkbox.html.twig' with {
-                    id: section_id ~ '-agreement',
-                    name: 'agreement',
-                    label: 'Согласен на обработку персональных данных',
-                    required: true,
-                } only %}
-                <p class="type-t7 text-fg-secondary"><a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('consent') }}">Согласие на обработку данных</a> и <a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('privacy') }}">политика конфиденциальности</a>.</p>
-            </div>
+            {% set agreement_links %}<a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('consent') }}">Согласие на обработку данных</a> и <a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('privacy') }}">политика конфиденциальности</a>.{% endset %}
+            {% include 'website/components/_form_checkbox.html.twig' with {
+                id: section_id ~ '-agreement',
+                name: 'agreement',
+                label: 'Согласен на обработку персональных данных',
+                note_html: agreement_links,
+                required: true,
+            } only %}
             {% include 'website/components/_button.html.twig' with {label: action_label|default('Отправить заявку'), type: 'submit', class: 'w-full'} only %}
             <p class="rounded-md border border-success-border bg-success-bg p-4 type-t6 text-success" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
             <p class="rounded-md border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
             </form>
-        <figure class="md:col-start-1 md:row-start-2 flex items-end gap-5 rounded-lg border border-border-subtle bg-surface p-5">
-            <img class="aspect-4/5 w-1/4 max-w-lead shrink-0 rounded-md bg-surface-raised object-cover object-top" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" loading="lazy">
+        <figure class="md:col-start-1 md:row-start-2 flex w-fit items-center gap-4 rounded-lg border border-border-subtle bg-surface p-5">
+            <img class="aspect-4/5 w-24 shrink-0 rounded-md bg-surface-raised object-cover object-top" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" loading="lazy">
             <figcaption class="flex flex-col">
                 <span class="type-t6 font-semibold text-fg">Павел Новиков</span>
                 <span class="type-t7 font-medium text-fg-muted">Управляющий партнёр</span>
