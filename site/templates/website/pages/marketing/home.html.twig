@@ -98,6 +98,17 @@
         ],
         note: 'Данные демо-компании.',
     } only %}
+    {# Команда: правятся только данные. photo — путь к файлу в /assets/people/ (пусто — инициалы); zoom — для вырезанной фигуры в рост. #}
+    {% include 'website/sections/_team.html.twig' with {
+        title: 'Кто будет вашим финдиром',
+        subtitle: 'За каждым клиентом закреплён один финансовый директор. Методологию и качество контролирует управляющий партнёр.',
+        people: [
+            {name: 'Павел Новиков', role: 'Управляющий партнёр', experience: '28 лет в бизнесе', photo: '/assets/people/pavel-novikov.png', zoom: true},
+            {name: 'Наталья Новикова', role: 'Налоговый консультант', experience: '25 лет бухгалтер', photo: ''},
+            {name: 'Павел Иванов', role: 'Финансовый директор', experience: '8 лет', photo: ''},
+            {name: '[ЗАПОЛНИТЬ имя]', role: 'Финансовый аналитик', experience: '3 года', photo: ''},
+        ],
+    } only %}
     {% include 'website/sections/_lead_form.html.twig' with {
         id: 'lead-form',
         form: 'excursion',
