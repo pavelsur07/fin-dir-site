@@ -1,7 +1,23 @@
 {#
     Секция «Нам доверяют»: карточки с фактами о компании.
-    Аргументы: title, facts [{value, text, icon}]. icon задан — иконка и value обычным заголовком, иначе value крупным числом.
+    Аргументы: title, facts [{value, text, icon}], variant ('cards' по умолчанию | 'row').
+    cards: icon задан — иконка и value обычным заголовком, иначе value крупным числом.
+    row: компактная строка фактов без карточек и видимого заголовка, как в hero страницы «Кейсы» (title -- имя для скринридера).
 #}
+{% if variant|default('cards') == 'row' %}
+<section class="border-b border-border-subtle bg-surface py-8 md:py-12" aria-label="{{ title }}">
+    <div class="mx-auto max-w-container px-4 md:px-8">
+        <ul class="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {% for fact in facts %}
+                <li class="flex flex-col gap-1">
+                    <span class="type-t3-num text-fg">{{ fact.value }}</span>
+                    <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% else %}
 <section class="bg-surface py-16 md:py-24" aria-labelledby="about-facts-title">
     <div class="mx-auto max-w-container px-4 md:px-8">
         <h2 id="about-facts-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
@@ -20,3 +36,4 @@
         </ul>
     </div>
 </section>
+{% endif %}
