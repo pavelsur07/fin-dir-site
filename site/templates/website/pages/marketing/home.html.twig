@@ -60,8 +60,11 @@
 
 {% block body %}
     {% include 'website/sections/_hero.html.twig' with {} only %}
-    {# Блок «Доверие»: один компонент components/_trust_cards, общий для страниц. #}
-    {% include 'website/sections/_company_facts.html.twig' with {} only %}
+    {# Факты о компании: данные в config/packages/twig.yaml (глобал vf_company_facts), общие с «О компании». #}
+    {% include 'website/sections/_company_facts.html.twig' with {
+        title: vf_company_facts.title,
+        facts: vf_company_facts.facts,
+    } only %}
     {% include 'website/sections/_pain_points.html.twig' with {
         title: 'Из всей этой схемы непонятно, куда надо надавить — и прибыль вырастет',
         subtitle: 'Так чаще всего говорят собственники на диагностике. Обычно за этим стоит одно из этого:',

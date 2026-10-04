@@ -14,9 +14,14 @@
             lead: 'Разбираем задачи клиентов с оборотом от 2 млн ₽ в месяц: что было в цифрах, что мы сделали и какие решения приняли собственники.',
         } only %}
         <div class="mx-auto max-w-container px-4 pb-12 md:px-8 md:pb-16">
-            <div class="border-t border-border pt-8">
-                {% include 'website/components/_trust_cards.html.twig' with {} only %}
-            </div>
+            <ul class="grid grid-cols-1 gap-6 border-t border-border pt-8 md:grid-cols-3">
+                {% for fact in vf_company_facts.facts %}
+                    <li class="flex flex-col gap-1">
+                        <span class="type-t3-num text-fg">{{ fact.value }}</span>
+                        <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
     {% include 'website/sections/_cases_catalog.html.twig' with {

@@ -36,7 +36,7 @@ final class WebsiteFoundationTest extends WebTestCase
             // Инлайновые SVG -- только декоративные иконки; логотип -- файлы SVG в <img>.
             // Число иконок /cases зависит от количества кейсов в БД -- его проверяет CaseIndexTest.
             if ('/cases' !== $path) {
-                self::assertSelectorCount(['/' => 20, '/about' => 2, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
+                self::assertSelectorCount(['/' => 21, '/about' => 3, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
             }
             // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем.
             self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
