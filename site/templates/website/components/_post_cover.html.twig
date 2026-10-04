@@ -1,0 +1,11 @@
+{# Обложка статьи в списке: одно место для фото и заглушки, высота блока не зависит от наличия фото.
+   Вход: label — название рубрики для заглушки; featured — главная статья (крупнее);
+   cover — необязательно {url, alt}: alt обязателен. У статей пока нет поля обложки, всегда заглушка. #}
+{% set featured = featured|default(false) %}
+{% if cover|default %}
+    <img class="aspect-video w-full object-cover {{ featured ? 'rounded-lg' : 'rounded-md' }}" src="{{ cover.url }}" alt="{{ cover.alt }}" {% if featured %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+{% else %}
+    <div class="flex aspect-video w-full items-end border border-border-subtle bg-surface-muted {{ featured ? 'rounded-lg p-8' : 'rounded-md p-4' }}" aria-hidden="true">
+        <span class="font-extrabold text-fg {{ featured ? 'type-t2-article' : 'type-t3' }}">{{ label }}</span>
+    </div>
+{% endif %}

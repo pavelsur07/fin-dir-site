@@ -12,6 +12,7 @@ use App\Publication\Query\PostEditData\PostEditDataQuery;
 use App\Publication\Service\PostCreator;
 use App\Publication\Service\PostEditor;
 use App\Publication\Service\PostStatusChanger;
+use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostSlug;
 use App\Tests\Publication\Builder\PostBuilder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -75,6 +76,24 @@ final class PostWriteScenariosTest extends KernelTestCase
         $edit->formTitle = null;
         $this->editor()->edit($id, $edit);
         self::assertNull($this->editData()->get($id)->formTitle);
+    }
+
+    public function testRubricIsStoredChangedAndCleared(): void
+    {
+        $input = $this->input('Статья с рубрикой');
+        $input->rubric = PostRubric::TAXES;
+        $id = $this->creator()->create($input);
+        self::assertSame(PostRubric::TAXES, $this->editData()->get($id)->rubric);
+
+        $edit = PostInput::fromEditData($this->editData()->get($id));
+        $edit->rubric = PostRubric::REPORTING;
+        $this->editor()->edit($id, $edit);
+        self::assertSame(PostRubric::REPORTING, $this->editData()->get($id)->rubric);
+
+        $edit = PostInput::fromEditData($this->editData()->get($id));
+        $edit->rubric = null;
+        $this->editor()->edit($id, $edit);
+        self::assertNull($this->editData()->get($id)->rubric);
     }
 
     public function testExplicitTakenSlugIsRejected(): void

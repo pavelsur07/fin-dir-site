@@ -1,0 +1,10 @@
+{# Карточка статьи в сетке списка: вся карточка -- одна ссылка, при наведении подчёркивается заголовок. Вход: post. #}
+<a class="group flex h-full flex-col gap-4 rounded-md focus-visible:shadow-focus" href="{{ path('gazeta_post', {slug: post.slug}) }}">
+    {% include 'website/components/_post_cover.html.twig' with {label: post.rubric ? post.rubric.label : 'Газета'} only %}
+    <div class="flex flex-col items-start gap-3">
+        {% if post.rubric %}<span class="rounded-xs bg-surface-muted px-2 py-1 type-t7 font-medium text-fg-secondary">{{ post.rubric.label }}</span>{% endif %}
+        <h3 class="type-t3 line-clamp-2 text-fg underline-offset-4 decoration-1 group-hover:underline">{{ post.title }}</h3>
+        {% if post.excerpt %}<p class="type-t6 line-clamp-2 text-fg-secondary">{{ post.excerpt }}</p>{% endif %}
+        {% include 'website/components/_post_meta.html.twig' with {post: post} only %}
+    </div>
+</a>

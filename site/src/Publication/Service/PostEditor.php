@@ -46,6 +46,7 @@ final class PostEditor
                 $input->metaDescription,
                 $now,
                 $input->formTitle,
+                $input->rubric,
             );
 
             if ('' !== $slug && $slug !== $post->slug()) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Publication\Query\PostEditData;
 
+use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostStatus;
 
 /**
@@ -23,6 +24,7 @@ final readonly class PostEditData
         public ?\DateTimeImmutable $publishedAt,
         public int $version,
         public ?string $formTitle = null,
+        public ?PostRubric $rubric = null,
     ) {
     }
 

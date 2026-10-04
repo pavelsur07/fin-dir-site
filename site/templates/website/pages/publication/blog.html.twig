@@ -1,35 +1,95 @@
 {% extends 'website/layouts/page.html.twig' %}
 
-{% block title %}Газета{% if pager.currentPage > 1 %} — страница {{ pager.currentPage }}{% endif %} — Ваш Финдир{% endblock %}
+{% set page = pager.currentPage %}
+{# Адрес страницы списка с учётом рубрики; первая страница без ?page. #}
+{% set list_query = {} %}
+{% if rubric %}{% set list_query = list_query|merge({rubric: rubric.value}) %}{% endif %}
+
+{% block title %}Газеты{% if rubric %} — {{ rubric.label }}{% endif %}{% if page > 1 %} — страница {{ page }}{% endif %} — Ваш Финдир{% endblock %}
 {% block description %}Материалы о финансовом учёте, управлении деньгами и unit-экономике для селлеров маркетплейсов.{% endblock %}
 {# Каждая страница списка -- самостоятельный URL, canonical не склеивает их с первой. #}
-{% block canonical %}{{ vf_site_url ~ (pager.currentPage > 1 ? path('gazeta_index', {page: pager.currentPage}) : path('gazeta_index')) }}{% endblock %}
+{% block canonical %}{{ vf_site_url ~ path('gazeta_index', list_query|merge(page > 1 ? {page: page} : {})) }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    {% if pager.hasPreviousPage %}<link rel="prev" href="{{ vf_site_url ~ path('gazeta_index', list_query|merge(pager.previousPage > 1 ? {page: pager.previousPage} : {})) }}">{% endif %}
+    {% if pager.hasNextPage %}<link rel="next" href="{{ vf_site_url ~ path('gazeta_index', list_query|merge({page: pager.nextPage})) }}">{% endif %}
+{% endblock %}
 
 {% block active_navigation %}gazeta{% endblock %}
 
+{% block page_header %}
+    {% include 'website/components/page-header.html.twig' with {
+        crumbs: [{label: 'Главная', url: '/'}, {label: 'Газеты'}],
+        title: 'Газеты',
+        lead: 'Налоги, отчётность и деньги — простыми словами',
+    } only %}
+{% endblock %}
+
 {% block content %}
-    <h1 class="type-t2 md:type-t1">Газета</h1>
-    <p>Разборы финансового учёта для селлеров: ДДС, ОПиУ, Баланс, unit-экономика и управленческие решения.</p>
+    <nav aria-label="Рубрики" data-vf-component="rubrics">
+        <ul class="scrollbar-none flex gap-2 overflow-x-auto px-1 py-1 md:flex-wrap md:overflow-visible">
+            <li class="shrink-0">
+                <a class="inline-flex h-control-md items-center whitespace-nowrap rounded-full px-4 type-t6 font-medium focus-visible:shadow-focus {{ rubric ? 'border border-border-strong bg-surface-raised text-fg hover:bg-surface-muted' : 'bg-ink-950 text-white' }}" href="{{ path('gazeta_index') }}"{% if not rubric %} aria-current="true"{% endif %}>Все</a>
+            </li>
+            {% for item in rubrics %}
+                <li class="shrink-0">
+                    <a class="inline-flex h-control-md items-center whitespace-nowrap rounded-full px-4 type-t6 font-medium focus-visible:shadow-focus {{ rubric == item ? 'bg-ink-950 text-white' : 'border border-border-strong bg-surface-raised text-fg hover:bg-surface-muted' }}" href="{{ path('gazeta_index', {rubric: item.value}) }}"{% if rubric == item %} aria-current="true"{% endif %}>{{ item.label }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
 
     {% if pager.nbResults > 0 %}
-        <ul class="space-y-6" data-vf-section="article-list">
-            {% for post in pager.currentPageResults %}
-                <li>
-                    <h2 class="type-t3"><a class="underline" href="{{ path('gazeta_post', {slug: post.slug}) }}">{{ post.title }}</a></h2>
-                    <p><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time></p>
-                    {% if post.excerpt %}<p>{{ post.excerpt }}</p>{% endif %}
-                </li>
+        {% set posts = [] %}
+        {% for post in pager.currentPageResults %}{% set posts = posts|merge([post]) %}{% endfor %}
+        {# Главная статья -- только на первой странице без фильтра рубрики. #}
+        {% set has_featured = page == 1 and not rubric %}
+
+        {% if has_featured %}
+            {% include 'website/components/_post_featured.html.twig' with {post: posts|first} only %}
+        {% endif %}
+
+        <h2 class="sr-only">Все статьи</h2>
+        <ul class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-12" data-vf-section="article-list">
+            {% for post in (has_featured ? posts|slice(1) : posts) %}
+                <li>{% include 'website/components/_post_card.html.twig' with {post: post} only %}</li>
             {% endfor %}
         </ul>
 
         {% if pager.haveToPaginate %}
-            <nav aria-label="Страницы списка" data-vf-component="pagination">
-                {% if pager.hasPreviousPage %}<a class="underline" href="{{ pager.previousPage > 1 ? path('gazeta_index', {page: pager.previousPage}) : path('gazeta_index') }}">← Новее</a> · {% endif %}
-                Страница {{ pager.currentPage }} из {{ pager.nbPages }}
-                {% if pager.hasNextPage %} · <a class="underline" href="{{ path('gazeta_index', {page: pager.nextPage}) }}">Раньше →</a>{% endif %}
+            {# С md -- номера страниц. #}
+            <nav class="hidden items-center justify-center gap-1 md:flex" aria-label="Страницы списка" data-vf-component="pagination">
+                {% if pager.hasPreviousPage %}
+                    <a class="inline-flex size-control-touch items-center justify-center rounded-sm text-fg hover:bg-surface-muted focus-visible:shadow-focus" href="{{ path('gazeta_index', list_query|merge(pager.previousPage > 1 ? {page: pager.previousPage} : {})) }}" aria-label="Предыдущая страница" rel="prev">
+                        {% include 'website/components/_icon.html.twig' with {name: 'chevron-left', class: 'size-icon-md'} only %}
+                    </a>
+                {% endif %}
+                {% for number in 1..pager.nbPages %}
+                    {% if number == 1 or number == pager.nbPages or (number - page)|abs <= 1 %}
+                        <a class="inline-flex size-control-touch items-center justify-center rounded-sm type-t6 font-medium focus-visible:shadow-focus {{ number == page ? 'bg-ink-950 text-white' : 'text-fg hover:bg-surface-muted' }}" href="{{ path('gazeta_index', list_query|merge(number > 1 ? {page: number} : {})) }}"{% if number == page %} aria-current="page"{% else %} aria-label="Страница {{ number }}"{% endif %}>{{ number }}</a>
+                    {% elseif (number - page)|abs == 2 %}
+                        <span class="inline-flex size-control-touch items-center justify-center type-t6 text-fg-muted" aria-hidden="true">…</span>
+                    {% endif %}
+                {% endfor %}
+                {% if pager.hasNextPage %}
+                    <a class="inline-flex size-control-touch items-center justify-center rounded-sm text-fg hover:bg-surface-muted focus-visible:shadow-focus" href="{{ path('gazeta_index', list_query|merge({page: pager.nextPage})) }}" aria-label="Следующая страница" rel="next">
+                        {% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-md'} only %}
+                    </a>
+                {% endif %}
             </nav>
+
+            {# Ниже md -- обычная ссылка на следующую страницу, без JS. #}
+            <div class="flex flex-col items-center gap-3 md:hidden" data-vf-component="show-more">
+                {% if pager.hasNextPage %}
+                    <a class="inline-flex h-control-lg w-full items-center justify-center rounded-md border border-border-strong px-6 type-t5 font-semibold text-fg hover:bg-surface-muted focus-visible:shadow-focus" href="{{ path('gazeta_index', list_query|merge({page: pager.nextPage})) }}" rel="next">Показать ещё</a>
+                {% endif %}
+                <p class="type-t7 text-fg-muted">Показано {{ min(page * pager.maxPerPage, pager.nbResults) }} из {{ pager.nbResults }}</p>
+            </div>
         {% endif %}
+    {% elseif rubric %}
+        <p class="type-t5 text-fg-secondary">Статей в этой рубрике пока нет</p>
     {% else %}
-        <p>Публикаций пока нет. Первые статьи появятся здесь в ближайшее время.</p>
+        <p class="type-t5 text-fg-secondary">Публикаций пока нет. Первые статьи появятся здесь в ближайшее время.</p>
     {% endif %}
 {% endblock %}

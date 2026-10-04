@@ -9,6 +9,7 @@ use App\Publication\Query\PublicPost\PublicPostQuery;
 use App\Publication\Query\PublicPostList\PublicPostListItem;
 use App\Publication\Query\PublicPostList\PublicPostListQuery;
 use App\Publication\Query\PublicPostSitemap\PublicPostSitemapQuery;
+use App\Publication\ValueObject\PostRubric;
 use App\Tests\Publication\Builder\PostBuilder;
 use App\Tests\Publication\PostTableCleaner;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,6 +48,41 @@ final class PublicPostQueriesTest extends KernelTestCase
 
         self::assertSame(2, $pager->getNbResults());
         self::assertSame(['newer', 'older'], $this->slugs($pager->getCurrentPageResults()));
+    }
+
+    public function testRubricFilterKeepsOnlyPublishedOfThatRubric(): void
+    {
+        foreach ([
+            PostBuilder::aPost()->withSlug('tax-draft')->withRubric(PostRubric::TAXES)->build(),
+            PostBuilder::aPost()->withSlug('tax-pub')->withRubric(PostRubric::TAXES)->published('2026-04-01')->build(),
+            PostBuilder::aPost()->withSlug('rep-pub')->withRubric(PostRubric::REPORTING)->published('2026-04-02')->build(),
+        ] as $post) {
+            $this->entityManager->persist($post);
+        }
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+
+        $pager = self::getContainer()->get(PublicPostListQuery::class)->paginate(1, PostRubric::TAXES);
+
+        $items = iterator_to_array($pager->getCurrentPageResults(), false);
+        self::assertSame(['tax-pub'], $this->slugs($items));
+        self::assertSame(PostRubric::TAXES, $items[0]->rubric);
+    }
+
+    public function testListItemReadingTimeIsEstimatedFromBodyLength(): void
+    {
+        $this->entityManager->persist(PostBuilder::aPost()->withSlug('long')->withBody(str_repeat('а', 2900))->published('2026-04-01')->build());
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+
+        $items = self::getContainer()->get(PublicPostListQuery::class)->paginate(1)->getCurrentPageResults();
+        $byTitle = [];
+        foreach ($items as $item) {
+            $byTitle[$item->slug] = $item->readingMinutes();
+        }
+
+        self::assertSame(3, $byTitle['long']);
+        self::assertSame(1, $byTitle['newer']);
     }
 
     public function testLatestExceptSkipsCurrentPostAndUnpublished(): void

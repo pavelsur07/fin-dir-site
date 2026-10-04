@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Publication\Form;
 
 use App\Publication\DTO\PostInput;
+use App\Publication\ValueObject\PostRubric;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,6 +38,14 @@ final class PostType extends AbstractType
                     $options['is_edit'] => 'Латиница, цифры и дефисы. Пусто — адрес останется прежним.',
                     default => 'Латиница, цифры и дефисы. Пусто — сгенерируется из заголовка.',
                 },
+            ])
+            ->add('rubric', EnumType::class, [
+                'label' => 'Рубрика',
+                'class' => PostRubric::class,
+                'choice_label' => static fn (PostRubric $rubric): string => $rubric->label(),
+                'required' => false,
+                'placeholder' => 'Без рубрики',
+                'help' => 'Показывается в списке «Газеты» и в фильтре по рубрикам.',
             ])
             ->add('excerpt', TextareaType::class, [
                 'label' => 'Анонс',
