@@ -1,0 +1,36 @@
+{#
+    Секция «Частые вопросы»: аккордеон на нативных details/summary, без JS.
+    Аргументы: title, items [{question, answer} или {question, columns: [{title, items}]}]. Все вопросы закрыты по умолчанию.
+#}
+<section class="bg-surface-muted py-16 md:py-24" aria-labelledby="home-faq-title">
+    <div class="mx-auto max-w-container px-4 md:px-8">
+        <h2 id="home-faq-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <div class="max-w-measure border-t border-border-subtle">
+            {% for item in items %}
+                <details class="border-b border-border-subtle">
+                    <summary class="flex min-h-control-xl cursor-pointer list-none items-center justify-between gap-4 type-t5 font-semibold text-fg focus-visible:shadow-focus">
+                        {{ item.question }}<span aria-hidden="true">+</span>
+                    </summary>
+                    <div class="pb-6">
+                        {% if item.columns|default(null) %}
+                            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                {% for column in item.columns %}
+                                    <div class="flex flex-col gap-3">
+                                        <h3 class="type-t6 font-semibold text-fg">{{ column.title }}</h3>
+                                        <ul class="flex flex-col gap-2 type-t6 text-fg-secondary">
+                                            {% for point in column.items %}
+                                                <li>{{ point }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="type-t6 text-fg-secondary">{{ item.answer }}</p>
+                        {% endif %}
+                    </div>
+                </details>
+            {% endfor %}
+        </div>
+    </div>
+</section>
