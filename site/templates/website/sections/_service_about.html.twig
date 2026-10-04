@@ -1,0 +1,26 @@
+{#
+    «О услуге»: текст слева, список справа.
+    Аргументы: id, title, paragraphs [string], list_title, list [string], tone ('surface' | 'muted').
+#}
+{% set muted = tone|default('muted') == 'muted' %}
+<section class="{{ muted ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title">
+    <div class="mx-auto grid max-w-page grid-cols-1 gap-8 px-4 md:px-8 lg:grid-cols-2 lg:gap-12">
+        <div class="flex flex-col gap-4">
+            <h2 class="type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+            {% for paragraph in paragraphs %}
+                <p class="type-t4 text-fg-secondary">{{ paragraph }}</p>
+            {% endfor %}
+        </div>
+        <div class="flex flex-col gap-4 self-start rounded-lg p-6 md:p-8 {{ muted ? 'bg-surface' : 'bg-surface-muted' }}">
+            <h3 class="type-t3 text-fg">{{ list_title }}</h3>
+            <ul class="flex flex-col gap-3">
+                {% for item in list %}
+                    <li class="flex gap-3 type-t5 text-fg-secondary">
+                        {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'size-icon-md shrink-0 text-accent'} only %}
+                        <span>{{ item }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,42 @@
+{#
+    Блок про сервис: текст слева, справа карточка-пример отчёта с ABC-классами.
+    Аргументы: id, title, paragraphs, example {title, note, columns [string], rows [{name, cells [string], class}]}, tone.
+    Цифры в примере условные, об этом сказано в note.
+#}
+{% set muted = tone|default('muted') == 'muted' %}
+<section class="{{ muted ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title">
+    <div class="mx-auto grid max-w-page grid-cols-1 items-center gap-8 px-4 md:px-8 lg:grid-cols-2 lg:gap-12">
+        <div class="flex flex-col gap-4">
+            <h2 class="type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+            {% for paragraph in paragraphs %}
+                <p class="type-t4 text-fg-secondary">{{ paragraph }}</p>
+            {% endfor %}
+        </div>
+        <figure class="flex flex-col gap-4 rounded-lg p-6 shadow-md md:p-8 {{ muted ? 'bg-surface' : 'bg-surface-muted' }}">
+            <figcaption class="type-t5 font-semibold text-fg">{{ example.title }}</figcaption>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse type-t6">
+                    <thead>
+                        <tr>
+                            {% for column in example.columns %}
+                                <th class="border-b border-border px-2 py-2 text-left font-semibold text-fg-secondary" scope="col">{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in example.rows %}
+                            <tr>
+                                <th class="border-b border-border-subtle px-2 py-2 text-left font-medium text-fg" scope="row">{{ row.name }}</th>
+                                {% for cell in row.cells %}
+                                    <td class="border-b border-border-subtle px-2 py-2 text-fg-secondary">{{ cell }}</td>
+                                {% endfor %}
+                                <td class="border-b border-border-subtle px-2 py-2"><span class="rounded-xs px-2 py-1 type-t7 font-semibold {{ row.class }}">{{ row.abc }}</span></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <p class="type-t7 text-fg-muted">{{ example.note }}</p>
+        </figure>
+    </div>
+</section>

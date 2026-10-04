@@ -1,0 +1,37 @@
+{#
+    Hero страницы услуги: крошки, бейдж, H1, лид, кнопки, строка доверия, справа произвольная карточка.
+    Аргументы: crumbs, badge, title, lead, buttons [{label, href, variant}], trust [{value, text}], aside_html (необязательно, готовая разметка).
+#}
+<section class="overflow-hidden border-b border-border-subtle bg-surface-muted text-fg" aria-labelledby="service-hero-title">
+    <div class="mx-auto flex w-full max-w-page flex-col gap-8 px-4 pt-6 pb-12 md:px-8 md:pb-16">
+        {% include 'website/components/_breadcrumbs.html.twig' with {crumbs: crumbs} only %}
+        <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            <div class="flex flex-col items-start gap-6">
+                <span class="rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary">{{ badge }}</span>
+                <h1 class="type-t2 text-fg md:type-t1" id="service-hero-title">{{ title }}</h1>
+                <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
+                <div class="flex w-full flex-col gap-3 md:w-auto md:flex-row">
+                    {% for button in buttons %}
+                        {% include 'website/components/_button.html.twig' with {
+                            label: button.label,
+                            href: button.href,
+                            variant: button.variant|default('primary'),
+                            full_mobile: true,
+                        } only %}
+                    {% endfor %}
+                </div>
+                <ul class="grid w-full grid-cols-1 gap-4 border-t border-border pt-6 md:grid-cols-3">
+                    {% for fact in trust %}
+                        <li class="flex flex-col gap-1">
+                            <span class="type-t3-num text-fg">{{ fact.value }}</span>
+                            <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if aside_html|default(null) %}
+                <div>{{ aside_html }}</div>
+            {% endif %}
+        </div>
+    </div>
+</section>

@@ -1,0 +1,18 @@
+{#
+    Блок «Кто за это отвечает»: фото, имя, должность, опыт и текст.
+    Аргументы: id, title, person {name, role, experience, photo}, text, tone.
+#}
+{% set muted = tone|default('surface') == 'muted' %}
+<section class="{{ muted ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title">
+    <div class="mx-auto grid max-w-page grid-cols-1 items-center gap-8 px-4 md:px-8 lg:grid-cols-3 lg:gap-12">
+        <div class="aspect-portrait w-full max-w-modal-sm overflow-hidden rounded-lg bg-border-subtle">
+            <img class="size-full object-cover object-top" src="{{ person.photo }}" alt="{{ person.name }}, {{ person.role|lower }}" width="1122" height="1402" loading="lazy" decoding="async">
+        </div>
+        <div class="flex flex-col gap-4 lg:col-span-2">
+            <h2 class="type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+            <p class="type-t3 text-fg">{{ person.name }}</p>
+            <p class="type-t6 text-fg-secondary">{{ person.role }} · {{ person.experience }}</p>
+            <p class="max-w-measure type-t4 text-fg-secondary">{{ text }}</p>
+        </div>
+    </div>
+</section>

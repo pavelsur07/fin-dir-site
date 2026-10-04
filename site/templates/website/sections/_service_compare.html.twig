@@ -1,0 +1,25 @@
+{#
+    Сравнение двух вариантов. Аргументы: id, title, left {title, items}, right {title, items, accent (необязательно)}, tone.
+    Правая колонка с accent выделена как рекомендуемая.
+#}
+{% set muted = tone|default('surface') == 'muted' %}
+<section class="{{ muted ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title">
+    <div class="mx-auto max-w-page px-4 md:px-8">
+        <h2 class="mb-12 max-w-measure type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            {% for column in [left, right] %}
+                <div class="flex flex-col gap-4 rounded-lg p-6 md:p-8 {{ column.accent|default(false) ? 'border-2 border-accent bg-surface' : 'border border-border bg-surface-muted' }}">
+                    <h3 class="type-t3 text-fg">{{ column.title }}</h3>
+                    <ul class="flex flex-col gap-3">
+                        {% for item in column.items %}
+                            <li class="flex gap-3 type-t6 text-fg-secondary">
+                                {% include 'website/components/_icon.html.twig' with {name: column.accent|default(false) ? 'check' : 'x', class: column.accent|default(false) ? 'size-icon-md shrink-0 text-accent' : 'size-icon-md shrink-0 text-fg-muted'} only %}
+                                <span>{{ item }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
