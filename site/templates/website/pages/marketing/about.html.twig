@@ -15,4 +15,8 @@
 
 {% block content %}
     <p>Раздел в разработке. Скоро здесь появится информация о компании.</p>
+
+    {% include 'website/components/mission-block.html.twig' with {
+        text: 'Создать <span class="text-accent">культуру эффективного использования</span> инструментов управленческого учёта в малом и среднем бизнесе',
+    } only %}
 {% endblock %}
