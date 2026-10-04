@@ -63,6 +63,8 @@ for (const file of files) {
     //    ловим классы стандартной темы и запрещённые значения (кроме [..] — это бывают CSS-селекторы).
     for (const m of line.matchAll(/(["'])((?:(?!\1).)*)\1/g)) {
       for (const c of m[2].split(/\s+/).filter(Boolean)) {
+        // `variant: 'outline'` names a button variant, not a Tailwind class.
+        if (markup && c === 'outline' && /\bvariant\s*:\s*$/.test(line.slice(0, m.index))) continue;
         const rule = RESTRICT.slice(1).find(([r]) => r.test(c));
         if (rule) report(seen, file, i, c, rule[1]);
         else if (DEFAULT_TW.test(c)) report(seen, file, i, c, 'класс стандартной темы Tailwind — замените по MIGRATION.md');
