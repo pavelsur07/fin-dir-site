@@ -114,7 +114,7 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertResponseIsSuccessful();
         foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
             self::assertSame(
-                ['Услуги', 'Финдир на аутсорсе', 'Кейсы', 'Газета', 'Партнёрам', 'О Компании'],
+                ['Услуги', 'Кейсы', 'Газета', 'Партнёрам', 'О Компании'],
                 $crawler->filter($menu.' ul a')->each(static fn ($link): string => trim($link->text())),
             );
             self::assertSelectorExists($menu.' a[href="https://app.vashfindir.ru/"]');
@@ -127,7 +127,7 @@ final class WebsiteFoundationTest extends WebTestCase
     public function testNavigationHighlightsTheSameItemInBothMenus(): void
     {
         $client = static::createClient();
-        foreach (['/' => null, '/services' => '/services', '/services/finansovyy-direktor-na-autsorsinge' => '/services/finansovyy-direktor-na-autsorsinge', '/cases' => '/cases', '/about' => '/about', '/gazeta' => '/gazeta', '/partners' => '/partners', '/privacy' => null] as $path => $activeHref) {
+        foreach (['/' => null, '/services' => null, '/services/finansovyy-direktor-na-autsorsinge' => '/services/finansovyy-direktor-na-autsorsinge', '/cases' => '/cases', '/about' => '/about', '/gazeta' => '/gazeta', '/partners' => '/partners', '/privacy' => null] as $path => $activeHref) {
             $client->request('GET', $path);
             self::assertResponseIsSuccessful($path);
             foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
@@ -172,7 +172,7 @@ final class WebsiteFoundationTest extends WebTestCase
     public function testActiveItemHasExactlyOneAriaCurrentAndMatchingStyling(): void
     {
         $client = static::createClient();
-        foreach (['/services' => 'Услуги', '/services/finansovyy-direktor-na-autsorsinge' => 'Финдир на аутсорсе', '/cases' => 'Кейсы', '/about' => 'О Компании', '/gazeta' => 'Газета', '/partners' => 'Партнёрам'] as $path => $label) {
+        foreach (['/services/finansovyy-direktor-na-autsorsinge' => 'Услуги', '/cases' => 'Кейсы', '/about' => 'О Компании', '/gazeta' => 'Газета', '/partners' => 'Партнёрам'] as $path => $label) {
             $crawler = $client->request('GET', $path);
             self::assertResponseIsSuccessful($path);
             foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
