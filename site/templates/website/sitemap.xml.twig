@@ -14,4 +14,10 @@
         <lastmod>{{ post.updatedAt|date('Y-m-d') }}</lastmod>
     </url>
 {% endfor %}
+{% for case in cases %}
+    <url>
+        <loc>{{ vf_site_url ~ path('app_cases_show', {slug: case.slug}) }}</loc>
+        <lastmod>{{ case.updatedAt|date('Y-m-d') }}</lastmod>
+    </url>
+{% endfor %}
 </urlset>
