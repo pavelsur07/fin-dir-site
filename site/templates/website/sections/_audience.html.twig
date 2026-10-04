@@ -1,0 +1,20 @@
+{#
+    Секция «Для кого»: порог по обороту и отрасли.
+    Аргументы: label, value, caption, tags [строки].
+#}
+<section class="bg-surface py-16 md:py-24" aria-labelledby="about-audience-title">
+    <div class="mx-auto max-w-container px-4 md:px-8">
+        <div class="grid grid-cols-1 items-center gap-8 rounded-xl bg-surface-muted p-8 md:grid-cols-2 md:gap-12 md:p-12">
+            <div class="flex flex-col gap-2">
+                <h2 id="about-audience-title" class="type-t5 font-semibold text-fg-secondary">{{ label }}</h2>
+                <p class="type-t1 text-accent">{{ value }}</p>
+                <p class="type-t5 text-fg-secondary">{{ caption }}</p>
+            </div>
+            <ul class="flex flex-wrap gap-2">
+                {% for tag in tags %}
+                    <li class="inline-flex h-control-md items-center rounded-full border border-border bg-surface px-4 type-t6 font-medium text-fg">{{ tag }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>

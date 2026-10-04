@@ -1,11 +1,11 @@
 {#
     Секция «Команда». Карточка сотрудника — раздел 19 дизайн-системы (фото 4:5, имя, должность, опыт).
-    Аргументы: title, subtitle, people [{name, role, experience, photo, zoom}].
+    Аргументы: title, subtitle, people, id (необязательно, id заголовка; по умолчанию home-team-title) [{name, role, experience, photo, zoom}].
     photo пустое — плейсхолдер с инициалами. zoom — приблизить кадр у вырезанной фигуры в полный рост.
 #}
-<section class="bg-surface py-16 md:py-24" aria-labelledby="home-team-title">
+<section class="bg-surface py-16 md:py-24" aria-labelledby="{{ id|default('home-team-title') }}">
     <div class="mx-auto max-w-container px-4 md:px-8">
-        <h2 id="home-team-title" class="type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <h2 id="{{ id|default('home-team-title') }}" class="type-t2-article text-fg md:type-t2">{{ title }}</h2>
         <p class="mt-3 mb-12 max-w-measure type-t4 text-fg-secondary">{{ subtitle }}</p>
         <ul class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {% for person in people %}

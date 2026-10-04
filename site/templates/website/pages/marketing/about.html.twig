@@ -9,12 +9,68 @@
     {% include 'website/components/page-header.html.twig' with {
         crumbs: [{label: 'Главная', url: '/'}, {label: 'О компании'}],
         title: 'О компании',
+        lead: 'Ваш Финдир — финансовый директор на аутсорсинге. Мы работаем в собственном сервисе вместо Excel-таблиц, чтобы собственник видел реальную прибыль и понимал, как расти к своей цели.',
         tone: 'muted',
     } only %}
 {% endblock %}
 
-{% block content %}
-    {% include 'website/components/mission-block.html.twig' with {
-        text: 'Создать <span class="text-accent">культуру эффективного использования</span> инструментов управленческого учёта в&nbsp;малом и среднем бизнесе',
+{# Как на главной: секции сами задают фон и контейнер, поэтому body без контейнера layout. #}
+{% block body %}
+    {{ block('page_header') }}
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        {% include 'website/components/mission-block.html.twig' with {
+            text: 'Создать <span class="text-accent">культуру эффективного использования</span> инструментов управленческого учёта в&nbsp;малом и среднем бизнесе',
+        } only %}
+    </div>
+    {% include 'website/sections/_company_facts.html.twig' with {
+        title: 'Нам доверяют',
+        facts: [
+            {value: 'с 2015', text: 'года работаем на рынке'},
+            {value: '230+', text: 'компаний прошли через нашу компанию'},
+            {icon: 'award', value: 'Лучший стартап', text: 'Премия 2015 года по версии 1С:БО'},
+        ],
+    } only %}
+    {% include 'website/sections/_trust_data.html.twig' with {
+        id: 'about-process-title',
+        title: 'Как мы работаем',
+        subtitle: 'От порядка в деньгах к решениям, которые увеличивают прибыль.',
+        cards: [
+            {number: '01', title: 'Первый месяц: основа', text: 'Загружаем движение денег, выстраиваем структуру и платёжный календарь по неделям. Кассовые разрывы видны уже в первые недели.'},
+            {number: '02', title: 'Затем: реальная прибыль', text: 'Считаем ОПиУ по направлениям, товарам и проектам, делаем ABC-анализ и показываем, что приносит деньги, а что съедает.'},
+            {number: '03', title: 'Постоянно: решения', text: 'Помогаем с закупками, проектами и распределением ресурсов. Еженедельная встреча и отчётная встреча по итогам месяца.'},
+        ],
+    } only %}
+    {# «2 млн ₽» разделены неразрывными пробелами (U+00A0). #}
+    {% include 'website/sections/_audience.html.twig' with {
+        label: 'Для кого мы работаем',
+        value: 'от 2 млн ₽',
+        caption: 'оборота в месяц',
+        tags: ['Строительство', 'Торговля', 'Маркетплейсы', 'Услуги', 'Производство', 'IT'],
+    } only %}
+    {% include 'website/sections/_team.html.twig' with {
+        id: 'about-team-title',
+        title: vf_team.title,
+        subtitle: vf_team.subtitle,
+        people: vf_team.people,
+    } only %}
+    {# Демо-данные: заменить на реальные реквизиты. #}
+    {% include 'website/sections/_requisites.html.twig' with {
+        title: 'Реквизиты компании',
+        subtitle: 'Юридическое лицо, с которым заключается договор.',
+        items: [
+            {label: 'Наименование', value: 'ООО «Фин Консалтинг»'},
+            {label: 'ИНН / КПП', value: '6100000000 / 610001001'},
+            {label: 'ОГРН', value: '1150000000000'},
+            {label: 'Юридический адрес', value: '344000, г. Ростов-на-Дону, ул. Демонстрационная, д. 1, офис 1'},
+            {label: 'Расчётный счёт', value: '40702810000000000000'},
+            {label: 'Банк', value: '«Демо-банк», г. Ростов-на-Дону'},
+            {label: 'БИК / Корр. счёт', value: '040000000 / 30101810000000000000'},
+            {label: 'Связь', value: '+7 (000) 000-00-00, info@example.ru'},
+        ],
+    } only %}
+    {% include 'website/sections/_cta_banner.html.twig' with {
+        title: 'Обсудим ваши цифры',
+        text: 'Оставьте заявку — расскажем, с чего начать и что вы увидите в первые недели.',
+        button: {label: 'Оставить заявку', href: path('home') ~ '#lead-form'},
     } only %}
 {% endblock %}
