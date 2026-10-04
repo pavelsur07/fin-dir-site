@@ -60,6 +60,16 @@ final class WebsiteFoundationTest extends WebTestCase
         }
     }
 
+    public function testServicesPageLinksToFinancialDirectorService(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/services');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorCount(1, 'h1');
+        self::assertSelectorExists('main a[href="/services/finansovyy-direktor-na-autsorsinge"]');
+    }
+
     public function testWebsiteAssetsAreBuiltFromPinnedTailwind(): void
     {
         $root = dirname(__DIR__, 2);
