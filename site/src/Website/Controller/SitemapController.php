@@ -14,9 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 final class SitemapController extends AbstractController
 {
-    /** Публичные индексируемые страницы. Новая страница сайта добавляется сюда. */
+    /**
+     * Публичные индексируемые страницы. Новая страница сайта добавляется сюда.
+     * app_cases_index не включён, пока на странице демо-данные (она отдаётся с noindex).
+     */
     private const array STATIC_ROUTES = [
-        'home', 'app_services_index', 'app_cases_index', 'app_about_index', 'app_partners_index',
+        'home', 'app_services_index', 'app_about_index', 'app_partners_index',
         'gazeta_index', 'privacy', 'offer', 'consent',
     ];
 
