@@ -43,7 +43,7 @@
         ],
     } only %}
     {% include 'website/components/_json_ld.html.twig' with {
-        schema: {
+        schema: [{
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
             mainEntity: vf_faq|map(item => {
@@ -54,7 +54,7 @@
                     text: item.answer is defined ? item.answer : item.columns|map(column => column.title ~ ': ' ~ column.items|join(' '))|join(' '),
                 },
             }),
-        },
+        }],
     } only %}
 {% endblock %}
 

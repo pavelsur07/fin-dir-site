@@ -57,11 +57,11 @@ final class WebsiteSeoTest extends WebTestCase
             }
         }
 
-        foreach (['Organization', 'WebSite', 'Service'] as $expectedType) {
+        foreach (['Organization', 'WebSite', 'Service', 'FAQPage'] as $expectedType) {
             self::assertContains($expectedType, $types);
         }
-        // FAQPage допустим только при видимом FAQ на странице; секция FAQ снята до новой вёрстки.
-        self::assertNotContains('FAQPage', $types);
+        // FAQPage допустим только при видимом FAQ: вопросы разметки совпадают с вопросами секции.
+        self::assertSelectorCount(5, 'section[aria-labelledby="home-faq-title"] details > summary');
     }
 
     public function testSeoStaticFilesExistAndAreConsistent(): void
