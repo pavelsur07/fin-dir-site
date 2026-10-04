@@ -2144,6 +2144,144 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
   </div>
 </section>
 
+<section id="ds-24a" data-screen-label="24a" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
+    <span style="font:500 12px/18px Inter,sans-serif;color:#B00020">24a · Блок FAQ</span>
+    <h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Частые вопросы</h2>
+    <p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Секция для лендинга и страниц продукта: снимает возражения перед заявкой. 5–7 вопросов, открыт один за раз, рядом — выход на живого консультанта. В статье FAQ оформляется иначе — см. 26.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <span id="ds-24a-1" style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;scroll-margin-top:24px">24a.1 · Заголовок слева, аккордеон справа<span style="display:inline-block;vertical-align:middle;margin-left:8px;font:500 12px/18px Inter,sans-serif;letter-spacing:0;padding:2px 8px;border-radius:4px;background:#FFF2DB;color:#8A4B00;border:1px dashed #F5C979">пример, не для публикации</span></span>
+    <div lang="ru" style="border-radius:24px;border:1px solid #D2D8E2;background:#FFFFFF;padding:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:40px 64px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:24px;max-width:400px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance">Вопросы перед подключением</h2>
+          <span style="font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Не нашли свой — спросите консультанта, ответим в течение часа.</span>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button type="button" style="height:48px;padding:0 24px;border:0;border-radius:12px;background:#B00020;color:#FFFFFF;font:600 16px/26px Inter,sans-serif;cursor:pointer" style-hover="background:#8A001B">Написать в Telegram</button>
+          <button type="button" style="height:48px;padding:0 24px;border:1px solid #AEB7C8;border-radius:12px;background:#FFFFFF;color:#0B1020;font:600 16px/26px Inter,sans-serif;cursor:pointer" style-hover="background:#F4F6F9">Позвонить</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;border-top:1px solid #D2D8E2;min-width:0">
+        <sc-for list="{{ faqLanding }}" as="f" hint-placeholder-count="6">
+          <div style="border-bottom:1px solid #D2D8E2">
+            <h3 style="margin:0"><button type="button" aria-expanded="{{ f.expanded }}" onClick="{{ f.toggle }}" style="width:100%;min-height:64px;padding:16px 0;box-sizing:border-box;border:0;background:transparent;display:flex;gap:16px;align-items:center;justify-content:space-between;text-align:left;cursor:pointer;color:#0B1020;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em" style-hover="color:#B00020"><span style="text-wrap:pretty">{{ f.q }}</span><span aria-hidden="true" style="width:24px;height:24px;flex:none;background:#5E6A85;transition:transform 200ms;transform:{{ f.rot }};-webkit-mask:{{ m2.chevronDown }};mask:{{ m2.chevronDown }}"></span></button></h3>
+            <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+              <p style="margin:0;padding:0 40px 24px 0;font:400 16px/26px Inter,sans-serif;color:#434F6B;text-wrap:pretty;max-width:640px">{{ f.a }}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Ниже 768 колонки встают друг под друга: заголовок → аккордеон → кнопки консультанта переносятся под список.</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+    <div style="border-radius:16px;border:1px solid #D2D8E2;padding:24px;display:flex;flex-direction:column;gap:4px">
+      <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;margin-bottom:8px">Анатомия</span>
+      <sc-for list="{{ faqLandingSpec }}" as="r" hint-placeholder-count="7">
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #E8EBF1;font:400 14px/22px Inter,sans-serif"><span style="color:#5E6A85">{{ r.k }}</span><span style="font-weight:500;text-align:right">{{ r.v }}</span></div>
+      </sc-for>
+    </div>
+    <div style="border-radius:16px;background:#F4F6F9;padding:24px;display:flex;flex-direction:column;gap:4px">
+      <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;margin-bottom:8px">Лучшие практики</span>
+      <sc-for list="{{ faqLandingRules }}" as="t" hint-placeholder-count="6">
+        <div style="display:flex;gap:12px;padding:8px 0;border-top:1px solid #D2D8E2"><span style="width:8px;height:8px;margin-top:8px;border-radius:999px;background:#B00020;flex:none"></span><span style="font:400 16px/26px Inter,sans-serif;color:#434F6B">{{ t }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="ds-24b" data-screen-label="24b" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
+    <span style="font:500 12px/18px Inter,sans-serif;color:#B00020">24b · Видеоотзывы</span>
+    <h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Короткие видео клиентов</h2>
+    <p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty">Вертикальные ролики 9:16 в формате Shorts / Reels — лента листается по горизонтали. Видео по клику открывается поверх страницы, автоплея нет. Под роликом — цитата текстом: её читают те, кто не включает звук.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <span id="ds-24b-1" style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;scroll-margin-top:24px">24b.1 · Горизонтальная лента<span style="display:inline-block;vertical-align:middle;margin-left:8px;font:500 12px/18px Inter,sans-serif;letter-spacing:0;padding:2px 8px;border-radius:4px;background:#FFF2DB;color:#8A4B00;border:1px dashed #F5C979">пример, не для публикации</span></span>
+    <div lang="ru" style="border-radius:24px;background:#F4F6F9;padding:48px;display:flex;flex-direction:column;gap:32px;min-width:0">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em">Клиенты о работе с нами</h2><span style="font:400 18px/28px Inter,sans-serif;color:#434F6B">Без сценария — своими словами, по минуте</span></div>
+        <div style="display:flex;gap:8px">
+          <button type="button" aria-label="Назад" onClick="{{ reelsPrev }}" style="width:48px;height:48px;border-radius:12px;border:1px solid #AEB7C8;background:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#E8EBF1"><span style="width:20px;height:20px;background:#0B1020;-webkit-mask:{{ m2.chevronLeft }};mask:{{ m2.chevronLeft }}"></span></button>
+          <button type="button" aria-label="Вперёд" onClick="{{ reelsNext }}" style="width:48px;height:48px;border-radius:12px;border:1px solid #AEB7C8;background:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#E8EBF1"><span style="width:20px;height:20px;background:#0B1020;-webkit-mask:{{ m2.chevronRight }};mask:{{ m2.chevronRight }}"></span></button>
+        </div>
+      </div>
+      <div ref="{{ reelsRef }}" style="display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:4px;min-width:0">
+        <sc-for list="{{ reels }}" as="r" hint-placeholder-count="5">
+          <div style="flex:none;width:240px;scroll-snap-align:start;display:flex;flex-direction:column;gap:12px">
+            <button type="button" onClick="{{ r.open }}" aria-label="Смотреть отзыв: {{ r.name }}" style="position:relative;aspect-ratio:9 / 16;width:100%;padding:0;border:0;border-radius:16px;overflow:hidden;background:#141B2E;cursor:pointer;text-align:left" style-hover="box-shadow:0 0 0 2px #B00020">
+              <span style="position:absolute;left:16px;top:16px;font:500 12px/18px Inter,sans-serif;color:#AEB7C8">Обложка 9:16</span>
+              <span style="position:absolute;right:12px;top:12px;font:500 12px/18px Inter,sans-serif;padding:2px 8px;border-radius:4px;background:#0B1020;color:#FFFFFF;font-variant-numeric:tabular-nums">{{ r.dur }}</span>
+              <span style="position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:999px;background:#B00020;display:flex;align-items:center;justify-content:center"><span style="width:24px;height:24px;margin-left:3px;background:#FFFFFF;-webkit-mask:{{ m2.play }};mask:{{ m2.play }}"></span></span>
+              <span style="position:absolute;left:0;right:0;bottom:0;padding:48px 16px 16px;background:linear-gradient(180deg,rgba(11,16,32,0) 0%,rgba(11,16,32,0.92) 60%);display:flex;flex-direction:column;gap:2px">
+                <span style="font:600 14px/22px Inter,sans-serif;color:#FFFFFF">{{ r.name }}</span>
+                <span style="font:500 12px/18px Inter,sans-serif;color:#D2D8E2">{{ r.role }}</span>
+              </span>
+            </button>
+            <span style="font:400 14px/22px Inter,sans-serif;color:#0B1020;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">{{ r.quote }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Ниже 768 стрелки скрываются — лента листается свайпом, карточка 200 px, видно 1,5 ролика как подсказку прокрутки.</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <span id="ds-24b-2" style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;scroll-margin-top:24px">24b.2 · Два ролика с историей<span style="display:inline-block;vertical-align:middle;margin-left:8px;font:500 12px/18px Inter,sans-serif;letter-spacing:0;padding:2px 8px;border-radius:4px;background:#FFF2DB;color:#8A4B00;border:1px dashed #F5C979">пример, не для публикации</span></span>
+    <div lang="ru" style="border-radius:24px;background:#0B1020;color:#FFFFFF;padding:48px;display:flex;flex-direction:column;gap:40px">
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:640px"><h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance">Две компании — две задачи</h2><span style="font:400 18px/28px Inter,sans-serif;color:#D2D8E2">Что было до нас и что изменилось — словами клиентов</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:32px">
+        <sc-for list="{{ duoReels }}" as="r" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start;padding:16px;border-radius:16px;background:#141B2E;border:1px solid #2E3953">
+            <button type="button" onClick="{{ r.open }}" aria-label="Смотреть отзыв: {{ r.name }}" style="position:relative;aspect-ratio:9 / 16;width:100%;padding:0;border:0;border-radius:12px;overflow:hidden;background:#2E3953;cursor:pointer" style-hover="box-shadow:0 0 0 2px #CC1A36">
+              <span style="position:absolute;left:12px;top:12px;font:500 12px/18px Inter,sans-serif;color:#D2D8E2">Обложка 9:16</span>
+              <span style="position:absolute;right:8px;bottom:8px;font:500 12px/18px Inter,sans-serif;padding:2px 8px;border-radius:4px;background:#0B1020;color:#FFFFFF;font-variant-numeric:tabular-nums">{{ r.dur }}</span>
+              <span style="position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:999px;background:#B00020;display:flex;align-items:center;justify-content:center"><span style="width:24px;height:24px;margin-left:3px;background:#FFFFFF;-webkit-mask:{{ m2.play }};mask:{{ m2.play }}"></span></span>
+            </button>
+            <div style="display:flex;flex-direction:column;gap:16px;min-width:0;padding:8px 8px 8px 0;height:100%;box-sizing:border-box">
+              <span style="align-self:flex-start;font:500 12px/18px Inter,sans-serif;padding:2px 8px;border-radius:4px;background:#2E3953;color:#FFFFFF">{{ r.tag }}</span>
+              <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#FFFFFF;text-wrap:pretty">{{ r.quote }}</span>
+              <div style="display:flex;flex-direction:column;gap:4px;padding-top:16px;border-top:1px solid #2E3953">
+                <span style="font:500 12px/18px Inter,sans-serif;color:#AEB7C8">Результат</span>
+                <span style="font:400 14px/22px Inter,sans-serif;color:#FFFFFF;text-wrap:pretty">{{ r.result }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;margin-top:auto"><span style="font:600 14px/22px Inter,sans-serif;color:#FFFFFF">{{ r.name }}</span><span style="font:500 12px/18px Inter,sans-serif;color:#AEB7C8">{{ r.role }}</span></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85">Для главной и страниц тарифов, когда есть два сильных кейса. Ниже 768 — ролик 160 и текст в колонку рядом; ниже 480 — ролик над текстом.</span>
+  </div>
+  <sc-if value="{{ reelActive }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="Видеоотзыв" onClick="{{ reelClose }}" style="position:fixed;inset:0;z-index:100;background:rgba(11,16,32,0.88);display:flex;align-items:center;justify-content:center;padding:24px">
+      <div onClick="{{ stop }}" style="position:relative;height:min(800px,calc(100vh - 48px));aspect-ratio:9 / 16;max-width:100%;border-radius:16px;overflow:hidden;background:#141B2E;display:flex;flex-direction:column;justify-content:flex-end">
+        <span style="position:absolute;left:16px;top:16px;font:500 14px/22px Inter,sans-serif;color:#AEB7C8">Плеер 9:16 · звук включён</span>
+        <button type="button" aria-label="Закрыть" onClick="{{ reelClose }}" style="position:absolute;right:12px;top:12px;width:44px;height:44px;border-radius:999px;border:0;background:#0B1020;display:flex;align-items:center;justify-content:center;cursor:pointer"><span style="width:20px;height:20px;background:#FFFFFF;-webkit-mask:{{ m2.x }};mask:{{ m2.x }}"></span></button>
+        <div style="padding:64px 24px 24px;background:linear-gradient(180deg,rgba(11,16,32,0) 0%,rgba(11,16,32,0.92) 50%);display:flex;flex-direction:column;gap:8px">
+          <span style="font:400 16px/26px Inter,sans-serif;color:#FFFFFF;text-wrap:pretty">{{ reelCur.quote }}</span>
+          <span style="font:600 14px/22px Inter,sans-serif;color:#FFFFFF">{{ reelCur.name }} · <span style="font-weight:500;color:#D2D8E2">{{ reelCur.role }}</span></span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+    <div style="border-radius:16px;border:1px solid #D2D8E2;padding:24px;display:flex;flex-direction:column;gap:4px">
+      <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;margin-bottom:8px">Анатомия карточки</span>
+      <sc-for list="{{ reelSpec }}" as="r" hint-placeholder-count="7">
+        <div style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #E8EBF1;font:400 14px/22px Inter,sans-serif"><span style="color:#5E6A85">{{ r.k }}</span><span style="font-weight:500;text-align:right">{{ r.v }}</span></div>
+      </sc-for>
+    </div>
+    <div style="border-radius:16px;background:#F4F6F9;padding:24px;display:flex;flex-direction:column;gap:4px">
+      <span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;margin-bottom:8px">Лучшие практики</span>
+      <sc-for list="{{ reelRules }}" as="t" hint-placeholder-count="6">
+        <div style="display:flex;gap:12px;padding:8px 0;border-top:1px solid #D2D8E2"><span style="width:8px;height:8px;margin-top:8px;border-radius:999px;background:#B00020;flex:none"></span><span style="font:400 16px/26px Inter,sans-serif;color:#434F6B">{{ t }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
 <section id="ds-25" data-screen-label="25" style="display:flex;flex-direction:column;gap:32px">
   <div style="display:flex;flex-direction:column;gap:12px;max-width:720px">
     <span style="font:500 12px/18px Inter,sans-serif;color:#B00020">25 · Лид-формы</span>
@@ -2694,6 +2832,7 @@ a{color:#B00020;text-decoration:none}a:hover{color:#8A001B;text-decoration:under
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showAltFonts&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Типографика&quot;}}">
 class Component extends DCLogic {
+  reelsRef = React.createRef();
   componentDidMount() {
     this._spy = () => {
       const ids = ['art-s1', 'art-s2', 'art-s3', 'art-s4', 'art-s5'];
@@ -2823,7 +2962,7 @@ class Component extends DCLogic {
       { name: 'mobile', range: '< 768', cols: '4', margin: '16', gutter: '16', container: 'резиновый' },
       { name: 'tablet · md', range: '768–1023', cols: '8', margin: '32', gutter: '24', container: 'резиновый' },
       { name: 'desktop · lg', range: '1024–1439', cols: '12', margin: '32', gutter: '24', container: 'резиновый' },
-      { name: 'wide · xl', range: '≥ 1440', cols: '12', margin: 'авто', gutter: '32', container: '1200 макс.' }
+      { name: 'wide · xl', range: '≥ 1440', cols: '12', margin: '112 (80 + 32)', gutter: '32', container: '1280 → контент 1216, колонка 72' }
     ];
     const shadows = [
       { token: 'flat', css: 'none', border: '1px solid #D2D8E2', use: 'Карточки, таблицы, поля — по умолчанию' },
@@ -2991,7 +3130,7 @@ money(48000, { sign: true }); // +48 000,00 ₽`;
     ];
     const st = this.state;
     const m2 = {};
-    ['chevron-down', 'arrow-right', 'search', 'plus', 'log-out'].forEach(n => { m2[n.replace(/-(\w)/g, (_, c) => c.toUpperCase())] = L(n); });
+    ['chevron-down', 'arrow-right', 'search', 'plus', 'log-out', 'chevron-left', 'chevron-right', 'play', 'x'].forEach(n => { m2[n.replace(/-(\w)/g, (_, c) => c.toUpperCase())] = L(n); });
     const rot = b => b ? 'rotate(180deg)' : 'none';
     const set = p => this.setState(p);
     const features = [
@@ -3387,8 +3526,8 @@ const Logo = ({ s = 32, dark = false }) => {
       { name: 'Вопрос / Совет', cls: 'callout-note', tokens: 'bg surface-muted · border border · иконка fg-muted · заголовок fg · текст fg-secondary · radius md 12 · p 4 (16)', icon: 'circle-help «Главный вопрос», «Три вопроса» · lightbulb «Совет» · T5 600', when: 'Вопрос читателю или практический совет. Бывшие «Best practice», «Главный вопрос», «Три вопроса»' }
     ];
     const articleGrid = [
-      { k: 'Страница', v: 'max-w-container 1200, поля 8 (32) — как шапка' }, { k: 'Колонка текста', v: 'max-w-measure 720, у левого края (= край логотипа)' }, { k: 'Боковая панель', v: 'toc-min 240 – toc 280, у правого края (= край кнопок шапки), top-sticky' }, { k: 'Липкий отступ', v: 'sticky-offset = header-h + 24: 96 (≥ 1024) · 88 (< 1024)' },
-      { k: 'Колонка ↔ панель', v: 'остаток: 136 при 1200, минимум 10 (40)' }, { k: 'Абзацы', v: 'T5 16/26, между абзацами 5 (20)' },
+      { k: 'Страница', v: 'max-w-container 1280 вместе с полями 8 (32) → контент 1216; на 1440 снаружи 80 — как шапка' }, { k: 'Колонка текста', v: 'max-w-measure 720, у левого края (= край логотипа)' }, { k: 'Боковая панель', v: 'toc-min 240 – toc 280, у правого края (= край кнопок шапки), top-sticky' }, { k: 'Липкий отступ', v: 'sticky-offset = header-h + 24: 96 (≥ 1024) · 88 (< 1024)' },
+      { k: 'Колонка ↔ панель', v: 'остаток: 216 при 1216, минимум 10 (40)' }, { k: 'Абзацы', v: 'T5 16/26, между абзацами 5 (20)' },
       { k: 'H2 в статье', v: 'T2-article 30/38, сверху 48, снизу 20' }, { k: 'H3 в статье', v: 'T3 700 20/28, сверху 32, снизу 12' }, { k: 'Вопрос FAQ', v: 'H4 700 16/26 в summary, min-h 48' }, { k: 'Медиа', v: 'отступ 24 сверху и снизу' }, { k: 'Обложка', v: '16:9, max-h-cover 520' }, { k: 'Таблица', v: 'min-w-table 400, шире колонки — горизонтальный скролл' }, { k: 'Крошки', v: 'последний пункт max-w-crumb 240, ellipsis + title' }, { k: 'Прогресс', v: '1 сегмент на H2, до 7; > 7 — только «N из M»; до первого H2 — «0 из N», все сегменты border-subtle' }, { k: 'Активный пункт', v: 'последний H2, чей верх выше 160 px; у конца статьи — последний пункт' }, { k: 'Ниже 1024 px', v: 'оглавление-аккордеон над «Коротко», ширина колонки (100 %, ≤ max-w-measure 720), не sticky; форма — под статьёй' },
       { k: 'Hero → текст', v: '40' }
     ];
@@ -3400,7 +3539,7 @@ const Logo = ({ s = 32, dark = false }) => {
       { tag: 'Медиа', title: 'Медиа поясняет, а не украшает', text: 'Каждое изображение с подписью и alt. Скриншоты — без обрезки и с обводкой, фото — реальные. Ленивая загрузка ниже первого экрана.' },
       { tag: 'Панель', title: 'Оглавление с активным пунктом', text: 'Только H2, до 7 пунктов, подсветка текущего раздела. Прогресс — сегменты по числу H2: пройденные и текущий accent-fill, остальные border-subtle, gap 4, высота 4. Больше 7 H2 — полосы нет, только «N из M».' },
       { tag: 'Панель', title: 'Компактная форма', text: 'callout нет: bg surface-muted, radius lg 16, p 5 (20), gap 3 (12). Заголовок H4, пояснение T6 fg-secondary, поле и кнопка control-lg 48, согласие T7. Одно поле. Ниже 1024 px — под статьёй на ширину колонки.' },
-      { tag: 'Hero', title: 'Обложка', text: '16:9, radius lg 16, ширина — колонка hero внутри max-w-container 1200 с полями 8 (32), max-h-cover 520, object-fit: cover. Без текста поверх, alt обязателен, загрузка eager + fetchpriority high. OG — отдельный файл 1200 × 630.' },
+      { tag: 'Hero', title: 'Обложка', text: '16:9, radius lg 16, ширина — колонка hero внутри max-w-container 1280 с полями 8 (32), max-h-cover 520, object-fit: cover. Без текста поверх, alt обязателен, загрузка eager + fetchpriority high. OG — отдельный файл 1200 × 630.' },
       { tag: 'Текст', title: 'H3 и FAQ', text: 'H3 — подраздел внутри H2, в оглавление не попадает. Вопросы FAQ — в разметке h3 внутри summary, визуально роль H4: 5–8 вопросов на 20 px читались бы как второй уровень оглавления.' },
       { tag: 'Текст', title: 'Не больше одной врезки подряд', text: 'Врезка — после абзаца, не сразу после заголовка. Success-цвета в статьях не используются: зелёный значит «операция выполнена», а не «хорошая идея».' },
       { tag: 'Панель', title: 'Форма — по теме статьи', text: 'Одно поле и вопрос в контексте: «Вопрос по НДС?». Форма в панели не всплывает и не мигает — без поп-апов поверх текста.' },
@@ -3427,7 +3566,7 @@ const Logo = ({ s = 32, dark = false }) => {
     ];
     const typeRoles = ROLES.map(([key, name, fam, w, fs, lh, ls, use]) => ({ key, spec: name + ' · ' + fam + ' ' + fs + '/' + lh, w, ls, use }));
     const SZ = [
-      ['container', 1200, 'max-w-container', 'контейнер сайта'],
+      ['container', 1280, 'max-w-container', 'контейнер сайта с полями 32 → контент 1216 (12 × 72 + 11 × 32)'],
       ['title', 800, 'max-w-title', 'H1 в hero'],
       ['measure', 720, 'max-w-measure', 'колонка текста, текстовые блоки'],
       ['lead', 520, 'max-w-lead', 'лиды в hero, текст CTA-блока'],
@@ -3471,7 +3610,7 @@ const Logo = ({ s = 32, dark = false }) => {
       { id: 'tk-icon', title: 'Размеры иконок', note: 'Lucide, контур 2', colA: 'px', colB: 'Tailwind', rows: IC.map(([k, v, u]) => rw(k, v + 'px', 'size-' + k, u)) },
       { id: 'tk-motion', title: 'Длительности и кривые', note: 'раздел 20', colA: 'Значение', colB: 'Tailwind', rows: [...durations.map(d => rw(d.token, d.ms.replace(' ', ''), 'duration-' + d.token, d.use)), ...EA.map(([k, v, u]) => rw(k, v, 'ease-' + k, u))] },
       { id: 'tk-size', title: 'Ширины и ограничения', note: 'max-w-*, max-h-*, min-w-*', colA: 'px', colB: 'Tailwind', rows: SZ.map(([k, v, tw, u]) => rw(k, v + 'px', tw, u)) },
-      { id: 'tk-bp', title: 'Брейкпоинты', note: 'раздел 07', colA: 'min-width', colB: 'Tailwind', rows: [rw('md', '768px', 'md:', 'планшет, 8 колонок'), rw('lg', '1024px', 'lg:', 'десктоп, 12 колонок'), rw('xl', '1440px', 'xl:', 'широкий, контейнер 1200')] }
+      { id: 'tk-bp', title: 'Брейкпоинты', note: 'раздел 07', colA: 'min-width', colB: 'Tailwind', rows: [rw('md', '768px', 'md:', 'планшет, 8 колонок'), rw('lg', '1024px', 'lg:', 'десктоп, 12 колонок'), rw('xl', '1440px', 'xl:', 'широкий, 12 × 72, gutter 32, контент 1216')] }
     ];
     const TOKENS = { version: '2.3', ink, crimson, extraColors: { 'success-400': '#4FB883', 'error-400': '#E98A6B' }, chart: CHART,
       semantic: SEM.map(r => ({ name: r[0], light: r[1], dark: r[2], use: r[3] })),
@@ -3532,6 +3671,10 @@ ${SEM.map(r => '        ' + key(r[0]) + ": 'var(--" + r[0] + ")',").join('\n')}
   },
 };`;
     const changelog = [
+      ['2.3/9', 'видеоотзывов нет', 'секция 24b: горизонтальная лента роликов 9:16, оверлей-плеер без автоплея, цитата под роликом', '24b'],
+      ['2.3/9', '—', '24b.2: два ролика с цитатой T3 и блоком «Результат» на ink 950', '24b'],
+      ['2.3/8', 'FAQ — только внутри статьи (26)', 'секция 24a «Блок FAQ» для лендинга: заголовок + аккордеон, один открыт, h3 > button, FAQPage', '24a'],
+      ['2.3/7', 'max-w-container 1200 при макете 1440: поля 120', 'max-w-container 1280 с полями 32 → контент 1216; на 1440: 12 колонок × 72, gutter 32, поля 112 (80 + 32); статья 720 / 280, остаток 216; T1–T8 без масштабирования; 2xl не вводим — xl уже 1440', '07, 26, 29'],
       ['2.3/6', 'статья: блок 1120 с полями (внутри 1056), шапка 1200 — края не совпадают', 'контейнер статьи = шапки (1200, поля 32); колонка у левого края, панель у правого, зазор — остаток ≥ 40; max-w-article удалён (алиас → container)', '26, 29'],
       ['2.3/6', 'шапка: 72 против 64, кнопки 48/12 · 52/8, активный пункт не описан', 'h-header 72 / 64; кнопки 40/8; активный — fg 600 + полоса 2 px accent-fill', '16'],
       ['2.3/6', 'sticky top 24 и scroll-margin 24 под липкой шапкой', 'sticky-offset 96 (≥ 1024) · 88 (< 1024): top-sticky, scroll-mt-sticky', '26, 29'],
@@ -3608,7 +3751,7 @@ ${SEM.map(r => '        ' + key(r[0]) + ": 'var(--" + r[0] + ")',").join('\n')}
     const headerSpec = [
       { k: 'Версия', v: 'макет 16.1 — эталон; плоское меню допустимо, пока у разделов нет подстраниц' },
       { k: 'Высота', v: 'h-header 72 ≥ 1024; 64 ниже и после прокрутки на 72 px' },
-      { k: 'Контейнер', v: 'max-w-container 1200, поля 8 (32)' },
+      { k: 'Контейнер', v: 'max-w-container 1280, поля 8 (32) → контент 1216' },
       { k: 'Пункты меню', v: 'T6 500 14/22, control-md 40, radius sm 8, gap 1 (4)' },
       { k: 'Кнопки', v: '«Войти» outline + «Подключиться» primary, control-md 40, radius sm 8' },
       { k: 'Клиент вошёл', v: 'одна кнопка «Личный кабинет» outline 40/8 вместо двух' },
@@ -3634,7 +3777,60 @@ ${SEM.map(r => '        ' + key(r[0]) + ": 'var(--" + r[0] + ")',").join('\n')}
       'Шаблоны страниц /gazeta (рубрики, пагинация), «Кейсы», «О компании» — отдельная задача, в v2.3 не входят.',
       'handoff/tokens.* устарели: источник токенов — tools/extract.cjs → tokens.json → tools/generate.mjs → vf-theme.css.'
     ];
-    return { headerSpec, cookieSpec, logoFixed, faq, callouts, toc, mToc, mTocOpen: !!st.mTocOpen, mTocClosed: !st.mTocOpen, mTocRot: st.mTocOpen ? 'rotate(180deg)' : 'none', toggleMToc: () => set({ mTocOpen: !st.mTocOpen }), tocProgress: Math.max(0, activeToc + 1) + ' из ' + tocItems.length, tokens: TOKENS,
+    const faqLandingItems = [
+      ['Сколько стоит обслуживание?', 'От ⟨N⟩ ₽ в месяц. Цена зависит от системы налогообложения, числа операций и сотрудников — точную сумму назовём после 15-минутного разговора, без скрытых доплат.'],
+      ['Как перейти от текущего бухгалтера?', 'Запросим базу 1С и документы, проверим учёт за последние ⟨N⟩ месяцев и составим план исправлений. Работа компании при переходе не останавливается.'],
+      ['Кто отвечает за ошибки?', 'Мы. Ответственность закреплена в договоре: штрафы и пени, возникшие по нашей вине, компенсируем.'],
+      ['Нужно ли ехать в офис?', 'Нет. Документы — через ЭДО или фото в Telegram, подписи — электронные. Встречи — по видеосвязи, когда удобно вам.'],
+      ['Работаете с маркетплейсами и ВЭД?', 'Да: Ozon, Wildberries, импорт и экспорт, валютный контроль. Если задача нестандартная — подключим профильного эксперта.'],
+      ['Можно ли расторгнуть договор?', 'В любой момент с уведомлением за ⟨N⟩ дней. Передадим базу, документы и сверку с налоговой.']
+    ];
+    const faqOpenIdx = st.faqOpen === undefined ? 0 : st.faqOpen;
+    const faqLanding = faqLandingItems.map(([q, a], i) => ({ q, a, open: i === faqOpenIdx, expanded: i === faqOpenIdx ? 'true' : 'false', rot: i === faqOpenIdx ? 'rotate(180deg)' : 'none', toggle: () => set({ faqOpen: i === faqOpenIdx ? -1 : i }) }));
+    const faqLandingSpec = [
+      { k: 'Сетка', v: '12 колонок: заголовок 5, список 7; gap 64' }, { k: 'Контейнер', v: 'radius 2xl 24 · p 12 (48) · border' },
+      { k: 'Заголовок', v: 'T2 800 36/44, подзаголовок T4 fg-secondary' }, { k: 'Вопрос', v: 'h3 > button, T3 700 20/28, min-h 64' },
+      { k: 'Ответ', v: 'T5 16/26 fg-secondary, max 640, снизу 24' }, { k: 'Шеврон', v: '24, fg-muted, поворот 180° за 200 мс' },
+      { k: 'Разделитель', v: '1 px border, сверху и после каждого вопроса' }
+    ];
+    const faqLandingRules = [
+      'Вопросы — словами клиента, ответ начинается с сути: «От ⟨N⟩ ₽», «Мы», «Нет».',
+      'Открыт один вопрос; первый открыт по умолчанию, чтобы было понятно, что это аккордеон.',
+      'Ответ — 1–3 предложения. Длиннее — ссылка на статью, а не простыня в аккордеоне.',
+      'Цена, ответственность и переход — первыми: это главные возражения перед заявкой.',
+      'Кнопка — button внутри h3 с aria-expanded; ответ доступен поисковикам в разметке FAQPage (JSON-LD).',
+      'Не больше одного FAQ на странице; вопросы на лендинге и в статьях не дублируются.'
+    ];
+    const reelItems = [
+      ['⟨ФИО⟩', 'Основатель, ⟨компания⟩ · опт', '0:48', '«Перестал разбираться в НДС сам — раз в месяц получаю отчёт и понимаю, сколько денег реально заработал»'],
+      ['⟨ФИО⟩', 'Финдиректор, ⟨компания⟩ · производство', '1:02', '«Перешли от штатного бухгалтера за две недели, без единого пропущенного срока»'],
+      ['⟨ФИО⟩', 'ИП, ⟨магазин⟩ · маркетплейсы', '0:37', '«Сверку с Ozon и Wildberries теперь делают за меня. Нашли переплату, о которой я не знал»'],
+      ['⟨ФИО⟩', 'CEO, ⟨компания⟩ · IT', '0:55', '«Отвечают в Telegram в тот же день — для нас это важнее, чем офис рядом»'],
+      ['⟨ФИО⟩', 'Совладелец, ⟨компания⟩ · ВЭД', '1:10', '«Валютный контроль больше не страшен: документы готовят заранее, банк вопросов не задаёт»'],
+      ['⟨ФИО⟩', 'Директор, ⟨компания⟩ · услуги', '0:42', '«Платёжный календарь показал кассовый разрыв за месяц до него — успели перенести закупку»']
+    ];
+    const reels = reelItems.map(([name, role, dur, quote], i) => ({ name, role, dur, quote, open: () => set({ reelOpen: i }) }));
+    const reelIdx = st.reelOpen ?? -1;
+    const reelScroll = d => { const el = this.reelsRef.current; if (el) el.scrollBy({ left: d * 264, behavior: 'smooth' }); };
+    const reelSpec = [
+      { k: 'Карточка', v: '240 × 427 (9:16), radius lg 16; ниже 768 — 200' }, { k: 'Шаг ленты', v: 'gap 6 (24), scroll-snap по началу' },
+      { k: 'Обложка', v: 'кадр с лицом, без текста поверх; фон-заглушка ink 900' }, { k: 'Play', v: '56, accent-fill, иконка 24 белая' },
+      { k: 'Подпись', v: 'имя T6 600 белым, роль T7 ink 200 на затемнении ink 950 / 92 %' }, { k: 'Длительность', v: 'T7 tabular, чип ink 950, справа сверху' },
+      { k: 'Цитата', v: 'T6 fg, до 3 строк, под роликом' }
+    ];
+    const reelRules = [
+      'Видео 30–75 секунд, вертикальное 9:16, с вшитыми субтитрами — большинство смотрит без звука.',
+      'Автоплея нет: ролик запускается по клику в оверлее, лента грузит только обложки (preload="none").',
+      'Имя, должность и компания — реальные, с согласием клиента; без имени отзыв не публикуем.',
+      '5–8 роликов. Первый — самый сильный и короткий: его видят все, до конца ленты доходят немногие.',
+      'Лента листается свайпом, колесом с Shift и стрелками; фокус с клавиатуры виден на каждой карточке.',
+      'Цитата под роликом — дословная фраза из видео, не пересказ маркетолога.'
+    ];
+    const duoReels = [
+      { ...reels[1], tag: 'Производство · ОСНО', result: 'Переход за ⟨N⟩ недели, ноль пропущенных сроков, отчёт для собственника каждый месяц' },
+      { ...reels[2], tag: 'Маркетплейсы · УСН', result: 'Нашли переплату ⟨N⟩ ₽ при сверке с Ozon и Wildberries, вернули через налоговую' }
+    ];
+    return { duoReels, reels, reelSpec, reelRules, reelsRef: this.reelsRef, reelsPrev: () => reelScroll(-1), reelsNext: () => reelScroll(1), reelActive: reelIdx >= 0, reelCur: reels[reelIdx] || reels[0], reelClose: () => set({ reelOpen: -1 }), stop: e => e.stopPropagation(), faqLanding, faqLandingSpec, faqLandingRules, headerSpec, cookieSpec, logoFixed, faq, callouts, toc, mToc, mTocOpen: !!st.mTocOpen, mTocClosed: !st.mTocOpen, mTocRot: st.mTocOpen ? 'rotate(180deg)' : 'none', toggleMToc: () => set({ mTocOpen: !st.mTocOpen }), tocProgress: Math.max(0, activeToc + 1) + ' из ' + tocItems.length, tokens: TOKENS,
       mediaRatios, articleGrid, articlePageRules, crumbSpec, crumbRules, crumbCode, tourPoints, tourSpec, roleChips, turnChips, topicChips, timeChips, contactTabs, leadFields, leadRules,
       roleOther: (st.leadRole ?? '') === 'Другое', contactPhone: ct === 'phone', contactTg: ct === 'tg',
       subDone: !!st.subDone, subNotDone: !st.subDone, subscribe: () => set({ subDone: true }), subReset: () => set({ subDone: false }),
