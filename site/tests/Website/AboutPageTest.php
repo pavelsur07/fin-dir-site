@@ -46,4 +46,27 @@ final class AboutPageTest extends WebTestCase
         self::assertSelectorCount(4, 'main section[aria-labelledby="home-team-title"] li');
         self::assertSelectorExists('#home-trust-data-title');
     }
+
+    public function testHomeShowsTrustFactsAsRowLikeOnCasesPage(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/');
+
+        // Строка без карточек и без видимого заголовка: числа type-t3-num, подписи type-t6.
+        self::assertSelectorCount(3, 'main section[aria-label="Нам доверяют"] li');
+        self::assertSelectorCount(3, 'main section[aria-label="Нам доверяют"] li span.type-t3-num');
+        self::assertSelectorCount(3, 'main section[aria-label="Нам доверяют"] li span.type-t6');
+        self::assertSelectorNotExists('main section[aria-label="Нам доверяют"] h2');
+        self::assertSelectorNotExists('main section[aria-label="Нам доверяют"] li.rounded-lg');
+        self::assertSelectorNotExists('#about-facts-title');
+    }
+
+    public function testAboutPageKeepsTrustFactsAsCards(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/about');
+
+        self::assertSelectorCount(3, 'main section[aria-labelledby="about-facts-title"] li.rounded-lg');
+        self::assertSelectorExists('main section[aria-labelledby="about-facts-title"] h2#about-facts-title');
+    }
 }
