@@ -2,8 +2,6 @@
 
 {% block title %}{{ case.title }} — Кейсы — Ваш Финдир{% endblock %}
 {% block description %}{{ case.problem }} {{ case.resultValue }} — {{ case.resultLabel }}.{% endblock %}
-{# Демо-данные: страницы кейсов закрыты от индексации до замены реальными кейсами. #}
-{% block robots %}noindex, follow{% endblock %}
 
 {% block active_navigation %}cases{% endblock %}
 

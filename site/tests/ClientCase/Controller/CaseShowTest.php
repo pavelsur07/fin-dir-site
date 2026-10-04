@@ -19,7 +19,7 @@ final class CaseShowTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testPublishedCaseIsShownWithNoindexAndOtherCases(): void
+    public function testPublishedCaseIsShownIndexableWithOtherCases(): void
     {
         $this->resetCases(
             ClientCaseBuilder::aCase()->withSlug('first')->withTitle('Первый кейс')->published('2026-02-01')->build(),
@@ -32,7 +32,7 @@ final class CaseShowTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'Первый кейс');
-        self::assertSelectorExists('meta[name="robots"][content="noindex, follow"]');
+        self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
         self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/cases"][aria-current="page"]');
         self::assertSelectorExists('main form[data-vf-lead-form][action="/lead"]');
         // «Другие кейсы»: только опубликованные и не текущий.

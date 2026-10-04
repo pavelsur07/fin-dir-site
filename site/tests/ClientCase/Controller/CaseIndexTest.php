@@ -20,14 +20,14 @@ final class CaseIndexTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testSeededDemoCasesAreShownAndPageIsNoindex(): void
+    public function testSeededDemoCasesAreShownAndPageIsIndexable(): void
     {
         $this->client->request('GET', '/cases');
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('[role="status"]', 'Показано кейсов: 7');
-        self::assertSelectorExists('meta[name="robots"][content="noindex, follow"]');
+        self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
         self::assertSelectorExists('[data-vf-component="case-featured"]');
         self::assertSelectorCount(6, '[data-vf-component="case-card"]');
         self::assertSelectorCount(1, 'nav[data-vf-component="cases-filter"] a[aria-current="true"]');
@@ -82,12 +82,28 @@ final class CaseIndexTest extends WebTestCase
         self::assertResponseStatusCodeSame(404);
     }
 
-    public function testCasesPageIsNotInSitemap(): void
+    public function testSitemapContainsCasesPageAndPublishedCasesOnly(): void
     {
+        $this->resetCases(
+            ClientCaseBuilder::aCase()->withSlug('in-sitemap')->published()->build(),
+            ClientCaseBuilder::aCase()->withSlug('draft-case')->build(),
+            ClientCaseBuilder::aCase()->withSlug('archived-case')->published()->archived()->build(),
+        );
+
         $this->client->request('GET', '/sitemap.xml');
 
         self::assertResponseIsSuccessful();
-        self::assertStringNotContainsString('/cases', (string) $this->client->getResponse()->getContent());
+        $xml = simplexml_load_string((string) $this->client->getResponse()->getContent());
+        self::assertNotFalse($xml);
+        $urls = [];
+        foreach ($xml->url as $url) {
+            $urls[] = (string) $url->loc;
+        }
+
+        self::assertContains('https://vashfindir.ru/cases', $urls);
+        self::assertContains('https://vashfindir.ru/cases/in-sitemap', $urls);
+        self::assertNotContains('https://vashfindir.ru/cases/draft-case', $urls);
+        self::assertNotContains('https://vashfindir.ru/cases/archived-case', $urls);
     }
 
     private function resetCases(ClientCase ...$cases): void
