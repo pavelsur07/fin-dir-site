@@ -25,7 +25,8 @@ final class FinancialDirectorServicePageTest extends WebTestCase
         self::assertSelectorExists('meta[name="description"]');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru'.self::PATH.'"]');
         self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
-        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/services"][aria-current="page"]');
+        self::assertSelectorExists('[data-vf-desktop-navigation] a[href="'.self::PATH.'"][aria-current="page"]');
+        self::assertSelectorExists('[data-vf-mobile-navigation] a[href="'.self::PATH.'"][aria-current="page"]');
 
         $ids = $crawler->filter('main > section, main > div > section')->each(static fn ($node): ?string => $node->attr('id') ?? $node->attr('aria-labelledby'));
         self::assertSame(
