@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Website;
 
+use App\Tests\ClientCase\Builder\ClientCaseBuilder;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class FinancialDirectorServicePageTest extends WebTestCase
@@ -27,22 +29,62 @@ final class FinancialDirectorServicePageTest extends WebTestCase
 
         $ids = $crawler->filter('main > section, main > div > section')->each(static fn ($node): ?string => $node->attr('id') ?? $node->attr('aria-labelledby'));
         self::assertSame(
-            ['service-hero-title', 'service-problems', 'service-about', 'service-compare', 'service-duties', 'service-process', 'service-reports', 'service-saas', 'service-price', 'service-faq-title', 'lead-form'],
+            ['service-hero-title', 'service-problems', 'service-about', 'service-compare', 'service-duties', 'service-process', 'service-reports', 'service-saas', 'service-cases', 'service-price', 'service-faq-title', 'lead-form'],
             $ids,
         );
     }
 
-    public function testPlaceholderSectionsAreHiddenAndNoBracketedStubsAreVisible(): void
+    public function testFounderStubIsHiddenAndNoBracketedStubsAreVisible(): void
     {
         $client = static::createClient();
         $client->request('GET', self::PATH);
 
-        self::assertSelectorNotExists('#service-cases');
         self::assertSelectorNotExists('#service-founder');
         $text = (string) $client->getCrawler()->filter('main')->text();
         // Заглушки вида «[Название кейса]»; квадратные скобки JSON-LD сюда не относятся.
         self::assertDoesNotMatchRegularExpression('/\[[А-Яа-я]/u', $text);
         self::assertStringNotContainsString('28 лет', $text);
+    }
+
+    public function testCasesSectionShowsThreeLatestPublishedCasesFromModule(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', self::PATH);
+
+        // Миграция кладёт в site_test 7 демо-кейсов: берутся 3 самых свежих по дате публикации.
+        self::assertSelectorTextContains('#service-cases-title', 'Результаты клиентов в цифрах');
+        self::assertSelectorCount(3, '#service-cases [data-vf-component="case-card"]');
+        self::assertSelectorExists('#service-cases a[href="/cases"]');
+        self::assertSelectorExists('#service-cases [data-vf-component="case-card"] a[href^="/cases/"]');
+        self::assertSelectorTextContains('#service-cases [data-vf-component="case-card"]', 'Подрядчик увидел маржу по каждому объекту');
+    }
+
+    public function testCasesSectionShowsOnlyPublishedAndFewerThanThree(): void
+    {
+        $client = static::createClient();
+        $entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        // DELETE внутри транзакции DAMA откатывается.
+        $entityManager->getConnection()->executeStatement('DELETE FROM client_case');
+        $entityManager->persist(ClientCaseBuilder::aCase()->withSlug('one')->withTitle('Опубликованный')->published('2026-02-01')->build());
+        $entityManager->persist(ClientCaseBuilder::aCase()->withSlug('draft')->withTitle('Черновик')->build());
+        $entityManager->flush();
+
+        $client->request('GET', self::PATH);
+
+        self::assertSelectorCount(1, '#service-cases [data-vf-component="case-card"]');
+        self::assertSelectorTextNotContains('#service-cases', 'Черновик');
+    }
+
+    public function testCasesSectionIsAbsentWithoutPublishedCases(): void
+    {
+        $client = static::createClient();
+        self::getContainer()->get(EntityManagerInterface::class)->getConnection()->executeStatement('DELETE FROM client_case');
+
+        $client->request('GET', self::PATH);
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorNotExists('#service-cases');
+        self::assertSelectorNotExists('#service-cases-title');
     }
 
     public function testContentFollowsTheLayoutSpecification(): void
@@ -94,9 +136,11 @@ final class FinancialDirectorServicePageTest extends WebTestCase
         self::assertSelectorCount(8, 'section[aria-labelledby="service-faq-title"] details');
         self::assertSelectorNotExists('section[aria-labelledby="service-faq-title"] details[open]');
         // Цен на странице нет: знак рубля встречается только во фразе про порог оборота «2 млн ₽»
-        // и в вариантах ответа формы («оборот в месяц»).
+        // в вариантах ответа формы («оборот в месяц») и в результатах кейсов.
         $content = (string) $client->getResponse()->getContent();
         $content = (string) preg_replace('/<form\b.*?<\/form>/su', '', $content);
+        // Результаты кейсов («3 200 000 ₽») -- данные модуля кейсов, а не цены услуги.
+        $content = (string) preg_replace('/<section\b[^>]*id="service-cases".*?<\/section>/su', '', $content);
         $withoutThreshold = (string) preg_replace('/2\x{00A0}млн\x{00A0}₽/u', '', $content);
         self::assertStringNotContainsString('₽', $withoutThreshold);
     }
