@@ -28,6 +28,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Lead/Entity'
                 prefix: 'App\Lead\Entity'
                 alias: Lead
+            ClientCase:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/ClientCase/Entity'
+                prefix: 'App\ClientCase\Entity'
+                alias: ClientCase
 
 when@test:
     doctrine:
