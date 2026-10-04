@@ -23,12 +23,8 @@
         } only %}
     </div>
     {% include 'website/sections/_company_facts.html.twig' with {
-        title: 'Нам доверяют',
-        facts: [
-            {value: 'с 2015', text: 'года работаем на рынке'},
-            {value: '230+', text: 'компаний прошли через нашу компанию'},
-            {icon: 'award', value: 'Лучший стартап', text: 'Премия 2015 года по версии 1С:БО'},
-        ],
+        title: vf_company_facts.title,
+        facts: vf_company_facts.facts,
     } only %}
     {% include 'website/sections/_trust_data.html.twig' with {
         id: 'about-process-title',
