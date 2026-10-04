@@ -27,9 +27,42 @@ final class FinancialDirectorServicePageTest extends WebTestCase
 
         $ids = $crawler->filter('main > section, main > div > section')->each(static fn ($node): ?string => $node->attr('id') ?? $node->attr('aria-labelledby'));
         self::assertSame(
-            ['service-hero-title', 'service-problems', 'service-about', 'service-compare', 'service-duties', 'service-process', 'service-reports', 'service-saas', 'service-cases', 'service-price', 'service-founder', 'service-faq-title', 'lead-form'],
+            ['service-hero-title', 'service-problems', 'service-about', 'service-compare', 'service-duties', 'service-process', 'service-reports', 'service-saas', 'service-price', 'service-faq-title', 'lead-form'],
             $ids,
         );
+    }
+
+    public function testPlaceholderSectionsAreHiddenAndNoBracketedStubsAreVisible(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', self::PATH);
+
+        self::assertSelectorNotExists('#service-cases');
+        self::assertSelectorNotExists('#service-founder');
+        $text = (string) $client->getCrawler()->filter('main')->text();
+        // Заглушки вида «[Название кейса]»; квадратные скобки JSON-LD сюда не относятся.
+        self::assertDoesNotMatchRegularExpression('/\[[А-Яа-я]/u', $text);
+        self::assertStringNotContainsString('28 лет', $text);
+    }
+
+    public function testContentFollowsTheLayoutSpecification(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', self::PATH);
+
+        self::assertSelectorExists('meta[name="description"][content="Финдир на аутсорсе для бизнеса с оборотом от 2 млн ₽ в месяц: управленческий учёт, платёжный календарь, ОПиУ и план роста"]');
+        self::assertSelectorTextContains('#service-reports-title', 'Три отчёта, которые показывают реальное состояние бизнеса');
+        self::assertSelectorTextContains('#service-reports', 'Управленческий баланс');
+        self::assertSelectorTextContains('#service-reports', 'Показывает устойчивость бизнеса');
+        self::assertSelectorCount(7, '#service-about ul li');
+        self::assertSelectorCount(4, '#service-saas tbody tr');
+        self::assertSelectorTextContains('#service-saas', 'Маржа по направлениям, условные данные');
+        self::assertSelectorTextContains('#service-duties-title', 'Что делает финансовый директор Ваш Финдир');
+        self::assertSelectorCount(7, '#service-duties li');
+        self::assertSelectorTextContains('#service-duties', 'Выстраивает правила дивидендов');
+        self::assertSelectorTextContains('#service-compare-title', 'Штатный финансист или финдиректор на аутсорсе');
+        self::assertSelectorTextContains('#service-process', 'обычно 5–7 числа следующего месяца');
+        self::assertSelectorTextContains('section[aria-labelledby="service-hero-title"]', 'Пример интерфейса, цифры условные.');
     }
 
     public function testBreadcrumbsAndStructuredData(): void
@@ -53,12 +86,12 @@ final class FinancialDirectorServicePageTest extends WebTestCase
         }
     }
 
-    public function testFaqHasSixClosedQuestionsWithoutPrices(): void
+    public function testFaqHasEightClosedQuestionsWithoutPrices(): void
     {
         $client = static::createClient();
         $client->request('GET', self::PATH);
 
-        self::assertSelectorCount(6, 'section[aria-labelledby="service-faq-title"] details');
+        self::assertSelectorCount(8, 'section[aria-labelledby="service-faq-title"] details');
         self::assertSelectorNotExists('section[aria-labelledby="service-faq-title"] details[open]');
         // Цен на странице нет: знак рубля встречается только во фразе про порог оборота «2 млн ₽»
         // и в вариантах ответа формы («оборот в месяц»).
@@ -77,7 +110,9 @@ final class FinancialDirectorServicePageTest extends WebTestCase
         self::assertSelectorExists('main form input[name="_token"]');
         self::assertSelectorExists('main form input[name="agreement"][required]');
         self::assertSelectorTextContains('#lead-form', 'Разберём вашу финансовую ситуацию бесплатно');
-        self::assertSelectorExists('#service-founder img[src="/assets/people/pavel-novikov-portrait.png"]');
+        self::assertSelectorExists('#lead-form input[name="contact_type"][value="telegram"]');
+        self::assertSelectorExists('#lead-form input[data-vf-contact-input][required]');
+        self::assertSelectorTextContains('#lead-form button[type="submit"]', 'Бесплатная консультация');
         self::assertSelectorTextContains('#service-process', 'обычно 5–7 числа');
     }
 

@@ -1,6 +1,7 @@
 {#
     Блок про сервис: текст слева, справа карточка-пример отчёта с ABC-классами.
-    Аргументы: id, title, paragraphs, example {title, note, columns [string], rows [{name, cells [string], class}]}, tone.
+    Аргументы: id, title, paragraphs, example {title, caption, note, columns [string], rows [{name, cells [string], margin, bar, abc, class}]}, tone.
+    Колонки: направление, значения cells, маржа (с полосой bar) и класс ABC. Полоса -- доля маржи: ширина и цвет классами темы.
     Цифры в примере условные, об этом сказано в note.
 #}
 {% set muted = tone|default('muted') == 'muted' %}
@@ -30,12 +31,19 @@
                                 {% for cell in row.cells %}
                                     <td class="border-b border-border-subtle px-2 py-2 text-fg-secondary">{{ cell }}</td>
                                 {% endfor %}
+                                <td class="border-b border-border-subtle px-2 py-2">
+                                    <div class="flex min-w-24 flex-col gap-1">
+                                        <span class="text-fg">{{ row.margin }}</span>
+                                        <span class="h-2 w-full rounded-full bg-surface-muted"><span class="block h-2 rounded-full {{ row.bar }}"></span></span>
+                                    </div>
+                                </td>
                                 <td class="border-b border-border-subtle px-2 py-2"><span class="rounded-xs px-2 py-1 type-t7 font-semibold {{ row.class }}">{{ row.abc }}</span></td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            <p class="type-t6 text-fg-secondary">{{ example.caption }}</p>
             <p class="type-t7 text-fg-muted">{{ example.note }}</p>
         </figure>
     </div>
