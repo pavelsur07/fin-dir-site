@@ -30,6 +30,7 @@ final readonly class CaseEditData
         public bool $featured,
         public CaseStatus $status,
         public ?\DateTimeImmutable $publishedAt,
+        public int $version,
     ) {
     }
 

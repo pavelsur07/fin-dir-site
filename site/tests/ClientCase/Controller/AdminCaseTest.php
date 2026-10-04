@@ -119,6 +119,51 @@ final class AdminCaseTest extends WebTestCase
         self::assertSame('5 % | маржа', trim((string) $this->client->getCrawler()->filter('textarea[name="client_case[metrics]"]')->getNode(0)?->textContent));
     }
 
+    public function testEditWithoutVersionIsRejected(): void
+    {
+        $id = $this->persist(ClientCaseBuilder::aCase()->withSlug('no-version')->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/cases/'.$id.'/edit');
+        $values = $crawler->selectButton('Сохранить')->form()->getPhpValues();
+        unset($values['client_case']['version']);
+
+        $this->client->request('POST', '/admin/cases/'.$id.'/edit', $values);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('form[data-admin-case-form]', 'Форма устарела');
+    }
+
+    public function testConcurrentEditShowsFormErrorAndKeepsFirstSave(): void
+    {
+        $id = $this->persist(ClientCaseBuilder::aCase()->withSlug('concurrent')->withTitle('Исходный')->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/cases/'.$id.'/edit');
+        $staleForm = $crawler->selectButton('Сохранить')->form();
+
+        $this->client->submitForm('Сохранить', ['client_case[title]' => 'Первое сохранение']);
+        $this->client->submit($staleForm, ['client_case[title]' => 'Второе окно']);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('form[data-admin-case-form]', 'Кейс изменили в другом окне');
+        $this->client->request('GET', '/admin/cases/'.$id.'/edit');
+        self::assertSelectorTextContains('h1', 'Первое сохранение');
+    }
+
+    public function testStatusChangeBumpsVersionSoStaleFormCannotOverwrite(): void
+    {
+        $id = $this->persist(ClientCaseBuilder::aCase()->withSlug('stale-status')->withTitle('Исходный')->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/cases/'.$id.'/edit');
+        $staleForm = $crawler->selectButton('Сохранить')->form();
+
+        $this->postStatus($id, 'publish');
+        $this->client->submit($staleForm, ['client_case[title]' => 'Устаревшая правка']);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('form[data-admin-case-form]', 'Кейс изменили в другом окне');
+        self::assertSame(CaseStatus::PUBLISHED, $this->findCase('stale-status')->status());
+    }
+
     public function testPublishedCaseAppearsOnSiteAndCanBeUnpublished(): void
     {
         $id = $this->persist(ClientCaseBuilder::aCase()->withSlug('zhivoj')->withTitle('Живой кейс')->build());

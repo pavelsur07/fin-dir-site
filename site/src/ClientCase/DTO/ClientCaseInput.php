@@ -61,6 +61,9 @@ final class ClientCaseInput
 
     public bool $featured = false;
 
+    /** Версия, с которой открыли форму: ловит одновременное редактирование. */
+    public ?int $version = null;
+
     /** Главный кейс показывается развёрнуто: без задачи, шагов и метрик он выглядел бы пустым. */
     #[Assert\Callback]
     public function validateFeatured(ExecutionContextInterface $context): void
@@ -85,6 +88,7 @@ final class ClientCaseInput
         $input->metrics = $data->metrics;
         $input->source = $data->source;
         $input->featured = $data->featured;
+        $input->version = $data->version;
 
         return $input;
     }

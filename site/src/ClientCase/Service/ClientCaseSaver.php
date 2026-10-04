@@ -7,9 +7,12 @@ namespace App\ClientCase\Service;
 use App\ClientCase\DTO\ClientCaseInput;
 use App\ClientCase\Entity\ClientCase;
 use App\ClientCase\Exception\CaseSlugAlreadyTaken;
+use App\ClientCase\Exception\CaseWasModified;
 use App\ClientCase\Repository\ClientCaseRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
 use Psr\Clock\ClockInterface;
 
 /**
@@ -55,6 +58,14 @@ final class ClientCaseSaver
         $case = $this->cases->get($id);
         $now = $this->clock->now();
 
+        // Версия, с которой открыли форму, против текущей в базе. Без неё
+        // правка молча перезаписала бы чужую -- поэтому она обязательна.
+        try {
+            $this->entityManager->lock($case, LockMode::OPTIMISTIC, $input->version ?? throw new \LogicException('Case version is required for editing.'));
+        } catch (OptimisticLockException $e) {
+            throw new CaseWasModified($id, $e);
+        }
+
         $case->edit($industry, $input->title, $input->problem, $input->resultValue, $input->resultLabel, $input->tags, $now);
 
         if ($input->slug !== $case->slug()) {
@@ -72,7 +83,7 @@ final class ClientCaseSaver
         $case->describe($this->nullIfBlank($input->task), $input->steps, $input->metrics, $this->nullIfBlank($input->source), $now);
         $this->applyFeatured($case, $input->featured, $now);
 
-        $this->flush($input->slug);
+        $this->flush($input->slug, $id);
     }
 
     private function applyFeatured(ClientCase $case, bool $featured, \DateTimeImmutable $now): void
@@ -87,10 +98,13 @@ final class ClientCaseSaver
         }
     }
 
-    private function flush(string $slug): void
+    private function flush(string $slug, ?int $editedId = null): void
     {
         try {
             $this->entityManager->flush();
+        } catch (OptimisticLockException $e) {
+            // Кейс сохранили между проверкой версии и flush -- #[Version] не даёт перезаписать.
+            throw new CaseWasModified($editedId ?? 0, $e);
         } catch (UniqueConstraintViolationException $e) {
             // Гонка между проверкой slugExists() и вставкой -- ловит уникальный индекс.
             throw new CaseSlugAlreadyTaken($slug, $e);

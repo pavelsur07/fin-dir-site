@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\ClientCase\Service;
 
 use App\ClientCase\Entity\ClientCase;
+use App\ClientCase\Exception\CaseWasModified;
 use App\ClientCase\Repository\ClientCaseRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
 use Psr\Clock\ClockInterface;
 
 /**
@@ -47,6 +49,12 @@ final class ClientCaseStatusChanger
     private function apply(int $id, \Closure $transition): void
     {
         $transition($this->cases->get($id));
-        $this->entityManager->flush();
+
+        try {
+            $this->entityManager->flush();
+        } catch (OptimisticLockException $e) {
+            // Кейс сохранили между загрузкой и flush -- #[Version] не даёт перезаписать.
+            throw new CaseWasModified($id, $e);
+        }
     }
 }

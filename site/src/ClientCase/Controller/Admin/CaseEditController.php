@@ -7,6 +7,7 @@ namespace App\ClientCase\Controller\Admin;
 use App\ClientCase\DTO\ClientCaseInput;
 use App\ClientCase\Exception\CaseSlugAlreadyTaken;
 use App\ClientCase\Exception\CaseSlugIsLocked;
+use App\ClientCase\Exception\CaseWasModified;
 use App\ClientCase\Form\ClientCaseType;
 use App\ClientCase\Query\CaseEditData\CaseEditDataQuery;
 use App\ClientCase\Service\ClientCaseSaver;
@@ -26,6 +27,7 @@ final class CaseEditController extends AbstractController
         $case = $query->get($id);
         $form = $this->createForm(ClientCaseType::class, ClientCaseInput::fromEditData($case), [
             'slug_locked' => $case->isSlugLocked(),
+            'is_edit' => true,
         ]);
         $form->handleRequest($request);
 
@@ -44,6 +46,8 @@ final class CaseEditController extends AbstractController
                 $form->get('slug')->addError(new FormError('Этот адрес уже занят другим кейсом.'));
             } catch (CaseSlugIsLocked) {
                 $form->get('slug')->addError(new FormError('Кейс публиковался: адрес больше не меняется.'));
+            } catch (CaseWasModified) {
+                $form->addError(new FormError('Кейс изменили в другом окне. Скопируйте свои правки и обновите страницу.'));
             }
         }
 
