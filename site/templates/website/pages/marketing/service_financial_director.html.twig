@@ -5,8 +5,7 @@
 
 {% block active_navigation %}services{% endblock %}
 
-{# Секции с заглушками скрыты, пока нет реального содержания: включить -- поставить true. #}
-{% set show_cases = false %}
+{# Секция с заглушкой скрыта, пока нет реального содержания: включить -- поставить true. #}
 {% set show_founder = false %}
 
 {# Вопросы FAQ: те же тексты уходят в разметку FAQPage. Без цен и жёстких сроков. #}
@@ -221,21 +220,14 @@
         },
         tone: 'muted',
     } only %}
-    {# Заглушки: заменить реальными кейсами после согласования с клиентами. Реальные демо-кейсы -- на /cases. #}
-    {% if show_cases %}
-    {% include 'website/sections/_service_cards.html.twig' with {
+    {# Кейсы из модуля ClientCase (контроллер передаёт cases); нет кейсов -- секции нет. #}
+    {% include 'website/sections/_service_cases.html.twig' with {
         id: 'service-cases',
-        title: 'Кейсы',
-        subtitle: 'Примеры задач, с которыми к нам приходят собственники',
-        columns: 3,
-        cards: [
-            {label: '[Отрасль]', title: '[Название кейса 1]', text: '[Задача и результат — заменить реальным кейсом]'},
-            {label: '[Отрасль]', title: '[Название кейса 2]', text: '[Задача и результат — заменить реальным кейсом]'},
-            {label: '[Отрасль]', title: '[Название кейса 3]', text: '[Задача и результат — заменить реальным кейсом]'},
-        ],
-        note: 'Больше примеров — на странице «Кейсы».',
+        title: 'Результаты клиентов в цифрах',
+        cases: cases,
+        all_label: 'Все кейсы',
+        all_href: path('app_cases_index'),
     } only %}
-    {% endif %}
     {% include 'website/sections/_service_cards.html.twig' with {
         id: 'service-price',
         title: 'От чего зависит цена',
