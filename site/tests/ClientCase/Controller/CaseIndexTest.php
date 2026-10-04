@@ -32,6 +32,10 @@ final class CaseIndexTest extends WebTestCase
         self::assertSelectorCount(6, '[data-vf-component="case-card"]');
         self::assertSelectorCount(1, 'nav[data-vf-component="cases-filter"] a[aria-current="true"]');
         self::assertSelectorExists('main form[data-vf-lead-form][action="/lead"]');
+        // Секция заявки светлая: панель на bg-surface без блока .dark.
+        self::assertSelectorExists('section#lead-form.bg-surface');
+        self::assertSelectorNotExists('.dark #lead-form, #lead-form .dark, #lead-form.dark');
+        self::assertSelectorTextContains('#lead-form', 'Хотите увидеть реальную прибыль своего бизнеса?');
     }
 
     public function testDraftAndArchivedCasesAreNotPublic(): void
