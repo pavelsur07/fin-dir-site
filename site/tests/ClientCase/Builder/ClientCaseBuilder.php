@@ -80,7 +80,8 @@ final class ClientCaseBuilder
         $case = new ClientCase($this->slug, $this->industry, $this->title, 'Была проблема.', '1 000 ₽', 'результат', ['ДДС'], $this->createdAt);
 
         if ($this->featured) {
-            $case->markAsFeatured('Задача.', ['Шаг'], [['value' => '1', 'label' => 'метрика']], 'Демо-данные', $this->createdAt);
+            $case->describe('Задача.', ['Шаг'], [['value' => '1', 'label' => 'метрика']], 'Демо-данные', $this->createdAt);
+            $case->markAsFeatured($this->createdAt);
         }
         if (null !== $this->publishedAt) {
             $case->publish($this->publishedAt);

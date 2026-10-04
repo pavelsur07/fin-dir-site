@@ -1,0 +1,49 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}{{ case ? 'Редактирование кейса' : 'Новый кейс' }}{% endblock %}
+
+{% block body %}
+    <div class="mb-4 flex flex-wrap gap-2">
+        <h1 class="mb-6 type-t2-article">{{ case ? case.title : 'Новый кейс' }}</h1>
+        {% if case %}
+            <span class="inline-block rounded-full px-2 py-1 type-t7 font-semibold {{ case.status.value == 'published' ? 'bg-success-bg text-success' : 'bg-surface-muted text-fg-secondary' }}">{{ case.status.label }}</span>
+        {% endif %}
+    </div>
+
+    {% if case %}
+        <div class="mb-4 flex flex-wrap gap-2">
+            {% include 'admin/cases/_status_actions.html.twig' with {id: case.id, actions: case.status.actions} only %}
+            {% if case.status.value == 'published' %}
+                <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('app_cases_show', {slug: case.slug}) }}" target="_blank" rel="noopener">Открыть на сайте</a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    {{ form_start(form, {attr: {'data-admin-case-form': '', class: 'max-w-container rounded-lg border bg-white p-6', novalidate: 'novalidate'}}) }}
+        {% if form.vars.errors|length > 0 %}
+            <div data-admin-form-errors class="rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
+        {% endif %}
+
+        {% for field in [form.title, form.slug, form.industry, form.problem, form.resultValue, form.resultLabel, form.tags, form.task, form.steps, form.metrics, form.source] %}
+            <div class="mb-4">
+                {{ form_label(field) }}
+                {{ form_widget(field, {attr: field.vars.attr|merge({class: 'w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5'})}) }}
+                {{ form_help(field) }}
+                {{ form_errors(field) }}
+            </div>
+        {% endfor %}
+
+        <div class="mb-4">
+            {{ form_widget(form.featured) }}
+            {{ form_label(form.featured) }}
+            {{ form_help(form.featured) }}
+            {{ form_errors(form.featured) }}
+        </div>
+
+        {{ form_rest(form) }}
+        <div class="flex flex-wrap gap-2">
+            <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">{{ case ? 'Сохранить' : 'Создать черновик' }}</button>
+            <a class="type-t6 text-fg-secondary" href="{{ path('admin_case_list') }}">К списку</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
