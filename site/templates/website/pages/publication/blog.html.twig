@@ -5,7 +5,7 @@
 {% set list_query = {} %}
 {% if rubric %}{% set list_query = list_query|merge({rubric: rubric.value}) %}{% endif %}
 
-{% block title %}Газеты{% if rubric %} — {{ rubric.label }}{% endif %}{% if page > 1 %} — страница {{ page }}{% endif %} — Ваш Финдир{% endblock %}
+{% block title %}Газета{% if rubric %} — {{ rubric.label }}{% endif %}{% if page > 1 %} — страница {{ page }}{% endif %} — Ваш Финдир{% endblock %}
 {% block description %}Материалы о финансовом учёте, управлении деньгами и unit-экономике для селлеров маркетплейсов.{% endblock %}
 {# Каждая страница списка -- самостоятельный URL, canonical не склеивает их с первой. #}
 {% block canonical %}{{ vf_site_url ~ path('gazeta_index', list_query|merge(page > 1 ? {page: page} : {})) }}{% endblock %}
@@ -22,7 +22,7 @@
     {% include 'website/components/page-header.html.twig' with {
         crumbs: [{label: 'Главная', url: '/'}, {label: 'Газеты'}],
         title: 'Газеты',
-        lead: 'Налоги, отчётность и деньги — простыми словами',
+        lead: 'Пишем о финансах, эффективном управлении компаниями и системном подходе',
     } only %}
 {% endblock %}
 

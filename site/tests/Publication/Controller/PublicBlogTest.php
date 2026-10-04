@@ -74,6 +74,8 @@ final class PublicBlogTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
+        self::assertPageTitleSame('Газета — Ваш Финдир');
+        self::assertSelectorTextContains('main', 'Пишем о финансах, эффективном управлении компаниями и системном подходе');
         self::assertSelectorExists('[data-vf-section="article-featured"][href="/gazeta/visible"]');
         self::assertSelectorTextContains('[data-vf-section="article-featured"] time', '1 февраля 2026');
         self::assertSelectorTextContains('[data-vf-section="article-featured"]', '1 мин');
