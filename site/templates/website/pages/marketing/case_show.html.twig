@@ -1,0 +1,41 @@
+{% extends 'website/layouts/page.html.twig' %}
+
+{% block title %}{{ case.title }} — Кейсы — Ваш Финдир{% endblock %}
+{% block description %}{{ case.problem }} {{ case.resultValue }} — {{ case.resultLabel }}.{% endblock %}
+{# Демо-данные: страницы кейсов закрыты от индексации до замены реальными кейсами. #}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block active_navigation %}cases{% endblock %}
+
+{# Как на странице «Кейсы»: секции сами задают фон и контейнер, поэтому body без контейнера layout. #}
+{% block body %}
+    <div class="dark bg-surface">
+        {% include 'website/components/page-header.html.twig' with {
+            crumbs: [{label: 'Главная', url: '/'}, {label: 'Кейсы', url: path('app_cases_index')}, {label: case.title}],
+            title: case.title,
+        } only %}
+    </div>
+    {% include 'website/sections/_case_detail.html.twig' with {case: case} only %}
+    {% if related is not empty %}
+        <section class="bg-surface-muted py-16 md:py-24" aria-labelledby="case-related-title">
+            <div class="mx-auto max-w-container px-4 md:px-8">
+                <h2 class="mb-12 type-t2-article text-fg md:type-t2" id="case-related-title">Другие кейсы</h2>
+                <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {% for item in related %}
+                        <li>{% include 'website/components/_case_card.html.twig' with {case: item} only %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    {% endif %}
+    <div class="dark">
+        {% include 'website/sections/_lead_form.html.twig' with {
+            id: 'lead-form',
+            form: 'consultation',
+            title: 'Хотите увидеть реальную прибыль своего бизнеса?',
+            text: 'Расскажите о задаче — предложим, с чего начать.',
+            form_title: 'Обсудить задачу',
+            action_label: 'Обсудить задачу',
+        } only %}
+    </div>
+{% endblock %}

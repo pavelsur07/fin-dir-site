@@ -21,7 +21,7 @@
                 </li>
             {% endfor %}
         </ul>
-        <a class="mt-2 inline-flex min-h-control-touch items-center gap-1 rounded-xs type-t5 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('app_cases_index') }}" aria-label="Читать кейс: {{ case.title }}">
+        <a class="mt-2 inline-flex min-h-control-touch items-center gap-1 rounded-xs type-t5 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('app_cases_show', {slug: case.slug}) }}" aria-label="Читать кейс: {{ case.title }}">
             Читать кейс
             {% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm shrink-0'} only %}
         </a>

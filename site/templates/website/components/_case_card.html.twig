@@ -1,6 +1,5 @@
 {#
     Карточка кейса в сетке. Вход: case (CaseListItem).
-    Ссылка «Читать кейс» пока ведёт на каталог: страницы отдельных кейсов не созданы.
 #}
 <article class="flex h-full flex-col gap-4 rounded-lg border border-border bg-surface p-6 transition-shadow duration-base hover:shadow-sm motion-reduce:transition-none" data-vf-component="case-card">
     <span class="self-start rounded-xs bg-surface-muted px-2 py-1 type-t7 font-medium text-fg-secondary">{{ case.industry.label }}</span>
@@ -15,7 +14,7 @@
             <li class="rounded-xs border border-border px-2 py-1 type-t7 text-fg-secondary">{{ tag }}</li>
         {% endfor %}
     </ul>
-    <a class="mt-auto inline-flex min-h-control-touch items-center gap-1 self-start rounded-xs type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('app_cases_index') }}" aria-label="Читать кейс: {{ case.title }}">
+    <a class="mt-auto inline-flex min-h-control-touch items-center gap-1 self-start rounded-xs type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('app_cases_show', {slug: case.slug}) }}" aria-label="Читать кейс: {{ case.title }}">
         Читать кейс
         {% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm shrink-0'} only %}
     </a>

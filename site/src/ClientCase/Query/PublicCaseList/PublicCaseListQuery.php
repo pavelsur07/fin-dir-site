@@ -41,4 +41,28 @@ final class PublicCaseListQuery
 
         return $items;
     }
+
+    /**
+     * Последние кейсы, включая главный, для блока «Другие кейсы».
+     *
+     * @return list<CaseListItem>
+     */
+    public function latestExcept(string $slug, int $limit): array
+    {
+        /** @var list<CaseListItem> $items */
+        $items = $this->entityManager->createQueryBuilder()
+            ->select(\sprintf('NEW %s(c.slug, c.industry, c.title, c.problem, c.resultValue, c.resultLabel, c.tags)', CaseListItem::class))
+            ->from(ClientCase::class, 'c')
+            ->where('c.status = :published')
+            ->andWhere('c.slug <> :slug')
+            ->setParameter('published', CaseStatus::PUBLISHED)
+            ->setParameter('slug', $slug)
+            ->orderBy('c.publishedAt', 'DESC')
+            ->addOrderBy('c.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        return $items;
+    }
 }
