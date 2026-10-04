@@ -176,6 +176,7 @@ deptrac:
         Form:
             - Symfony
             - DTO
+            - ValueObject
 
         EventListener:
             - Symfony

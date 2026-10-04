@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Publication\Controller;
 
 use App\Publication\Entity\Post;
+use App\Publication\ValueObject\PostRubric;
 use App\Tests\Publication\Builder\PostBuilder;
 use App\Tests\Publication\PostTableCleaner;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,8 +74,14 @@ final class PublicBlogTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
-        self::assertSelectorExists('[data-vf-section="article-list"] a[href="/gazeta/visible"]');
-        self::assertSelectorExists('[data-vf-section="article-list"] time[datetime="2026-02-01"]');
+        self::assertSelectorExists('[data-vf-section="article-featured"][href="/gazeta/visible"]');
+        self::assertSelectorTextContains('[data-vf-section="article-featured"] time', '1 февраля 2026');
+        self::assertSelectorTextContains('[data-vf-section="article-featured"]', '1 мин');
+        // Обложки нет: типографская заглушка, скрытая от скринридера, без <img>.
+        self::assertSelectorExists('[data-vf-section="article-featured"] [aria-hidden="true"].aspect-video');
+        self::assertSelectorCount(0, 'main img');
+        self::assertSelectorExists('[data-vf-component="breadcrumb"], nav[aria-label="Хлебные крошки"]');
+        self::assertSelectorExists('footer a[href="/gazeta"][aria-current="page"]');
         self::assertSelectorTextNotContains('main', 'Черновик статьи');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta"]');
     }
@@ -98,14 +105,22 @@ final class PublicBlogTest extends WebTestCase
         $this->resetPosts(...$posts);
 
         $this->client->request('GET', '/gazeta');
-        self::assertSelectorCount(12, '[data-vf-section="article-list"] h2 a');
+        // Главная статья + 11 карточек в сетке = 12 на странице.
+        self::assertSelectorCount(1, '[data-vf-section="article-featured"]');
+        self::assertSelectorCount(11, '[data-vf-section="article-list"] h3');
         self::assertSelectorExists('[data-vf-component="pagination"] a[href="/gazeta?page=2"]');
-        self::assertSelectorNotExists('[data-vf-component="pagination"] a[href="/gazeta"]');
+        // Первая страница в пагинации -- текущая, без стрелки «назад».
+        self::assertSelectorExists('[data-vf-component="pagination"] a[href="/gazeta"][aria-current="page"]');
+        self::assertSelectorNotExists('[data-vf-component="pagination"] a[aria-label="Предыдущая страница"]');
 
         $this->client->request('GET', '/gazeta?page=2');
         self::assertResponseIsSuccessful();
-        self::assertSelectorCount(1, '[data-vf-section="article-list"] h2 a');
+        // Не первая страница: главной статьи нет, одна карточка.
+        self::assertSelectorCount(0, '[data-vf-section="article-featured"]');
+        self::assertSelectorCount(1, '[data-vf-section="article-list"] h3');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta?page=2"]');
+        self::assertSelectorExists('link[rel="prev"][href="https://vashfindir.ru/gazeta"]');
+        self::assertSelectorNotExists('link[rel="next"]');
         self::assertSelectorExists('[data-vf-component="pagination"] a[href="/gazeta"]');
 
         $this->client->request('GET', '/gazeta?page=3');
@@ -371,5 +386,54 @@ final class PublicBlogTest extends WebTestCase
         $entityManager = self::getContainer()->get(EntityManagerInterface::class);
         $entityManager->persist($post);
         $entityManager->flush();
+    }
+
+    public function testRubricFilterShowsOnlyThatRubricWithoutFeatured(): void
+    {
+        $this->resetPosts(
+            PostBuilder::aPost()->withSlug('tax-1')->withTitle('Про налоги')->withRubric(PostRubric::TAXES)->published('2026-02-02')->build(),
+            PostBuilder::aPost()->withSlug('unit-1')->withTitle('Про юнит')->withRubric(PostRubric::UNIT_ECONOMICS)->published('2026-02-01')->build(),
+            PostBuilder::aPost()->withSlug('none-1')->withTitle('Без рубрики')->published('2026-01-01')->build(),
+        );
+
+        $this->client->request('GET', '/gazeta?rubric=nalogi');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorCount(0, '[data-vf-section="article-featured"]');
+        self::assertSelectorCount(1, '[data-vf-section="article-list"] h3');
+        self::assertSelectorTextContains('[data-vf-section="article-list"]', 'Про налоги');
+        self::assertSelectorTextNotContains('main', 'Про юнит');
+        self::assertSelectorTextNotContains('main', 'Без рубрики');
+        self::assertSelectorExists('[data-vf-component="rubrics"] a[href="/gazeta?rubric=nalogi"][aria-current="true"]');
+        self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/gazeta?rubric=nalogi"]');
+    }
+
+    public function testEmptyRubricShowsEmptyStateAndUnknownRubricIs404(): void
+    {
+        $this->resetPosts(PostBuilder::aPost()->withSlug('tax-1')->withRubric(PostRubric::TAXES)->published('2026-02-02')->build());
+
+        $this->client->request('GET', '/gazeta?rubric=otchetnost');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('main', 'Статей в этой рубрике пока нет');
+        self::assertSelectorCount(0, '[data-vf-section="article-list"]');
+
+        $this->client->request('GET', '/gazeta?rubric=net-takoj');
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testPaginationLinksKeepRubric(): void
+    {
+        $posts = [];
+        for ($i = 1; $i <= 13; ++$i) {
+            $posts[] = PostBuilder::aPost()->withSlug('t-'.$i)->withRubric(PostRubric::TAXES)->published(\sprintf('2026-01-%02d', $i))->build();
+        }
+        $this->resetPosts(...$posts);
+
+        $this->client->request('GET', '/gazeta?rubric=nalogi');
+
+        self::assertSelectorExists('link[rel="next"][href="https://vashfindir.ru/gazeta?rubric=nalogi&page=2"]');
+        self::assertSelectorExists('[data-vf-component="pagination"] a[href="/gazeta?rubric=nalogi&page=2"]');
+        self::assertSelectorExists('[data-vf-component="show-more"] a[href="/gazeta?rubric=nalogi&page=2"]');
+        self::assertSelectorTextContains('[data-vf-component="show-more"]', 'Показано 12 из 13');
     }
 }

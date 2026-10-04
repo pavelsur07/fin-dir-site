@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Publication\Builder;
 
 use App\Publication\Entity\Post;
+use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostStatus;
 
 /**
@@ -21,6 +22,7 @@ final class PostBuilder
     private PostStatus $status = PostStatus::DRAFT;
     private ?\DateTimeImmutable $publishedAt = null;
     private ?string $formTitle = null;
+    private ?PostRubric $rubric = null;
 
     private function __construct()
     {
@@ -60,6 +62,20 @@ final class PostBuilder
         return $this;
     }
 
+    public function withRubric(PostRubric $rubric): self
+    {
+        $this->rubric = $rubric;
+
+        return $this;
+    }
+
+    public function withExcerpt(string $excerpt): self
+    {
+        $this->excerpt = $excerpt;
+
+        return $this;
+    }
+
     public function createdAt(string $at): self
     {
         $this->createdAt = new \DateTimeImmutable($at);
@@ -84,7 +100,7 @@ final class PostBuilder
 
     public function build(): Post
     {
-        $post = new Post($this->title, $this->slug, $this->excerpt, $this->body, null, null, $this->createdAt, $this->formTitle);
+        $post = new Post($this->title, $this->slug, $this->excerpt, $this->body, null, null, $this->createdAt, $this->formTitle, $this->rubric);
 
         // Состояние собирается штатными переходами Entity, а не reflection:
         // builder не обходит бизнес-правила.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Publication\DTO;
 
 use App\Publication\Query\PostEditData\PostEditData;
+use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostSlug;
 use App\Publication\ValueObject\PostTitle;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,6 +41,9 @@ final class PostInput
     #[Assert\Length(max: 120)]
     public ?string $formTitle = null;
 
+    /** Рубрика из фиксированного списка; пусто -- статья без рубрики. */
+    public ?PostRubric $rubric = null;
+
     /** Версия, с которой открыли форму: ловит одновременное редактирование. */
     public ?int $version = null;
 
@@ -53,6 +57,7 @@ final class PostInput
         $input->metaTitle = $data->metaTitle;
         $input->metaDescription = $data->metaDescription;
         $input->formTitle = $data->formTitle;
+        $input->rubric = $data->rubric;
         $input->version = $data->version;
 
         return $input;

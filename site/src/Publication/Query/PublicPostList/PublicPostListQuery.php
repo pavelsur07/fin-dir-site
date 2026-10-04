@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Publication\Query\PublicPostList;
 
 use App\Publication\Entity\Post;
+use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -27,11 +28,16 @@ final class PublicPostListQuery
     /**
      * @return PagerfantaInterface<PublicPostListItem>
      */
-    public function paginate(int $page): PagerfantaInterface
+    public function paginate(int $page, ?PostRubric $rubric = null): PagerfantaInterface
     {
+        $query = $this->published();
+        if (null !== $rubric) {
+            $query->andWhere('p.rubric = :rubric')->setParameter('rubric', $rubric);
+        }
+
         /** @var PagerfantaInterface<PublicPostListItem> $pager */
         $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(
-            new QueryAdapter($this->published(), fetchJoinCollection: false, useOutputWalkers: false),
+            new QueryAdapter($query, fetchJoinCollection: false, useOutputWalkers: false),
             $page,
             self::PER_PAGE,
         );
@@ -60,7 +66,7 @@ final class PublicPostListQuery
     private function published(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
-            ->select(\sprintf('NEW %s(p.id, p.slug, p.title, p.excerpt, p.publishedAt)', PublicPostListItem::class))
+            ->select(\sprintf('NEW %s(p.id, p.slug, p.title, p.excerpt, p.publishedAt, p.rubric, LENGTH(p.body))', PublicPostListItem::class))
             ->from(Post::class, 'p')
             ->where('p.status = :published')
             ->setParameter('published', PostStatus::PUBLISHED)

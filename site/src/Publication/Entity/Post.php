@@ -6,6 +6,7 @@ namespace App\Publication\Entity;
 
 use App\Publication\Exception\PostCannotBeTransitioned;
 use App\Publication\Exception\PostSlugIsLocked;
+use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostSlug;
 use App\Publication\ValueObject\PostStatus;
 use App\Publication\ValueObject\PostTitle;
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'publication_post')]
 #[ORM\UniqueConstraint(name: 'publication_post_slug_uniq', columns: ['slug'])]
 #[ORM\Index(name: 'publication_post_status_idx', columns: ['status'])]
+#[ORM\Index(name: 'publication_post_rubric_idx', columns: ['rubric'])]
 class Post
 {
     #[ORM\Id]
@@ -47,6 +49,9 @@ class Post
     #[ORM\Column(length: 120, nullable: true)]
     private ?string $formTitle;
 
+    #[ORM\Column(length: 32, nullable: true, enumType: PostRubric::class)]
+    private ?PostRubric $rubric;
+
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
@@ -70,6 +75,7 @@ class Post
         ?string $metaDescription,
         \DateTimeImmutable $now,
         ?string $formTitle = null,
+        ?PostRubric $rubric = null,
     ) {
         $this->title = self::requireTitle($title);
         $this->slug = self::requireSlug($slug);
@@ -78,6 +84,7 @@ class Post
         $this->metaTitle = $metaTitle;
         $this->metaDescription = $metaDescription;
         $this->formTitle = $formTitle;
+        $this->rubric = $rubric;
         $this->createdAt = $now;
         $this->updatedAt = $now;
     }
@@ -90,6 +97,7 @@ class Post
         ?string $metaDescription,
         \DateTimeImmutable $now,
         ?string $formTitle = null,
+        ?PostRubric $rubric = null,
     ): void {
         if (PostStatus::PUBLISHED === $this->status && '' === trim($body)) {
             throw new \InvalidArgumentException('Published post body must not be empty.');
@@ -101,6 +109,7 @@ class Post
         $this->metaTitle = $metaTitle;
         $this->metaDescription = $metaDescription;
         $this->formTitle = $formTitle;
+        $this->rubric = $rubric;
         $this->updatedAt = $now;
     }
 

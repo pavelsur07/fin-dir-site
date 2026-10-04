@@ -1,0 +1,3 @@
+{# Мета статьи в списке: «22 сентября 2026 · 6 мин». Вход: post (PublicPostListItem). #}
+{% set months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'] %}
+<p class="type-t7 text-fg-muted"><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('j') }} {{ months[post.publishedAt|date('n') - 1] }} {{ post.publishedAt|date('Y') }}</time> · {{ post.readingMinutes }} мин</p>

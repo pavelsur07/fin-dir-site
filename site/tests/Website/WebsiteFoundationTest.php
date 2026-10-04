@@ -34,7 +34,7 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorExists('meta[name="description"]', $path);
             self::assertSelectorExists('link[rel="canonical"]', $path);
             // Инлайновые SVG -- только декоративные иконки; логотип -- файлы SVG в <img>.
-            self::assertSelectorCount(['/' => 20, '/about' => 2][$path] ?? 0, 'body svg', $path);
+            self::assertSelectorCount(['/' => 20, '/about' => 2, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
             // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем.
             self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
             if ('/' === $path) {
@@ -47,7 +47,7 @@ final class WebsiteFoundationTest extends WebTestCase
                 self::assertSelectorCount(1, 'main section[aria-labelledby="home-team-title"] img[alt="Павел Новиков, управляющий партнёр"]');
             }
             // Главная и страницы с шапкой (Page Header) имеют полноширинную секцию; текст остальных страниц остаётся в общем контейнере.
-            self::assertSelectorExists(in_array($path, ['/', '/about'], true) ? 'main > section > div.max-w-container h1' : 'main > div.max-w-container > div:not([class*="max-w-"]) h1', $path);
+            self::assertSelectorExists(in_array($path, ['/', '/about', '/gazeta'], true) ? 'main > section > div.max-w-container h1' : 'main > div.max-w-container > div:not([class*="max-w-"]) h1', $path);
         }
     }
 
