@@ -1,11 +1,57 @@
 {% extends 'website/layouts/page.html.twig' %}
 
-{% block title %}Кейсы — Ваш Финдир{% endblock %}
-{% block description %}Как порядок в цифрах влияет на решения в e-commerce.{% endblock %}
+{% block title %}Кейсы{% if industry %} — {{ industry.label }}{% endif %} — Ваш Финдир{% endblock %}
+{% block description %}Разбираем задачи клиентов с оборотом от 2 млн ₽ в месяц: что было в цифрах, что мы сделали и какие решения приняли собственники.{% endblock %}
+{# Демо-данные: страница закрыта от индексации до замены реальными кейсами. #}
+{% block robots %}noindex, follow{% endblock %}
 
 {% block active_navigation %}cases{% endblock %}
 
-{% block content %}
-    <h1 class="type-t2 md:type-t1">Кейсы</h1>
-    <p>Раздел в разработке. Скоро здесь появятся кейсы клиентов.</p>
+{# Как на главной: секции сами задают фон и контейнер, поэтому body без контейнера layout. #}
+{% block body %}
+    <div class="dark bg-surface">
+        {% include 'website/components/page-header.html.twig' with {
+            crumbs: [{label: 'Главная', url: '/'}, {label: 'Кейсы'}],
+            title: 'Кейсы: как бизнес увидел реальную прибыль',
+            lead: 'Разбираем задачи клиентов с оборотом от 2 млн ₽ в месяц: что было в цифрах, что мы сделали и какие решения приняли собственники.',
+        } only %}
+        <div class="mx-auto max-w-container px-4 pb-12 md:px-8 md:pb-16">
+            <ul class="grid grid-cols-1 gap-6 border-t border-border pt-8 md:grid-cols-3">
+                {% for fact in vf_company_facts.facts %}
+                    <li class="flex flex-col gap-1">
+                        <span class="type-t3-num text-fg">{{ fact.value }}</span>
+                        <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% include 'website/sections/_cases_catalog.html.twig' with {
+        industry: industry,
+        industries: industries,
+        featured: featured,
+        cases: cases,
+        total: total,
+    } only %}
+    {% include 'website/sections/_cases_method.html.twig' with {
+        label: 'Метод',
+        title: 'Как строится каждый кейс',
+        lead: 'У каждого клиента свой порядок действий, но основа одна: сначала порядок в деньгах, потом прибыль, потом решения.',
+        steps: [
+            {number: '01', title: 'Первый месяц: ДДС и платёжный календарь', text: 'Загружаем движение денег, выстраиваем структуру учёта и платёжный календарь по неделям.'},
+            {number: '02', title: 'Затем: ОПиУ и ABC-анализ', text: 'Считаем прибыль по направлениям, товарам и проектам и показываем, что приносит деньги, а что съедает.'},
+            {number: '03', title: 'Решения на цифрах', text: 'Помогаем с закупками, проектами и распределением ресурсов, опираясь на данные, а не на догадки.'},
+        ],
+        note: 'Ритм работы: еженедельная встреча и отчётная встреча по итогам месяца, обычно 5–7 числа.',
+    } only %}
+    <div class="dark">
+        {% include 'website/sections/_lead_form.html.twig' with {
+            id: 'lead-form',
+            form: 'consultation',
+            title: 'Хотите увидеть реальную прибыль своего бизнеса?',
+            text: 'Расскажите о задаче — предложим, с чего начать.',
+            form_title: 'Обсудить задачу',
+            action_label: 'Обсудить задачу',
+        } only %}
+    </div>
 {% endblock %}

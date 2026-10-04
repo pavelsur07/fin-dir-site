@@ -21,6 +21,12 @@ publication_controllers:
     namespace: App\Publication\Controller
   type: attribute
 
+client_case_controllers:
+  resource:
+    path: ../src/ClientCase/Controller/
+    namespace: App\ClientCase\Controller
+  type: attribute
+
 admin_controllers:
   resource:
     path: ../src/Admin/Controller/

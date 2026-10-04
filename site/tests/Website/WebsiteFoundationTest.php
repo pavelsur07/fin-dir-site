@@ -34,7 +34,10 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorExists('meta[name="description"]', $path);
             self::assertSelectorExists('link[rel="canonical"]', $path);
             // Инлайновые SVG -- только декоративные иконки; логотип -- файлы SVG в <img>.
-            self::assertSelectorCount(['/' => 21, '/about' => 3, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
+            // Число иконок /cases зависит от количества кейсов в БД -- его проверяет CaseIndexTest.
+            if ('/cases' !== $path) {
+                self::assertSelectorCount(['/' => 21, '/about' => 3, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
+            }
             // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем.
             self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
             if ('/' === $path) {
@@ -47,7 +50,13 @@ final class WebsiteFoundationTest extends WebTestCase
                 self::assertSelectorCount(1, 'main section[aria-labelledby="home-team-title"] img[alt="Павел Новиков, управляющий партнёр"]');
             }
             // Главная и страницы с шапкой (Page Header) имеют полноширинную секцию; текст остальных страниц остаётся в общем контейнере.
-            self::assertSelectorExists(in_array($path, ['/', '/about', '/gazeta'], true) ? 'main > section > div.max-w-container h1' : 'main > div.max-w-container > div:not([class*="max-w-"]) h1', $path);
+            // /cases: тёмный hero -- Page Header внутри обёртки .dark.
+            $headingSelector = match (true) {
+                '/cases' === $path => 'main > div.dark > section[data-vf-component="page-header"] h1',
+                in_array($path, ['/', '/about', '/gazeta'], true) => 'main > section > div.max-w-container h1',
+                default => 'main > div.max-w-container > div:not([class*="max-w-"]) h1',
+            };
+            self::assertSelectorExists($headingSelector, $path);
         }
     }
 

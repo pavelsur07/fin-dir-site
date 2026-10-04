@@ -1,0 +1,20 @@
+{#
+    Секция «Метод»: как строится каждый кейс. Аргументы: label, title, lead, steps [{number, title, text}], note.
+#}
+<section class="bg-surface-muted py-16 md:py-24" aria-labelledby="cases-method-title">
+    <div class="mx-auto max-w-container px-4 md:px-8">
+        <p class="type-t-mono-sm text-fg-muted">{{ label }}</p>
+        <h2 class="mt-2 type-t2-article text-fg md:type-t2" id="cases-method-title">{{ title }}</h2>
+        <p class="mt-3 mb-12 max-w-measure type-t4 text-fg-secondary">{{ lead }}</p>
+        <ol class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+            {% for step in steps %}
+                <li class="flex flex-col gap-2 rounded-lg bg-surface p-6 shadow-sm">
+                    <span class="type-t-mono-sm text-fg-muted" aria-hidden="true">{{ step.number }}</span>
+                    <h3 class="type-h4 text-fg">{{ step.title }}</h3>
+                    <p class="type-t6 text-fg-secondary">{{ step.text }}</p>
+                </li>
+            {% endfor %}
+        </ol>
+        {% if note|default(null) %}<p class="mt-8 max-w-measure type-t6 text-fg-secondary">{{ note }}</p>{% endif %}
+    </div>
+</section>

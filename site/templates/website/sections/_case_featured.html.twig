@@ -1,0 +1,41 @@
+{#
+    Главный кейс: слева задача и шаги, справа панель с метриками. Вход: case (FeaturedCaseView).
+#}
+<article class="grid grid-cols-1 gap-8 rounded-lg border border-border bg-surface p-6 md:p-8 lg:grid-cols-2 lg:gap-12" aria-labelledby="case-featured-title" data-vf-component="case-featured">
+    <div class="flex flex-col items-start gap-4">
+        <ul class="flex flex-wrap gap-2">
+            <li class="rounded-xs bg-surface-muted px-2 py-1 type-t7 font-medium text-fg-secondary">Главный кейс</li>
+            <li class="rounded-xs bg-surface-muted px-2 py-1 type-t7 font-medium text-fg-secondary">{{ case.industry.label }}</li>
+            {% for tag in case.tags %}
+                <li class="rounded-xs border border-border px-2 py-1 type-t7 text-fg-secondary">{{ tag }}</li>
+            {% endfor %}
+        </ul>
+        <h2 class="type-t2-article text-fg md:type-t2" id="case-featured-title">{{ case.title }}</h2>
+        <p class="type-t4 text-fg-secondary">{{ case.task }}</p>
+        <h3 class="type-t5 font-semibold text-fg">Что сделали</h3>
+        <ul class="flex flex-col gap-3">
+            {% for step in case.steps %}
+                <li class="flex gap-3 type-t6 text-fg-secondary">
+                    {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'size-icon-md shrink-0 text-accent'} only %}
+                    <span>{{ step }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <a class="mt-2 inline-flex min-h-control-touch items-center gap-1 rounded-xs type-t5 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('app_cases_index') }}" aria-label="Читать кейс: {{ case.title }}">
+            Читать кейс
+            {% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm shrink-0'} only %}
+        </a>
+    </div>
+    <div class="flex flex-col gap-6 rounded-lg bg-surface-muted p-6 md:p-8">
+        <dl class="flex flex-col gap-6">
+            {% for metric in case.metrics %}
+                {# Подпись (dt) в разметке идёт первой, визуально число стоит над ней. #}
+                <div class="flex flex-col-reverse gap-1">
+                    <dt class="type-t6 text-fg-secondary">{{ metric.label }}</dt>
+                    <dd class="type-t8 text-accent">{{ metric.value }}</dd>
+                </div>
+            {% endfor %}
+        </dl>
+        {% if case.source %}<p class="type-t7 text-fg-muted">{{ case.source }}</p>{% endif %}
+    </div>
+</article>
