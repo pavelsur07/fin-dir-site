@@ -17,7 +17,7 @@
         <div class="contents md:flex md:flex-col md:gap-8">
             <div class="order-1 flex flex-col gap-4">
                 {% if badge|default(null) %}<span class="self-start whitespace-nowrap rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary">{{ badge }}</span>{% endif %}
-                <h2 class="type-t2 text-fg" id="{{ labelled_by }}">{{ title }}</h2>
+                <h2 class="type-t2-article text-fg md:type-t2" id="{{ labelled_by }}">{{ title }}</h2>
                 {% if text|default(null) %}<p class="type-t4 text-fg-secondary">{{ text }}</p>{% endif %}
             </div>
             {% if points|default([]) is not empty %}
@@ -38,7 +38,7 @@
             {% if person|default(null) %}
                 <figure class="flex items-end gap-5 rounded-lg border border-border-subtle bg-surface p-5 order-3">
                     <div class="aspect-4/5 w-24 shrink-0 overflow-hidden rounded-md bg-border-subtle">
-                        <img class="size-full origin-top scale-150 object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
+                        <img class="size-full object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
                     </div>
                     <div class="flex min-w-0 flex-col gap-2">
                         {% if person.quote|default(null) %}<blockquote class="type-t6 text-fg">«{{ person.quote }}»</blockquote>{% endif %}
