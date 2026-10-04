@@ -1,6 +1,6 @@
 {# Тёмная секция с миссией. Вход: text — HTML-фрагмент (выделение через <span class="text-accent">), label — метка, по умолчанию «Миссия».
-   Расстояние между секциями 64 / 96 задаёт сама секция; контейнер и поля даёт layout страницы. #}
-<section class="py-16 md:py-24" aria-labelledby="mission-title" data-vf-component="mission-block">
+   Секция добавляет 16 / 48 px к py-12 контейнера layout: вместе 64 / 96 между секциями. Контейнер и поля даёт layout страницы. #}
+<section class="py-4 md:py-12" aria-labelledby="mission-title" data-vf-component="mission-block">
     <div class="dark flex flex-col items-center gap-4 rounded-xl bg-surface px-6 py-16 text-center md:px-12 md:py-24">
         <span class="type-t7 rounded-full bg-surface-raised px-3 py-1 font-medium text-fg-secondary">{{ label|default('Миссия') }}</span>
         <h2 id="mission-title" class="type-t2-article md:type-t2 max-w-title text-balance text-fg">{{ text|raw }}</h2>
