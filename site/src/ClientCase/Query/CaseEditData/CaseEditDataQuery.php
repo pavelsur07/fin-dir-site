@@ -19,7 +19,7 @@ final class CaseEditDataQuery
         /** @var CaseEditData|null $data */
         $data = $this->entityManager->createQueryBuilder()
             ->select(\sprintf(
-                'NEW %s(c.id, c.slug, c.industry, c.title, c.problem, c.resultValue, c.resultLabel, c.tags, c.task, c.steps, c.metrics, c.source, c.featured, c.status, c.publishedAt)',
+                'NEW %s(c.id, c.slug, c.industry, c.title, c.problem, c.resultValue, c.resultLabel, c.tags, c.task, c.steps, c.metrics, c.source, c.featured, c.status, c.publishedAt, c.version)',
                 CaseEditData::class,
             ))
             ->from(ClientCase::class, 'c')

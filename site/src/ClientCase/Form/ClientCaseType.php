@@ -11,10 +11,12 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * @extends AbstractType<ClientCaseInput>
@@ -89,7 +91,17 @@ final class ClientCaseType extends AbstractType
                 'label' => 'Главный кейс',
                 'required' => false,
                 'help' => 'Показывается развёрнуто над сеткой. Главным остаётся один кейс: прежний перестанет быть главным.',
+            ])
+            ->add('version', HiddenType::class, [
+                // На редактировании версия обязательна: без неё не поймать параллельную правку.
+                'constraints' => $options['is_edit'] ? [new NotNull(message: 'Форма устарела. Обновите страницу.')] : [],
             ]);
+
+        // Скрытое поле приходит строкой, а в DTO версия -- int.
+        $builder->get('version')->addModelTransformer(new CallbackTransformer(
+            static fn (?int $version): ?string => null === $version ? null : (string) $version,
+            static fn (?string $version): ?int => null === $version || '' === $version ? null : (int) $version,
+        ));
 
         $builder->get('tags')->addModelTransformer(new CallbackTransformer(
             static fn (array $tags): string => implode(', ', $tags),
@@ -110,8 +122,10 @@ final class ClientCaseType extends AbstractType
         $resolver->setDefaults([
             'data_class' => ClientCaseInput::class,
             'slug_locked' => false,
+            'is_edit' => false,
         ]);
         $resolver->setAllowedTypes('slug_locked', 'bool');
+        $resolver->setAllowedTypes('is_edit', 'bool');
     }
 
     /**

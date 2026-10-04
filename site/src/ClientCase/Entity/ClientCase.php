@@ -77,6 +77,11 @@ class ClientCase
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $publishedAt = null;
 
+    /** Оптимистичная блокировка: правка по устаревшей версии формы не перезаписывает чужую. */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Version]
+    private int $version = 1;
+
     /**
      * @param list<string> $tags
      */
@@ -244,6 +249,11 @@ class ClientCase
     public function publishedAt(): ?\DateTimeImmutable
     {
         return $this->publishedAt;
+    }
+
+    public function version(): int
+    {
+        return $this->version;
     }
 
     /**
