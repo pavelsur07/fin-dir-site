@@ -42,14 +42,14 @@
         ],
         note: 'Ритм работы: еженедельная встреча и отчётная встреча по итогам месяца, обычно 5–7 числа.',
     } only %}
-    <div class="dark">
-        {% include 'website/sections/_lead_form.html.twig' with {
-            id: 'lead-form',
-            form: 'consultation',
-            title: 'Хотите увидеть реальную прибыль своего бизнеса?',
-            text: 'Расскажите о задаче — предложим, с чего начать.',
-            form_title: 'Обсудить задачу',
-            action_label: 'Обсудить задачу',
-        } only %}
-    </div>
+    {% include 'website/sections/_lead_form.html.twig' with {
+        id: 'lead-form',
+        form: 'consultation',
+        variant: 'panel',
+        badge: 'Заявка',
+        title: 'Хотите увидеть реальную прибыль своего бизнеса?',
+        text: 'Расскажите о задаче — предложим, с чего начать.',
+        form_title: 'Обсудить задачу',
+        action_label: 'Обсудить задачу',
+    } only %}
 {% endblock %}

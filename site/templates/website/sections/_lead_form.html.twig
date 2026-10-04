@@ -3,22 +3,24 @@
     Раскладка -- паттерн 25.4 ДС (экскурсия): секция на всю ширину, слева описание, справа карточка формы.
     Вход: form ('consultation' | 'excursion' | 'diagnostics' -- ключ LeadFormCatalog), title,
     optional: id, text, badge, points [{icon, title, text}], person {name, role, quote, image, alt},
-    form_title, action_label, note.
+    form_title, action_label, note, variant ('panel' -- светлая панель на bg-surface; badge тогда меткой text-accent).
     Вопросы формы выводятся чипами из LeadFormCatalog; «Другое» (otherOption) открывает поле своими словами.
 #}
 {% set section_id = id|default('vf-lead-form') %}
 {% set labelled_by = section_id ~ '-title' %}
 {% set definition = lead_form(form|default('consultation')) %}
 {% set with_contact_type = definition.key == 'excursion' %}
+{% set panel = variant|default('default') == 'panel' %}
 
-<section class="scroll-mt-16 bg-surface-muted" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
-    <div class="mx-auto grid w-full max-w-container items-start gap-8 px-4 py-16 md:grid-cols-2 md:gap-x-12 md:px-8 md:py-24">
+<section class="{{ panel ? 'scroll-mt-16 bg-surface' : 'scroll-mt-16 bg-surface-muted' }}" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
+    {% if panel %}<div class="mx-auto w-full max-w-page px-4 py-16 md:px-8 md:py-24"><div class="rounded-xl border border-border-subtle bg-surface-muted p-6 md:p-12">{% endif %}
+    <div class="{{ panel ? 'grid w-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12' : 'mx-auto grid w-full max-w-container items-start gap-8 px-4 py-16 md:grid-cols-2 md:gap-x-12 md:px-8 md:py-24' }}">
         {# Левая колонка: на мобильном «contents» -- блоки встают в общую сетку (описание → форма → сотрудник), с md -- одна колонка. #}
         <div class="contents md:flex md:flex-col md:gap-8">
             <div class="order-1 flex flex-col gap-4">
-                {% if badge|default(null) %}<span class="self-start whitespace-nowrap rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary">{{ badge }}</span>{% endif %}
+                {% if badge|default(null) %}<span class="{{ panel ? 'self-start type-t7 font-medium text-accent' : 'self-start whitespace-nowrap rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary' }}">{{ badge }}</span>{% endif %}
                 <h2 class="type-t2-article text-fg md:type-t2" id="{{ labelled_by }}">{{ title }}</h2>
-                {% if text|default(null) %}<p class="type-t4 text-fg-secondary">{{ text }}</p>{% endif %}
+                {% if text|default(null) %}<p class="{{ panel ? 'max-w-text type-t4 text-fg-secondary' : 'type-t4 text-fg-secondary' }}">{{ text }}</p>{% endif %}
             </div>
             {% if points|default([]) is not empty %}
                 <ul class="order-1 flex flex-col">
@@ -50,7 +52,7 @@
                 </figure>
             {% endif %}
         </div>
-        <form class="flex flex-col gap-6 order-2 rounded-xl bg-surface p-8 shadow-md md:order-none" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ form_title|default(null) ? section_id ~ '-form-title' : labelled_by }}" novalidate>
+        <form class="{{ panel ? 'order-2 flex w-full max-w-modal-md flex-col gap-5 rounded-lg border border-border bg-surface p-6 md:order-none md:justify-self-end md:p-8' : 'flex flex-col gap-6 order-2 rounded-xl bg-surface p-8 shadow-md md:order-none' }}" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="{{ definition.key }}" aria-labelledby="{{ form_title|default(null) ? section_id ~ '-form-title' : labelled_by }}" novalidate>
             {% if form_title|default(null) %}<h3 class="type-t3 text-fg" id="{{ section_id }}-form-title">{{ form_title }}</h3>{% endif %}
             <input type="hidden" name="_token" value="{{ csrf_token('lead_submit') }}">
             <input type="hidden" name="form" value="{{ definition.key }}">
@@ -139,8 +141,8 @@
                     analytics_private: true,
                 } only %}
             {% endif %}
-            {% set agreement_label %}Согласен на <a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('consent') }}" target="_blank" rel="noopener">обработку персональных данных</a>{% endset %}
-            {% set agreement_links %}<a class="rounded-xs underline focus-visible:shadow-focus" href="{{ path('privacy') }}" target="_blank" rel="noopener">Политика конфиденциальности</a>{% endset %}
+            {% set agreement_label %}Согласен на <a class="{{ panel ? 'rounded-xs text-accent underline focus-visible:shadow-focus' : 'rounded-xs underline focus-visible:shadow-focus' }}" href="{{ path('consent') }}" target="_blank" rel="noopener">обработку персональных данных</a>{% endset %}
+            {% set agreement_links %}<a class="{{ panel ? 'rounded-xs text-accent underline focus-visible:shadow-focus' : 'rounded-xs underline focus-visible:shadow-focus' }}" href="{{ path('privacy') }}" target="_blank" rel="noopener">Политика конфиденциальности</a>{% endset %}
             {% include 'website/components/_form_checkbox.html.twig' with {
                 id: section_id ~ '-agreement',
                 name: 'agreement',
@@ -155,4 +157,5 @@
             {% if note|default(null) %}<p class="type-t7 text-center text-fg-muted" data-vf-form-note>{{ note }}</p>{% endif %}
         </form>
     </div>
+    {% if panel %}</div></div>{% endif %}
 </section>
