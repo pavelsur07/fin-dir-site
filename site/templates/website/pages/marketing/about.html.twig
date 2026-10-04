@@ -22,7 +22,10 @@
             text: 'Создать <span class="text-accent">культуру эффективного использования</span> инструментов управленческого учёта в&nbsp;малом и среднем бизнесе',
         } only %}
     </div>
-    {% include 'website/sections/_company_facts.html.twig' with {} only %}
+    {% include 'website/sections/_company_facts.html.twig' with {
+        title: vf_company_facts.title,
+        facts: vf_company_facts.facts,
+    } only %}
     {% include 'website/sections/_trust_data.html.twig' with {
         id: 'about-process-title',
         title: 'Как мы работаем',
