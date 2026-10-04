@@ -21,3 +21,6 @@ docker-data/
 # Репозиторий публичный: в *.example кладём только плейсхолдеры, не значения.
 !.env.example
 !**/.env.example
+
+# Промежуточный файл экстрактора дизайн-системы
+design-system-inbox/tools/raw.json

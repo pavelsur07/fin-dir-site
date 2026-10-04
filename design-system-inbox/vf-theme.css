@@ -231,7 +231,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1440px;
-  --container-container: 1200px;
+  --container-container: 1280px;
   --container-title: 800px;
   --container-measure: 720px;
   --container-lead: 520px;
@@ -242,8 +242,8 @@
   --container-crumb: 240px;
   /* Алиасы старых имён до v2.4: в шаблонах использовать новые */
   --container-text: 720px;
-  --container-page: 1200px;
-  --container-article: 1200px;
+  --container-page: 1280px;
+  --container-article: 1280px;
   /* Липкий отступ: шапка + 24. По умолчанию < 1024, с lg -- основное значение, переопределение в @layer base */
   --spacing-sticky: 88px;
 
