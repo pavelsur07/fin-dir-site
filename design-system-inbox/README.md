@@ -103,7 +103,7 @@ Hover primary на ink «светлее, а не темнее» получает
 | Фокус кнопки / на ink / поля / ошибка поля | `focus-visible:shadow-focus` · `shadow-focus-inverse` · `focus:border-accent focus:shadow-focus-field` · `border-error shadow-error-field` |
 | Тени | `shadow-sm` `shadow-md` `shadow-lg` |
 | Анимация | `transition-colors duration-fast ease-out` · `duration-base` `-slow` `-deliberate` `-instant` · `ease-in` `ease-standard` · `animate-spin` `animate-skeleton` |
-| Ширины и ограничения (раздел 29, группа «Ширины и ограничения») | `max-w-container` (1200) · `max-w-title` (800) · `max-w-measure` (720) · `max-w-lead` (520) · `max-w-toc` / `min-w-toc` (280 / 240) · `max-w-crumb` (240) · `max-h-cover` (520) · `min-w-table` (400) · `w-sidebar` (256) · `max-w-modal-sm` / `-md` / `-lg` (400 / 560 / 720). Алиасы до v2.4: `max-w-text` (→ measure), `max-w-page` и `max-w-article` (→ container) |
+| Ширины и ограничения (раздел 29, группа «Ширины и ограничения») | `max-w-container` (1280) · `max-w-title` (800) · `max-w-measure` (720) · `max-w-lead` (520) · `max-w-toc` / `min-w-toc` (280 / 240) · `max-w-crumb` (240) · `max-h-cover` (520) · `min-w-table` (400) · `w-sidebar` (256) · `max-w-modal-sm` / `-md` / `-lg` (400 / 560 / 720). Алиасы до v2.4: `max-w-text` (→ measure), `max-w-page` и `max-w-article` (→ container) |
 | Высота шапки | `h-header-compact` (64, < 1024) · `lg:h-header` (72, ≥ 1024) |
 | Липкий отступ под шапкой | `top-sticky` · `scroll-mt-sticky`: одна переменная `--spacing-sticky`, 88 < 1024 и 96 с `lg` (шапка + 24) |
 | Пропорции медиа | `aspect-video` (16:9) `aspect-photo` (3:2) `aspect-portrait` (4:5) `aspect-screenshot` (16:10) `aspect-square` |
