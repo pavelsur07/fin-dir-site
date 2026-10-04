@@ -1,6 +1,6 @@
 {#
-    Hero страницы услуги: крошки, бейдж, H1, лид, кнопки, строка доверия, справа произвольная карточка.
-    Аргументы: crumbs, badge, title, lead, buttons [{label, href, variant}], trust [{value, text}], aside_html (необязательно, готовая разметка).
+    Hero страницы услуги: крошки, бейдж, H1, лид, кнопки, блок «Доверие», справа произвольная карточка.
+    Аргументы: crumbs, badge, title, lead, buttons [{label, href, variant}], aside_html (необязательно, готовая разметка).
 #}
 <section class="overflow-hidden border-b border-border-subtle bg-surface-muted text-fg" aria-labelledby="service-hero-title">
     <div class="mx-auto flex w-full max-w-page flex-col gap-8 px-4 pt-6 pb-12 md:px-8 md:pb-16">
@@ -20,14 +20,9 @@
                         } only %}
                     {% endfor %}
                 </div>
-                <ul class="grid w-full grid-cols-1 gap-4 border-t border-border pt-6 md:grid-cols-3">
-                    {% for fact in trust %}
-                        <li class="flex flex-col gap-1">
-                            <span class="type-t3-num text-fg">{{ fact.value }}</span>
-                            <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
-                        </li>
-                    {% endfor %}
-                </ul>
+                <div class="w-full border-t border-border pt-6">
+                    {% include 'website/components/_trust_cards.html.twig' with {compact: true} only %}
+                </div>
             </div>
             {% if aside_html|default(null) %}
                 <div>{{ aside_html }}</div>

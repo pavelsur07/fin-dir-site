@@ -1,22 +1,10 @@
 {#
-    Секция «Нам доверяют»: карточки с фактами о компании.
-    Аргументы: title, facts [{value, text, icon}]. icon задан — иконка и value обычным заголовком, иначе value крупным числом.
+    Секция «Нам доверяют»: заголовок и блок «Доверие» (components/_trust_cards).
+    Аргументы: title (необязательно, по умолчанию «Нам доверяют»).
 #}
 <section class="bg-surface py-16 md:py-24" aria-labelledby="about-facts-title">
     <div class="mx-auto max-w-container px-4 md:px-8">
-        <h2 id="about-facts-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
-        <ul class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
-            {% for fact in facts %}
-                <li class="flex flex-col items-start gap-3 rounded-lg border border-border-subtle p-8">
-                    {% if fact.icon|default(null) %}
-                        {% include 'website/components/_icon.html.twig' with {name: fact.icon, class: 'size-icon-xl shrink-0 text-accent'} only %}
-                        <p class="type-t3 text-fg">{{ fact.value }}</p>
-                    {% else %}
-                        <p class="type-t1 text-accent">{{ fact.value }}</p>
-                    {% endif %}
-                    <p class="type-t5 text-fg-secondary">{{ fact.text }}</p>
-                </li>
-            {% endfor %}
-        </ul>
+        <h2 id="about-facts-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title|default('Нам доверяют') }}</h2>
+        {% include 'website/components/_trust_cards.html.twig' with {} only %}
     </div>
 </section>
