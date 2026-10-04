@@ -1,10 +1,11 @@
 {#
     Секция «Частые вопросы»: аккордеон на нативных details/summary, без JS.
-    Аргументы: title, items [{question, answer} или {question, columns: [{title, items}]}]. Все вопросы закрыты по умолчанию.
+    Аргументы: title, id (необязательно, id секции; по умолчанию home-faq), items [{question, answer} или {question, columns: [{title, items}]}]. Все вопросы закрыты по умолчанию.
 #}
-<section class="bg-surface-muted py-16 md:py-24" aria-labelledby="home-faq-title">
+{% set faq_id = id|default('home-faq') %}
+<section class="bg-surface-muted py-16 md:py-24" aria-labelledby="{{ faq_id }}-title">
     <div class="mx-auto max-w-container px-4 md:px-8">
-        <h2 id="home-faq-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <h2 id="{{ faq_id }}-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
         <div class="max-w-measure border-t border-border-subtle">
             {% for item in items %}
                 <details class="border-b border-border-subtle">

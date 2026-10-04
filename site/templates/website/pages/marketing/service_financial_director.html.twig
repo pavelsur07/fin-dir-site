@@ -1,0 +1,256 @@
+{% extends 'website/layouts/page.html.twig' %}
+
+{% block title %}Финансовый директор на аутсорсинге — Ваш Финдир{% endblock %}
+{% block description %}Финансовый директор на аутсорсе для бизнеса от 2 млн ₽ оборота в месяц: управленческий учёт, платёжный календарь, ОПиУ и план роста к дивидендам. Бесплатная консультация.{% endblock %}
+
+{% block active_navigation %}services{% endblock %}
+
+{# Вопросы FAQ: те же тексты уходят в разметку FAQPage. Без цен и жёстких сроков. #}
+{% set vf_service_faq = [
+    {question: 'Чем финансовый директор на аутсорсе отличается от бухгалтера?', answer: 'Бухгалтер ведёт учёт и сдаёт отчётность по требованиям закона. Финансовый директор строит управленческий учёт и помогает принимать решения: куда направить деньги, где теряется прибыль и как расти к цели собственника.'},
+    {question: 'Нужно ли менять 1С или учётную систему?', answer: 'Нет. Мы подключаем банки и 1С и выстраиваем управленческий учёт поверх того, что у вас уже есть.'},
+    {question: 'С какого оборота вы работаете?', answer: 'С оборота от 2 млн ₽ в месяц. Отрасли: строительство, торговля, маркетплейсы, услуги, производство и IT. Если вашей отрасли нет в списке, напишите нам — обсудим, подойдёт ли наш метод.'},
+    {question: 'Как проходит работа?', answer: 'Дистанционно. Еженедельная встреча и отчётная встреча по итогам месяца, обычно 5–7 числа. Между встречами вы видите цифры в кабинете и можете задать вопрос в мессенджере.'},
+    {question: 'Сколько это стоит?', answer: 'Стоимость зависит от оборота, количества юридических лиц, глубины погружения и сложности отрасли. Назовём цену после разбора вашей ситуации на бесплатной консультации.'},
+    {question: 'Можно ли подключить услугу на проект или срок?', answer: 'Да. Мы за гибкие условия сотрудничества: подключаем услуги финансового директора на нужный вам период или под конкретную задачу.'},
+] %}
+
+{% block json_ld %}
+    {{ parent() }}
+    {% include 'website/components/_json_ld.html.twig' with {
+        schema: [
+            {
+                '@context': 'https://schema.org',
+                '@type': 'Service',
+                name: 'Финансовый директор на аутсорсинге',
+                serviceType: 'Финансовый директор на аутсорсинге',
+                provider: {'@id': vf_site_url ~ '/#organization'},
+                areaServed: 'RU',
+                url: vf_site_url ~ path('service_financial_director'),
+                description: 'Управленческий учёт, платёжный календарь, ОПиУ и план роста к дивидендам для бизнеса от 2 млн ₽ оборота в месяц.',
+            },
+            {
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: vf_service_faq|map(item => {
+                    '@type': 'Question',
+                    name: item.question,
+                    acceptedAnswer: {'@type': 'Answer', text: item.answer},
+                }),
+            },
+        ],
+    } only %}
+{% endblock %}
+
+{% block body %}
+    {# Справа в hero: условный пример интерфейса. #}
+    {% set hero_aside %}
+        <figure class="flex flex-col gap-4 rounded-lg bg-surface p-6 shadow-lg md:p-8">
+            <figcaption class="flex items-center justify-between gap-3">
+                <span class="type-t5 font-semibold text-fg">Платёжный календарь по неделям</span>
+                <span class="rounded-xs bg-surface-muted px-2 py-1 type-t7 font-medium text-fg-secondary">Пример</span>
+            </figcaption>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse type-t6">
+                    <thead>
+                        <tr>
+                            <th class="border-b border-border px-2 py-2 text-left font-semibold text-fg-secondary" scope="col"></th>
+                            <th class="border-b border-border px-2 py-2 text-right font-semibold text-fg-secondary" scope="col">Неделя 1</th>
+                            <th class="border-b border-border px-2 py-2 text-right font-semibold text-fg-secondary" scope="col">Неделя 2</th>
+                            <th class="border-b border-border px-2 py-2 text-right font-semibold text-fg-secondary" scope="col">Неделя 3</th>
+                            <th class="border-b border-border px-2 py-2 text-right font-semibold text-fg-secondary" scope="col">Неделя 4</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="border-b border-border-subtle px-2 py-2 text-left font-medium text-fg" scope="row">Поступления</th>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">1 200 000</td>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">900 000</td>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">400 000</td>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">1 100 000</td>
+                        </tr>
+                        <tr>
+                            <th class="border-b border-border-subtle px-2 py-2 text-left font-medium text-fg" scope="row">Платежи</th>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">800 000</td>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">1 000 000</td>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">1 300 000</td>
+                            <td class="border-b border-border-subtle px-2 py-2 text-right text-fg-secondary">700 000</td>
+                        </tr>
+                        <tr>
+                            <th class="px-2 py-2 text-left font-semibold text-fg" scope="row">Остаток</th>
+                            <td class="px-2 py-2 text-right font-semibold text-fg">1 400 000</td>
+                            <td class="px-2 py-2 text-right font-semibold text-fg">1 300 000</td>
+                            <td class="px-2 py-2 text-right font-semibold text-error">400 000</td>
+                            <td class="px-2 py-2 text-right font-semibold text-fg">800 000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="rounded-md border border-warning-border bg-warning-bg p-3 type-t6 text-warning">На неделе 3 остаток близок к нулю — разрыв виден заранее.</p>
+            <p class="type-t7 text-fg-muted">Пример интерфейса, цифры условные.</p>
+        </figure>
+    {% endset %}
+    {% include 'website/sections/_service_hero.html.twig' with {
+        crumbs: [{label: 'Главная', url: '/'}, {label: 'Услуги', url: '/services'}, {label: 'Финансовый директор на аутсорсинге'}],
+        badge: 'Финансовый директор на аутсорсе',
+        title: 'Видите реальную прибыль и знаете, как расти к дивидендам',
+        lead: 'Берём на себя управленческий учёт, платёжный календарь и финансовые решения. Вы получаете понятные цифры и план, а не набор таблиц.',
+        buttons: [
+            {label: 'Бесплатная консультация', href: '#lead-form'},
+            {label: 'Как мы работаем', href: '#service-process', variant: 'outline'},
+        ],
+        trust: vf_company_facts.facts,
+        aside_html: hero_aside,
+    } only %}
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'service-problems',
+        title: 'С чем к нам приходят',
+        columns: 4,
+        cards: [
+            {icon: 'chart-no-axes-column', title: 'Не видно реальной прибыли', text: 'Выручка есть, а сколько остаётся после всех расходов, непонятно.'},
+            {icon: 'wallet', title: 'Кассовые разрывы', text: 'Деньги заканчиваются в день оплаты, а о нехватке узнаёте в последний момент.'},
+            {icon: 'trending-up', title: 'Нет цели по дивидендам', text: 'Хочется выводить больше, но не ясно, за счёт чего расти к нужной сумме.'},
+            {icon: 'file-check', title: 'Учёт в разных таблицах', text: 'Цифры в разных файлах расходятся, и им сложно доверять.'},
+        ],
+    } only %}
+    {% include 'website/sections/_service_about.html.twig' with {
+        id: 'service-about',
+        title: 'Что такое финансовый директор на аутсорсе',
+        paragraphs: [
+            'Это специалист, который ведёт финансы вашей компании дистанционно: выстраивает управленческий учёт, следит за деньгами и помогает принимать решения на цифрах.',
+            'Вы не нанимаете человека в штат, а получаете услугу и результат. Работаем с бизнесом от 2 млн ₽ оборота в месяц.',
+        ],
+        list_title: 'Что получает собственник',
+        list: [
+            'Понятную картину движения денег',
+            'Прибыль по направлениям, товарам и проектам',
+            'Платёжный календарь и прогноз остатков',
+            'Регулярные встречи и отчёты',
+            'План и контроль его выполнения',
+        ],
+        tone: 'muted',
+    } only %}
+    {% include 'website/sections/_service_compare.html.twig' with {
+        id: 'service-compare',
+        title: 'Финансовый директор на аутсорсе или финансист в штате',
+        left: {
+            title: 'Штатный специалист',
+            items: [
+                'Высокие затраты на содержание: зарплата, налоги, социальные выплаты, бонусы, обучение',
+                'Ограниченный опыт, так как специализируется на узком сегменте',
+                'Может сосредоточиться на рутине и не предлагать новых решений',
+                'Зависимость от одного человека: при увольнении риск потери ключевых знаний',
+            ],
+        },
+        right: {
+            title: 'Финдир на аутсорсе',
+            accent: true,
+            items: [
+                'Экономическая эффективность: оплата только за конкретные услуги',
+                'Свежий взгляд, новые идеи и решения',
+                'Фокус на стратегии, а не на операционной рутине',
+                'Постоянный обмен знаниями между финансовыми директорами',
+                'Гибкое масштабирование: специалиста можно привлекать по мере необходимости, без долгосрочных обязательств и долгого найма',
+            ],
+        },
+        tone: 'surface',
+    } only %}
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'service-duties',
+        title: 'Что делает финансовый директор',
+        columns: 3,
+        tone: 'muted',
+        cards: [
+            {icon: 'file-check', title: 'Выстраивает управленческий учёт', text: 'Настраивает структуру учёта, чтобы цифры можно было сравнивать месяц к месяцу.'},
+            {icon: 'calendar-check', title: 'Ведёт платёжный календарь', text: 'Показывает платежи и поступления по неделям, кассовые разрывы видны заранее.'},
+            {icon: 'chart-no-axes-column', title: 'Считает прибыль', text: 'Раскладывает ОПиУ по направлениям, товарам и проектам.'},
+            {icon: 'list-todo', title: 'Планирует и контролирует', text: 'Ставит план на месяц и год, сверяет его с фактом и поправляет, пока не поздно.'},
+            {icon: 'calculator', title: 'Просчитывает решения', text: 'Найм, закупка, кредит: заранее видно, что будет с прибылью и деньгами.'},
+            {icon: 'trending-up', title: 'Помогает расти к цели', text: 'Связывает цель собственника по дивидендам с цифрами бизнеса.'},
+        ],
+    } only %}
+    <div class="dark">
+        {% include 'website/sections/_process.html.twig' with {
+            id: 'service-process',
+            title: 'Как мы работаем',
+            steps: [
+                {number: '01', title: 'Загрузка данных и структура учёта', text: 'Подключаем банки и 1С, выстраиваем структуру управленческого учёта. Менять 1С не нужно.'},
+                {number: '02', title: 'Платёжный календарь', text: 'Строим календарь по неделям: платежи и поступления, прогноз остатков, кассовые разрывы.'},
+                {number: '03', title: 'ОПиУ и ABC-анализ', text: 'Считаем прибыль по направлениям, товарам и проектам и показываем, что приносит деньги, а что съедает.'},
+                {number: '04', title: 'Регулярный ритм', text: 'Еженедельная встреча и отчётная встреча по итогам месяца, обычно 5–7 числа.'},
+            ],
+        } only %}
+    </div>
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'service-reports',
+        title: 'Три отчёта, на которых строятся решения',
+        columns: 3,
+        cards: [
+            {icon: 'wallet', label: 'ДДС', title: 'Отчёт о движении денег', text: 'Откуда пришли деньги и на что они потрачены.'},
+            {icon: 'chart-no-axes-column', label: 'ОПиУ', title: 'Отчёт о прибылях и убытках', text: 'Сколько бизнес зарабатывает на самом деле, по направлениям и проектам.'},
+            {icon: 'file-check', label: 'Баланс', title: 'Бухгалтерский баланс', text: 'Чем владеет бизнес и что он должен на выбранную дату.'},
+        ],
+    } only %}
+    {% include 'website/sections/_service_saas.html.twig' with {
+        id: 'service-saas',
+        title: 'Цифры в сервисе, а не в таблицах',
+        paragraphs: [
+            'Отчёты строятся в нашем сервисе, поэтому актуальные цифры доступны вам между встречами — с телефона или компьютера.',
+            'Например, ОПиУ по направлениям с ABC-анализом сразу показывает, какие направления кормят бизнес, а какие съедают деньги.',
+        ],
+        example: {
+            title: 'ОПиУ по направлениям с ABC',
+            columns: ['Направление', 'Выручка', 'Прибыль', 'ABC'],
+            rows: [
+                {name: 'Направление 1', cells: ['4 200 000', '1 050 000'], abc: 'A', class: 'bg-success-bg text-success'},
+                {name: 'Направление 2', cells: ['2 800 000', '420 000'], abc: 'B', class: 'bg-warning-bg text-warning'},
+                {name: 'Направление 3', cells: ['900 000', '−60 000'], abc: 'C', class: 'bg-error-bg text-error'},
+            ],
+            note: 'Пример интерфейса, цифры условные.',
+        },
+        tone: 'muted',
+    } only %}
+    {# Заглушки: заменить реальными кейсами после согласования с клиентами. Реальные демо-кейсы -- на /cases. #}
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'service-cases',
+        title: 'Кейсы',
+        subtitle: 'Примеры задач, с которыми к нам приходят собственники',
+        columns: 3,
+        cards: [
+            {label: '[Отрасль]', title: '[Название кейса 1]', text: '[Задача и результат — заменить реальным кейсом]'},
+            {label: '[Отрасль]', title: '[Название кейса 2]', text: '[Задача и результат — заменить реальным кейсом]'},
+            {label: '[Отрасль]', title: '[Название кейса 3]', text: '[Задача и результат — заменить реальным кейсом]'},
+        ],
+        note: 'Больше примеров — на странице «Кейсы».',
+    } only %}
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'service-price',
+        title: 'От чего зависит цена',
+        subtitle: 'Стоимость называем после разбора вашей ситуации на бесплатной консультации.',
+        columns: 4,
+        tone: 'muted',
+        cards: [
+            {title: 'Оборот', text: 'Чем больше операций и денег в обороте, тем больше работы с учётом.'},
+            {title: 'Количество юрлиц', text: 'Каждое юридическое лицо добавляет данные, которые нужно свести в общую картину.'},
+            {title: 'Глубина погружения', text: 'От базовых отчётов и календаря до планирования и расчёта решений.'},
+            {title: 'Сложность отрасли', text: 'Строительство, торговля, маркетплейсы и производство требуют разной модели учёта.'},
+        ],
+    } only %}
+    {% include 'website/sections/_service_founder.html.twig' with {
+        id: 'service-founder',
+        title: 'Кто отвечает за методологию и качество',
+        person: vf_team.people|first,
+        text: '[Короткий рассказ об опыте и подходе управляющего партнёра — заменить]',
+    } only %}
+    {% include 'website/sections/_faq.html.twig' with {id: 'service-faq', title: 'Частые вопросы', items: vf_service_faq} only %}
+    {% include 'website/sections/_lead_form.html.twig' with {
+        id: 'lead-form',
+        form: 'excursion',
+        variant: 'panel',
+        badge: 'Заявка',
+        title: 'Разберём вашу финансовую ситуацию бесплатно',
+        text: 'Расскажите о бизнесе — покажем, где теряется прибыль и с чего начать.',
+        form_title: 'Бесплатная консультация',
+        action_label: 'Получить консультацию',
+    } only %}
+{% endblock %}
