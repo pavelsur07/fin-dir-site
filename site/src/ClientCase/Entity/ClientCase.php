@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\ClientCase\Entity;
 
+use App\ClientCase\Exception\CaseCannotBeTransitioned;
+use App\ClientCase\Exception\CaseSlugIsLocked;
 use App\ClientCase\ValueObject\CaseIndustry;
+use App\ClientCase\ValueObject\CaseSlug;
 use App\ClientCase\ValueObject\CaseStatus;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -87,11 +90,8 @@ class ClientCase
         array $tags,
         \DateTimeImmutable $now,
     ) {
-        foreach (['slug' => $slug, 'title' => $title, 'problem' => $problem, 'resultValue' => $resultValue, 'resultLabel' => $resultLabel] as $field => $value) {
-            if ('' === trim($value)) {
-                throw new \InvalidArgumentException(\sprintf('Case %s must not be empty.', $field));
-            }
-        }
+        self::requireFilled(['title' => $title, 'problem' => $problem, 'resultValue' => $resultValue, 'resultLabel' => $resultLabel]);
+        self::requireSlug($slug);
 
         $this->slug = $slug;
         $this->industry = $industry;
@@ -105,15 +105,57 @@ class ClientCase
     }
 
     /**
-     * Делает кейс главным: у него обязательны задача, шаги и метрики. Главным может быть только один кейс --
-     * это правило сценария (снять признак с прежнего), а не Entity.
+     * Основное содержание карточки. Вызывается и при создании, и при правке.
+     *
+     * @param list<string> $tags
+     */
+    public function edit(
+        CaseIndustry $industry,
+        string $title,
+        string $problem,
+        string $resultValue,
+        string $resultLabel,
+        array $tags,
+        \DateTimeImmutable $now,
+    ): void {
+        self::requireFilled(['title' => $title, 'problem' => $problem, 'resultValue' => $resultValue, 'resultLabel' => $resultLabel]);
+
+        $this->industry = $industry;
+        $this->title = $title;
+        $this->problem = $problem;
+        $this->resultValue = $resultValue;
+        $this->resultLabel = $resultLabel;
+        $this->tags = $tags;
+        $this->updatedAt = $now;
+    }
+
+    /**
+     * Адрес меняется только до первой публикации: после неё он уже мог попасть в поиск и ссылки.
+     */
+    public function changeSlug(string $slug, \DateTimeImmutable $now): void
+    {
+        if ($slug === $this->slug) {
+            return;
+        }
+
+        if (null !== $this->publishedAt) {
+            throw new CaseSlugIsLocked($this->id);
+        }
+
+        self::requireSlug($slug);
+        $this->slug = $slug;
+        $this->updatedAt = $now;
+    }
+
+    /**
+     * Расширенное описание: задача, шаги, метрики и источник данных. У главного кейса они обязательны.
      *
      * @param list<string>                              $steps
      * @param list<array{value: string, label: string}> $metrics
      */
-    public function markAsFeatured(string $task, array $steps, array $metrics, ?string $source, \DateTimeImmutable $now): void
+    public function describe(?string $task, array $steps, array $metrics, ?string $source, \DateTimeImmutable $now): void
     {
-        if ('' === trim($task) || [] === $steps || [] === $metrics) {
+        if ($this->featured && (null === $task || '' === trim($task) || [] === $steps || [] === $metrics)) {
             throw new \InvalidArgumentException('Featured case requires task, steps and metrics.');
         }
 
@@ -121,21 +163,62 @@ class ClientCase
         $this->steps = $steps;
         $this->metrics = $metrics;
         $this->source = $source;
+        $this->updatedAt = $now;
+    }
+
+    /**
+     * Делает кейс главным: у него обязательны задача, шаги и метрики. Что главным остаётся только один кейс --
+     * правило сценария (снять признак с прежнего), а не Entity.
+     */
+    public function markAsFeatured(\DateTimeImmutable $now): void
+    {
+        if (null === $this->task || '' === trim($this->task) || [] === $this->steps || [] === $this->metrics) {
+            throw new \InvalidArgumentException('Featured case requires task, steps and metrics.');
+        }
+
         $this->featured = true;
+        $this->updatedAt = $now;
+    }
+
+    public function unmarkAsFeatured(\DateTimeImmutable $now): void
+    {
+        if (!$this->featured) {
+            return;
+        }
+
+        $this->featured = false;
         $this->updatedAt = $now;
     }
 
     public function publish(\DateTimeImmutable $now): void
     {
-        $this->status = CaseStatus::PUBLISHED;
+        $this->transitionTo(CaseStatus::PUBLISHED, $now);
         $this->publishedAt ??= $now;
-        $this->updatedAt = $now;
+    }
+
+    public function unpublish(\DateTimeImmutable $now): void
+    {
+        // ARCHIVED → DRAFT разрешён, но это restore(), а не снятие с публикации.
+        if (CaseStatus::ARCHIVED === $this->status) {
+            throw new CaseCannotBeTransitioned($this->id, $this->status, CaseStatus::DRAFT, 'use restore');
+        }
+
+        $this->transitionTo(CaseStatus::DRAFT, $now);
     }
 
     public function archive(\DateTimeImmutable $now): void
     {
-        $this->status = CaseStatus::ARCHIVED;
-        $this->updatedAt = $now;
+        $this->transitionTo(CaseStatus::ARCHIVED, $now);
+    }
+
+    /** Из архива кейс возвращается черновиком: публиковать его снова -- отдельное решение. */
+    public function restore(\DateTimeImmutable $now): void
+    {
+        if (CaseStatus::PUBLISHED === $this->status) {
+            throw new CaseCannotBeTransitioned($this->id, $this->status, CaseStatus::DRAFT, 'use unpublish');
+        }
+
+        $this->transitionTo(CaseStatus::DRAFT, $now);
     }
 
     public function id(): ?int
@@ -161,5 +244,41 @@ class ClientCase
     public function publishedAt(): ?\DateTimeImmutable
     {
         return $this->publishedAt;
+    }
+
+    /**
+     * Повтор перехода в текущий статус -- no-op: повторный POST ничего не ломает.
+     */
+    private function transitionTo(CaseStatus $target, \DateTimeImmutable $now): void
+    {
+        if ($target === $this->status) {
+            return;
+        }
+
+        if (!$this->status->canTransitionTo($target)) {
+            throw new CaseCannotBeTransitioned($this->id, $this->status, $target);
+        }
+
+        $this->status = $target;
+        $this->updatedAt = $now;
+    }
+
+    /**
+     * @param array<string, string> $fields
+     */
+    private static function requireFilled(array $fields): void
+    {
+        foreach ($fields as $field => $value) {
+            if ('' === trim($value)) {
+                throw new \InvalidArgumentException(\sprintf('Case %s must not be empty.', $field));
+            }
+        }
+    }
+
+    private static function requireSlug(string $slug): void
+    {
+        if (!CaseSlug::isValid($slug)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid case slug "%s".', $slug));
+        }
     }
 }
