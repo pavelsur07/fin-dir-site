@@ -1,7 +1,7 @@
 {#
     Секция «Команда». Карточка сотрудника — раздел 19 дизайн-системы (фото 4:5, имя, должность, опыт).
-    Аргументы: title, subtitle, people, id (необязательно, id заголовка; по умолчанию home-team-title) [{name, role, experience, photo, zoom}].
-    photo пустое — плейсхолдер с инициалами. zoom — приблизить кадр у вырезанной фигуры в полный рост.
+    Аргументы: title, subtitle, people, id (необязательно, id заголовка; по умолчанию home-team-title) [{name, role, experience, photo}].
+    photo пустое — плейсхолдер с инициалами.
 #}
 <section class="bg-surface py-16 md:py-24" aria-labelledby="{{ id|default('home-team-title') }}">
     <div class="mx-auto max-w-container px-4 md:px-8">
@@ -13,7 +13,7 @@
                 <li class="flex flex-col gap-4">
                     <div class="flex aspect-portrait items-center justify-center overflow-hidden rounded-lg bg-border-subtle">
                         {% if person.photo|default(null) %}
-                            <img class="size-full object-cover object-top{{ person.zoom|default(false) ? ' origin-top scale-150' : '' }}" src="{{ person.photo }}" alt="{{ person.name }}, {{ person.role|lower }}" width="1122" height="1402" loading="lazy" decoding="async">
+                            <img class="size-full object-cover object-top" src="{{ person.photo }}" alt="{{ person.name }}, {{ person.role|lower }}" width="1122" height="1402" loading="lazy" decoding="async">
                         {% else %}
                             <span class="type-t2 text-fg-secondary" aria-hidden="true">{{ initials }}</span>
                         {% endif %}

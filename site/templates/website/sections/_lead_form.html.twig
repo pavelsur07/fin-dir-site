@@ -38,7 +38,7 @@
             {% if person|default(null) %}
                 <figure class="flex items-end gap-5 rounded-lg border border-border-subtle bg-surface p-5 order-3">
                     <div class="aspect-4/5 w-24 shrink-0 overflow-hidden rounded-md bg-border-subtle">
-                        <img class="size-full origin-top scale-150 object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
+                        <img class="size-full object-cover object-top" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" loading="lazy">
                     </div>
                     <div class="flex min-w-0 flex-col gap-2">
                         {% if person.quote|default(null) %}<blockquote class="type-t6 text-fg">«{{ person.quote }}»</blockquote>{% endif %}
