@@ -1,0 +1,45 @@
+{# Шапка страницы: хлебные крошки + H1. Спецификация: Design System 16.4 и раздел 22.
+   Вход: crumbs — массив {label, url}, последний без url (текущая страница);
+   title — H1; lead — необязательный лид; tone — 'muted' | 'default'.
+   Ниже md вместо цепочки только ссылка на родителя (предпоследний пункт). #}
+{% set tone = tone|default('default') %}
+{% set parent = crumbs|length > 1 ? crumbs[crumbs|length - 2] : null %}
+<section class="{{ tone == 'muted' ? 'bg-surface-muted' : 'bg-surface' }}" data-vf-component="page-header">
+    <div class="mx-auto flex w-full max-w-container flex-col gap-6 px-4 pb-10 pt-6 md:px-8">
+        {% if crumbs|length > 1 %}
+            <nav aria-label="Хлебные крошки">
+                {% if parent %}
+                    <a class="flex min-h-control-touch w-fit items-center gap-2 rounded-xs type-t6 font-semibold text-fg focus-visible:shadow-focus md:hidden" href="{{ parent.url }}">
+                        {% include 'website/components/_icon.html.twig' with {name: 'chevron-left', class: 'size-icon-sm shrink-0'} only %}
+                        {{ parent.label }}
+                    </a>
+                {% endif %}
+                <ol class="hidden flex-wrap items-center gap-x-2 gap-y-1 type-t6 font-medium md:flex">
+                    {% for crumb in crumbs %}
+                        {% if loop.last %}
+                            <li class="max-w-crumb truncate text-fg" aria-current="page" title="{{ crumb.label }}">{{ crumb.label }}</li>
+                        {% else %}
+                            <li class="flex items-center gap-2">
+                                <a class="flex min-h-control-xs items-center rounded-xs text-fg-secondary hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ crumb.url }}">{{ crumb.label }}</a>
+                                {% include 'website/components/_icon.html.twig' with {name: 'chevron-right', class: 'size-icon-sm shrink-0 text-fg-disabled'} only %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </nav>
+        {% endif %}
+        <div>
+            <h1 class="type-t2 md:type-t1 max-w-title text-balance text-fg">{{ title }}</h1>
+            {% if lead|default %}<p class="type-t4 mt-6 max-w-lead text-fg-secondary">{{ lead }}</p>{% endif %}
+        </div>
+    </div>
+</section>
+{% if crumbs|length > 1 %}
+    {% set items = [] %}
+    {% for crumb in crumbs %}
+        {% set item = {'@type': 'ListItem', position: loop.index, name: crumb.label} %}
+        {% if crumb.url|default %}{% set item = item|merge({item: vf_site_url ~ crumb.url}) %}{% endif %}
+        {% set items = items|merge([item]) %}
+    {% endfor %}
+    {% include 'website/components/_json_ld.html.twig' with {schema: {'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items}} only %}
+{% endif %}
