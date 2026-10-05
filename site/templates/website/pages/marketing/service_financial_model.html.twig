@@ -1,0 +1,17 @@
+{% extends 'website/layouts/page.html.twig' %}
+
+{% block title %}Финансовая модель от профессионала — Ваш Финдир{% endblock %}
+{% block description %}Финансовая модель от профессионала — услуга «Ваш Финдир».{% endblock %}
+{# Страница без контента: закрыта от индексации и не входит в sitemap, пока не наполнена. Убрать блок -- открыть. #}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block active_navigation %}services{% endblock %}
+
+{# Только шапка страницы (крошки и H1): содержимое и вёрстка будут добавлены отдельно. #}
+{% block body %}
+    {% include 'website/components/page-header.html.twig' with {
+        crumbs: [{label: 'Главная', url: '/'}, {label: 'Услуги', url: '/services'}, {label: 'Финансовая модель от профессионала'}],
+        title: 'Финансовая модель от профессионала',
+        tone: 'muted',
+    } only %}
+{% endblock %}
