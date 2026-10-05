@@ -220,14 +220,8 @@
         },
         tone: 'muted',
     } only %}
-    {# Кейсы из модуля ClientCase (контроллер передаёт cases); нет кейсов -- секции нет. #}
-    {% include 'website/sections/_service_cases.html.twig' with {
-        id: 'service-cases',
-        title: 'Результаты клиентов в цифрах',
-        cases: cases,
-        all_label: 'Все кейсы',
-        all_href: path('app_cases_index'),
-    } only %}
+    {# Кейсы подгружает компонент из модуля ClientCase (фон surface: после muted SaaS-блока, перед muted «Ценой»). #}
+    <twig:ClientCase:LatestResults id="service-cases" />
     {% include 'website/sections/_service_cards.html.twig' with {
         id: 'service-price',
         title: 'От чего зависит цена',

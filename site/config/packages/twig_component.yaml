@@ -1,0 +1,7 @@
+twig_component:
+    anonymous_template_directory: 'website/components/'
+    defaults:
+        # Компоненты модулей: App\<Module>\Component\<Name> -> <twig:Module:Name>, шаблон website/components/<Module>/<Name>.html.twig.
+        App\ClientCase\Component\:
+            name_prefix: 'ClientCase'
+            template_directory: 'website/components/ClientCase'

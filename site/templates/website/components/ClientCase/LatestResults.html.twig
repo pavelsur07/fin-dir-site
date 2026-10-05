@@ -1,0 +1,21 @@
+{#
+    Шаблон компонента ClientCase:LatestResults (данные -- this.cases, настройки -- свойства компонента).
+    Заголовок, кнопка «Все кейсы» справа и сетка карточек (components/_case_card). Нет кейсов -- секции нет.
+    Обложки у кейса нет, поэтому карточка без изображения.
+#}
+{% set cases = this.cases %}
+{% if cases is not empty %}
+    <section class="{{ this.tone == 'muted' ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ this.id }}" aria-labelledby="{{ this.id }}-title" data-vf-component="latest-case-results">
+        <div class="mx-auto max-w-page px-4 md:px-8">
+            <div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                <h2 class="type-t2-article text-fg md:type-t2" id="{{ this.id }}-title">{{ this.title }}</h2>
+                {% include 'website/components/_button.html.twig' with {label: this.allLabel, href: path('app_cases_index'), variant: 'outline', full_mobile: true} only %}
+            </div>
+            <ul class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+                {% for case in cases %}
+                    <li>{% include 'website/components/_case_card.html.twig' with {case: case} only %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+{% endif %}

@@ -68,6 +68,12 @@ deptrac:
               - type: classNameRegex
                 value: '#^App\\([A-Za-z]+\\)?Twig\\#'
 
+        # Twig Components (UX): класс компонента сам берёт данные из Query, шаблон только выводит.
+        - name: Component
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\([A-Za-z]+\\)?Component\\#'
+
         - name: TwigVendor
           collectors:
               - type: classNameRegex
@@ -191,6 +197,11 @@ deptrac:
         Twig:
             - ValueObject
             - TwigVendor
+
+        Component:
+            - Query
+            - ValueObject
+            - Symfony
 
         Exception:
             - ValueObject

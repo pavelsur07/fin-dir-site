@@ -21,7 +21,8 @@
     "pagerfanta/doctrine-orm-adapter": "^4.9",
     "pagerfanta/twig": "^4.9",
     "league/commonmark": "^2.10",
-    "symfony/http-client": "7.4.*"
+    "symfony/http-client": "7.4.*",
+    "symfony/ux-twig-component": "^3.5"
   },
   "autoload": {
     "psr-4": {
