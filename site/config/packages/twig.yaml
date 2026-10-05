@@ -8,7 +8,7 @@ twig:
       subtitle: 'За каждым клиентом закреплён один финансовый директор. Методологию и качество контролирует управляющий партнёр.'
       people:
         - { name: 'Павел Новиков', role: 'Управляющий партнёр', experience: '28 лет в бизнесе', photo: '/assets/people/pavel-novikov-portrait.png' }
-        - { name: 'Наталья Новикова', role: 'Налоговый консультант', experience: '25 лет бухгалтер', photo: '' }
+        - { name: 'Наталья Новикова', role: 'Налоговый консультант', experience: '25 лет бухгалтер', photo: '/assets/people/nataliy-novikova-portrait.png' }
         - { name: 'Павел Аверьянов', role: 'Финансовый аналитик', experience: '3 года', photo: '/assets/people/pavel-averynov-portrait.png' }
         - { name: 'Анна Смирнова', role: 'Финансовый аналитик', experience: '3 года', photo: '' }
     # Факты о компании: одни данные для главной и «О компании». icon задан -- иконка и value заголовком.
