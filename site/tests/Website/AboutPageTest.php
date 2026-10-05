@@ -77,6 +77,18 @@ final class AboutPageTest extends WebTestCase
         self::assertFileExists(dirname(__DIR__, 2).'/public/assets/people/pavel-averynov-portrait.png');
     }
 
+    public function testTeamShowsNovikovaPhoto(): void
+    {
+        $client = static::createClient();
+
+        foreach (['/', '/about'] as $path) {
+            $client->request('GET', $path);
+
+            self::assertSelectorExists('main section[aria-labelledby$="team-title"] img[src="/assets/people/nataliy-novikova-portrait.png"][alt="Наталья Новикова, налоговый консультант"]', $path);
+        }
+        self::assertFileExists(dirname(__DIR__, 2).'/public/assets/people/nataliy-novikova-portrait.png');
+    }
+
     public function testRequisitesBelongToFinKonsalting(): void
     {
         $client = static::createClient();
