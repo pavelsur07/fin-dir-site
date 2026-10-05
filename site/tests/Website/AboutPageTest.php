@@ -61,6 +61,33 @@ final class AboutPageTest extends WebTestCase
         self::assertSelectorNotExists('#about-facts-title');
     }
 
+    public function testRequisitesBelongToFinKonsalting(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/about');
+
+        $text = (string) $client->getCrawler()->filter('main section[aria-labelledby="about-requisites-title"]')->text();
+        foreach (['ООО «Фин Консалтинг»', '6140000234 / 616801001', '1156188000176', 'Ростовская обл., г. Ростов-на-Дону, ул. Малиновского, д. 3б, офис 8', 'АО «АЛЬФА-БАНК»'] as $expected) {
+            self::assertStringContainsString($expected, $text);
+        }
+        self::assertStringNotContainsString('Демо-банк', $text);
+        self::assertStringNotContainsString('Демонстрационная', $text);
+    }
+
+    public function testFooterAndLegalPagesNameTheSameLegalEntity(): void
+    {
+        $client = static::createClient();
+
+        foreach (['/', '/privacy', '/consent'] as $path) {
+            $client->request('GET', $path);
+            self::assertStringContainsString('ООО «Фин Консалтинг»', (string) $client->getResponse()->getContent(), $path);
+            self::assertStringNotContainsString('ООО «Ваш Финдир»', (string) $client->getResponse()->getContent(), $path);
+        }
+        $client->request('GET', '/privacy');
+        self::assertSelectorTextContains('#privacy-requisites', 'КПП: 616801001');
+        self::assertSelectorTextContains('#privacy-requisites', 'Ростовская обл., г. Ростов-на-Дону, ул. Малиновского, д. 3б, офис 8');
+    }
+
     public function testAboutPageKeepsTrustFactsAsCards(): void
     {
         $client = static::createClient();

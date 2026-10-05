@@ -26,7 +26,7 @@ final class ConsentPageTest extends WebTestCase
         foreach (['consent-operator', 'consent-purposes', 'consent-data', 'consent-actions', 'consent-term', 'consent-withdrawal', 'consent-how'] as $id) {
             self::assertSelectorExists('#'.$id.' h2');
         }
-        foreach (['ООО «Ваш Финдир»', 'ОГРН 1156188000176', 'hello@vashfindir.ru', '3 года', 'ClientID', 'Отзыв согласия', 'не распространяется на получение рекламных'] as $fragment) {
+        foreach (['ООО «Фин Консалтинг»', 'ОГРН 1156188000176', 'hello@vashfindir.ru', '3 года', 'ClientID', 'Отзыв согласия', 'не распространяется на получение рекламных'] as $fragment) {
             self::assertStringContainsString($fragment, $main);
         }
         // Редакция на странице -- та же, что сохраняется в заявке.
