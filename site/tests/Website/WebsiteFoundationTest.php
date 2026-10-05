@@ -70,6 +70,7 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorExists('main a[href="/services/finansovyy-direktor-na-autsorsinge"]');
+        self::assertSelectorExists('main a[href="/services/finansovaya-model-ot-professionala"]');
     }
 
     public function testWebsiteAssetsAreBuiltFromPinnedTailwind(): void
