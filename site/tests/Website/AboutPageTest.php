@@ -61,6 +61,22 @@ final class AboutPageTest extends WebTestCase
         self::assertSelectorNotExists('#about-facts-title');
     }
 
+    public function testTeamShowsAveryanovWithPhotoInPlaceOfIvanov(): void
+    {
+        $client = static::createClient();
+
+        foreach (['/', '/about'] as $path) {
+            $client->request('GET', $path);
+
+            self::assertSelectorCount(4, 'main section[aria-labelledby$="team-title"] li', $path);
+            self::assertSelectorExists('main section[aria-labelledby$="team-title"] img[src="/assets/people/pavel-averynov-portrait.png"][alt="Павел Аверьянов, финансовый аналитик"]', $path);
+            self::assertSelectorTextContains('main section[aria-labelledby$="team-title"]', 'Павел Аверьянов', $path);
+            self::assertSelectorTextNotContains('main section[aria-labelledby$="team-title"]', 'Павел Иванов', $path);
+        }
+        // Файл фото лежит в репозитории, ссылка не битая.
+        self::assertFileExists(dirname(__DIR__, 2).'/public/assets/people/pavel-averynov-portrait.png');
+    }
+
     public function testRequisitesBelongToFinKonsalting(): void
     {
         $client = static::createClient();
