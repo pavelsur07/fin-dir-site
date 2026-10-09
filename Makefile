@@ -115,6 +115,14 @@ assets-check:
 		echo 'Compiled website assets are stale. Run make assets.' >&2; \
 		exit 1; \
 	}
+	@if grep -Eiq 'Inter Variable|inter-[[:alnum:]-]+[.]woff2|--font-(sans|display|mono):[^;]*Inter|font-family:[^;]*Inter' site/assets/styles/website/app.css site/assets/styles/website/vf-theme.css site/assets/styles/website/vf-fonts.css site/public/assets/website/app.css; then \
+		echo 'Inter font fallback found in website CSS.' >&2; \
+		exit 1; \
+	fi
+	@if find site/public/assets/fonts -maxdepth 1 -type f -iname 'inter-*.woff2' -print -quit | grep -q .; then \
+		echo 'Inter font file found in website assets.' >&2; \
+		exit 1; \
+	fi
 
 # Проверка всех классов сайта, админки, JS и Markdown по собранной теме.
 ds-check: assets-check
