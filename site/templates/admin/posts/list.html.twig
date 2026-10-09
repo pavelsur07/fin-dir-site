@@ -5,7 +5,7 @@
 {% block body %}
     <div class="mb-4 flex flex-wrap gap-2">
         <h1 class="mb-6 type-t2-article">Публикации</h1>
-        <a class="inline-flex items-center justify-center rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover" href="{{ path('admin_post_new') }}">Новая статья</a>
+        {% include 'admin/_button.html.twig' with {label: 'Новая статья', href: path('admin_post_new'), variant: 'primary'} only %}
     </div>
 
     <div class="mb-4 flex flex-wrap gap-4">

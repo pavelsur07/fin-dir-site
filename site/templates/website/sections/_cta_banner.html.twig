@@ -6,7 +6,7 @@
     <div class="mx-auto max-w-container px-4 md:px-8">
         <div class="dark flex flex-col items-start gap-6 rounded-xl bg-surface px-6 py-16 md:px-12 md:py-24">
             <div class="flex flex-col gap-3">
-                <h2 id="cta-banner-title" class="type-t2-article text-fg md:type-t2">{{ title }}</h2>
+                <h2 id="cta-banner-title" class="font-display font-extrabold type-t2-article text-fg md:type-t2">{{ title }}</h2>
                 <p class="max-w-measure type-t4 text-fg-secondary">{{ text }}</p>
             </div>
             {% include 'website/components/_button.html.twig' with {label: button.label, href: button.href, variant: 'primary', size: 'lg', full_mobile: true} only %}

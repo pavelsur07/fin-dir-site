@@ -8,8 +8,8 @@
     <section class="{{ this.tone == 'muted' ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ this.id }}" aria-labelledby="{{ this.id }}-title" data-vf-component="latest-case-results">
         <div class="mx-auto max-w-page px-4 md:px-8">
             <div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                <h2 class="type-t2-article text-fg md:type-t2" id="{{ this.id }}-title">{{ this.title }}</h2>
-                {% include 'website/components/_button.html.twig' with {label: this.allLabel, href: path('app_cases_index'), variant: 'outline', full_mobile: true} only %}
+                <h2 class="font-display font-extrabold type-t2-article text-fg md:type-t2" id="{{ this.id }}-title">{{ this.title }}</h2>
+                {% include 'website/components/_button.html.twig' with {label: this.allLabel, href: path('app_cases_index'), variant: 'secondary', full_mobile: true} only %}
             </div>
             <ul class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
                 {% for case in cases %}

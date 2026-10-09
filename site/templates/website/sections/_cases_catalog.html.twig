@@ -5,7 +5,7 @@
 <section class="bg-surface py-12 md:py-16" aria-labelledby="cases-filter-title">
     <div class="mx-auto flex max-w-container flex-col gap-8 px-4 md:px-8">
         <nav class="flex flex-col gap-4" aria-labelledby="cases-filter-title" data-vf-component="cases-filter">
-            <h2 class="type-t3 text-fg" id="cases-filter-title">Отрасль клиента</h2>
+            <h2 class="font-display font-extrabold type-t3 text-fg" id="cases-filter-title">Отрасль клиента</h2>
             <ul class="scrollbar-none flex gap-2 overflow-x-auto px-1 py-1 md:flex-wrap md:overflow-visible">
                 <li class="shrink-0">
                     <a class="inline-flex h-control-md items-center whitespace-nowrap rounded-full px-4 type-t6 font-medium no-underline focus-visible:shadow-focus {{ industry ? 'border border-border-strong bg-surface-raised text-fg hover:bg-surface-muted' : 'bg-ink-950 text-white' }}" href="{{ path('app_cases_index') }}"{% if not industry %} aria-current="true"{% endif %}>Все</a>

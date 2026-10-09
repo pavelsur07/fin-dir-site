@@ -6,7 +6,7 @@
     <h3 class="type-t3 text-fg">{{ case.title }}</h3>
     <p class="type-t6 text-fg-secondary">{{ case.problem }}</p>
     <div class="flex flex-col gap-1 border-t border-border pt-4">
-        <p class="type-t8 text-accent">{{ case.resultValue }}</p>
+        <p class="font-mono font-semibold tabular-nums type-t8 text-accent">{{ case.resultValue starts with '-' ? '−' ~ case.resultValue|slice(1) : case.resultValue }}</p>
         <p class="type-t6 text-fg">{{ case.resultLabel }}</p>
     </div>
     <ul class="flex flex-wrap gap-2">

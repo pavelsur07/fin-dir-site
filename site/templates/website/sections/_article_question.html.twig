@@ -18,7 +18,7 @@
         <input id="{{ id }}-website" name="website" type="text" value="" tabindex="-1" autocomplete="off">
     </div>
 
-    <h2 class="type-h4 text-fg" id="{{ labelled_by }}">{{ title }}</h2>
+    <h2 class="font-display font-extrabold type-h4 text-fg" id="{{ labelled_by }}">{{ title }}</h2>
     <p class="type-t6 text-fg-secondary">{{ text }}</p>
 
     <div class="flex flex-col gap-1" data-vf-component="form-input">
@@ -33,7 +33,7 @@
         <input class="mt-1 size-icon-sm shrink-0 aria-invalid:border-error aria-invalid:shadow-error-field" id="{{ id }}-agreement" name="agreement" type="checkbox" required>
         <label class="type-t7 text-fg-secondary" for="{{ id }}-agreement">Согласен на обработку персональных данных (<a class="underline" href="{{ path('consent') }}">согласие</a>, <a class="underline" href="{{ path('privacy') }}">политика конфиденциальности</a>)</label>
     </div>
-    {% include 'website/components/_button.html.twig' with {label: 'Задать вопрос', type: 'submit', class: 'w-full'} only %}
+    {% include 'website/components/_button.html.twig' with {label: 'Задать вопрос', type: 'submit', variant: 'primary', class: 'w-full'} only %}
     <p class="type-t6 text-success" role="status" data-vf-lead-success hidden>Спасибо! Вопрос отправлен, мы свяжемся с вами в ближайшее время.</p>
     <p class="type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
 </form>

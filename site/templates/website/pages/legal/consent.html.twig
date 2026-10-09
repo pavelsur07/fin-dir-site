@@ -87,7 +87,7 @@
     <article class="space-y-6" data-vf-section="consent-document">
         {% for section in sections %}
             <section class="space-y-2" id="{{ section.id }}">
-                <h2 class="type-t3">{{ section.label }}. {{ section.title }}</h2>
+                <h2 class="font-display font-extrabold type-t3">{{ section.label }}. {{ section.title }}</h2>
                 {% for paragraph in section.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
             </section>
         {% endfor %}

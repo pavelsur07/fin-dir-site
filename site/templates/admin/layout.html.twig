@@ -1,4 +1,4 @@
-{% set vf_asset_version = '4beed59d9482' %}
+{% set vf_asset_version = 'f605391c3cf1' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -11,7 +11,7 @@
     <link rel="preload" href="/assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
 </head>
-<body class="bg-surface-muted text-fg">
+<body class="bg-paper font-sans text-navy-900">
 {% block page %}
     {% set route = app.request.attributes.get('_route') ?? '' %}
     {# Один список разделов: новый раздел админки -- одна строка здесь. #}

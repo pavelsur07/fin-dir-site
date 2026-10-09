@@ -1,7 +1,7 @@
 {% extends 'website/layouts/page.html.twig' %}
 
 {% block title %}{{ case.title }} — Кейсы — Ваш Финдир{% endblock %}
-{% block description %}{{ case.problem }} {{ case.resultValue }} — {{ case.resultLabel }}.{% endblock %}
+{% block description %}{{ case.problem }} {{ case.resultValue starts with '-' ? '−' ~ case.resultValue|slice(1) : case.resultValue }} — {{ case.resultLabel }}.{% endblock %}
 
 {% block active_navigation %}cases{% endblock %}
 
@@ -17,7 +17,7 @@
     {% if related is not empty %}
         <section class="bg-surface-muted py-16 md:py-24" aria-labelledby="case-related-title">
             <div class="mx-auto max-w-container px-4 md:px-8">
-                <h2 class="mb-12 type-t2-article text-fg md:type-t2" id="case-related-title">Другие кейсы</h2>
+                <h2 class="font-display font-extrabold mb-12 type-t2-article text-fg md:type-t2" id="case-related-title">Другие кейсы</h2>
                 <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {% for item in related %}
                         <li>{% include 'website/components/_case_card.html.twig' with {case: item} only %}</li>

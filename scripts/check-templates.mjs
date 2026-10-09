@@ -6,7 +6,7 @@
 //   пример: node check-templates.mjs site/public/assets/website/app.css site/templates site/assets/scripts/website site/src/Publication/Adapter
 //
 // Ошибка, если в class="…" встречается:
-//   • класс, которого нет в собранном CSS (p-7, bg-red-500, text-sm — тема их не генерирует);
+//   • класс, которого нет в собранном CSS (p-7, text-sm — тема их не генерирует);
 //   • произвольное значение, duration-N, border-N кроме 2, ring/outline — Tailwind их собирает, но системе они чужие.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -31,6 +31,7 @@ const DEFAULT_TW = new RegExp('^(.*:)?(-?)(' + [
   'shadow(-(xs|2xs|xl|2xl|inner))?',
   'sm:.*|2xl:.*',
 ].join('|') + ')$');
+const APPROVED_RED = /^(?:.*:)?(?:bg|text|border)-red-(?:50|100|500|600|700)$/;
 // Классы, которые задаёт не Tailwind (JS-хуки, сторонние виджеты). Дополняйте осознанно.
 const IGNORE = [/^js-/, /^vf-/, /^ym-/, /^group$/, /^peer$/];
 
@@ -67,7 +68,7 @@ for (const file of files) {
         if (markup && c === 'outline' && /\bvariant\s*:\s*$/.test(line.slice(0, m.index))) continue;
         const rule = RESTRICT.slice(1).find(([r]) => r.test(c));
         if (rule) report(seen, file, i, c, rule[1]);
-        else if (DEFAULT_TW.test(c)) report(seen, file, i, c, 'класс стандартной темы Tailwind — замените по MIGRATION.md');
+        else if (DEFAULT_TW.test(c) && !APPROVED_RED.test(c)) report(seen, file, i, c, 'класс стандартной темы Tailwind — замените по MIGRATION.md');
       }
     }
     if (!markup) return;
@@ -77,7 +78,7 @@ for (const file of files) {
       for (const c of raw.split(/\s+/).filter(Boolean)) {
         if (IGNORE.some((r) => r.test(c))) continue;
         const rule = RESTRICT.find(([r]) => r.test(c));
-        const msg = rule ? rule[1] : inCss(c) ? null : 'класса нет в теме';
+        const msg = rule ? rule[1] : DEFAULT_TW.test(c) && !APPROVED_RED.test(c) ? 'класс вне дизайн-системы' : inCss(c) ? null : 'класса нет в теме';
         if (msg) report(seen, file, i, c, msg);
       }
     }

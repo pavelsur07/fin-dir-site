@@ -5,9 +5,9 @@
 <div id="cookieNotice" class="pointer-events-none fixed inset-x-4 bottom-4 z-50 opacity-0 transition-opacity duration-base motion-reduce:transition-none data-visible:opacity-100 md:right-auto md:w-full md:max-w-modal-sm" role="region" aria-label="Уведомление о cookie" hidden data-vf-component="cookie">
     <div class="pointer-events-auto flex flex-col gap-4 rounded-lg border border-border-subtle bg-surface-raised p-5 text-fg shadow-md">
         <p id="cookieText" class="type-t6 text-fg-secondary">Мы используем cookie и Яндекс Метрику, включая Вебвизор, чтобы сайт работал корректно, для аналитики и оценки рекламы. Подробнее — в <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ privacy_href }}">политике конфиденциальности</a> и <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ privacy_href }}#privacy-cookies">разделе о cookie</a>.</p>
-        <div class="flex gap-2">
-            {% include 'website/components/_button.html.twig' with {label: 'Только необходимые', variant: 'outline', size: 'md_tight', id: 'cookieNecessary', class: 'flex-1'} only %}
-            {% include 'website/components/_button.html.twig' with {label: 'Принять', size: 'md_tight', id: 'cookieAccept', class: 'flex-1 border border-accent-fill'} only %}
+        <div class="flex flex-col gap-2 md:flex-row">
+            {% include 'website/components/_button.html.twig' with {label: 'Только необходимые', variant: 'secondary', size: 'md_tight', id: 'cookieNecessary', class: 'flex-1'} only %}
+            {% include 'website/components/_button.html.twig' with {label: 'Принять', variant: 'secondary', size: 'md_tight', id: 'cookieAccept', class: 'flex-1'} only %}
         </div>
     </div>
 </div>

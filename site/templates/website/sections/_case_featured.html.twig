@@ -10,7 +10,7 @@
                 <li class="rounded-xs border border-border px-2 py-1 type-t7 text-fg-secondary">{{ tag }}</li>
             {% endfor %}
         </ul>
-        <h2 class="type-t2-article text-fg md:type-t2" id="case-featured-title">{{ case.title }}</h2>
+        <h2 class="font-display font-extrabold type-t2-article text-fg md:type-t2" id="case-featured-title">{{ case.title }}</h2>
         <p class="type-t4 text-fg-secondary">{{ case.task }}</p>
         <h3 class="type-t5 font-semibold text-fg">Что сделали</h3>
         <ul class="flex flex-col gap-3">
@@ -32,7 +32,7 @@
                 {# Подпись (dt) в разметке идёт первой, визуально число стоит над ней. #}
                 <div class="flex flex-col-reverse gap-1">
                     <dt class="type-t6 text-fg-secondary">{{ metric.label }}</dt>
-                    <dd class="type-t8 text-accent">{{ metric.value }}</dd>
+                    <dd class="font-mono font-semibold tabular-nums type-t8 text-accent">{{ metric.value starts with '-' ? '−' ~ metric.value|slice(1) : metric.value }}</dd>
                 </div>
             {% endfor %}
         </dl>

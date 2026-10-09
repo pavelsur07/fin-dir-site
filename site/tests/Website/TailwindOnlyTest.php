@@ -8,11 +8,17 @@ use PHPUnit\Framework\TestCase;
 
 final class TailwindOnlyTest extends TestCase
 {
-    public function testApplicationUsesOnlyDesignSystemTheme(): void
+    public function testApplicationUsesApprovedDesignSystemThemes(): void
     {
         $root = dirname(__DIR__, 2);
         $css = (string) file_get_contents($root.'/assets/styles/website/app.css');
-        self::assertSame("@import \"tailwindcss\" source(none);\n@import \"./vf-fonts.css\";\n@import \"./vf-theme.css\";\n@source \"../../../templates/website\";\n@source \"../../../templates/admin\";\n@source \"../../../assets/scripts/website\";\n@source \"../../../src/Publication/Adapter\";\n", $css);
+        self::assertStringStartsWith("@import \"tailwindcss\" source(none);\n@import \"./vf-fonts.css\";\n@import \"./vf-theme.css\";\n@theme {", $css);
+        self::assertSame(1, substr_count($css, '@theme {'));
+        self::assertStringContainsString('--font-sans: "IBM Plex Sans"', $css);
+        self::assertStringContainsString('--color-red-600: #b00020', $css);
+        foreach (['templates/website', 'templates/admin', 'assets/scripts/website', 'src/Publication/Adapter'] as $source) {
+            self::assertStringContainsString($source, $css);
+        }
         self::assertFileDoesNotExist($root.'/public/assets/admin/admin.css');
         self::assertFileDoesNotExist($root.'/public/assets/admin/admin.js');
         self::assertFileDoesNotExist($root.'/assets/scripts/website/ui-kit-logo.js');

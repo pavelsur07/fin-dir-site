@@ -3,7 +3,7 @@
         <form method="post" action="{{ path('admin_case_status', {id: id, action: transition.action}) }}">
             <input type="hidden" name="_token" value="{{ csrf_token('case-status') }}">
             {% if back is defined %}<input type="hidden" name="back" value="{{ back }}">{% endif %}
-            <button type="submit" class="{{ transition.class }}">{{ transition.label }}</button>
+            {% include 'admin/_button.html.twig' with {label: transition.label} only %}
         </form>
     {% endfor %}
 </div>
