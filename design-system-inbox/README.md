@@ -6,7 +6,7 @@
 |---|---|
 | `vf-theme.css` | `site/assets/styles/website/vf-theme.css` — тема Tailwind v4 |
 | `vf-fonts.css` | `site/assets/styles/website/vf-fonts.css` — @font-face |
-| `fonts/*.woff2` | `site/public/assets/fonts/` — Inter и Manrope, кириллица + латиница + ₽ |
+| `fonts/*.woff2` | `site/public/assets/fonts/` — Manrope, IBM Plex Sans и IBM Plex Mono, кириллица + латиница + ₽ |
 | `check-templates.mjs` | `scripts/check-templates.mjs` — проверка шаблонов |
 | `MIGRATION.md` | остаётся здесь — таблица замены текущих классов сайта |
 | `tokens.json`, `tools/` | остаются здесь — источник токенов и перегенерация |
@@ -135,5 +135,12 @@ node scripts/check-templates.mjs site/public/assets/website/app.css \
 node tools/extract.cjs "Design System.dc.html"   # новый файл от дизайнера
 node tools/generate.mjs                          # перезаписывает vf-theme.css и tokens.json
 ```
+
+В исходном HTML имя `Inter` остаётся названием старой типографической роли.
+`generate.mjs` преобразует её в `IBM Plex Sans`, а `ui-monospace` — в `IBM Plex Mono`.
+Для сайта использовать `vf-fonts.css` и `fonts/` из этого каталога: в них только
+Manrope и IBM Plex. Перед копированием сгенерированной темы сверить diff с темой
+сайта: у сайта есть локальные значения контейнера 1200px вместо 1280px.
+После обновления выполнить `make assets` и `make ds-check` из корня проекта.
 
 Если значения нет в таблице токенов — это вопрос к дизайнеру, а не повод дописать его в тему.

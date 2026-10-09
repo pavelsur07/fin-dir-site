@@ -22,8 +22,12 @@ const WEIGHTS = { normal: 400, medium: 500, semibold: 600, bold: 700, extrabold:
 const FAMILY = {
   Manrope: 'var(--font-display)',
   Inter: 'var(--font-sans)',
+  'Inter Variable': 'var(--font-sans)',
+  'IBM Plex Sans': 'var(--font-sans)',
+  'IBM Plex Mono': 'var(--font-mono)',
   'ui-monospace': 'var(--font-mono)',
 };
+const TOKEN_FAMILY = { Inter: 'IBM Plex Sans', 'Inter Variable': 'IBM Plex Sans', 'ui-monospace': 'IBM Plex Mono' };
 const ASPECT = { video: '16 / 9', photo: '3 / 2', portrait: '4 / 5', screenshot: '16 / 10' };
 const ANIM = { spin: 'spin 800ms linear infinite', skeleton: 'vf-skeleton 1500ms ease-in-out infinite' };
 
@@ -87,7 +91,7 @@ const json = {
   shadow: Object.fromEntries(Object.entries(SHADOW).map(([k, v]) => [k, tok('shadow', v, d.SHU[k])])),
   typography: Object.fromEntries(d.ROLES.map(([k, name, fam, w, fs, lh, ls, use]) => [k, {
     $type: 'typography',
-    $value: { fontFamily: fam, fontSize: px(fs), lineHeight: px(lh), letterSpacing: ls.startsWith('-') ? '-0.02em' : '0', fontWeight: w.split(' · ').map(Number) },
+    $value: { fontFamily: TOKEN_FAMILY[fam] ?? fam, fontSize: px(fs), lineHeight: px(lh), letterSpacing: ls.startsWith('-') ? '-0.02em' : '0', fontWeight: w.split(' · ').map(Number) },
     $description: `${name} — ${use}`,
   }])),
   controlHeight: Object.fromEntries(d.CH.map(([k, v, use]) => [k, tok('dimension', px(v), use)])),
