@@ -29,7 +29,7 @@
                 {% endfor %}
             </ul>
             {% if cta|default(null) %}
-                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'outline', size: 'md'} only %}
+                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', size: 'md'} only %}
             {% endif %}
         </div>
     </nav>
@@ -55,7 +55,7 @@
                 </ul>
                 {% if cta|default(null) %}
                     <div class="mt-6">
-                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'outline', size: 'md', full_mobile: true} only %}
+                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', size: 'md', full_mobile: true} only %}
                     </div>
                 {% endif %}
             </nav>

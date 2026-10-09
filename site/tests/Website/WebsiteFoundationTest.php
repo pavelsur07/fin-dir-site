@@ -144,7 +144,7 @@ final class WebsiteFoundationTest extends WebTestCase
 
     /**
      * Шапка по разделу 16.1: высота 64 / 72 с lg, пункты во всю высоту с плашкой 40/8, активный раздел --
-     * aria-current, fg 600 и полоса 2px accent-fill на нижней кромке; crimson-текста в меню нет, кнопка 40/8.
+     * aria-current, fg 600 и полоса 2px accent-fill на нижней кромке; crimson-текста в меню нет, кнопка 44/10.
      */
     public function testHeaderFollowsDesignSystemAndActiveItemHasNoCrimsonText(): void
     {
@@ -160,9 +160,9 @@ final class WebsiteFoundationTest extends WebTestCase
         // Crimson-текст и акцентный hover в меню убраны (мобильное меню тоже).
         self::assertSelectorNotExists('[data-vf-desktop-navigation] a.text-accent, [data-vf-mobile-navigation] a.text-accent');
         self::assertSelectorNotExists('[data-vf-desktop-navigation] a[class*="hover:text-accent"], [data-vf-mobile-navigation] a[class*="hover:text-accent"]');
-        // Кнопка шапки 40/8, а не 48/12.
-        self::assertSelectorExists('[data-vf-desktop-navigation] [data-vf-component="button"].h-control-md.rounded-sm');
-        self::assertSelectorNotExists('header [data-vf-component="button"].h-control-lg');
+        // Кнопка шапки использует общую высоту 44px и радиус 10px.
+        self::assertSelectorExists('[data-vf-desktop-navigation] [data-vf-component="button"].min-h-11.rounded-md[data-vf-variant="secondary"]');
+        self::assertSelectorNotExists('header [data-vf-component="button"].bg-red-600');
 
         $client->request('GET', '/gazeta/marketpleys-ili-internet-magazin');
         self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"][aria-current="page"]');

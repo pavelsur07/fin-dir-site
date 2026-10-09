@@ -1,0 +1,7 @@
+{% set button_variant = variant|default('secondary') %}
+{% set button_classes = 'inline-flex min-h-11 items-center justify-center rounded-md px-5 font-semibold transition-colors focus-visible:shadow-focus ' ~ (button_variant == 'primary' ? 'bg-red-600 text-white hover:bg-red-700' : 'border border-navy-900 bg-surface text-navy-900 hover:bg-surface-muted dark:border-white dark:bg-transparent dark:text-white dark:hover:bg-navy-700') %}
+{% if href|default(null) %}
+    <a href="{{ href }}" class="{{ button_classes }} no-underline">{{ label }}</a>
+{% else %}
+    <button type="{{ type|default('submit') }}" class="{{ button_classes }}">{{ label }}</button>
+{% endif %}

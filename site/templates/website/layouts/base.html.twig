@@ -1,4 +1,4 @@
-{% set vf_asset_version = '4beed59d9482' %}
+{% set vf_asset_version = 'f605391c3cf1' %}
 <!doctype html>
 {# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
 <html lang="ru">
@@ -59,7 +59,7 @@
     {% endblock %}
 </head>
 {# Колонка на всю высоту экрана: на короткой странице футер и баннер cookie прижаты к низу. #}
-<body class="flex min-h-dvh flex-col">
+<body class="flex min-h-dvh flex-col bg-paper font-sans text-navy-900">
     <a class="fixed top-2 left-2 z-50 -translate-y-24 rounded-sm bg-white px-4 py-2 focus:translate-y-0" href="#main-content">Перейти к содержанию</a>
 
     {% set active_key %}{% block active_navigation %}{% endblock %}{% endset %}

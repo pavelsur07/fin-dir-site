@@ -44,7 +44,7 @@
                     не отправлено{% if lead.notificationError %}: {{ lead.notificationError }}{% endif %}
                     <form method="post" action="{{ path('admin_lead_notify', {id: lead.id}) }}" class="inline ml-2">
                         <input type="hidden" name="_token" value="{{ token }}">
-                        <button type="submit" class="rounded-md border border-border-strong bg-white px-4 py-2 text-fg hover:bg-surface-muted">Отправить повторно</button>
+                        {% include 'admin/_button.html.twig' with {label: 'Отправить повторно'} only %}
                     </form>
                 {% endif %}
             </dd>
@@ -65,7 +65,7 @@
             <label class="grid gap-1 font-medium" for="lead-next-contact">Следующий контакт</label>
             <input class="min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" id="lead-next-contact" type="date" name="next_contact_at" value="{{ lead.nextContactAt ? lead.nextContactAt|date('Y-m-d') }}">
         </div>
-        <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Сохранить</button>
+        {% include 'admin/_button.html.twig' with {label: 'Сохранить', variant: 'primary'} only %}
     </form>
 
     <h2 class="mb-3 mt-8 type-t3">Заметки</h2>
@@ -75,7 +75,7 @@
             <label class="grid gap-1 font-medium" for="lead-note">Новая заметка</label>
             <textarea class="min-h-24 w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5" id="lead-note" name="text" rows="3" required maxlength="5000"></textarea>
         </div>
-        <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Добавить заметку</button>
+        {% include 'admin/_button.html.twig' with {label: 'Добавить заметку'} only %}
     </form>
     {% for note in lead.notes %}
         <div class="mb-3 rounded-lg border bg-white p-3"><div class="type-t6 text-fg-secondary">{{ note.createdAt|date('d.m.Y H:i') }}</div><p class="whitespace-pre-wrap">{{ note.text }}</p></div>
@@ -96,6 +96,6 @@
     <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="max-w-container rounded-lg border bg-white p-6" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
         <input type="hidden" name="_token" value="{{ token }}">
         <p class="type-t6 text-fg-secondary">Удаляет обращение и заметки без возможности восстановления — например, по запросу человека на удаление персональных данных.</p>
-        <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Удалить обращение</button>
+        {% include 'admin/_button.html.twig' with {label: 'Удалить обращение'} only %}
     </form>
 {% endblock %}

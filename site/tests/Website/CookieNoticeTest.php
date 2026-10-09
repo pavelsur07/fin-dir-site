@@ -31,9 +31,9 @@ final class CookieNoticeTest extends WebTestCase
         self::assertSelectorExists('#cookieNotice[hidden].opacity-0.data-visible\\:opacity-100.duration-base');
         self::assertSelectorNotExists('#cookieNotice.translate-y-4');
         self::assertSelectorExists('#cookieNotice > div.rounded-lg.border.border-border-subtle.bg-surface-raised.shadow-md.p-5.gap-4');
-        // Две равные кнопки 40/8: «Только необходимые» (outline) и «Принять» (primary); крестика и затемнения нет.
-        self::assertSelectorExists('#cookieNotice .flex.gap-2 #cookieNecessary.flex-1.h-control-md.rounded-sm[data-vf-variant="outline"]');
-        self::assertSelectorExists('#cookieNotice .flex.gap-2 #cookieAccept.flex-1.h-control-md.rounded-sm[data-vf-variant="primary"]');
+        // Обе кнопки secondary; на узком экране они стоят друг под другом и не создают горизонтальную прокрутку.
+        self::assertSelectorExists('#cookieNotice .flex.flex-col.gap-2 #cookieNecessary.flex-1.min-h-11.rounded-md[data-vf-variant="secondary"]');
+        self::assertSelectorExists('#cookieNotice .flex.flex-col.gap-2 #cookieAccept.flex-1.min-h-11.rounded-md[data-vf-variant="secondary"]');
         self::assertSelectorNotExists('#cookieClose, #cookieNotice button[aria-label*="Закрыть"], #cookieNotice .bg-overlay');
 
         $root = (string) self::getContainer()->getParameter('kernel.project_dir');

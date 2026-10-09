@@ -10,7 +10,7 @@
         <ul class="grid grid-cols-1 gap-6 md:grid-cols-3">
             {% for fact in facts %}
                 <li class="flex flex-col gap-1">
-                    <span class="type-t3-num text-fg">{{ fact.value }}</span>
+                    <span class="font-mono font-semibold tabular-nums type-t3-num text-fg">{{ fact.value starts with '-' ? '−' ~ fact.value|slice(1) : fact.value }}</span>
                     <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
                 </li>
             {% endfor %}
@@ -20,15 +20,15 @@
 {% else %}
 <section class="bg-surface py-16 md:py-24" aria-labelledby="about-facts-title">
     <div class="mx-auto max-w-container px-4 md:px-8">
-        <h2 id="about-facts-title" class="mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
+        <h2 id="about-facts-title" class="font-display font-extrabold mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
         <ul class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
             {% for fact in facts %}
                 <li class="flex flex-col items-start gap-3 rounded-lg border border-border-subtle p-8">
                     {% if fact.icon|default(null) %}
                         {% include 'website/components/_icon.html.twig' with {name: fact.icon, class: 'size-icon-xl shrink-0 text-accent'} only %}
-                        <p class="type-t3 text-fg">{{ fact.value }}</p>
+                        <p class="font-mono font-semibold tabular-nums type-t3 text-fg">{{ fact.value starts with '-' ? '−' ~ fact.value|slice(1) : fact.value }}</p>
                     {% else %}
-                        <p class="type-t1 text-accent">{{ fact.value }}</p>
+                        <p class="font-mono font-semibold tabular-nums type-t1 text-accent">{{ fact.value starts with '-' ? '−' ~ fact.value|slice(1) : fact.value }}</p>
                     {% endif %}
                     <p class="type-t5 text-fg-secondary">{{ fact.text }}</p>
                 </li>

@@ -28,7 +28,7 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Войти</button>
+            {% include 'admin/_button.html.twig' with {label: 'Войти', variant: 'primary'} only %}
         </form>
     </main>
 {% endblock %}

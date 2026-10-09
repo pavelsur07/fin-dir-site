@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="flex flex-col items-start gap-3">
-                <h2 class="type-t6 font-semibold text-fg">Связаться</h2>
+                <h2 class="font-display font-extrabold type-t6 text-fg">Связаться</h2>
                 {% for contact in contacts %}
                     {% if contact.href is defined %}
                         <a class="type-t6 text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ contact.href }}"{% if contact.external|default(false) %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ contact.value }}</a>
@@ -27,7 +27,7 @@
         <nav class="grid gap-0 md:grid-cols-4 md:gap-8" aria-label="Основное меню футера">
             {% for column in menu %}
                 <div class="hidden flex-col gap-2 md:flex">
-                    <h2 class="mb-2 type-t6 font-semibold text-fg">{{ column.title }}</h2>
+                    <h2 class="mb-2 font-display font-extrabold type-t6 text-fg">{{ column.title }}</h2>
                     {% for item in column.items %}
                         {% if item.href is defined %}
                             <a class="type-t6 font-medium text-fg-muted no-underline hover:text-fg focus-visible:shadow-focus" href="{{ item.href }}"{% if item.href == app.request.pathInfo %} aria-current="page"{% endif %}>{{ item.label }}</a>

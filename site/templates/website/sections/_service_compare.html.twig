@@ -5,7 +5,7 @@
 {% set muted = tone|default('surface') == 'muted' %}
 <section class="{{ muted ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title">
     <div class="mx-auto max-w-page px-4 md:px-8">
-        <h2 class="mb-12 max-w-measure type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+        <h2 class="font-display font-extrabold mb-12 max-w-measure type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             {% for column in [left, right] %}
                 <div class="flex flex-col gap-4 rounded-lg p-6 md:p-8 {{ column.accent|default(false) ? 'border-2 border-accent bg-surface' : 'border border-border bg-surface-muted' }}">

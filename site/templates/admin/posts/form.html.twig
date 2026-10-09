@@ -36,7 +36,7 @@
 
         {{ form_rest(form) }}
         <div class="flex flex-wrap gap-2">
-            <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">{{ post ? 'Сохранить' : 'Создать черновик' }}</button>
+            {% include 'admin/_button.html.twig' with {label: post ? 'Сохранить' : 'Создать черновик', variant: 'primary'} only %}
             <a class="type-t6 text-fg-secondary" href="{{ path('admin_post_list') }}">К списку</a>
         </div>
     {{ form_end(form) }}

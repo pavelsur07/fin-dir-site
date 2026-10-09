@@ -19,7 +19,7 @@
         <div class="contents md:flex md:flex-col md:gap-8">
             <div class="order-1 flex flex-col gap-4">
                 {% if badge|default(null) %}<span class="{{ panel ? 'self-start type-t7 font-medium text-accent' : 'self-start whitespace-nowrap rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-medium text-fg-secondary' }}">{{ badge }}</span>{% endif %}
-                <h2 class="type-t2-article text-fg md:type-t2" id="{{ labelled_by }}">{{ title }}</h2>
+                <h2 class="font-display font-extrabold type-t2-article text-fg md:type-t2" id="{{ labelled_by }}">{{ title }}</h2>
                 {% if text|default(null) %}<p class="{{ panel ? 'max-w-text type-t4 text-fg-secondary' : 'type-t4 text-fg-secondary' }}">{{ text }}</p>{% endif %}
             </div>
             {% if points|default([]) is not empty %}
@@ -151,7 +151,7 @@
                 note_html: agreement_links,
                 required: true,
             } only %}
-            {% include 'website/components/_button.html.twig' with {label: action_label|default('Отправить заявку'), type: 'submit', class: 'w-full'} only %}
+            {% include 'website/components/_button.html.twig' with {label: action_label|default('Отправить заявку'), type: 'submit', variant: 'primary', class: 'w-full'} only %}
             <p class="rounded-md border border-success-border bg-success-bg p-4 type-t6 text-success" role="status" data-vf-lead-success hidden>Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.</p>
             <p class="rounded-md border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
             {% if note|default(null) %}<p class="type-t7 text-center text-fg-muted" data-vf-form-note>{{ note }}</p>{% endif %}

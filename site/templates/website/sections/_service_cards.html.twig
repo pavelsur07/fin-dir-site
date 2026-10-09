@@ -8,7 +8,7 @@
 {% set grid = {2: 'md:grid-cols-2', 3: 'md:grid-cols-2 lg:grid-cols-3', 4: 'md:grid-cols-2 lg:grid-cols-4'}[columns|default(3)] %}
 <section class="{{ muted ? 'bg-surface-muted' : 'bg-surface' }} py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title">
     <div class="mx-auto max-w-page px-4 md:px-8">
-        <h2 class="type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+        <h2 class="font-display font-extrabold type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
         {% if subtitle|default(null) %}<p class="mt-3 max-w-measure type-t4 text-fg-secondary">{{ subtitle }}</p>{% endif %}
         <ul class="mt-12 grid grid-cols-1 gap-4 md:gap-6 {{ grid }}">
             {% for card in cards %}

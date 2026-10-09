@@ -25,7 +25,7 @@
         <label class="grid gap-1 font-medium">Поиск по имени или контакту
             <input class="min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="search" name="q" value="{{ criteria.search }}">
         </label>
-        <button type="submit" class="rounded-md border border-border-strong bg-white px-4 py-2 text-fg hover:bg-surface-muted">Показать</button>
+        {% include 'admin/_button.html.twig' with {label: 'Показать'} only %}
     </form>
 
     {% if pager.nbResults == 0 %}
@@ -78,7 +78,7 @@
                                         <input type="hidden" name="status" value="{{ status.value }}">
                                         <input type="hidden" name="next_contact_at" value="{{ lead.nextContactAt ? lead.nextContactAt|date('Y-m-d') }}">
                                         <input type="hidden" name="back" value="{{ criteria.status ? list_url_first_page : list_url }}">
-                                        <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Статус: {{ status.label }}</button>
+                                        {% include 'admin/_button.html.twig' with {label: 'Статус: ' ~ status.label} only %}
                                     </form>
                                 {% endfor %}
                                 <hr class="my-1 border-t border-border-subtle">
@@ -86,13 +86,13 @@
                                     <form method="post" action="{{ path('admin_lead_notify', {id: lead.id}) }}">
                                         <input type="hidden" name="_token" value="{{ token }}">
                                         <input type="hidden" name="back" value="{{ list_url }}">
-                                        <button class="rounded-md bg-accent-fill px-4 py-2 font-semibold text-white hover:bg-accent-fill-hover focus-visible:shadow-focus" type="submit">Отправить уведомление</button>
+                                        {% include 'admin/_button.html.twig' with {label: 'Отправить уведомление'} only %}
                                     </form>
                                 {% endif %}
                                 <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
                                     <input type="hidden" name="_token" value="{{ token }}">
                                     <input type="hidden" name="back" value="{{ list_url_first_page }}">
-                                    <button type="submit" class="text-accent">Удалить</button>
+                                    {% include 'admin/_button.html.twig' with {label: 'Удалить'} only %}
                                 </form>
                             </div>
                             </details>

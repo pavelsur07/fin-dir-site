@@ -9,7 +9,7 @@
             <img class="size-full object-cover object-top" src="{{ person.photo }}" alt="{{ person.name }}, {{ person.role|lower }}" width="1122" height="1402" loading="lazy" decoding="async">
         </div>
         <div class="flex flex-col gap-4 lg:col-span-2">
-            <h2 class="type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+            <h2 class="font-display font-extrabold type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
             <p class="type-t3 text-fg">{{ person.name }}</p>
             <p class="type-t6 text-fg-secondary">{{ person.role }}{% if person.experience|default(null) %} · {{ person.experience }}{% endif %}</p>
             <p class="max-w-measure type-t4 text-fg-secondary">{{ text }}</p>

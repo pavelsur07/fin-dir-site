@@ -3,7 +3,7 @@
     <ul class="grid gap-1">
         {% for item in menu %}
             <li>
-                <a class="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-white no-underline hover:bg-surface-raised focus-visible:shadow-focus {{ route starts with item.active_prefix ? 'bg-accent-fill' : '' }}" href="{{ path(item.route) }}"{{ route starts with item.active_prefix ? ' aria-current="page"' }}>
+                <a class="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-white no-underline hover:bg-navy-700 focus-visible:shadow-focus {{ route starts with item.active_prefix ? 'bg-navy-600' : '' }}" href="{{ path(item.route) }}"{{ route starts with item.active_prefix ? ' aria-current="page"' }}>
                     <span>{{ item.label }}</span>
                     {% if item.counter|default(false) %}{{ counter }}{% endif %}
                 </a>
@@ -14,5 +14,5 @@
 <form data-admin-account class="mt-auto grid gap-2 border-t px-2 pt-4" method="post" action="{{ logout_path('admin') }}">
     <span class="type-t6 text-fg-secondary">{{ app.user.userIdentifier }}</span>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-    <button type="submit" class="rounded-md border border-border-strong bg-surface-raised px-4 py-2 text-fg hover:bg-surface-muted">Выйти</button>
+    {% include 'admin/_button.html.twig' with {label: 'Выйти'} only %}
 </form>

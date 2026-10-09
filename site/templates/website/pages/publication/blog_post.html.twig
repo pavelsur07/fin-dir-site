@@ -92,7 +92,7 @@
     {# Не меньше двух подтверждённых материалов; меньше -- блок не показываем. #}
     {% if related|length >= 2 %}
         <section class="max-w-measure space-y-4" id="related" aria-labelledby="related-title" data-vf-section="article-preview">
-            <h2 class="type-t2-article text-fg" id="related-title">Ещё статьи о финансовом учёте</h2>
+            <h2 class="font-display font-extrabold type-t2-article text-fg" id="related-title">Ещё статьи о финансовом учёте</h2>
             <ul class="list-disc space-y-2 pl-6 type-t5">
                 {% for item in related %}
                     <li><a class="text-accent hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('gazeta_post', {slug: item.slug}) }}">{{ item.title }}</a> — <time datetime="{{ item.publishedAt|date('Y-m-d') }}">{{ item.publishedAt|date('d.m.Y') }}</time></li>

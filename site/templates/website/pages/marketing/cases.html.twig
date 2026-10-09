@@ -17,7 +17,7 @@
             <ul class="grid grid-cols-1 gap-6 border-t border-border pt-8 md:grid-cols-3">
                 {% for fact in vf_company_facts.facts %}
                     <li class="flex flex-col gap-1">
-                        <span class="type-t3-num text-fg">{{ fact.value }}</span>
+                        <span class="font-mono font-semibold tabular-nums type-t3-num text-fg">{{ fact.value starts with '-' ? '−' ~ fact.value|slice(1) : fact.value }}</span>
                         <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
                     </li>
                 {% endfor %}
