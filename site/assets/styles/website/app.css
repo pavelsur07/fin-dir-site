@@ -2,7 +2,7 @@
 @import "./vf-fonts.css";
 @import "./vf-theme.css";
 @theme {
-  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope Variable", Manrope, ui-sans-serif, system-ui, sans-serif;
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 

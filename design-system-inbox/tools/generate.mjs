@@ -147,9 +147,9 @@ d.radii.filter((r) => r.token !== 'none').forEach((r) => w(`  --radius-${r.token
 w();
 Object.entries(SHADOW).forEach(([k, v]) => w(`  --shadow-${k}: ${v};`));
 w();
-w(`  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;`);
-w(`  --font-display: "Manrope Variable", Manrope, "Inter Variable", Inter, system-ui, sans-serif;`);
-w(`  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;`);
+w(`  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;`);
+w(`  --font-display: "Manrope Variable", Manrope, ui-sans-serif, system-ui, sans-serif;`);
+w(`  --font-mono: "IBM Plex Mono", ui-monospace, monospace;`);
 Object.entries(WEIGHTS).forEach(([k, v]) => w(`  --font-weight-${k}: ${v};`));
 w(`  --tracking-tight: -0.02em;`);
 w(`  --tracking-normal: 0;`);
