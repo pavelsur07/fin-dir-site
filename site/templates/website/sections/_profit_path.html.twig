@@ -2,13 +2,15 @@
     <div class="mx-auto max-w-container px-4 md:px-8">
         <h2 id="home-profit-path-title" class="font-display font-extrabold type-t2-article text-fg md:type-t2">{{ title }}</h2>
         <p class="mt-3 mb-12 max-w-measure type-t4 text-fg-secondary">{{ subtitle }}</p>
-        <ol class="border-t border-border-subtle">
+        <ol>
             {% for step in steps %}
-                <li class="grid grid-cols-1 gap-3 border-b border-border-subtle py-6 lg:grid-cols-12 lg:items-center lg:gap-6">
-                    <span class="type-t-mono-sm text-fg-muted lg:col-span-1" aria-hidden="true">{{ step.number }}</span>
-                    <h3 class="type-t3 text-fg lg:col-span-4">{{ step.title }}</h3>
-                    <p class="type-t6 text-fg-secondary lg:col-span-4">{{ step.text }}</p>
-                    <span class="inline-flex w-fit whitespace-nowrap rounded-xs bg-surface-muted px-2 py-1 type-t7 font-medium text-fg-secondary lg:col-span-3 lg:justify-self-end">{{ step.label }}</span>
+                <li class="grid grid-cols-1 gap-2 border-t border-navy-200 py-6 last:border-b md:gap-3 lg:flex lg:items-center lg:gap-6">
+                    <span class="font-display text-t-code font-extrabold tabular-nums text-red-600 lg:w-16 lg:shrink-0" aria-hidden="true">{{ step.number }}</span>
+                    <h3 class="type-t3 text-fg lg:min-w-0 lg:flex-1">{{ step.title }}</h3>
+                    <p class="max-w-lead font-sans text-t5 text-navy-600 lg:min-w-0 lg:flex-1">{{ step.text }}</p>
+                    <div class="lg:w-sidebar lg:shrink-0">
+                        <span class="inline-flex w-fit max-w-full rounded-xs bg-navy-100 px-2 py-1 font-sans text-t7 font-medium text-ink-700">{{ step.label }}</span>
+                    </div>
                 </li>
             {% endfor %}
         </ol>
