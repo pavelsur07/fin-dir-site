@@ -47,17 +47,13 @@ final class AboutPageTest extends WebTestCase
         self::assertSelectorExists('#home-trust-data-title');
     }
 
-    public function testHomeShowsTrustFactsAsRowLikeOnCasesPage(): void
+    public function testHomeHasNoTrustFactsRow(): void
     {
         $client = static::createClient();
         $client->request('GET', '/');
 
-        // Строка без карточек и без видимого заголовка: числа type-t3-num, подписи type-t6.
-        self::assertSelectorCount(3, 'main section[aria-label="Нам доверяют"] li');
-        self::assertSelectorCount(3, 'main section[aria-label="Нам доверяют"] li span.type-t3-num');
-        self::assertSelectorCount(3, 'main section[aria-label="Нам доверяют"] li span.type-t6');
-        self::assertSelectorNotExists('main section[aria-label="Нам доверяют"] h2');
-        self::assertSelectorNotExists('main section[aria-label="Нам доверяют"] li.rounded-lg');
+        // Факты «Нам доверяют» на главной убраны: их заменяют показатели Hero.
+        self::assertSelectorNotExists('main section[aria-label="Нам доверяют"]');
         self::assertSelectorNotExists('#about-facts-title');
     }
 
