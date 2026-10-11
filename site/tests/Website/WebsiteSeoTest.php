@@ -15,11 +15,11 @@ final class WebsiteSeoTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
-        self::assertSelectorTextContains('h1', 'Увеличиваем прибыль через систему в финанса');
+        self::assertSelectorTextContains('h1', 'Увеличиваем прибыль через систему в финансах');
         self::assertSelectorCount(1, 'title');
         self::assertSelectorTextContains('title', 'Увеличиваем прибыль через систему финансового управления');
         self::assertSelectorExists('meta[name="description"][content*="расти в прибыли"]');
-        self::assertSelectorExists('main a[href="#lead-form"]');
+        self::assertSelectorExists('main #lead-form');
         self::assertSelectorExists('main img[src="/assets/people/pavel-novikov.png"][alt*="Павел Новиков"]');
         self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
         self::assertSelectorExists('link[rel="canonical"][href="https://vashfindir.ru/"]');
