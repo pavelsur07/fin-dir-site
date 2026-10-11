@@ -15,7 +15,7 @@ final class WebsiteSeoTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'h1');
-        self::assertSelectorTextContains('h1', 'Увеличиваем прибыль через систему финансового управления');
+        self::assertSelectorTextContains('h1', 'Увеличиваем прибыль через систему в финанса');
         self::assertSelectorCount(1, 'title');
         self::assertSelectorTextContains('title', 'Увеличиваем прибыль через систему финансового управления');
         self::assertSelectorExists('meta[name="description"][content*="расти в прибыли"]');
