@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Publication\Query\PublicPost;
 
+use App\Publication\ValueObject\PostCover;
+
 /**
  * Опубликованная статья для страницы сайта. Текст -- исходный Markdown.
  */
 final readonly class PublicPostView
 {
     private const int WORDS_PER_MINUTE = 200;
+
+    public ?PostCover $cover;
 
     public function __construct(
         public int $id,
@@ -22,7 +26,10 @@ final readonly class PublicPostView
         public \DateTimeImmutable $publishedAt,
         public \DateTimeImmutable $updatedAt,
         public ?string $formTitle = null,
+        ?string $coverFile = null,
+        ?string $coverAlt = null,
     ) {
+        $this->cover = PostCover::fromColumns($coverFile, $coverAlt);
     }
 
     public function seoTitle(): string

@@ -6,6 +6,7 @@ namespace App\Publication\Entity;
 
 use App\Publication\Exception\PostCannotBeTransitioned;
 use App\Publication\Exception\PostSlugIsLocked;
+use App\Publication\ValueObject\PostCover;
 use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostSlug;
 use App\Publication\ValueObject\PostStatus;
@@ -51,6 +52,13 @@ class Post
 
     #[ORM\Column(length: 32, nullable: true, enumType: PostRubric::class)]
     private ?PostRubric $rubric;
+
+    /** Имя файла обложки в public/uploads/posts; пусто -- в списке показывается заглушка. */
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $coverFile = null;
+
+    #[ORM\Column(length: PostCover::ALT_MAX_LENGTH, nullable: true)]
+    private ?string $coverAlt = null;
 
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
@@ -127,6 +135,33 @@ class Post
         $this->updatedAt = $now;
     }
 
+    /**
+     * Обложка вместе с alt или null -- снять. Без alt обложку не поставить:
+     * картинка без описания недоступна для экранных дикторов.
+     */
+    public function changeCover(?PostCover $cover, \DateTimeImmutable $now): void
+    {
+        if (null !== $cover) {
+            if (!PostCover::isValidFile($cover->file)) {
+                throw new \InvalidArgumentException(\sprintf('Invalid post cover file "%s".', $cover->file));
+            }
+
+            $alt = trim($cover->alt);
+            if ('' === $alt || mb_strlen($alt) > PostCover::ALT_MAX_LENGTH) {
+                throw new \InvalidArgumentException('Post cover alt must be 1..160 characters.');
+            }
+            $cover = new PostCover($cover->file, $alt);
+        }
+
+        if ($cover?->file === $this->coverFile && $cover?->alt === $this->coverAlt) {
+            return;
+        }
+
+        $this->coverFile = $cover?->file;
+        $this->coverAlt = $cover?->alt;
+        $this->updatedAt = $now;
+    }
+
     public function publish(\DateTimeImmutable $now): void
     {
         if (!$this->beginTransition(PostStatus::PUBLISHED)) {
@@ -175,6 +210,11 @@ class Post
     public function slug(): string
     {
         return $this->slug;
+    }
+
+    public function cover(): ?PostCover
+    {
+        return PostCover::fromColumns($this->coverFile, $this->coverAlt);
     }
 
     public function status(): PostStatus

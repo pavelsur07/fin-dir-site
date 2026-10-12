@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Publication\Query\PostEditData;
 
+use App\Publication\ValueObject\PostCover;
 use App\Publication\ValueObject\PostRubric;
 use App\Publication\ValueObject\PostStatus;
 
@@ -12,6 +13,8 @@ use App\Publication\ValueObject\PostStatus;
  */
 final readonly class PostEditData
 {
+    public ?PostCover $cover;
+
     public function __construct(
         public int $id,
         public string $title,
@@ -25,7 +28,10 @@ final readonly class PostEditData
         public int $version,
         public ?string $formTitle = null,
         public ?PostRubric $rubric = null,
+        ?string $coverFile = null,
+        ?string $coverAlt = null,
     ) {
+        $this->cover = PostCover::fromColumns($coverFile, $coverAlt);
     }
 
     /** Slug однажды опубликованной статьи не меняется. */

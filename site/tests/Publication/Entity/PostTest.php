@@ -7,8 +7,10 @@ namespace App\Tests\Publication\Entity;
 use App\Publication\Entity\Post;
 use App\Publication\Exception\PostCannotBeTransitioned;
 use App\Publication\Exception\PostSlugIsLocked;
+use App\Publication\ValueObject\PostCover;
 use App\Publication\ValueObject\PostStatus;
 use App\Tests\Publication\Builder\PostBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class PostTest extends TestCase
@@ -138,5 +140,49 @@ final class PostTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         new Post('   ', 'slug', null, 'текст', null, null, new \DateTimeImmutable());
+    }
+
+    public function testCoverIsSetWithTrimmedAltAndCanBeRemoved(): void
+    {
+        $post = PostBuilder::aPost()->build();
+        $file = str_repeat('a', 32).'.png';
+
+        $post->changeCover(new PostCover($file, '  Схема  '), new \DateTimeImmutable('2026-02-01'));
+        self::assertEquals(new PostCover($file, 'Схема'), $post->cover());
+        self::assertEquals(new \DateTimeImmutable('2026-02-01'), $post->updatedAt());
+
+        $post->changeCover(null, new \DateTimeImmutable('2026-02-02'));
+        self::assertNull($post->cover());
+        self::assertEquals(new \DateTimeImmutable('2026-02-02'), $post->updatedAt());
+    }
+
+    public function testSameCoverIsNoOp(): void
+    {
+        $post = PostBuilder::aPost()->withCover()->build();
+        $updatedAt = $post->updatedAt();
+
+        $post->changeCover($post->cover(), new \DateTimeImmutable('2026-03-01'));
+
+        self::assertEquals($updatedAt, $post->updatedAt());
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function invalidCovers(): iterable
+    {
+        yield 'пустой alt' => [str_repeat('a', 32).'.png', '   '];
+        yield 'длинный alt' => [str_repeat('a', 32).'.png', str_repeat('я', 161)];
+        yield 'чужое имя файла' => ['../../index.php', 'Схема'];
+        yield 'не png' => [str_repeat('a', 32).'.svg', 'Схема'];
+    }
+
+    #[DataProvider('invalidCovers')]
+    public function testInvalidCoverIsRejected(string $file, string $alt): void
+    {
+        $post = PostBuilder::aPost()->build();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $post->changeCover(new PostCover($file, $alt), new \DateTimeImmutable('2026-02-01'));
     }
 }

@@ -99,7 +99,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'admin-tabs.js'] as $asset) {
             $contents .= (string) file_get_contents($root.'/public/assets/website/'.$asset);
         }
         $version = substr(hash('sha256', $contents), 0, 12);

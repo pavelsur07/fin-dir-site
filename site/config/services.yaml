@@ -3,6 +3,8 @@ parameters:
   # Форма вопроса в панели и под статьёй: общий текст. Свой заголовок задаётся у публикации (Post::formTitle).
   vf.article_form.title: 'Вопрос по вашей ситуации?'
   vf.article_form.text: 'Консультант ответит в Telegram или перезвонит в течение часа.'
+  # Обложки статей. URL совпадает с PostCover::URL_PREFIX; в production -- том site_uploads.
+  vf.post_cover.dir: '%kernel.project_dir%/public/uploads/posts'
   # Пусто -- уведомления о заявках выключены, заявки всё равно сохраняются.
   env(TELEGRAM_BOT_TOKEN): ''
   env(TELEGRAM_LEAD_CHAT_ID): ''
@@ -26,3 +28,8 @@ services:
   Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
     arguments:
       - '%env(DATABASE_URL)%'
+
+when@test:
+  parameters:
+    # Тесты не пишут в public: файлы обложек уходят во временный каталог var.
+    vf.post_cover.dir: '%kernel.project_dir%/var/test/uploads/posts'

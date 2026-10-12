@@ -22,7 +22,7 @@ final class PublicPostQuery
     {
         $view = $this->entityManager->createQueryBuilder()
             ->select(\sprintf(
-                'NEW %s(p.id, p.slug, p.title, p.excerpt, p.body, p.metaTitle, p.metaDescription, p.publishedAt, p.updatedAt, p.formTitle)',
+                'NEW %s(p.id, p.slug, p.title, p.excerpt, p.body, p.metaTitle, p.metaDescription, p.publishedAt, p.updatedAt, p.formTitle, p.coverFile, p.coverAlt)',
                 PublicPostView::class,
             ))
             ->from(Post::class, 'p')

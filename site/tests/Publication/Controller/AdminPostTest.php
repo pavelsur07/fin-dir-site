@@ -9,10 +9,13 @@ use App\Publication\Query\PostEditData\PostEditDataQuery;
 use App\Publication\ValueObject\PostStatus;
 use App\Tests\Publication\Builder\PostBuilder;
 use App\Tests\Publication\PostTableCleaner;
+use App\Tests\Publication\TestPng;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Field\FileFormField;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 final class AdminPostTest extends WebTestCase
@@ -25,6 +28,9 @@ final class AdminPostTest extends WebTestCase
     {
         $this->client = static::createClient();
         self::clearPosts(self::getContainer()->get(EntityManagerInterface::class));
+        foreach ($this->storedCovers() as $file) {
+            unlink($this->coverDir().'/'.$file);
+        }
     }
 
     /**
@@ -313,6 +319,191 @@ final class AdminPostTest extends WebTestCase
         self::assertSelectorTextContains('article h2', 'Раздел');
         self::assertCount(0, $crawler->filter('article script'));
         self::assertCount(0, $crawler->filter('article a[href^="javascript"]'));
+    }
+
+    public function testFormIsSplitIntoTabs(): void
+    {
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/posts/new');
+
+        self::assertSame(
+            ['Основное', 'Текст', 'Обложка', 'SEO'],
+            $crawler->filter('[role="tablist"][data-admin-tabs] [role="tab"]')->each(static fn ($tab) => trim($tab->text())),
+        );
+        self::assertCount(4, $crawler->filter('form[data-admin-post-form] [role="tabpanel"]'));
+        self::assertSelectorExists('#post-panel-cover input[type="file"][name="post[coverUpload]"][accept="image/png"]');
+        self::assertSelectorExists('#post-panel-seo input[name="post[metaTitle]"]');
+        self::assertSelectorExists('form[data-admin-post-form][enctype="multipart/form-data"]');
+        self::assertSelectorExists('script[src^="/assets/website/admin-tabs.js?v="]');
+    }
+
+    public function testCreateDraftWithCover(): void
+    {
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/posts/new');
+        $form = $crawler->selectButton('Создать черновик')->form([
+            'post[title]' => 'С обложкой',
+            'post[body]' => 'Текст',
+            'post[coverAlt]' => 'График выручки',
+        ]);
+        $this->fileField($form)->upload(TestPng::create(1200, 675));
+        $this->client->submit($form);
+
+        $cover = $this->findPost('s-oblozhkoy')->cover();
+        self::assertNotNull($cover);
+        self::assertSame('График выручки', $cover->alt);
+        self::assertSame([$cover->file], $this->storedCovers());
+    }
+
+    public function testCoverCanBeReplacedAndRemoved(): void
+    {
+        $id = $this->persist(PostBuilder::aPost()->withSlug('cover')->build());
+        $this->logIn();
+
+        $this->uploadCover($id, TestPng::create(1200, 675), 'Первая');
+        self::assertResponseRedirects('/admin/posts/'.$id.'/edit');
+        $first = $this->findPost('cover')->cover()?->file;
+        self::assertSame([$first], $this->storedCovers());
+
+        $crawler = $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        self::assertSelectorExists('#post-panel-cover img[data-admin-post-cover][src="/uploads/posts/'.$first.'"][alt="Первая"]');
+
+        // Замена: новый файл в базе, прежний удалён с диска.
+        $this->uploadCover($id, TestPng::create(1200, 675), 'Вторая');
+        $second = $this->findPost('cover')->cover();
+        self::assertNotNull($second);
+        self::assertNotSame($first, $second->file);
+        self::assertSame('Вторая', $second->alt);
+        self::assertSame([$second->file], $this->storedCovers());
+
+        // Alt меняется без нового файла.
+        $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        $this->client->submitForm('Сохранить', ['post[coverAlt]' => 'Новое описание']);
+        self::assertSame('Новое описание', $this->findPost('cover')->cover()?->alt);
+
+        $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        $this->client->submitForm('Сохранить', ['post[removeCover]' => '1']);
+        self::assertResponseRedirects('/admin/posts/'.$id.'/edit');
+        self::assertNull($this->findPost('cover')->cover());
+        self::assertSame([], $this->storedCovers());
+    }
+
+    /**
+     * @return iterable<string, array{\Closure(): string, string}>
+     */
+    public static function badCovers(): iterable
+    {
+        yield 'пропорция OG 1200×630' => [static fn (): string => TestPng::create(1200, 630), 'высота файла 630 px'];
+        yield 'вдвое больше' => [static fn (): string => TestPng::create(2400, 1350), 'ширина файла 2400 px'];
+        yield 'не картинка' => [static fn (): string => TestPng::notAnImage(), 'Нужен файл PNG'];
+    }
+
+    /**
+     * @param \Closure(): string $file
+     */
+    #[DataProvider('badCovers')]
+    public function testBadCoverIsRejectedOnCoverTab(\Closure $file, string $error): void
+    {
+        $id = $this->persist(PostBuilder::aPost()->withSlug('bad-cover')->build());
+        $this->logIn();
+
+        $this->uploadCover($id, $file(), 'Описание');
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('#post-panel-cover', $error);
+        self::assertSelectorExists('#post-tab-cover[data-admin-tab-invalid]');
+        self::assertSelectorNotExists('#post-tab-main[data-admin-tab-invalid]');
+        self::assertNull($this->findPost('bad-cover')->cover());
+        self::assertSame([], $this->storedCovers());
+    }
+
+    public function testCoverWithoutAltIsRejected(): void
+    {
+        $id = $this->persist(PostBuilder::aPost()->withSlug('no-alt')->build());
+        $this->logIn();
+
+        $this->uploadCover($id, TestPng::create(1200, 675), '');
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('#post-panel-cover', 'Опишите, что на обложке');
+        self::assertNull($this->findPost('no-alt')->cover());
+        self::assertSame([], $this->storedCovers());
+    }
+
+    public function testFailedSaveRemovesUploadedFileAndKeepsOldCover(): void
+    {
+        $this->persist(PostBuilder::aPost()->withSlug('taken')->build());
+        $id = $this->persist(PostBuilder::aPost()->withSlug('keeps-cover')->withCover()->build());
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        $form = $crawler->selectButton('Сохранить')->form(['post[slug]' => 'taken']);
+        $this->fileField($form)->upload(TestPng::create(1200, 675));
+        $this->client->submit($form);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSame(str_repeat('a', 32).'.png', $this->findPost('keeps-cover')->cover()?->file);
+        self::assertSame([], $this->storedCovers());
+    }
+
+    public function testConcurrentEditWithUploadKeepsOldCoverAndRemovesNewFile(): void
+    {
+        $id = $this->persist(PostBuilder::aPost()->withSlug('concurrent-cover')->withCover()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        $staleForm = $crawler->selectButton('Сохранить')->form();
+
+        $this->client->submitForm('Сохранить', ['post[title]' => 'Первое сохранение']);
+        $this->fileField($staleForm)->upload(TestPng::create(1200, 675));
+        $this->client->submit($staleForm);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSame(str_repeat('a', 32).'.png', $this->findPost('concurrent-cover')->cover()?->file);
+        self::assertSame([], $this->storedCovers());
+    }
+
+    public function testNewFileWinsOverRemoveFlag(): void
+    {
+        $id = $this->persist(PostBuilder::aPost()->withSlug('upload-wins')->withCover()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        $form = $crawler->selectButton('Сохранить')->form(['post[removeCover]' => '1', 'post[coverAlt]' => 'Новая']);
+        $this->fileField($form)->upload(TestPng::create(1200, 675));
+        $this->client->submit($form);
+
+        self::assertResponseRedirects('/admin/posts/'.$id.'/edit');
+        $cover = $this->findPost('upload-wins')->cover();
+        self::assertNotNull($cover);
+        self::assertSame([$cover->file], $this->storedCovers());
+    }
+
+    private function uploadCover(int $id, string $path, string $alt): void
+    {
+        $crawler = $this->client->request('GET', '/admin/posts/'.$id.'/edit');
+        $form = $crawler->selectButton('Сохранить')->form(['post[coverAlt]' => $alt]);
+        $this->fileField($form)->upload($path);
+        $this->client->submit($form);
+    }
+
+    private function coverDir(): string
+    {
+        return (string) self::getContainer()->getParameter('vf.post_cover.dir');
+    }
+
+    private function fileField(Form $form): FileFormField
+    {
+        $field = $form['post[coverUpload]'];
+        self::assertInstanceOf(FileFormField::class, $field);
+
+        return $field;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function storedCovers(): array
+    {
+        return is_dir($this->coverDir()) ? array_values(array_diff(scandir($this->coverDir()) ?: [], ['.', '..'])) : [];
     }
 
     private function logIn(): void

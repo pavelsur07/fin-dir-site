@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Publication\Query\PublicPostList;
 
+use App\Publication\ValueObject\PostCover;
 use App\Publication\ValueObject\PostRubric;
 
 final readonly class PublicPostListItem
 {
     /** Приблизительно: русские слова ~6 знаков + пробел, Markdown добавляет разметку. */
     private const int CHARS_PER_MINUTE = 1400;
+
+    public ?PostCover $cover;
 
     public function __construct(
         public int $id,
@@ -19,7 +22,10 @@ final readonly class PublicPostListItem
         public \DateTimeImmutable $publishedAt,
         public ?PostRubric $rubric = null,
         private int $bodyLength = 0,
+        ?string $coverFile = null,
+        ?string $coverAlt = null,
     ) {
+        $this->cover = PostCover::fromColumns($coverFile, $coverAlt);
     }
 
     /**

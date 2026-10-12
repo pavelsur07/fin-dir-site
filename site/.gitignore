@@ -14,6 +14,11 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+# Загруженные обложки статей -- данные, не код. Каталог в git нужен как точка
+# монтирования тома site_uploads внутри read-only ./site/public у nginx.
+/public/uploads/*
+!/public/uploads/.gitkeep
+
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php
 /.php-cs-fixer.cache

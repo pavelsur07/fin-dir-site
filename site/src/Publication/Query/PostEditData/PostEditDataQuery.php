@@ -18,7 +18,7 @@ final class PostEditDataQuery
     {
         $data = $this->entityManager->createQueryBuilder()
             ->select(\sprintf(
-                'NEW %s(p.id, p.title, p.slug, p.excerpt, p.body, p.metaTitle, p.metaDescription, p.status, p.publishedAt, p.version, p.formTitle, p.rubric)',
+                'NEW %s(p.id, p.title, p.slug, p.excerpt, p.body, p.metaTitle, p.metaDescription, p.status, p.publishedAt, p.version, p.formTitle, p.rubric, p.coverFile, p.coverAlt)',
                 PostEditData::class,
             ))
             ->from(Post::class, 'p')

@@ -2,6 +2,10 @@ vendor/
 var/cache/
 var/log/
 var/sessions/
+var/test/
+# Загруженные обложки -- данные тома site_uploads, не часть образа.
+public/uploads/*
+!public/uploads/.gitkeep
 node_modules/
 npm-debug.log
 yarn-error.log

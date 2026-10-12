@@ -30,6 +30,10 @@ final class PostStructuredData
             'publisher' => $organization,
         ];
 
+        if (null !== $post->cover) {
+            $posting['image'] = $siteUrl.$post->cover->url();
+        }
+
         $description = $post->seoDescription();
         if (null !== $description) {
             $posting['description'] = $description;
