@@ -6,7 +6,6 @@
 {# В главном меню «Услуги» ведёт на страницу услуги, поэтому здесь пункт не подсвечивается. #}
 {% block content %}
     <h1 class="type-t2 md:type-t1">Услуги</h1>
-    <p>Описание остальных услуг скоро появится.</p>
     <ul class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <li class="flex flex-col gap-3 rounded-lg border border-border bg-surface p-6">
             <h2 class="font-display font-extrabold type-h4 text-fg">Финансовый директор на аутсорсинге</h2>
@@ -14,9 +13,19 @@
             <a class="mt-auto inline-flex min-h-control-touch items-center self-start rounded-xs type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('service_financial_director') }}">Подробнее об услуге</a>
         </li>
         <li class="flex flex-col gap-3 rounded-lg border border-border bg-surface p-6">
-            <h2 class="font-display font-extrabold type-h4 text-fg">Финансовая модель от профессионала</h2>
-            <p class="type-t6 text-fg-secondary">Описание услуги появится позже.</p>
+            <h2 class="font-display font-extrabold type-h4 text-fg">Разработка финансовой модели бизнеса</h2>
+            <p class="type-t6 text-fg-secondary">Планирование доходов, расходов и сценариев развития бизнеса.</p>
             <a class="mt-auto inline-flex min-h-control-touch items-center self-start rounded-xs type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('service_financial_model') }}">Подробнее об услуге</a>
+        </li>
+        <li class="flex flex-col gap-3 rounded-lg border border-border bg-surface p-6">
+            <h2 class="font-display font-extrabold type-h4 text-fg">Бухгалтерские услуги</h2>
+            <p class="type-t6 text-fg-secondary">Ведение бухгалтерского учёта и подготовка отчётности для вашего бизнеса.</p>
+            <a class="mt-auto inline-flex min-h-control-touch items-center self-start rounded-xs type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('service_accounting') }}">Подробнее об услуге</a>
+        </li>
+        <li class="flex flex-col gap-3 rounded-lg border border-border bg-surface p-6">
+            <h2 class="font-display font-extrabold type-h4 text-fg">Сервис финансового учета</h2>
+            <p class="type-t6 text-fg-secondary">Доходы, расходы и движение денег в одном месте — для понятного финансового учёта и контроля бизнеса.</p>
+            <a class="mt-auto inline-flex min-h-control-touch items-center self-start rounded-xs type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ path('service_financial_accounting') }}">Подробнее об услуге</a>
         </li>
     </ul>
 {% endblock %}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Числа и валюты — сайт</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}
+</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;padding:72px 0 96px;">
+<div style="max-width:1120px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;gap:56px;">
+
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Сайт · П.1</span>
+<h1 style="margin:0;font:800 44px/52px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Числа и валюты на сайте</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Правила для лендинга, кейсов и блога. Основа — раздел 11 действующей системы (v2.3), сокращённый до маркетинга: кабинет и платежи в отдельной системе, поэтому копейки, балансы и цвет операций сюда не входят.</p>
+</div>
+
+<!-- RULES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Правила</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;">
+<table style="width:100%;min-width:860px;border-collapse:collapse;font:400 15px/22px Inter,sans-serif;">
+<thead>
+<tr style="background:#F4F6F9;text-align:left;">
+<th scope="col" style="padding:12px 20px;font-weight:600;width:34%;">Правило</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;width:33%;color:#0F6B40;">Верно</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;width:33%;color:#B3300A;">Неверно</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rules}}" as="r" hint-placeholder-count="12">
+<tr style="border-top:1px solid #D2D8E2;vertical-align:top;">
+<td style="padding:14px 20px;"><span style="font-weight:600;display:block;">{{r.rule}}</span><span style="font-size:13px;line-height:19px;color:#5E6A85;">{{r.note}}</span></td>
+<td style="padding:14px 20px;font-weight:500;font-variant-numeric:tabular-nums;">{{r.good}}</td>
+<td style="padding:14px 20px;color:#5E6A85;font-variant-numeric:tabular-nums;">{{r.bad}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- METRICS -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Ключевое число с источником</h2>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;text-wrap:pretty;">Каждое число-доказательство на сайте сопровождается подписью, источником и датой. Без даты цифры «230+» и «с 2015» читаются как рекламный лозунг. Значения ниже — образец формы, подставьте фактические.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px;">
+<div style="border:1px solid #D2D8E2;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:800 48px/56px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#B00020;font-variant-numeric:tabular-nums lining-nums;">230+</span>
+<span style="font:500 16px/24px Inter,sans-serif;">компаний прошли через нас</span>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">на [дата], внутренние данные</span>
+</div>
+<div style="border:1px solid #D2D8E2;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:800 48px/56px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#B00020;font-variant-numeric:tabular-nums lining-nums;">от&nbsp;6 до&nbsp;24&nbsp;%</span>
+<span style="font:500 16px/24px Inter,sans-serif;">рост [показатель] у клиентов в [отрасль]</span>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">кейс [название], период [с—по]</span>
+</div>
+<div style="border:1px solid #D2D8E2;border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:800 48px/56px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#B00020;font-variant-numeric:tabular-nums lining-nums;">1,2&nbsp;млн&nbsp;₽</span>
+<span style="font:500 16px/24px Inter,sans-serif;">[что измерено]</span>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">сокращение «млн» допустимо только в KPI-карточке</span>
+</div>
+</div>
+<div style="font:400 14px/22px Inter,sans-serif;color:#434F6B;max-width:760px;">Стиль числа: Manrope 800, <span style="font-weight:600;">tabular-nums lining-nums</span>, трекинг −0,02em, цвет accent #B00020 (7,3:1 на белом) или fg. На ink — crimson 400 #EE6B7C. Красный здесь — только «ключевое число», знак минуса им не окрашивается.</div>
+</section>
+
+<!-- DON'T -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Чего не делаем</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px;">
+<sc-for list="{{donts}}" as="d" hint-placeholder-count="4">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">{{d.title}}</span>
+<span style="font:400 15px/24px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{d.text}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- CODE -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Одна функция форматирования для Twig</h2>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;text-wrap:pretty;">Суммы и проценты в шаблонах не набираются руками. Фильтры дают одинаковый результат везде. Для четырёхзначных чисел используется собственный разделитель: стандартный ICU для ru по умолчанию не отделяет тысячи у 1234 (проверьте на своей версии).</p>
+<div style="background:#0B1020;color:#E8EBF1;border-radius:16px;padding:28px;overflow-x:auto;">
+<pre style="margin:0;font:500 13px/21px ui-monospace,Menlo,Consolas,monospace;white-space:pre;">{{code}}</pre>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const nb = s => s.replace(/ /g, ' ');
+    const rules = [
+      { rule: 'Разряды — неразрывный пробел', note: 'с 4 знаков, во всех числах', good: '1 234 567 · 12 400', bad: '1234567 · 1,234,567' },
+      { rule: 'Десятичный разделитель — запятая', note: '', good: '12,4', bad: '12.4' },
+      { rule: 'Валюта — после числа, символ ₽', note: '«руб.» — только в договорах и документах', good: '12 400 ₽', bad: '₽12 400 · 12400р' },
+      { rule: 'Цены — целые рубли', note: 'на сайте без копеек (копейки — только в кабинете)', good: '12 400 ₽', bad: '12 400,00 ₽' },
+      { rule: 'Цена «от» и период', note: '«₽/мес» слитно, в тексте — словами', good: 'от 12 400 ₽/мес · 12 400 ₽ в месяц', bad: 'от 12400 р. в мес.' },
+      { rule: 'Минус — типографский', note: 'U+2212, не дефис', good: '−84 000 ₽', bad: '-84 000 ₽ · (84 000)' },
+      { rule: 'Знак — только у изменения', note: 'динамика со знаком, абсолютные значения без', good: '+12,4 %', bad: '+2 348 190 ₽ на счёте' },
+      { rule: 'Проценты — с неразрывным пробелом', note: '', good: '24 %', bad: '24% · 24 процента' },
+      { rule: 'Диапазон', note: 'в заголовке «от … до …», в таблице и подписи — короткое тире без пробелов', good: 'от 6 до 24 % · 6–24 %', bad: '6 - 24 % · 6…24%' },
+      { rule: 'Сокращения — только в KPI и графиках', note: 'в тексте и таблицах — полностью', good: '1,2 млн ₽ · 840 тыс. ₽', bad: '1.2M · 1,2кк' },
+      { rule: 'Даты', note: 'в тексте словами, в таблицах цифрами', good: '24 сентября 2026 · 24.09.2026', bad: '24/09/26 · 2026-09-24' },
+      { rule: 'Период — короткое тире без пробелов', note: '', good: '01.09–30.09.2026', bad: '01.09 - 30.09.2026' },
+      { rule: 'Телефон', note: 'в ссылке tel: — только цифры', good: '+7 (000) 000-00-00', bad: '8-000-000-00-00' },
+      { rule: 'Нет данных — тире', note: 'ноль только если значение действительно 0', good: '—', bad: '0 ₽ · н/д · null' },
+      { rule: 'Число-доказательство — с источником и датой', note: 'без источника цифра не публикуется', good: '230+ · на [дата]', bad: 'Более 230 компаний!' }
+    ].map(r => ({ ...r, good: nb(r.good), bad: nb(r.bad) }));
+    const donts = [
+      { title: 'Счётчики и «набегающие» числа', text: 'Цифры показываются сразу точными. Анимация роста числа делает его похожим на рекламную накрутку.' },
+      { title: 'Красный минус', text: 'Брендовый crimson никогда не обозначает отрицательное значение. Минус — знаком и текстом.' },
+      { title: 'Круглые числа без основания', text: '«Более 200 клиентов» допустимо, если есть дата и источник; «сотни довольных клиентов» — нет.' },
+      { title: 'Выдуманные результаты в кейсах', text: 'Метрика в карточке кейса совпадает с цифрой внутри кейса и согласована с клиентом.' }
+    ];
+    const code = `// src/Twig/NumberExtension.php
+public function money(int|float $v): string
+{
+    $s = number_format(abs($v), 0, ',', "\\u{00A0}");
+    return ($v < 0 ? "\\u{2212}" : '') . $s . "\\u{00A0}₽";
+}
+
+public function percent(float $v, bool $sign = false): string
+{
+    $s = number_format(abs($v), 1, ',', "\\u{00A0}");
+    $s = preg_replace('/,0$/', '', $s);
+    $prefix = $v < 0 ? "\\u{2212}" : ($sign && $v > 0 ? '+' : '');
+    return $prefix . $s . "\\u{00A0}%";
+}
+
+{# Twig #}
+{{ 12400|money }}          {# 12 400 ₽ #}
+{{ -84000|money }}         {# −84 000 ₽ #}
+{{ 12.4|percent(true) }}   {# +12,4 % #}`;
+    return { rules, donts, code };
+  }
+}
+</script>
+</body>
+</html>

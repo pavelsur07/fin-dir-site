@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>CTA — запись на экскурсию</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}a:hover{color:#8A001B}
+.vf-chip{position:relative;display:inline-block}
+.vf-chip input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.vf-chip span{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;border:1px solid #8490A8;background:#fff;color:#0B1020;font:500 14px/22px Inter,sans-serif;transition:background 120ms ease-out,border-color 120ms ease-out}
+.vf-chip:hover span{background:#F4F6F9}
+.vf-chip input:checked+span{background:#0B1020;border-color:#0B1020;color:#fff}
+.vf-chip input:focus-visible+span{box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020}
+.vf-field{height:48px;padding:0 16px;border-radius:12px;border:1px solid #8490A8;background:#fff;font:400 16px/26px Inter,sans-serif;color:#0B1020;outline:none;width:100%;box-sizing:border-box}
+.vf-field:hover{border-color:#5E6A85}
+.vf-field:focus{border:1px solid #B00020;box-shadow:inset 0 0 0 1px #B00020,0 0 0 4px #FAC8CE}
+.vf-field::placeholder{color:#5E6A85}
+.vf-seg{position:relative;flex:1;display:block}
+.vf-seg input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.vf-seg span{display:flex;align-items:center;justify-content:center;gap:8px;height:40px;border-radius:8px;font:600 14px/22px Inter,sans-serif;color:#434F6B;transition:background 120ms ease-out}
+.vf-seg input:checked+span{background:#fff;color:#0B1020;box-shadow:0 1px 2px rgba(11,16,32,.06),0 1px 3px rgba(11,16,32,.10)}
+.vf-seg input:focus-visible+span{box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020}
+.vf-cta{height:48px;border:0;border-radius:12px;background:#B00020;color:#fff;font:600 16px/26px Inter,sans-serif;cursor:pointer;padding:0 24px;transition:background 120ms ease-out}
+.vf-cta:hover{background:#8A001B}.vf-cta:active{background:#5E0012}
+.vf-cta:focus-visible{outline:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020}
+.vf-cta-ink:hover{background:#CC1A36}
+.vf-cta-ink:focus-visible{box-shadow:0 0 0 2px #0B1020,0 0 0 4px #EE6B7C}
+</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;padding:72px 0 96px;">
+<div style="max-width:1120px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;gap:64px;">
+
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Сайт · CTA</span>
+<h1 style="margin:0;font:800 44px/52px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">CTA: запись на экскурсию</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Единый призыв к действию для всего сайта. Основа — раздел 25.4 системы v2.3, сверенный с живым блоком на сайте. Добавлено: иерархия CTA от шапки до мобильной панели, подсказка под контактом, доступность и список отличий от текущей версии.</p>
+</div>
+
+<!-- LEVEL 1 -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:4px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">Уровень 1</span>
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Секция записи с формой</h2>
+</div>
+<div style="border-radius:24px;background:#F4F6F9;padding:64px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:48px;align-items:start;">
+<div style="display:flex;flex-direction:column;gap:32px;min-width:0;">
+<div style="display:flex;flex-direction:column;gap:16px;">
+<span style="align-self:flex-start;font:500 12px/18px Inter,sans-serif;padding:4px 12px;border-radius:999px;background:#fff;color:#2E3953;border:1px solid #E8EBF1;">45 минут · онлайн · бесплатно</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Покажем кабинет на примере вашей компании</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Не презентация, а живой разбор: подставим ваши цифры и покажем, где теряется прибыль и что с этим делать.</p>
+</div>
+<div style="display:flex;flex-direction:column;">
+<div style="display:flex;gap:16px;padding:16px 0;border-top:1px solid #D2D8E2;">
+<span style="width:40px;height:40px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B00020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V5a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></span>
+<div style="display:flex;flex-direction:column;gap:2px;"><span style="font:600 16px/26px Inter,sans-serif;">Деньги на одном экране</span><span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">Остатки, платёжный календарь и прогноз денег на ближайшие месяцы.</span></div>
+</div>
+<div style="display:flex;gap:16px;padding:16px 0;border-top:1px solid #D2D8E2;">
+<span style="width:40px;height:40px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B00020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></span>
+<div style="display:flex;flex-direction:column;gap:2px;"><span style="font:600 16px/26px Inter,sans-serif;">Где теряется прибыль</span><span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">Разложим прибыль по направлениям, клиентам и продуктам.</span></div>
+</div>
+<div style="display:flex;gap:16px;padding:16px 0;border-top:1px solid #D2D8E2;">
+<span style="width:40px;height:40px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B00020" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01"/></svg></span>
+<div style="display:flex;flex-direction:column;gap:2px;"><span style="font:600 16px/26px Inter,sans-serif;">Сколько будет стоить</span><span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">Назовём цену под ваш оборот и задачи.</span></div>
+</div>
+</div>
+<div style="display:flex;gap:20px;align-items:flex-end;padding:20px;border-radius:16px;background:#fff;border:1px solid #E8EBF1;">
+<div style="width:112px;aspect-ratio:4 / 5;border-radius:12px;background:#E8EBF1;flex:none;display:flex;align-items:center;justify-content:center;font:500 12px/18px Inter,sans-serif;color:#5E6A85;">[фото 4:5]</div>
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+<span style="font:400 14px/22px Inter,sans-serif;text-wrap:pretty;">«Проведу экскурсию сам и отвечу на вопросы про ваш случай — без скриптов и навязывания тарифа».</span>
+<div style="display:flex;flex-direction:column;"><span style="font:600 14px/22px Inter,sans-serif;">[Имя Фамилия]</span><span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">[Должность]</span></div>
+</div>
+</div>
+</div>
+
+<form style="border-radius:24px;background:#fff;padding:32px;display:flex;flex-direction:column;gap:24px;box-shadow:0 4px 12px -2px rgba(11,16,32,.12),0 2px 4px rgba(11,16,32,.06);min-width:0;" onSubmit="{{noSubmit}}">
+<h3 style="margin:0;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Записаться на экскурсию</h3>
+<div style="display:flex;flex-direction:column;gap:8px;">
+<label for="cta-name" style="font:500 14px/22px Inter,sans-serif;">Как вас зовут</label>
+<input id="cta-name" class="vf-field" type="text" placeholder="Анна" autocomplete="given-name">
+</div>
+<fieldset style="border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:8px;">
+<legend style="padding:0;margin-bottom:8px;font:500 14px/22px Inter,sans-serif;">Роль в компании</legend>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<label class="vf-chip"><input type="radio" name="cta-role" value="owner"><span>Собственник или владелец</span></label>
+<label class="vf-chip"><input type="radio" name="cta-role" value="cfo"><span>Финансовый директор</span></label>
+<label class="vf-chip"><input type="radio" name="cta-role" value="acc"><span>Бухгалтер</span></label>
+<label class="vf-chip"><input type="radio" name="cta-role" value="other"><span>Другое</span></label>
+</div>
+</fieldset>
+<fieldset style="border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:8px;">
+<legend style="padding:0;margin-bottom:8px;font:500 14px/22px Inter,sans-serif;">Оборот компании в месяц</legend>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<label class="vf-chip"><input type="radio" name="cta-turn" value="a"><span>до 2 млн ₽</span></label>
+<label class="vf-chip"><input type="radio" name="cta-turn" value="b"><span>2–10 млн ₽</span></label>
+<label class="vf-chip"><input type="radio" name="cta-turn" value="c"><span>более 10 млн ₽</span></label>
+</div>
+</fieldset>
+<fieldset style="border:0;margin:0;padding:0;min-width:0;display:flex;flex-direction:column;gap:8px;">
+<legend style="padding:0;margin-bottom:8px;font:500 14px/22px Inter,sans-serif;">Как с вами связаться</legend>
+<div style="display:flex;padding:4px;border-radius:12px;background:#E8EBF1;gap:4px;">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+<label class="vf-seg"><input type="radio" name="cta-contact" value="{{t.value}}" checked="{{t.checked}}" onChange="{{t.pick}}"><span>{{t.label}}</span></label>
+</sc-for>
+</div>
+<sc-if value="{{isPhone}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:6px;">
+<label for="cta-phone" style="font:500 14px/22px Inter,sans-serif;position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Телефон</label>
+<input id="cta-phone" class="vf-field" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" aria-describedby="cta-hint">
+<span id="cta-hint" style="font:400 12px/18px Inter,sans-serif;color:#5E6A85;">Позвоним один раз</span>
+</div>
+</sc-if>
+<sc-if value="{{isTg}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:6px;">
+<label for="cta-tg" style="font:500 14px/22px Inter,sans-serif;position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Имя в Telegram</label>
+<input id="cta-tg" class="vf-field" type="text" placeholder="@username" aria-describedby="cta-hint2">
+<span id="cta-hint2" style="font:400 12px/18px Inter,sans-serif;color:#5E6A85;">Звонить не будем, напишем в Telegram</span>
+</div>
+</sc-if>
+</fieldset>
+<label style="display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
+<input type="checkbox" style="width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:#B00020;">
+<span style="font:400 12px/18px Inter,sans-serif;color:#434F6B;">Согласен на <a href="#">обработку персональных данных</a>. <a href="#">Политика конфиденциальности</a></span>
+</label>
+<button type="submit" class="vf-cta">Записаться на экскурсию</button>
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;text-align:center;margin-top:-12px;">Свяжемся в течение рабочего часа и предложим 2–3 слота</span>
+</form>
+</div>
+</section>
+
+<!-- CHANGES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Что отличается от текущей версии</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;">
+<table style="width:100%;min-width:820px;border-collapse:collapse;font:400 15px/22px Inter,sans-serif;">
+<thead><tr style="background:#F4F6F9;text-align:left;">
+<th scope="col" style="padding:12px 20px;font-weight:600;width:20%;">Элемент</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;width:30%;">Сейчас на сайте</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;width:30%;">Должно быть</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;">Основание</th>
+</tr></thead>
+<tbody>
+<sc-for list="{{diffs}}" as="d" hint-placeholder-count="6">
+<tr style="border-top:1px solid #D2D8E2;vertical-align:top;">
+<th scope="row" style="padding:14px 20px;text-align:left;font-weight:600;">{{d.el}}</th>
+<td style="padding:14px 20px;color:#434F6B;">{{d.now}}</td>
+<td style="padding:14px 20px;">{{d.must}}</td>
+<td style="padding:14px 20px;color:#5E6A85;font-size:14px;">{{d.why}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- LEVELS -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<div style="display:flex;flex-direction:column;gap:4px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">Уровни 2–5</span>
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Иерархия CTA по сайту</h2>
+</div>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;text-wrap:pretty;">Везде один и тот же текст кнопки и одна цель — секция записи (уровень 1). Все остальные CTA только ведут к ней. На экране не больше одной красной кнопки.</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px;">
+
+<div style="display:flex;flex-direction:column;gap:12px;">
+<span style="font:600 14px/22px Inter,sans-serif;">2 · Полоса CTA (между секциями, перед подвалом)</span>
+<div style="background:#0B1020;color:#fff;border-radius:24px;padding:40px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+<h3 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Покажем на ваших цифрах, где теряется прибыль</h3>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#D2D8E2;">45 минут, онлайн, без продажи с порога.</p>
+<a href="#form" class="vf-cta vf-cta-ink" style="display:inline-flex;align-items:center;text-decoration:none;color:#fff;">Записаться на экскурсию</a>
+</div>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">Фон ink 950, радиус xl 24. Кнопка hover на ink — crimson 600. Не чаще раза на два экрана.</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;">
+<span style="font:600 14px/22px Inter,sans-serif;">3 · Внутри статьи и кейса</span>
+<div style="border:1px solid #D2D8E2;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;background:#fff;">
+<span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Разберём это на ваших цифрах</span>
+<span style="font:400 15px/24px Inter,sans-serif;color:#434F6B;">[Одна фраза про пользу, связанная с темой статьи.]</span>
+<a href="#form" class="vf-cta" style="display:inline-flex;align-items:center;text-decoration:none;color:#fff;">Записаться на экскурсию</a>
+</div>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">Плоская карточка: рамка 1 px #D2D8E2, без тени. Ставится после смыслового блока, не в середине абзаца.</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;">
+<span style="font:600 14px/22px Inter,sans-serif;">4 · Шапка</span>
+<div style="border:1px solid #D2D8E2;border-radius:16px;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;flex-wrap:wrap;">
+<span style="font:800 20px/28px Manrope,Inter,sans-serif;">Ваш Финдир</span>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+<a href="#" style="min-height:44px;display:inline-flex;align-items:center;padding:0 12px;color:#0B1020;text-decoration:none;font:500 14px/22px Inter,sans-serif;">Личный кабинет</a>
+<a href="#form" style="min-height:44px;display:inline-flex;align-items:center;padding:0 20px;border-radius:12px;background:#B00020;color:#fff;text-decoration:none;font:600 14px/22px Inter,sans-serif;">Записаться</a>
+</div>
+</div>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">Укороченный текст «Записаться» допустим только в шапке. «Личный кабинет» — вторичная ссылка, не кнопка.</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;">
+<span style="font:600 14px/22px Inter,sans-serif;">5 · Закреплённая панель на телефоне</span>
+<div style="max-width:390px;border:1px solid #D2D8E2;border-radius:16px;overflow:hidden;background:#F4F6F9;">
+<div style="height:96px;display:flex;align-items:center;justify-content:center;font:500 12px/18px Inter,sans-serif;color:#5E6A85;">[содержимое страницы]</div>
+<div style="background:#fff;border-top:1px solid #D2D8E2;padding:12px 16px calc(12px + env(safe-area-inset-bottom));">
+<a href="#form" style="display:flex;align-items:center;justify-content:center;height:48px;border-radius:12px;background:#B00020;color:#fff;text-decoration:none;font:600 16px/26px Inter,sans-serif;">Записаться на экскурсию</a>
+</div>
+</div>
+<span style="font:400 13px/19px Inter,sans-serif;color:#5E6A85;">Только до 768 px. Появляется после первого экрана и скрывается, когда в окне секция с формой. Не перекрывает контент: у страницы нижний отступ равен высоте панели.</span>
+</div>
+
+</div>
+</section>
+
+<!-- RULES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Правила</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px;">
+<sc-for list="{{rules}}" as="p" hint-placeholder-count="8">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">{{p.tag}}</span>
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">{{p.title}}</span>
+<span style="font:400 15px/24px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{p.text}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { contact: 'phone' };
+  }
+  renderVals() {
+    const c = this.state.contact;
+    const tabs = [['phone', 'Телефон'], ['tg', 'Telegram']].map(([value, label]) => ({
+      value, label, checked: c === value, pick: () => this.setState({ contact: value })
+    }));
+    const diffs = [
+      { el: 'Плейсхолдер имени', now: '«Имя» (повторяет подпись)', must: '«Анна» — пример ввода', why: 'v2.3 · формы: плейсхолдер только пример, не замена подписи' },
+      { el: 'Подсказка под контактом', now: 'Нет', must: 'Телефон: «Позвоним один раз». Telegram: «Звонить не будем, напишем в Telegram»', why: 'v2.3 · лучшие практики: «Контакт по выбору»' },
+      { el: 'Обводка полей и чипов', now: '#AEB7C8, 2,0:1 на белом', must: '#8490A8, 3,2:1; hover #5E6A85', why: 'WCAG 1.4.11, см. доску «Доступность»' },
+      { el: 'Выбор роли и оборота', now: 'Кнопки-чипы', must: 'Радиогруппы: fieldset + legend, чипы — настоящие input type=radio', why: 'Скринридер озвучивает вопрос и выбранный вариант; стрелки переключают' },
+      { el: 'Переключатель контакта', now: 'Две кнопки', must: 'Радиогруппа с подписью «Как с вами связаться»', why: 'Один выбор из двух — это radio, не tabs' },
+      { el: 'Длительность в бейдже', now: '45 минут (сайт), 30 минут (пример в v2.3)', must: '45 минут везде. Обновить пример в v2.3', why: 'Единый источник цифры; число — как в договорённости с клиентом' }
+    ];
+    const rules = [
+      { tag: 'Текст', title: 'Одна формулировка', text: '«Записаться на экскурсию» на всех кнопках, кроме шапки («Записаться»). Не «Отправить», не «Оставить заявку», не «Узнать больше».' },
+      { tag: 'Иерархия', title: 'Одна красная кнопка на экран', text: 'Остальные CTA в том же экране — ссылка или outline. Красная кнопка есть всегда: в шапке, и ещё одна в содержимом, когда шапка уходит.' },
+      { tag: 'Цель', title: 'Все ведут к секции записи', text: 'Кнопки уровней 2–5 — якорь на секцию с формой. Отдельных форм в статье и на кейсах не делаем без причины: меньше точек учёта и поддержки.' },
+      { tag: 'Поля', title: 'Не более четырёх', text: 'Имя, роль, оборот, контакт. Всё остальное выясняется в разговоре. Новое поле — только с названием решения, которое оно меняет.' },
+      { tag: 'Доверие', title: 'Обещания — только исполнимые', text: 'Срок ответа («в течение рабочего часа») указываем, только если команда его выдерживает. Иначе формулировка без срока.' },
+      { tag: 'Согласия', title: 'Без предзаполнения и тёмных паттернов', text: 'Чекбокс согласия снят по умолчанию, ссылка на политику рядом. Нет таймеров «осталось 2 часа», нет «Нет, я не хочу экономить».' },
+      { tag: 'Мобильный', title: 'Порядок на телефоне', text: 'Описание, форма, сотрудник под формой. Кнопка 48 px, на всю ширину. Клавиатура: tel для телефона, autocomplete для имени.' },
+      { tag: 'Состояния', title: 'Данные не теряются', text: 'При ошибке отправки введённое сохраняется, кнопка возвращается. Состояния — на доске «Состояния (сайт)».' }
+    ];
+    return { tabs, isPhone: c === 'phone', isTg: c === 'tg', diffs, rules, noSubmit: e => { if (e && e.preventDefault) e.preventDefault(); } };
+  }
+}
+</script>
+</body>
+</html>

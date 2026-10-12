@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Страница услуги «Финансовая модель от профессионала». Пока статичная заглушка без контента.
+ * Базовая страница услуги «Разработка финансовой модели бизнеса».
  */
 final class FinancialModelServiceController extends AbstractController
 {

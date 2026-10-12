@@ -1,0 +1,17 @@
+{% extends 'website/layouts/page.html.twig' %}
+
+{% block title %}Сервис финансового учета — Ваш Финдир{% endblock %}
+{% block description %}Доходы, расходы и движение денег в одном месте — для понятного финансового учёта и контроля бизнеса.{% endblock %}
+{# Базовая страница услуги: закрыта от индексации до наполнения. #}
+{% block robots %}noindex, follow{% endblock %}
+
+{% block active_navigation %}services{% endblock %}
+
+{% block body %}
+    {% include 'website/components/page-header.html.twig' with {
+        crumbs: [{label: 'Главная', url: '/'}, {label: 'Услуги', url: path('app_services_index')}, {label: 'Сервис финансового учета'}],
+        title: 'Сервис финансового учета',
+        lead: 'Доходы, расходы и движение денег в одном месте — для понятного финансового учёта и контроля бизнеса.',
+        tone: 'muted',
+    } only %}
+{% endblock %}

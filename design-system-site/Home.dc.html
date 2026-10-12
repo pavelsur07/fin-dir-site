@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Главная</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}a:hover{color:#8A001B}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020}
+.on-ink a:focus-visible,.on-ink button:focus-visible{box-shadow:0 0 0 2px #0B1020,0 0 0 4px #EE6B7C}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border-radius:12px;border:0;background:#B00020;color:#fff;font:600 16px/26px Inter,sans-serif;text-decoration:none;cursor:pointer;transition:background 120ms ease-out}
+.btn:hover{background:#8A001B;color:#fff}.btn:active{background:#5E0012}
+.on-ink .btn:hover{background:#CC1A36}
+.link-btn{display:inline-flex;align-items:center;min-height:48px;font:600 16px/26px Inter,sans-serif;color:#0B1020;text-decoration:none}
+.link-btn:hover{color:#B00020}
+.card{background:#fff;border:1px solid #D2D8E2;border-radius:16px;transition:box-shadow 120ms ease-out,border-color 120ms ease-out}
+.nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px;color:#0B1020;text-decoration:none;font:500 15px/22px Inter,sans-serif}
+.nav a:hover{color:#B00020}
+</style>
+<style>.svc:hover,.card:hover{box-shadow:0 1px 3px rgba(11,16,32,.08),0 4px 12px rgba(11,16,32,.06);}</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;">
+
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;">
+
+<!-- HEADER -->
+<header style="border-bottom:1px solid #E8EBF1;background:#fff;">
+<div style="max-width:1216px;margin:0 auto;padding:12px clamp(16px,2.5vw,32px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+<a href="#" style="font:800 22px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#0B1020;text-decoration:none;display:flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:8px;background:#0B1020;color:#fff;display:inline-flex;align-items:center;justify-content:center;font:800 11px/1 Manrope,sans-serif;">ВФ</span>Ваш Финдир</a>
+<nav class="nav" style="display:flex;gap:4px;flex-wrap:wrap;" aria-label="Основная навигация">
+<a href="#">Услуги</a><a href="#">Кейсы</a><a href="#">Газета</a><a href="#">Партнёрам</a><a href="#">О Компании</a>
+</nav>
+<div style="display:flex;gap:8px;align-items:center;">
+<a href="#" class="nav" style="min-height:44px;display:inline-flex;align-items:center;padding:0 12px;color:#0B1020;text-decoration:none;font:500 14px/22px Inter,sans-serif;">Личный кабинет</a></div>
+</div>
+</header>
+
+<!-- HERO -->
+<section style="background:#F4F6F9;overflow:hidden;">
+<div style="max-width:1216px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(16px,2.5vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(32px,5vw,64px);align-items:center;">
+<div style="display:flex;flex-direction:column;gap:40px;min-width:0;">
+<div style="display:flex;flex-direction:column;gap:20px;">
+<h1 style="margin:0;font:800 48px/56px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Увеличиваем прибыль через систему в финансах</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;max-width:560px;text-wrap:pretty;">Строим систему финансового управления с предсказуемым результатом для компаний с оборотом от&nbsp;2&nbsp;млн до&nbsp;1,5&nbsp;млрд&nbsp;₽ по всей России.</p>
+</div>
+<dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:32px 40px;max-width:560px;">
+<sc-for list="{{proof}}" as="p" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:8px;">
+<dt style="font:800 30px/38px Manrope,Inter,sans-serif;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;color:#0B1020;">{{p.num}} <span style="color:#B00020;">{{p.unit}}</span></dt>
+<dd style="margin:0;font:400 14px/22px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{p.label}}</dd>
+</div>
+</sc-for>
+</dl>
+</div>
+<div style="position:relative;width:100%;max-width:500px;justify-self:center;min-width:0;">
+<svg aria-hidden="true" viewBox="0 0 100 100" style="position:absolute;inset:-14%;width:128%;height:128%;pointer-events:none;"><circle cx="50" cy="50" r="49.5" fill="none" stroke="#D2D8E2" stroke-width=".25"/><circle cx="50" cy="50" r="44" fill="none" stroke="#E8EBF1" stroke-width=".25"/></svg>
+<div style="position:relative;aspect-ratio:1 / 1;">
+<div style="position:absolute;inset:0;border-radius:50%;background:#E8EBF1;"></div>
+<div style="position:absolute;inset:7%;border-radius:50%;background:#D2D8E2;"></div>
+<div style="position:absolute;inset:0;clip-path:circle(43% at 50% 50%);">
+<img src="./assets/pavel.webp" alt="Павел Новиков, управляющий партнёр" width="800" height="1000" style="position:absolute;left:50%;bottom:7%;height:88%;width:auto;transform:translateX(-50%);display:block;">
+</div>
+<div style="position:absolute;left:0;bottom:-8px;background:#0B1020;color:#fff;border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:2px;">
+<span style="font:700 16px/24px Manrope,Inter,sans-serif;">Павел Новиков</span>
+<span style="font:400 14px/22px Inter,sans-serif;color:#D2D8E2;">Управляющий партнёр</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="services" style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Услуги</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Три формата работы с финансами</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Начинаем с того, что нужно вашему бизнесу сейчас. Одно не мешает другому.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;">
+<sc-for list="{{services}}" as="s" hint-placeholder-count="3">
+<a href="#" class="card svc" style="padding:32px;display:flex;flex-direction:column;gap:16px;text-decoration:none;color:#0B1020;">
+<span style="width:48px;height:48px;border-radius:12px;background:#FDE4E7;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A001B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{s.d}}"/></svg></span>
+<div style="display:flex;flex-direction:column;gap:8px;flex:1;">
+<h3 style="margin:0;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{s.title}}</h3>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{s.text}}</p>
+</div>
+<span style="font:600 16px/26px Inter,sans-serif;color:#B00020;">Подробнее →</span>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Путь к прибыли</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">От хаоса в цифрах до управляемой прибыли</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">[Формулировку шагов подтвердите по текущему блоку на сайте.]</p>
+</div>
+<ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:24px;">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<li class="card" style="padding:32px;display:flex;flex-direction:column;gap:12px;">
+<span style="font:800 24px/32px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;color:#B00020;">{{s.n}}</span>
+<h3 style="margin:0;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{s.title}}</h3>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{s.text}}</p>
+</li>
+</sc-for>
+</ol>
+</div>
+</section>
+<section id="cases" style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Кейсы</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Результаты клиентов в цифрах</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Каждая цифра с источником и датой.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;">
+<sc-for list="{{cases}}" as="c" hint-placeholder-count="3">
+<article class="card" style="padding:32px;display:flex;flex-direction:column;gap:16px;">
+<span style="align-self:flex-start;font:500 12px/18px Inter,sans-serif;padding:4px 12px;border-radius:999px;background:#E8EBF1;color:#2E3953;">{{c.tag}}</span>
+<span style="font:800 30px/38px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;">{{c.num}}</span>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;flex:1;text-wrap:pretty;">{{c.text}}</p>
+<span style="font:400 12px/18px Inter,sans-serif;color:#5E6A85;">{{c.src}}</span>
+</article>
+</sc-for>
+</div>
+<div><a href="#" class="link-btn">Все кейсы →</a></div>
+</div>
+</section>
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,5vw,64px);align-items:start;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Экскурсия</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Что будет на 45-минутной встрече</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Бесплатно, онлайн, на ваших цифрах.</p>
+</div>
+<ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;">
+<sc-for list="{{tour}}" as="t" hint-placeholder-count="3">
+<li style="display:flex;gap:16px;padding:20px 0;border-top:1px solid #D2D8E2;">
+<span style="font:800 20px/28px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;color:#B00020;min-width:32px;">{{t.n}}</span>
+<div style="display:flex;flex-direction:column;gap:4px;"><span style="font:700 18px/26px Manrope,Inter,sans-serif;">{{t.title}}</span><span style="font:400 16px/26px Inter,sans-serif;color:#434F6B;">{{t.text}}</span></div>
+</li>
+</sc-for>
+</ul>
+</div>
+</div>
+</section>
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Вопросы</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Частые вопросы</h2>
+
+</div>
+<div style="max-width:880px;border:1px solid #D2D8E2;border-radius:16px;">
+<sc-for list="{{faq}}" as="q" hint-placeholder-count="4">
+<div style="border-top:{{q.border}};">
+<h3 style="margin:0;"><button type="button" onclick="{{q.toggle}}" aria-expanded="{{q.open}}" style="width:100%;min-height:64px;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:none;border:0;cursor:pointer;text-align:left;font:700 18px/26px Manrope,Inter,sans-serif;color:#0B1020;"><span>{{q.title}}</span><span aria-hidden="true" style="font:500 24px/1 Inter,sans-serif;color:#B00020;">{{q.sign}}</span></button></h3>
+<sc-if cond="{{q.open}}"><p style="margin:0;padding:0 24px 24px;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;">{{q.body}}</p></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Газета</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Разборы и практика для собственников</h2>
+
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;">
+<sc-for list="{{news}}" as="a" hint-placeholder-count="3">
+<a href="#" class="card svc" style="padding:24px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:#0B1020;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">{{a.meta}}</span>
+<span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{a.title}}</span>
+</a>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="form" style="padding:clamp(64px,8vw,96px) 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);">
+<div class="on-ink" style="background:#0B1020;color:#fff;border-radius:24px;padding:clamp(32px,5vw,56px);display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between;">
+<div style="flex:1 1 420px;display:flex;flex-direction:column;gap:12px;min-width:0;">
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Посмотрим на ваши цифры и покажем точки роста</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#D2D8E2;">45 минут, онлайн, бесплатно. Без продажи с порога.</p>
+</div>
+<a href="#" class="btn">Записаться на экскурсию</a>
+</div>
+</div>
+</section>
+<footer style="background:#F4F6F9;border-top:1px solid #E8EBF1;">
+<div style="max-width:1216px;margin:0 auto;padding:32px clamp(16px,2.5vw,32px);display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;font:400 14px/22px Inter,sans-serif;color:#434F6B;">
+<span>ООО «Фин Консалтинг», г. Ростов-на-Дону</span>
+<span>[Подвал сайта: как на остальных страницах]</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":4600}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { faq: 0 }; }
+  renderVals() {
+    const proof = [
+      { num: 'с\u00a02015', unit: 'года', label: 'помогаем собственникам выстраивать финансовое управление' },
+      { num: '230+', unit: 'компаний', label: 'прошли через нас, данные на [дата]' },
+      { num: 'до\u00a08', unit: 'числа', label: 'закрываем месяц и показываем цифры собственнику' },
+      { num: '15', unit: 'отраслей', label: 'где уже работает наша система финансового управления' }
+    ];
+    const services = [
+      { d: 'M3 3v18h18 M7 14l4-4 3 3 5-6', title: 'Финансовый директор на аутсорсинге', text: 'Выстраиваем финансовое управление: ДДС, ОПиУ, бюджет, решения по цифрам. Без штатного ФД.' },
+      { d: 'M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2 M9 14l2 2 4-4', title: 'Бухгалтерские услуги', text: 'Ведём учёт, считаем налоги, сдаём отчётность. Цифры сразу пригодны для управления.' },
+      { d: 'M4 20V10 M10 20V4 M16 20v-7 M22 20H2', title: '[Третья услуга]', text: '[Одно предложение: что получает клиент. Название и состав подтвердите по меню сайта.]' }
+    ];
+    const steps = [
+      { n: '01', title: 'Диагностика', text: '[Смотрим учёт и деньги компании, находим, где теряется прибыль.]' },
+      { n: '02', title: 'Система', text: '[Настраиваем учёт, ДДС, ОПиУ и правила работы с цифрами.]' },
+      { n: '03', title: 'Управление', text: '[Ежемесячно разбираем цифры с собственником и принимаем решения.]' },
+      { n: '04', title: 'Рост', text: '[Фиксируем результат и выбираем следующие точки роста.]' }
+    ];
+    const cases = [
+      { tag: '[Отрасль, оборот]', num: 'от [6] до [24]\u00a0%', text: '[Что изменили и за какой срок. Одно предложение.]', src: 'Источник: [данные клиента], [месяц год]' },
+      { tag: '[Отрасль, оборот]', num: '[1,2]\u00a0млн\u00a0₽', text: '[Что изменили и за какой срок. Одно предложение.]', src: 'Источник: [данные клиента], [месяц год]' },
+      { tag: '[Отрасль, оборот]', num: '[0]\u00a0%', text: '[Что изменили и за какой срок. Одно предложение.]', src: 'Источник: [данные клиента], [месяц год]' }
+    ];
+    const tour = [
+      { n: '1', title: 'Смотрим ваши цифры', text: 'Берём то, что есть: выписки, отчёты, таблицы. Готовить ничего не нужно.' },
+      { n: '2', title: 'Показываем, как это выглядит', text: 'ДДС и ОПиУ на ваших данных, а не на примере.' },
+      { n: '3', title: 'Называем следующий шаг', text: 'Что делать дальше и сколько это стоит. Решение остаётся за вами.' }
+    ];
+    const faqData = [
+      { title: 'Для каких компаний вы подходите?', body: 'Работаем с компаниями с оборотом от 2 млн до 1,5 млрд ₽ по всей России.' },
+      { title: 'Чем вы отличаетесь от штатного финдиректора?', body: '[Ответ: формат, стоимость, ответственность.]' },
+      { title: 'Что нужно от нас для старта?', body: '[Ответ: доступы, документы, время собственника.]' },
+      { title: 'Сколько это стоит?', body: '[Ответ: от чего зависит цена, ориентир «от … ₽ в месяц».]' }
+    ];
+    const faq = faqData.map((q, i) => { const on = this.state.faq === i; return { ...q, open: on, sign: on ? '\u2212' : '+', border: i === 0 ? '0' : '1px solid #E8EBF1', toggle: () => this.setState({ faq: on ? -1 : i }) }; });
+    const news = [
+      { meta: '[Рубрика] · [дата]', title: '[Заголовок статьи в одну-две строки]' },
+      { meta: '[Рубрика] · [дата]', title: '[Заголовок статьи в одну-две строки]' },
+      { meta: '[Рубрика] · [дата]', title: '[Заголовок статьи в одну-две строки]' }
+    ];
+    return { proof, services, steps, cases, tour, faq, news };
+  }
+}
+</script>
+</body>
+</html>
