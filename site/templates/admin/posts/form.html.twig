@@ -2,6 +2,10 @@
 
 {% block title %}{{ post ? 'Редактирование' : 'Новая статья' }}{% endblock %}
 
+{% block javascripts %}
+    <script src="/assets/website/admin-tabs.js?v={{ vf_asset_version }}" defer></script>
+{% endblock %}
+
 {% block body %}
     <div class="mb-4 flex flex-wrap gap-2">
         <h1 class="mb-6 type-t2-article">{{ post ? post.title : 'Новая статья' }}</h1>
@@ -20,18 +24,55 @@
         </div>
     {% endif %}
 
+    {# Разделы формы. Одна форма и одна кнопка: вкладки только скрывают части, сохраняется всё сразу. #}
+    {% set tabs = [
+        {id: 'main', label: 'Основное', fields: [form.title, form.slug, form.rubric, form.excerpt]},
+        {id: 'body', label: 'Текст', fields: [form.body]},
+        {id: 'cover', label: 'Обложка', fields: [form.coverUpload, form.coverAlt]|merge(form.removeCover is defined ? [form.removeCover] : [])},
+        {id: 'seo', label: 'SEO', fields: [form.metaTitle, form.metaDescription, form.formTitle]},
+    ] %}
+
     {{ form_start(form, {attr: {'data-admin-post-form': '', class: 'max-w-container rounded-lg border bg-white p-6', novalidate: 'novalidate'}}) }}
         {% if form.vars.errors|length > 0 %}
-            <div data-admin-form-errors class="rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
+            <div data-admin-form-errors class="mb-4 rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
         {% endif %}
 
-        {% for field in [form.title, form.slug, form.rubric, form.excerpt, form.body, form.metaTitle, form.metaDescription, form.formTitle] %}
-            <div class="mb-4">
-                {{ form_label(field) }}
-                {{ form_widget(field, {attr: field.vars.attr|merge({class: 'w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5'})}) }}
-                {{ form_help(field) }}
-                {{ form_errors(field) }}
-            </div>
+        {# Без JS список вкладок скрыт, разделы идут подряд с заголовками. admin-tabs.js включает вкладки. #}
+        <div class="mb-6 flex flex-wrap gap-2 border-b border-border-subtle" role="tablist" aria-label="Разделы статьи" data-admin-tabs hidden>
+            {% for tab in tabs %}
+                {% set invalid = tab.fields|filter(field => not field.vars.valid)|length > 0 %}
+                <button class="border-b-2 border-transparent px-4 py-2 type-t6 font-semibold text-fg-secondary hover:text-fg focus-visible:shadow-focus aria-selected:border-navy-900 aria-selected:text-fg" type="button" role="tab" id="post-tab-{{ tab.id }}" aria-controls="post-panel-{{ tab.id }}" aria-selected="false" tabindex="-1"{% if invalid %} data-admin-tab-invalid{% endif %}>
+                    {{ tab.label }}{% if invalid %} <span class="text-error">· ошибка</span>{% endif %}
+                </button>
+            {% endfor %}
+        </div>
+
+        {% for tab in tabs %}
+            <section class="mb-6" role="tabpanel" id="post-panel-{{ tab.id }}" aria-labelledby="post-tab-{{ tab.id }}" data-admin-tab-panel>
+                <h2 class="mb-4 type-t3" data-admin-tab-heading>{{ tab.label }}</h2>
+
+                {% if tab.id == 'cover' %}
+                    {% if post and post.cover %}
+                        <img class="mb-4 aspect-video w-full max-w-lead rounded-md border object-cover" src="{{ post.cover.url }}" alt="{{ post.cover.alt }}" width="1200" height="675" data-admin-post-cover>
+                    {% else %}
+                        <p class="mb-4 type-t6 text-fg-secondary">Обложки нет — в списке «Газеты» показывается заглушка.</p>
+                    {% endif %}
+                {% endif %}
+
+                {% for field in tab.fields %}
+                    <div class="mb-4">
+                        {% if 'checkbox' in field.vars.block_prefixes %}
+                            {{ form_widget(field) }}
+                            {{ form_label(field) }}
+                        {% else %}
+                            {{ form_label(field) }}
+                            {{ form_widget(field, {attr: field.vars.attr|merge({class: 'w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5'})}) }}
+                        {% endif %}
+                        {{ form_help(field) }}
+                        {{ form_errors(field) }}
+                    </div>
+                {% endfor %}
+            </section>
         {% endfor %}
 
         {{ form_rest(form) }}

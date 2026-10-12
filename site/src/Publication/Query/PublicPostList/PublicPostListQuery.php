@@ -66,7 +66,7 @@ final class PublicPostListQuery
     private function published(): QueryBuilder
     {
         return $this->entityManager->createQueryBuilder()
-            ->select(\sprintf('NEW %s(p.id, p.slug, p.title, p.excerpt, p.publishedAt, p.rubric, LENGTH(p.body))', PublicPostListItem::class))
+            ->select(\sprintf('NEW %s(p.id, p.slug, p.title, p.excerpt, p.publishedAt, p.rubric, LENGTH(p.body), p.coverFile, p.coverAlt)', PublicPostListItem::class))
             ->from(Post::class, 'p')
             ->where('p.status = :published')
             ->setParameter('published', PostStatus::PUBLISHED)

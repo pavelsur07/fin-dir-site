@@ -29,6 +29,7 @@ final class PostEditController extends AbstractController
         $form = $this->createForm(PostType::class, PostInput::fromEditData($post), [
             'slug_locked' => $post->isSlugLocked(),
             'is_edit' => true,
+            'has_cover' => null !== $post->cover,
         ]);
         $form->handleRequest($request);
 

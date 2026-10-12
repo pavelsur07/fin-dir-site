@@ -375,6 +375,38 @@ final class PublicBlogTest extends WebTestCase
         self::assertNotContains('https://vashfindir.ru/gazeta/post-1', $urls);
     }
 
+    public function testCoverOrFixedPlaceholderInListAndArticle(): void
+    {
+        $file = str_repeat('b', 32).'.png';
+        $this->resetPosts(
+            PostBuilder::aPost()->withSlug('with-cover')->withTitle('С обложкой')->withCover($file, 'График выручки')->published('2026-02-02')->build(),
+            PostBuilder::aPost()->withSlug('no-cover')->withTitle('Без обложки')->withRubric(PostRubric::cases()[0])->published('2026-02-01')->build(),
+        );
+
+        $crawler = $this->client->request('GET', '/gazeta');
+
+        self::assertResponseIsSuccessful();
+        $cover = $crawler->filter('[data-vf-section="article-featured"] img');
+        self::assertSame('/uploads/posts/'.$file, $cover->attr('src'));
+        // В карточке-ссылке картинка декоративная, описание -- на странице статьи.
+        self::assertSame('', $cover->attr('alt'));
+        self::assertSame('1200', $cover->attr('width'));
+        self::assertSame('675', $cover->attr('height'));
+        // Заглушка одна для всех статей: текст не зависит от рубрики.
+        self::assertSelectorTextSame('a[href="/gazeta/no-cover"] [data-vf-post-cover-placeholder]', 'Газета · Ваш Финдир');
+
+        $article = $this->client->request('GET', '/gazeta/with-cover');
+        self::assertSelectorExists('article header img[data-vf-post-cover][src="/uploads/posts/'.$file.'"][alt="График выручки"]');
+        self::assertSelectorExists('meta[property="og:image"][content="https://vashfindir.ru/uploads/posts/'.$file.'"]');
+        self::assertSelectorExists('meta[name="twitter:image"][content="https://vashfindir.ru/uploads/posts/'.$file.'"]');
+        $posting = json_decode((string) $article->filter('script[type="application/ld+json"]')->last()->text(), true, flags: \JSON_THROW_ON_ERROR)[0];
+        self::assertSame('https://vashfindir.ru/uploads/posts/'.$file, $posting['image']);
+
+        $this->client->request('GET', '/gazeta/no-cover');
+        self::assertSelectorNotExists('article header img');
+        self::assertSelectorExists('meta[property="og:image"][content="https://vashfindir.ru/assets/og-image-v2.png"]');
+    }
+
     private function resetPosts(Post ...$posts): void
     {
         self::clearPosts(self::getContainer()->get(EntityManagerInterface::class));

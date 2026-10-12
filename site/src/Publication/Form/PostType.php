@@ -8,7 +8,9 @@ use App\Publication\DTO\PostInput;
 use App\Publication\ValueObject\PostRubric;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -57,6 +59,26 @@ final class PostType extends AbstractType
                 'empty_data' => '',
                 'attr' => ['rows' => 24],
             ])
+            ->add('coverUpload', FileType::class, [
+                'label' => $options['has_cover'] ? 'Заменить обложку' : 'Обложка',
+                'required' => false,
+                'attr' => ['accept' => 'image/png'],
+                'help' => 'PNG ровно 1200 × 675 px, до 2 МБ. Тяжёлый файл сожмите через TinyPNG или Squoosh. Если форма вернулась с ошибкой, файл нужно выбрать заново.',
+            ])
+            ->add('coverAlt', TextType::class, [
+                'label' => 'Описание обложки (alt)',
+                'required' => false,
+                'help' => 'Что изображено — до 160 символов. Обязательно, если обложка есть.',
+            ]);
+
+        if ($options['has_cover']) {
+            $builder->add('removeCover', CheckboxType::class, [
+                'label' => 'Убрать обложку — в списке будет заглушка',
+                'required' => false,
+            ]);
+        }
+
+        $builder
             ->add('metaTitle', TextType::class, [
                 'label' => 'SEO: title',
                 'required' => false,
@@ -91,7 +113,9 @@ final class PostType extends AbstractType
             'data_class' => PostInput::class,
             'slug_locked' => false,
             'is_edit' => false,
+            'has_cover' => false,
         ]);
+        $resolver->setAllowedTypes('has_cover', 'bool');
         $resolver->setAllowedTypes('slug_locked', 'bool');
         $resolver->setAllowedTypes('is_edit', 'bool');
     }

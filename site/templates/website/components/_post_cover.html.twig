@@ -1,11 +1,12 @@
 {# Обложка статьи в списке: одно место для фото и заглушки, высота блока не зависит от наличия фото.
-   Вход: label — название рубрики для заглушки; featured — главная статья (крупнее);
-   cover — необязательно {url, alt}: alt обязателен. У статей пока нет поля обложки, всегда заглушка. #}
+   Вход: cover -- PostCover или null (тогда фиксированная заглушка); featured -- главная статья (крупнее).
+   Карточка целиком -- ссылка с заголовком, поэтому картинка здесь декоративная: alt="" не дублирует название ссылки.
+   Описание обложки выводится на странице статьи. #}
 {% set featured = featured|default(false) %}
 {% if cover|default %}
-    <img class="aspect-video w-full object-cover {{ featured ? 'rounded-lg' : 'rounded-md' }}" src="{{ cover.url }}" alt="{{ cover.alt }}" {% if featured %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+    <img class="aspect-video w-full object-cover {{ featured ? 'rounded-lg' : 'rounded-md' }}" src="{{ cover.url }}" alt="" width="1200" height="675" decoding="async" {% if featured %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}>
 {% else %}
-    <div class="flex aspect-video w-full items-end border border-border-subtle bg-surface-muted {{ featured ? 'rounded-lg p-8' : 'rounded-md p-4' }}" aria-hidden="true">
-        <span class="font-extrabold text-fg {{ featured ? 'type-t2-article' : 'type-t3' }}">{{ label }}</span>
+    <div class="flex aspect-video w-full items-end border border-border-subtle bg-surface-muted {{ featured ? 'rounded-lg p-8' : 'rounded-md p-4' }}" aria-hidden="true" data-vf-post-cover-placeholder>
+        <span class="font-extrabold text-fg {{ featured ? 'type-t2-article' : 'type-t3' }}">Газета · Ваш Финдир</span>
     </div>
 {% endif %}

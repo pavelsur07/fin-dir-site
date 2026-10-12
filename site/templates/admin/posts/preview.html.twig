@@ -11,6 +11,9 @@
     <article class="max-w-measure rounded-lg border bg-white p-6">
         <h1 class="mb-6 type-t2-article">{{ post.title }}</h1>
         {% if post.excerpt %}<p class="type-t6 text-fg-secondary">{{ post.excerpt }}</p>{% endif %}
+        {% if post.cover %}
+            <img class="my-6 aspect-video w-full rounded-lg object-cover" src="{{ post.cover.url }}" alt="{{ post.cover.alt }}" width="1200" height="675">
+        {% endif %}
         {# body_html -- выход MarkdownRenderer: HTML из текста вырезан, небезопасные ссылки отброшены. #}
         {{ body_html|raw }}
     </article>

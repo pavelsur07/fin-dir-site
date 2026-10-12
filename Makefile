@@ -91,6 +91,7 @@ assets:
 	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
 	cp site/assets/scripts/website/article-toc.js site/public/assets/website/article-toc.js
+	cp site/assets/scripts/website/admin-tabs.js site/public/assets/website/admin-tabs.js
 
 assets-watch:
 	mkdir -p site/public/assets/website
@@ -98,10 +99,11 @@ assets-watch:
 	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
 	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
 	cp site/assets/scripts/website/article-toc.js site/public/assets/website/article-toc.js
+	cp site/assets/scripts/website/admin-tabs.js site/public/assets/website/admin-tabs.js
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --watch
 
 asset-version:
-	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js | sha256sum | cut -c1-12
+	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js site/public/assets/website/admin-tabs.js | sha256sum | cut -c1-12
 
 assets-check:
 	@temporary=$$(mktemp -d); \
@@ -111,6 +113,7 @@ assets-check:
 	cp site/assets/scripts/website/navigation.js "$$temporary/navigation.js"; \
 	cp site/assets/scripts/website/metrika.js "$$temporary/metrika.js"; \
 	cp site/assets/scripts/website/article-toc.js "$$temporary/article-toc.js"; \
+	cp site/assets/scripts/website/admin-tabs.js "$$temporary/admin-tabs.js"; \
 	diff --brief --recursive "$$temporary" site/public/assets/website >/dev/null || { \
 		echo 'Compiled website assets are stale. Run make assets.' >&2; \
 		exit 1; \

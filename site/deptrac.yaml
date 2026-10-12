@@ -211,6 +211,7 @@ deptrac:
         Adapter:
             - CommonMark
             - Symfony
+            - ValueObject
 
         # Vendor-слои не анализируются: paths ограничены ./src.
         DoctrineMapping: []

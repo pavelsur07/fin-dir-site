@@ -4,6 +4,7 @@
 {% block description %}{{ post.seoDescription ?? parent() }}{% endblock %}
 {% block canonical %}{{ canonical_url }}{% endblock %}
 {% block og_type %}article{% endblock %}
+{% block og_image %}{{ post.cover ? vf_site_url ~ post.cover.url : parent() }}{% endblock %}
 
 {% block json_ld %}
     {{ parent() }}
@@ -35,6 +36,10 @@
             <h1 class="type-t2 md:type-t1 hyphens-auto text-balance text-fg">{{ post.title }}</h1>
             {% if post.excerpt %}<p class="type-t4 text-pretty text-fg-secondary">{{ post.excerpt }}</p>{% endif %}
             <p class="type-t6 tabular-nums text-fg-muted"><time datetime="{{ post.publishedAt|date('Y-m-d') }}">{{ post.publishedAt|date('d.m.Y') }}</time>{% if post.wasUpdated %} · Обновлено <time datetime="{{ post.updatedAt|date('Y-m-d') }}">{{ post.updatedAt|date('d.m.Y') }}</time>{% endif %} · {{ post.readingMinutes }} мин чтения · Редакция Ваш Финдир</p>
+            {# Без обложки шапка статьи без картинки: заглушка нужна только в списке, где карточки выровнены. #}
+            {% if post.cover %}
+                <img class="aspect-video w-full rounded-lg object-cover" src="{{ post.cover.url }}" alt="{{ post.cover.alt }}" width="1200" height="675" fetchpriority="high" data-vf-post-cover>
+            {% endif %}
         </header>
 
         {% set has_toc = article.toc|length > 1 %}

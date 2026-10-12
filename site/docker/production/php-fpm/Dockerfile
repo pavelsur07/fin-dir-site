@@ -63,8 +63,10 @@ FROM php-base AS runtime
 
 COPY --from=vendor --chown=app:app /app /app
 
-RUN mkdir -p /app/var/cache /app/var/log \
- && chown -R app:app /app/var
+# public/uploads -- точка монтирования тома site_uploads. Пустой именованный том
+# при первом подключении копирует отсюда владельца app, иначе php-fpm не сможет писать.
+RUN mkdir -p /app/var/cache /app/var/log /app/public/uploads/posts \
+ && chown -R app:app /app/var /app/public/uploads
 
 EXPOSE 9000
 
