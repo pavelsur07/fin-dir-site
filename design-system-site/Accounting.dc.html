@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Бухгалтерские услуги</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}a:hover{color:#8A001B}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020}
+.on-ink a:focus-visible,.on-ink button:focus-visible{box-shadow:0 0 0 2px #0B1020,0 0 0 4px #EE6B7C}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border-radius:12px;border:0;background:#B00020;color:#fff;font:600 16px/26px Inter,sans-serif;text-decoration:none;cursor:pointer;transition:background 120ms ease-out}
+.btn:hover{background:#8A001B;color:#fff}.btn:active{background:#5E0012}
+.on-ink .btn:hover{background:#CC1A36}
+.link-btn{display:inline-flex;align-items:center;min-height:48px;font:600 16px/26px Inter,sans-serif;color:#0B1020;text-decoration:none}
+.link-btn:hover{color:#B00020}
+.card{background:#fff;border:1px solid #D2D8E2;border-radius:16px;transition:box-shadow 120ms ease-out,border-color 120ms ease-out}
+.nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 12px;color:#0B1020;text-decoration:none;font:500 15px/22px Inter,sans-serif}
+.nav a:hover{color:#B00020}
+</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;">
+
+<!-- HEADER -->
+<header style="border-bottom:1px solid #E8EBF1;background:#fff;">
+<div style="max-width:1216px;margin:0 auto;padding:12px clamp(16px,2.5vw,32px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+<a href="#" style="font:800 22px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;color:#0B1020;text-decoration:none;display:flex;align-items:center;gap:8px;"><span style="width:28px;height:28px;border-radius:8px;background:#0B1020;color:#fff;display:inline-flex;align-items:center;justify-content:center;font:800 11px/1 Manrope,sans-serif;">ВФ</span>Ваш Финдир</a>
+<nav class="nav" style="display:flex;gap:4px;flex-wrap:wrap;" aria-label="Основная навигация">
+<a href="#" aria-current="page" style="color:#B00020;">Услуги</a><a href="#">Кейсы</a><a href="#">Газета</a><a href="#">Партнёрам</a><a href="#">О Компании</a>
+</nav>
+<div style="display:flex;gap:8px;align-items:center;">
+<a href="#" class="nav" style="min-height:44px;display:inline-flex;align-items:center;padding:0 12px;color:#0B1020;text-decoration:none;font:500 14px/22px Inter,sans-serif;">Личный кабинет</a></div>
+</div>
+</header>
+
+<!-- HERO -->
+<section style="background:#F4F6F9;">
+<div style="max-width:1216px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(16px,2.5vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(32px,5vw,64px);align-items:center;">
+<div style="display:flex;flex-direction:column;gap:32px;min-width:0;">
+<div style="display:flex;flex-direction:column;gap:20px;">
+<nav aria-label="Хлебные крошки" style="font:500 14px/22px Inter,sans-serif;color:#5E6A85;"><a href="#" style="color:#434F6B;text-decoration:none;">Услуги</a> <span aria-hidden="true">/</span> <span aria-current="page" style="color:#0B1020;">Бухгалтерские услуги</span></nav>
+<h1 style="margin:0;font:800 48px/56px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Бухгалтерские услуги для бизнеса</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;max-width:560px;text-wrap:pretty;">Ведём учёт, считаем налоги и сдаём отчётность. Цифры сразу пригодны для управления: из них строятся ДДС и ОПиУ, а не только декларации.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;">
+<a href="#form" class="btn">Записаться на экскурсию</a>
+<a href="#includes" class="link-btn">Что входит в услугу ↓</a>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 32px;padding-top:24px;border-top:1px solid #D2D8E2;">
+<div style="display:flex;flex-direction:column;gap:2px;"><span style="font:800 30px/38px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;">с&nbsp;2015</span><span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">года на рынке</span></div>
+<div style="display:flex;flex-direction:column;gap:2px;"><span style="font:800 30px/38px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;">230+</span><span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">компаний прошли через нас</span></div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;max-width:460px;width:100%;justify-self:center;min-width:0;">
+<div style="aspect-ratio:4 / 5;border-radius:24px;background:#E8EBF1;border:1px solid #D2D8E2;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;position:relative;">
+<span aria-hidden="true" style="align-self:center;font:600 72px/1 Inter,sans-serif;color:#5E6A85;">ИФ</span>
+<span style="position:absolute;top:16px;left:16px;font:500 12px/18px Inter,sans-serif;padding:4px 12px;border-radius:999px;background:#fff;color:#2E3953;border:1px solid #D2D8E2;">[фото сотрудника, 4:5]</span>
+</div>
+<div class="card" style="padding:16px 20px;display:flex;flex-direction:column;gap:2px;">
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">[Имя Фамилия]</span>
+<span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">[Должность] · ведёт ваш учёт · стаж [N] лет</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- INCLUDES -->
+<section id="includes" style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Состав услуги</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Что входит в бухгалтерское обслуживание</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Один договор вместо набора разовых услуг. Состав фиксируем до начала работы.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;">
+<sc-for list="{{includes}}" as="i" hint-placeholder-count="6">
+<div class="card" style="padding:32px;display:flex;flex-direction:column;gap:16px;">
+<span style="width:48px;height:48px;border-radius:12px;background:#FDE4E7;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8A001B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{i.d}}"/></svg></span>
+<div style="display:flex;flex-direction:column;gap:8px;">
+<h3 style="margin:0;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{i.title}}</h3>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{i.text}}</p>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- STEPS -->
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Как мы работаем</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Четыре шага от знакомства до закрытого месяца</h2>
+</div>
+<ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:24px;">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<li class="card" style="padding:32px;display:flex;flex-direction:column;gap:12px;">
+<span style="font:800 24px/32px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;color:#B00020;">{{s.n}}</span>
+<h3 style="margin:0;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{s.title}}</h3>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{s.text}}</p>
+</li>
+</sc-for>
+</ol>
+</div>
+</section>
+
+<!-- PRICE -->
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:32px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Стоимость</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Цена зависит от режима и объёма учёта</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Ориентиры ниже. Точную сумму назовём на экскурсии, когда увидим ваши данные.</p>
+</div>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;" tabindex="0" role="region" aria-label="Стоимость по режимам, таблица с прокруткой">
+<table style="width:100%;min-width:640px;border-collapse:collapse;font:400 16px/24px Inter,sans-serif;">
+<caption style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Ориентировочная стоимость бухгалтерского обслуживания</caption>
+<thead><tr style="background:#F4F6F9;">
+<th scope="col" style="text-align:left;padding:0 20px;height:48px;font:600 14px/20px Inter,sans-serif;color:#434F6B;">Для кого</th>
+<th scope="col" style="text-align:left;padding:0 20px;height:48px;font:600 14px/20px Inter,sans-serif;color:#434F6B;">Что учитываем</th>
+<th scope="col" style="text-align:right;padding:0 20px;height:48px;font:600 14px/20px Inter,sans-serif;color:#434F6B;">Стоимость</th>
+</tr></thead>
+<tbody>
+<tr style="border-top:1px solid #D2D8E2;"><th scope="row" style="text-align:left;padding:0 20px;height:56px;font-weight:600;">[ИП на УСН]</th><td style="padding:0 20px;color:#434F6B;">до [N] операций в месяц</td><td style="text-align:right;padding:0 20px;font-weight:600;font-variant-numeric:tabular-nums;">от [0 000]&nbsp;₽/мес</td></tr>
+<tr style="border-top:1px solid #D2D8E2;"><th scope="row" style="text-align:left;padding:0 20px;height:56px;font-weight:600;">[ООО на УСН]</th><td style="padding:0 20px;color:#434F6B;">до [N] операций, до [N] сотрудников</td><td style="text-align:right;padding:0 20px;font-weight:600;font-variant-numeric:tabular-nums;">от [0 000]&nbsp;₽/мес</td></tr>
+<tr style="border-top:1px solid #D2D8E2;"><th scope="row" style="text-align:left;padding:0 20px;height:56px;font-weight:600;">[ООО на общей системе]</th><td style="padding:0 20px;color:#434F6B;">до [N] операций, НДС, до [N] сотрудников</td><td style="text-align:right;padding:0 20px;font-weight:600;font-variant-numeric:tabular-nums;">от [0 000]&nbsp;₽/мес</td></tr>
+</tbody>
+</table>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;">
+<a href="#form" class="btn">Узнать точную цену</a>
+<span style="font:400 14px/22px Inter,sans-serif;color:#5E6A85;">[Как фиксируется цена и что в неё входит.]</span>
+</div>
+</div>
+</section>
+
+<!-- TRUST -->
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:32px;align-items:stretch;">
+<div style="display:flex;flex-direction:column;gap:32px;justify-content:center;min-width:0;">
+<div style="display:flex;flex-direction:column;gap:12px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Доверие</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Работаем с 2015 года и отвечаем за цифры</h2>
+</div>
+<div style="display:flex;flex-direction:column;">
+<div style="display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #D2D8E2;"><span style="font:800 30px/38px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;color:#B00020;">230+</span><span style="font:400 16px/26px Inter,sans-serif;">компаний прошли через нас <span style="color:#5E6A85;font-size:13px;">· на [дата], внутренние данные</span></span></div>
+<div style="display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #D2D8E2;"><span style="font:800 30px/38px Manrope,Inter,sans-serif;font-variant-numeric:tabular-nums;color:#B00020;">2015</span><span style="font:400 16px/26px Inter,sans-serif;">премия «Лучший стартап» по версии 1С:БО</span></div>
+<div style="display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #D2D8E2;border-bottom:1px solid #D2D8E2;"><span style="font:800 30px/38px Manrope,Inter,sans-serif;color:#B00020;">[N]</span><span style="font:400 16px/26px Inter,sans-serif;">[ещё один проверяемый факт: сертификат, число сдач без штрафов, оценка клиентов]</span></div>
+</div>
+</div>
+<div class="card" style="padding:32px;display:flex;flex-direction:column;gap:24px;justify-content:space-between;background:#F4F6F9;border-color:#E8EBF1;">
+<p style="margin:0;font:600 22px/32px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:pretty;">«[Цитата руководителя бухгалтерского направления: чем отличается ваш подход, одной-двумя фразами]»</p>
+<div style="display:flex;gap:16px;align-items:center;">
+<span style="width:64px;height:80px;border-radius:12px;background:#E8EBF1;border:1px solid #D2D8E2;flex:none;display:flex;align-items:center;justify-content:center;font:500 11px/14px Inter,sans-serif;color:#5E6A85;text-align:center;">ИФ</span>
+<div style="display:flex;flex-direction:column;"><span style="font:600 16px/24px Inter,sans-serif;">[Имя Фамилия]</span><span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">[Должность]</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- TEAM -->
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:flex;flex-direction:column;gap:48px;">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:720px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Команда</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Кто будет вести ваш учёт</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">За цифрами стоят конкретные люди. Вы знаете, к кому обратиться по каждому вопросу.</p>
+</div>
+<ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:24px;">
+<sc-for list="{{team}}" as="p" hint-placeholder-count="4">
+<li style="display:flex;flex-direction:column;gap:16px;">
+<div style="aspect-ratio:4 / 5;border-radius:16px;background:#E8EBF1;display:flex;align-items:center;justify-content:center;position:relative;">
+<span aria-hidden="true" style="font:600 56px/1 Inter,sans-serif;color:#5E6A85;">{{p.initials}}</span>
+<span style="position:absolute;left:12px;bottom:12px;font:500 12px/18px Inter,sans-serif;color:#5E6A85;">Фото 4:5</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:2px;">
+<h3 style="margin:0;font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{p.name}}</h3>
+<span style="font:500 14px/22px Inter,sans-serif;color:#5E6A85;">{{p.role}}</span>
+<span style="font:500 12px/18px Inter,sans-serif;color:#434F6B;margin-top:4px;">{{p.fact}}</span>
+</div>
+</li>
+</sc-for>
+</ul>
+</div>
+</section>
+
+<!-- FROM ACCOUNTING TO MANAGEMENT -->
+<section class="on-ink" style="margin-top:clamp(64px,8vw,96px);background:#0B1020;color:#fff;">
+<div style="max-width:1216px;margin:0 auto;padding:clamp(48px,6vw,80px) clamp(16px,2.5vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:32px;align-items:center;">
+<div style="display:flex;flex-direction:column;gap:16px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#EE6B7C;">Что дальше</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Учёт — основа. Дальше начинается управление</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#D2D8E2;text-wrap:pretty;">На порядке в данных строятся ДДС, ОПиУ и ABC-анализ, а решения по закупкам, проектам и росту принимаются на цифрах, а не на ощущениях.</p>
+<a href="#" style="align-self:flex-start;min-height:48px;display:inline-flex;align-items:center;font:600 16px/26px Inter,sans-serif;color:#fff;text-decoration:underline;text-underline-offset:4px;">Финансовый директор на аутсорсинге →</a>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;">
+<div style="border:1px solid #2E3953;border-radius:16px;padding:20px 24px;display:flex;gap:16px;align-items:center;background:#141B2E;"><span style="font:800 24px/32px Manrope,Inter,sans-serif;color:#EE6B7C;">1</span><span style="font:600 16px/24px Inter,sans-serif;">Бухгалтерский учёт и отчётность</span><span style="margin-left:auto;font:500 12px/18px Inter,sans-serif;padding:4px 8px;border-radius:4px;background:#2E3953;color:#fff;">эта страница</span></div>
+<div style="border:1px solid #2E3953;border-radius:16px;padding:20px 24px;display:flex;gap:16px;align-items:center;background:#141B2E;"><span style="font:800 24px/32px Manrope,Inter,sans-serif;color:#EE6B7C;">2</span><span style="font:600 16px/24px Inter,sans-serif;">Управленческий учёт: ДДС, ОПиУ</span></div>
+<div style="border:1px solid #2E3953;border-radius:16px;padding:20px 24px;display:flex;gap:16px;align-items:center;background:#141B2E;"><span style="font:800 24px/32px Manrope,Inter,sans-serif;color:#EE6B7C;">3</span><span style="font:600 16px/24px Inter,sans-serif;">Финансовый директор и решения по прибыли</span></div>
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:clamp(64px,8vw,96px) 0 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:32px;align-items:start;">
+<div style="display:flex;flex-direction:column;gap:12px;min-width:0;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Вопросы</span>
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Частые вопросы</h2>
+</div>
+<div class="card" style="overflow:hidden;grid-column:span 1;">
+<sc-for list="{{faq}}" as="q" hint-placeholder-count="5">
+<div style="border-top:{{q.border}};">
+<h3 style="margin:0;">
+<button type="button" onClick="{{q.toggle}}" aria-expanded="{{q.open}}" style="width:100%;min-height:64px;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:0;cursor:pointer;text-align:left;font:700 18px/26px Manrope,Inter,sans-serif;color:#0B1020;"><span>{{q.title}}</span><span aria-hidden="true" style="font:500 22px/1 Inter,sans-serif;color:#B00020;flex:none;">{{q.sign}}</span></button>
+</h3>
+<sc-if value="{{q.open}}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 24px 24px;font:400 16px/26px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{q.body}}</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- CTA BAND -->
+<section id="form" style="padding:clamp(64px,8vw,96px) 0;">
+<div style="max-width:1216px;margin:0 auto;padding:0 clamp(16px,2.5vw,32px);">
+<div class="on-ink" style="background:#0B1020;color:#fff;border-radius:24px;padding:clamp(32px,5vw,56px);display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between;">
+<div style="flex:1 1 420px;display:flex;flex-direction:column;gap:12px;min-width:0;">
+<h2 style="margin:0;font:800 36px/44px Manrope,Inter,sans-serif;letter-spacing:-0.02em;text-wrap:balance;">Покажем, как будет выглядеть ваш учёт</h2>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#D2D8E2;">45 минут, онлайн, бесплатно. Без скриптов и навязывания тарифа.</p>
+</div>
+<a href="#" class="btn">Записаться на экскурсию</a>
+</div>
+</div>
+</section>
+
+<footer style="background:#F4F6F9;border-top:1px solid #E8EBF1;">
+<div style="max-width:1216px;margin:0 auto;padding:32px clamp(16px,2.5vw,32px);display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;font:400 14px/22px Inter,sans-serif;color:#434F6B;">
+<span>ООО «Фин Консалтинг», г. Ростов-на-Дону</span>
+<span>[Подвал сайта: как на остальных страницах]</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":5600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { faq: 0 };
+  }
+  renderVals() {
+    const includes = [
+      { d: 'M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2 M9 14l2 2 4-4', title: 'Ведение учёта', text: 'Вносим операции, обрабатываем первичные документы, подключаем банки и вашу 1С.' },
+      { d: 'M19 5L5 19 M9 6.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z M20 17.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z', title: 'Налоги и отчётность', text: 'Считаем налоги, сдаём отчётность по календарю и заранее напоминаем об оплате.' },
+      { d: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75', title: 'Зарплата и кадры', text: 'Расчёт зарплаты, взносы и отчётность по сотрудникам. [Уточните, входит ли в базовый состав.]' },
+      { d: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8', title: 'Документы и ЭДО', text: 'Настраиваем обмен документами и напоминаем, каких бумаг не хватает.' },
+      { d: 'M8 2v4 M16 2v4 M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z M3 10h18 M9 16l2 2 4-4', title: 'Закрытие месяца', text: 'Сверяем с банком и контрагентами, закрываем месяц и готовим цифры к отчётной встрече.' },
+      { d: 'M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z M9 12l2 2 4-4', title: 'Проверки и запросы', text: 'Отвечаем на требования ФНС и представляем интересы компании.' }
+    ];
+    const steps = [
+      { n: '01', title: 'Знакомимся и смотрим учёт', text: 'Разбираем, как сейчас устроены учёт и документы, и называем состав работ и цену.' },
+      { n: '02', title: 'Принимаем учёт', text: 'Подключаем банки и 1С. Менять программу не нужно. Фиксируем правила учёта.' },
+      { n: '03', title: 'Ведём учёт и сдаём отчётность', text: 'Работаем по календарю: документы, налоги, отчётность, напоминания.' },
+      { n: '04', title: 'Закрываем месяц и обсуждаем цифры', text: 'Раз в месяц отчётная встреча: что получилось, где риски, что делать дальше.' }
+    ];
+    const faqData = [
+      { title: 'Нужно ли менять 1С или программу?', body: 'Нет. Подключаем банки и вашу 1С, менять программу не нужно.' },
+      { title: 'Что нужно передавать от нас?', body: '[Ответ: какие документы и доступы нужны, как часто, в каком формате.]' },
+      { title: 'Как быстро вы начнёте работу?', body: '[Ответ: от чего зависит срок. Без жёстких обещаний, если они не гарантированы.]' },
+      { title: 'Можно ли перейти от другого бухгалтера?', body: '[Ответ: как принимаем учёт, что проверяем при передаче дел.]' },
+      { title: 'Кто отвечает за ошибки и штрафы?', body: '[Ответ: ответственность по договору, как это записано.]' }
+    ];
+    const faq = faqData.map((q, i) => {
+      const on = this.state.faq === i;
+      return { ...q, open: on, sign: on ? '−' : '+', border: i === 0 ? '0' : '1px solid #E8EBF1', toggle: () => this.setState({ faq: on ? -1 : i }) };
+    });
+    const team = [
+      { initials: 'ИФ', name: '[Имя Фамилия]', role: '[Должность]', fact: '[Факт экспертизы: стаж, аттестат, число компаний]' },
+      { initials: 'ИФ', name: '[Имя Фамилия]', role: '[Должность]', fact: '[Факт экспертизы]' },
+      { initials: 'ИФ', name: '[Имя Фамилия]', role: '[Должность]', fact: '[Факт экспертизы]' },
+      { initials: 'ИФ', name: '[Имя Фамилия]', role: '[Должность]', fact: '[Факт экспертизы]' }
+    ];
+    return { includes, steps, faq, team };
+  }
+}
+</script>
+</body>
+</html>

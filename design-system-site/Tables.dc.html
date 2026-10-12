@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Таблицы — сайт</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}
+</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;padding:72px 0 96px;">
+<div style="max-width:1120px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;gap:56px;">
+
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Сайт · П.3</span>
+<h1 style="margin:0;font:800 44px/52px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Таблицы на сайте</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Для сравнения тарифов, результатов кейса, состава услуги и статей блога. Таблицы операций и выписок относятся к кабинету и сюда не входят. Все значения на странице — образцы формы, подставьте свои.</p>
+</div>
+
+<!-- SPEC -->
+<section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px;">
+<sc-for list="{{spec}}" as="s" hint-placeholder-count="4">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:6px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">{{s.k}}</span>
+<span style="font:700 20px/28px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">{{s.v}}</span>
+<span style="font:400 14px/21px Inter,sans-serif;color:#434F6B;">{{s.n}}</span>
+</div>
+</sc-for>
+</section>
+
+<!-- RESULT TABLE -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Результаты кейса</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;" tabindex="0" role="region" aria-label="Результаты кейса, таблица с прокруткой">
+<table style="width:100%;min-width:640px;border-collapse:collapse;font:400 16px/24px Inter,sans-serif;font-variant-numeric:tabular-nums;">
+<caption style="text-align:left;padding:16px 20px;font:600 14px/20px Inter,sans-serif;color:#434F6B;caption-side:top;">[Название кейса], период [с — по]. Данные согласованы с клиентом.</caption>
+<thead>
+<tr style="background:#F4F6F9;">
+<th scope="col" style="text-align:left;padding:0 20px;height:48px;font-weight:600;font-size:14px;color:#434F6B;">Показатель</th>
+<th scope="col" style="text-align:right;padding:0 20px;height:48px;font-weight:600;font-size:14px;color:#434F6B;">До</th>
+<th scope="col" style="text-align:right;padding:0 20px;height:48px;font-weight:600;font-size:14px;color:#434F6B;">После</th>
+<th scope="col" style="text-align:right;padding:0 20px;height:48px;font-weight:600;font-size:14px;color:#434F6B;">Изменение</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top:1px solid #D2D8E2;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:500;">[Показатель 1]</th>
+<td style="text-align:right;padding:0 20px;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;font-weight:600;">+[0,0] %</td>
+</tr>
+<tr style="border-top:1px solid #D2D8E2;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:500;">[Показатель 2]</th>
+<td style="text-align:right;padding:0 20px;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;font-weight:600;">+[0,0] %</td>
+</tr>
+<tr style="border-top:1px solid #D2D8E2;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:500;">[Показатель 3]</th>
+<td style="text-align:right;padding:0 20px;">—</td>
+<td style="text-align:right;padding:0 20px;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;color:#5E6A85;">—</td>
+</tr>
+</tbody>
+<tfoot>
+<tr style="border-top:2px solid #0B1020;background:#F4F6F9;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:700;">Итог за период</th>
+<td style="text-align:right;padding:0 20px;font-weight:700;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;font-weight:700;">[0 ₽]</td>
+<td style="text-align:right;padding:0 20px;font-weight:700;color:#B00020;">+[0,0] %</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div style="font:400 14px/22px Inter,sans-serif;color:#5E6A85;max-width:760px;">Изменение показано знаком и числом, а не цветом. Акцентный crimson допускается только для итоговой строки. «—» — нет данных, ноль не подставляется.</div>
+</section>
+
+<!-- COMPARE -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Сравнение: что входит</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;" tabindex="0" role="region" aria-label="Состав услуги, таблица с прокруткой">
+<table style="width:100%;min-width:640px;border-collapse:collapse;font:400 16px/24px Inter,sans-serif;">
+<thead>
+<tr style="background:#F4F6F9;">
+<th scope="col" style="text-align:left;padding:0 20px;height:48px;font-weight:600;font-size:14px;color:#434F6B;">Что входит</th>
+<th scope="col" style="text-align:center;padding:0 20px;height:48px;font-weight:600;font-size:14px;color:#434F6B;">[Вариант A]</th>
+<th scope="col" style="text-align:center;padding:0 20px;height:48px;font-weight:700;font-size:14px;color:#0B1020;box-shadow:inset 0 -2px 0 #B00020;">[Вариант B]</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top:1px solid #D2D8E2;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:500;">[Услуга 1]</th>
+<td style="text-align:center;padding:0 20px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F6B40" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Входит"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></td>
+<td style="text-align:center;padding:0 20px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F6B40" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Входит"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></td>
+</tr>
+<tr style="border-top:1px solid #D2D8E2;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:500;">[Услуга 2]</th>
+<td style="text-align:center;padding:0 20px;color:#5E6A85;"><span aria-label="Не входит">—</span></td>
+<td style="text-align:center;padding:0 20px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F6B40" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Входит"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></td>
+</tr>
+<tr style="border-top:1px solid #D2D8E2;">
+<th scope="row" style="text-align:left;padding:0 20px;height:48px;font-weight:500;">Стоимость</th>
+<td style="text-align:center;padding:0 20px;font-weight:600;font-variant-numeric:tabular-nums;">от [0 000]&nbsp;₽/мес</td>
+<td style="text-align:center;padding:0 20px;font-weight:600;font-variant-numeric:tabular-nums;">от [0 000]&nbsp;₽/мес</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="font:400 14px/22px Inter,sans-serif;color:#5E6A85;max-width:760px;">«Входит» — галочка с подписью для скринридера, «не входит» — тире, не крестик: на сайте не подчёркиваем отсутствие. Выбранный вариант отмечен подчёркиванием, а не заливкой всего столбца.</div>
+</section>
+
+<!-- MOBILE -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Ниже 768 px</h2>
+<p style="margin:0;font:400 16px/26px Inter,sans-serif;color:#434F6B;max-width:720px;text-wrap:pretty;">Таблицы из 2–3 колонок остаются таблицами. Таблицы из 4 и более колонок сворачиваются в карточки: название — заголовок, остальные значения — пары «подпись — значение».</p>
+<div style="max-width:358px;border:1px solid #D2D8E2;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">[Показатель 1]</span>
+<dl style="margin:0;display:grid;grid-template-columns:1fr auto;gap:8px 16px;font:400 15px/22px Inter,sans-serif;font-variant-numeric:tabular-nums;">
+<dt style="color:#5E6A85;">До</dt><dd style="margin:0;text-align:right;">[0 ₽]</dd>
+<dt style="color:#5E6A85;">После</dt><dd style="margin:0;text-align:right;">[0 ₽]</dd>
+<dt style="color:#5E6A85;">Изменение</dt><dd style="margin:0;text-align:right;font-weight:600;">+[0,0] %</dd>
+</dl>
+</div>
+</section>
+
+<!-- RULES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Правила</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px;">
+<sc-for list="{{rules}}" as="p" hint-placeholder-count="6">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">{{p.title}}</span>
+<span style="font:400 15px/24px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{p.text}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      spec: [
+        { k: 'Строка', v: '48 px', n: 'Компактная — 40. Padding по горизонтали 20.' },
+        { k: 'Контейнер', v: 'lg · 16 px', n: 'Рамка 1 px #D2D8E2, внутри ячейки без радиуса.' },
+        { k: 'Шапка', v: 'ink 50, 14 / 600', n: 'Текст ink 600 (8,2:1). Подписи не сокращаем.' },
+        { k: 'Числа', v: 'вправо, tabular', n: 'font-variant-numeric: tabular-nums; текст влево.' }
+      ],
+      rules: [
+        { title: 'Разметка — настоящая таблица', text: 'table, caption, thead, th[scope]. Таблица не собирается из div, иначе скринридер не читает связь строк и колонок.' },
+        { title: 'Подпись и источник', text: 'У каждой таблицы caption: что это и за какой период. Для результатов клиентов — отметка о согласовании.' },
+        { title: 'Без зебры и теней', text: 'Строки разделены линией 1 px. Hover на строках не нужен: таблица на сайте не интерактивна.' },
+        { title: 'Широкая таблица прокручивается', text: 'Контейнер с overflow-x: auto, tabindex="0", role="region" и aria-label, чтобы прокрутку можно было сделать с клавиатуры.' },
+        { title: 'Итоговая строка', text: 'tfoot, линия сверху 2 px ink, фон ink 50, вес 700. Один итог на таблицу.' },
+        { title: 'Не более 6 колонок', text: 'Больше — делим на две таблицы или превращаем в карточки. Не более 12 строк без раскрытия «Показать всё».' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

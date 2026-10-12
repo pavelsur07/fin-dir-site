@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Состояния компонентов — сайт</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}
+@keyframes vfspin{to{transform:rotate(360deg)}}
+.vfspin{animation:vfspin 800ms linear infinite;transform-origin:50% 50%}
+@media (prefers-reduced-motion:reduce){.vfspin{animation-duration:2400ms}}
+</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;padding:72px 0 96px;">
+<div style="max-width:1120px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;gap:56px;">
+
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Сайт · П.4</span>
+<h1 style="margin:0;font:800 44px/52px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Состояния компонентов</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Шесть состояний у каждого интерактивного элемента сайта: default, hover, active, focus, disabled, loading. Переход 120 ms ease-out, смена цвета на 1–2 ступени шкалы, без смещения и масштаба. Значения взяты из раздела 10 системы v2.3. Здесь они приведены для элементов лендинга.</p>
+</div>
+
+<!-- BUTTONS -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Кнопки и ссылки</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;">
+<div style="min-width:960px;padding:24px;display:flex;flex-direction:column;gap:20px;">
+<div style="display:grid;grid-template-columns:140px repeat(6,minmax(0,1fr));gap:16px;font:500 12px/18px Inter,sans-serif;color:#5E6A85;">
+<span></span><span>Default</span><span>Hover</span><span>Active</span><span>Focus</span><span>Disabled</span><span>Loading</span>
+</div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:140px repeat(6,minmax(0,1fr));gap:16px;align-items:center;padding:16px;border-radius:12px;background:{{r.bg}};">
+<span style="font:600 14px/20px Inter,sans-serif;color:{{r.labelColor}};">{{r.name}}</span>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="6">
+<button type="button" tabindex="-1" style="{{c.style}}"><sc-if value="{{c.spin}}" hint-placeholder-val="{{ false }}"><svg class="vfspin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9" /></svg></sc-if>{{c.text}}</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- FIELDS -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Поля формы заявки</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;">
+<div style="min-width:960px;padding:24px;display:flex;flex-direction:column;gap:20px;">
+<div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;font:500 12px/18px Inter,sans-serif;color:#5E6A85;">
+<span>Default</span><span>Hover</span><span>Заполнено</span><span>Focus</span><span>Error</span><span>Disabled</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;align-items:start;">
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="6">
+<div style="display:flex;flex-direction:column;gap:8px;">
+<span style="font:500 14px/20px Inter,sans-serif;">Телефон</span>
+<div style="{{f.style}}">{{f.text}}</div>
+<span style="font:400 13px/19px Inter,sans-serif;color:{{f.hintColor}};">{{f.hint}}</span>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center;padding-top:8px;border-top:1px solid #E8EBF1;">
+<span style="display:flex;align-items:center;gap:12px;font:400 15px/22px Inter,sans-serif;"><span style="width:24px;height:24px;border:1px solid #8490A8;border-radius:4px;display:inline-block;box-sizing:border-box;"></span>Чекбокс · default</span>
+<span style="display:flex;align-items:center;gap:12px;font:400 15px/22px Inter,sans-serif;"><span style="width:24px;height:24px;background:#B00020;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>выбран (цвет + галочка)</span>
+<span style="display:flex;align-items:center;gap:12px;font:400 15px/22px Inter,sans-serif;"><span style="width:24px;height:24px;border:1px solid #8490A8;border-radius:4px;display:inline-block;box-sizing:border-box;box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020;"></span>focus</span>
+<span style="display:flex;align-items:center;gap:12px;font:400 15px/22px Inter,sans-serif;color:#8490A8;"><span style="width:24px;height:24px;border:1px solid #D2D8E2;background:#F4F6F9;border-radius:4px;display:inline-block;box-sizing:border-box;"></span>disabled</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FORM STATES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Отправка заявки</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">Отправляется</span>
+<button type="button" tabindex="-1" style="min-height:48px;padding:0 24px;border:0;border-radius:12px;background:#B00020;color:#fff;font:600 16px/24px Inter,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:progress;"><svg class="vfspin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"/></svg>Отправляем</button>
+<span style="font:400 14px/21px Inter,sans-serif;color:#434F6B;">Кнопка блокируется, сохраняет ширину, повторное нажатие игнорируется.</span>
+</div>
+<div style="background:#E3F3EA;border:1px solid #A8D9BD;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#0F6B40;">Успех</span>
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;color:#0F6B40;">Заявка принята</span>
+<span style="font:400 14px/21px Inter,sans-serif;color:#0B1020;">[Что произойдёт дальше и когда]. Форма заменяется этим сообщением, фокус переходит на него.</span>
+</div>
+<div style="background:#FDECE6;border:1px solid #F4B39E;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px;" role="alert">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B3300A;">Ошибка отправки</span>
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;color:#B3300A;">Не удалось отправить</span>
+<span style="font:400 14px/21px Inter,sans-serif;color:#0B1020;">Данные в форме сохранены. Проверьте соединение и повторите. [Резервный способ связи].</span>
+</div>
+</div>
+</section>
+
+<!-- RULES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Правила</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px;">
+<sc-for list="{{rules}}" as="p" hint-placeholder-count="6">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">{{p.title}}</span>
+<span style="font:400 15px/24px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{p.text}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const B = 'min-height:48px;padding:0 16px;border-radius:12px;font:600 15px/22px Inter,sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;width:100%;cursor:pointer;';
+    const mk = (base, o) => [
+      { text: o.t[0], style: B + base + (o.d || '') },
+      { text: o.t[0], style: B + base + o.h },
+      { text: o.t[0], style: B + base + o.a },
+      { text: o.t[0], style: B + base + (o.d || '') + o.f },
+      { text: o.t[0], style: B + base + o.x + 'cursor:not-allowed;' },
+      { text: o.t[1], style: B + base + o.l + 'cursor:progress;', spin: true }
+    ];
+    const rows = [
+      { name: 'Primary', bg: '#fff', labelColor: '#0B1020', cells: mk('background:#B00020;color:#fff;border:0;', { t: ['Записаться', 'Отправляем'], h: 'background:#8A001B;', a: 'background:#5E0012;', f: 'box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020;', x: 'background:#E8EBF1;color:#8490A8;', l: '' }) },
+      { name: 'Primary на ink', bg: '#0B1020', labelColor: '#fff', cells: mk('background:#B00020;color:#fff;border:0;', { t: ['Записаться', 'Отправляем'], h: 'background:#CC1A36;', a: 'background:#CC1A36;', f: 'box-shadow:0 0 0 2px #0B1020,0 0 0 4px #EE6B7C;', x: 'background:#2E3953;color:#8490A8;', l: '' }) },
+      { name: 'Secondary', bg: '#fff', labelColor: '#0B1020', cells: mk('background:#0B1020;color:#fff;border:0;', { t: ['Смотреть кейс', 'Загрузка'], h: 'background:#1F2840;', a: 'background:#2E3953;', f: 'box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020;', x: 'background:#E8EBF1;color:#8490A8;', l: 'background:#2E3953;' }) },
+      { name: 'Outline', bg: '#fff', labelColor: '#0B1020', cells: mk('background:#fff;color:#0B1020;border:1px solid #AEB7C8;', { t: ['Все кейсы', 'Загрузка'], h: 'background:#F4F6F9;', a: 'background:#E8EBF1;', f: 'box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020;', x: 'background:#F4F6F9;color:#8490A8;border-color:#D2D8E2;', l: 'background:#F4F6F9;color:#434F6B;' }) },
+      { name: 'Ссылка', bg: '#fff', labelColor: '#0B1020', cells: mk('background:transparent;border:0;', { t: ['Читать кейс →', 'Загрузка'], d: 'color:#B00020;', h: 'color:#8A001B;text-decoration:underline;', a: 'color:#5E0012;text-decoration:underline;', f: 'color:#B00020;box-shadow:0 0 0 2px #fff,0 0 0 4px #B00020;', x: 'color:#8490A8;', l: 'color:#434F6B;' }) }
+    ];
+    const FS = 'min-height:48px;padding:0 16px;border-radius:12px;display:flex;align-items:center;box-sizing:border-box;font:400 16px/24px Inter,sans-serif;background:#fff;';
+    const fields = [
+      { text: '+7', style: FS + 'border:1px solid #8490A8;color:#5E6A85;', hint: 'формат +7 (000) 000-00-00', hintColor: '#5E6A85' },
+      { text: '+7', style: FS + 'border:1px solid #5E6A85;color:#5E6A85;', hint: '', hintColor: '#5E6A85' },
+      { text: '+7 (000) 000-00-00', style: FS + 'border:1px solid #8490A8;color:#0B1020;', hint: '', hintColor: '#5E6A85' },
+      { text: '+7 (0', style: FS + 'border:1px solid #B00020;box-shadow:inset 0 0 0 1px #B00020,0 0 0 4px #FAC8CE;color:#0B1020;', hint: '', hintColor: '#5E6A85' },
+      { text: '+7 (000', style: FS + 'border:1px solid #B3300A;box-shadow:inset 0 0 0 1px #B3300A;color:#0B1020;', hint: 'Введите номер полностью, 11 цифр', hintColor: '#B3300A' },
+      { text: '+7', style: FS + 'border:1px solid #D2D8E2;background:#F4F6F9;color:#8490A8;', hint: '', hintColor: '#5E6A85' }
+    ];
+    const rules = [
+      { title: 'Защита от двойной отправки', text: 'После нажатия кнопка сразу уходит в loading, блокируется и сохраняет ширину. Повторный клик игнорируется до ответа сервера.' },
+      { title: 'Фокус кнопок и ссылок', text: 'Кольцо 2 px surface + 2 px crimson 700. На ink — 2 px ink + 2 px crimson 400. Только :focus-visible. outline: none без замены запрещён.' },
+      { title: 'Фокус полей', text: 'Обводка crimson 2 px (1 px border + 1 px inset, текст не сдвигается) и кольцо 4 px #FAC8CE. Ошибка — тем же приёмом цветом error, без кольца.' },
+      { title: 'У поля нет Active и Loading', text: 'Нажатие на поле сразу даёт Focus. Колонка «Заполнено» — значение цветом fg. Обводка полей здесь ink 400 #8490A8 (3,2:1) вместо border-strong: см. замечание в разделе «Доступность».' },
+      { title: 'Ошибка — не только цвет', text: 'Красная обводка плюс текст под полем. Проверка после ухода из поля, а не на каждом символе. Исправили — ошибка исчезает сразу.' },
+      { title: 'Hover только для мыши', text: 'Hover включается через @media (hover: hover), чтобы на телефоне не залипал после касания. Active — без scale и сдвига.' }
+    ];
+    return { rows, fields, rules };
+  }
+}
+</script>
+</body>
+</html>

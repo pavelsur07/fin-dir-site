@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Доступность — сайт</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+body{margin:0;background:#fff;font-family:Inter,system-ui,sans-serif;color:#0B1020}
+a{color:#B00020}
+</style>
+</helmet>
+<div style="background:#fff;color:#0B1020;font-family:Inter,system-ui,sans-serif;padding:72px 0 96px;">
+<div style="max-width:1120px;margin:0 auto;padding:0 40px;display:flex;flex-direction:column;gap:56px;">
+
+<div style="display:flex;flex-direction:column;gap:12px;max-width:760px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#B00020;">Сайт · П.5</span>
+<h1 style="margin:0;font:800 44px/52px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Доступность</h1>
+<p style="margin:0;font:400 18px/28px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">Целевой уровень — WCAG 2.2 AA. Раздел 04 системы v2.3 покрывает контраст текста. Здесь добавлены остальные требования для лендинга, кейсов и блога: фокус, размеры, формы, изображения, видео, движение, проверка перед релизом.</p>
+</div>
+
+<!-- FINDING -->
+<section style="background:#FFF2DB;border:1px solid #F5C979;border-radius:16px;padding:24px 28px;display:flex;flex-direction:column;gap:8px;max-width:900px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#8A4B00;">Замечание к системе v2.3</span>
+<span style="font:700 20px/28px Manrope,Inter,sans-serif;">Обводка полей ввода не проходит контраст 3:1</span>
+<span style="font:400 16px/26px Inter,sans-serif;color:#0B1020;text-wrap:pretty;">Токен border-strong #AEB7C8 на белом даёт 2,0:1. Для границ полей, чекбоксов и переключателей WCAG 1.4.11 требует 3:1. Предлагаем для сайта использовать ink 400 #8490A8 (3,2:1) вместо border-strong у полей и элементов выбора. Контурным кнопкам рамка не обязательна, их определяет текст. Решение — за дизайнером.</span>
+</section>
+
+<!-- CONTRAST -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Контраст: пары, которые используем на сайте</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;overflow-x:auto;">
+<table style="width:100%;min-width:760px;border-collapse:collapse;font:400 15px/22px Inter,sans-serif;">
+<thead>
+<tr style="background:#F4F6F9;text-align:left;">
+<th scope="col" style="padding:12px 20px;font-weight:600;width:130px;">Образец</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;">Пара</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;text-align:right;">Контраст</th>
+<th scope="col" style="padding:12px 20px;font-weight:600;">Где можно</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{pairs}}" as="p" hint-placeholder-count="14">
+<tr style="border-top:1px solid #D2D8E2;">
+<td style="padding:8px 20px;"><span style="{{p.style}}">Аа 12</span></td>
+<td style="padding:8px 20px;">{{p.label}}</td>
+<td style="padding:8px 20px;text-align:right;font-weight:600;font-variant-numeric:tabular-nums;">{{p.cr}}</td>
+<td style="padding:8px 20px;color:{{p.vc}};">{{p.verdict}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="font:400 14px/22px Inter,sans-serif;color:#5E6A85;max-width:760px;">Значения рассчитаны по формуле WCAG 2.x. Неактивные элементы (disabled) от требований контраста освобождены, но не должны быть единственным способом понять, что действие недоступно.</div>
+</section>
+
+<!-- RULES -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Требования</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px;">
+<sc-for list="{{rules}}" as="p" hint-placeholder-count="10">
+<div style="background:#F4F6F9;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px;">
+<span style="font:500 12px/18px Inter,sans-serif;color:#5E6A85;">{{p.tag}}</span>
+<span style="font:700 18px/26px Manrope,Inter,sans-serif;">{{p.title}}</span>
+<span style="font:400 15px/24px Inter,sans-serif;color:#434F6B;text-wrap:pretty;">{{p.text}}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- CHECKLIST -->
+<section style="display:flex;flex-direction:column;gap:20px;">
+<h2 style="margin:0;font:800 28px/36px Manrope,Inter,sans-serif;letter-spacing:-0.02em;">Проверка перед релизом</h2>
+<div style="border:1px solid #D2D8E2;border-radius:16px;padding:8px 24px;">
+<sc-for list="{{checks}}" as="c" hint-placeholder-count="9">
+<div style="display:grid;grid-template-columns:32px 1fr;gap:12px;padding:16px 0;border-top:{{c.border}};align-items:start;">
+<span style="width:24px;height:24px;border:1px solid #8490A8;border-radius:4px;display:inline-block;box-sizing:border-box;margin-top:1px;"></span>
+<div style="display:flex;flex-direction:column;gap:2px;">
+<span style="font:600 16px/24px Inter,sans-serif;">{{c.title}}</span>
+<span style="font:400 14px/22px Inter,sans-serif;color:#434F6B;">{{c.text}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2700}}'>
+class Component extends DCLogic {
+  lum(h) {
+    const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  cr(a, b) {
+    const x = this.lum(a), y = this.lum(b);
+    return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+  }
+  renderVals() {
+    const P = (fg, bg, label, kind) => {
+      const v = this.cr(fg, bg);
+      let verdict;
+      if (kind === 'ui') verdict = v >= 3 ? 'Границы полей и иконки · ≥ 3:1' : 'Не проходит 3:1 для границ полей';
+      else verdict = v >= 7 ? 'Любой текст · AAA' : v >= 4.5 ? 'Любой текст · AA' : v >= 3 ? 'Только ≥ 24 px или ≥ 19 px / 700' : 'Не для текста';
+      const ok = kind === 'ui' ? v >= 3 : v >= 3;
+      return { label, cr: v.toFixed(1).replace('.', ',') + ':1', verdict, vc: ok ? '#0B1020' : '#B3300A', style: 'display:inline-block;padding:4px 12px;border-radius:6px;font:600 14px/20px Inter,sans-serif;border:1px solid ' + (bg === '#FFFFFF' ? '#D2D8E2' : bg) + ';color:' + fg + ';background:' + bg + ';' };
+    };
+    const pairs = [
+      P('#0B1020', '#FFFFFF', 'ink 950 на белом · основной текст'),
+      P('#434F6B', '#FFFFFF', 'ink 600 на белом · лиды, описания'),
+      P('#5E6A85', '#FFFFFF', 'ink 500 на белом · подписи, источники'),
+      P('#B00020', '#FFFFFF', 'crimson 700 на белом · ссылки, ключевые числа'),
+      P('#FFFFFF', '#B00020', 'белый на crimson 700 · кнопка Primary'),
+      P('#FFFFFF', '#8A001B', 'белый на crimson 800 · hover Primary'),
+      P('#FFFFFF', '#0B1020', 'белый на ink 950 · тёмные секции, Secondary'),
+      P('#AEB7C8', '#0B1020', 'ink 300 на ink 950 · вторичный текст на тёмном'),
+      P('#EE6B7C', '#0B1020', 'crimson 400 на ink 950 · акцент на тёмном'),
+      P('#B00020', '#0B1020', 'crimson 700 на ink 950 · запрещено для текста'),
+      P('#8A001B', '#FDE4E7', 'crimson 800 на crimson 100 · плашки'),
+      P('#0F6B40', '#E3F3EA', 'success на success-bg'),
+      P('#8A4B00', '#FFF2DB', 'warning на warning-bg'),
+      P('#B3300A', '#FDECE6', 'error на error-bg'),
+      P('#1D4FA8', '#E6EEFB', 'info на info-bg'),
+      P('#AEB7C8', '#FFFFFF', 'border-strong на белом · граница поля', 'ui'),
+      P('#8490A8', '#FFFFFF', 'ink 400 на белом · граница поля (предложение)', 'ui'),
+      P('#B00020', '#FFFFFF', 'crimson 700 · кольцо и обводка фокуса', 'ui')
+    ];
+    const rules = [
+      { tag: '2.4.7 · 2.4.11', title: 'Фокус виден всегда', text: 'Только :focus-visible. Кольцо 2 px surface + 2 px crimson 700 (на ink — crimson 400). Фокус не перекрывается липкой шапкой: scroll-padding-top не меньше высоты шапки.' },
+      { tag: '2.5.8', title: 'Зона нажатия', text: 'Кнопки и поля — 48 px по высоте, ссылки в меню и подвале — не менее 44 px. Между соседними мелкими целями зазор 8 px.' },
+      { tag: '3.3.1 · 3.3.2', title: 'Формы', text: 'Подпись всегда над полем и связана через label for. Плейсхолдер — только пример формата. Ошибка — текст под полем, связанный через aria-describedby, плюс aria-invalid. Не только красная обводка.' },
+      { tag: '4.1.3', title: 'Статусы сообщаются', text: 'Успех и ошибка отправки — в области role="status" / role="alert". После успешной отправки фокус переходит на сообщение.' },
+      { tag: '1.1.1', title: 'Изображения', text: 'Портреты команды: alt = «Имя Фамилия, должность». Скриншоты кабинета: alt описывает, что на них видно, одной фразой. Декор — alt="". Текст на картинках запрещён.' },
+      { tag: '1.2.2 · 1.2.3', title: 'Видео клиентов', text: 'Субтитры обязательны. Рядом — текстовая расшифровка. Автовоспроизведение со звуком запрещено, обложка с кнопкой Play и названием.' },
+      { tag: '1.4.1', title: 'Цвет — не единственный признак', text: 'Рост и спад — знаком и словом. «Входит / не входит» — иконка с подписью. Выбранный пункт — цвет плюс галочка или подчёркивание.' },
+      { tag: '2.3.3', title: 'Движение', text: 'prefers-reduced-motion: reduce убирает анимации появления и ставит переходы 120 ms. Карусели без автопрокрутки, с кнопками и счётчиком.' },
+      { tag: '1.4.4 · 1.4.10', title: 'Масштаб и адаптив', text: 'Страница читается при увеличении до 200 % и на ширине 320 px без горизонтальной прокрутки (кроме таблиц в собственном контейнере). Размеры шрифтов — rem.' },
+      { tag: '1.3.1 · 2.4.1 · 3.1.1', title: 'Структура', text: 'lang="ru", один h1, заголовки по порядку без пропусков, landmarks (header, nav, main, footer). Ссылка «Перейти к содержимому» — первый фокусируемый элемент.' }
+    ];
+    const checks = [
+      { title: 'Клавиатура', text: 'Пройти всю страницу Tab / Shift+Tab: порядок логичен, фокус виден, меню и FAQ работают на Enter и Space.' },
+      { title: 'Скринридер', text: 'Прочитать главную, форму заявки и один кейс в NVDA (Windows) или VoiceOver (Mac / iOS).' },
+      { title: 'Автопроверка', text: 'axe DevTools или Lighthouse Accessibility: ноль критичных ошибок. Автопроверка находит около трети проблем, остальное руками.' },
+      { title: 'Масштаб 200 % и 320 px', text: 'Ничего не обрезается и не накладывается, кнопки не выходят за экран.' },
+      { title: 'Контраст', text: 'Новые цвета и пары добавлены в таблицу выше и проверены.' },
+      { title: 'Форма заявки', text: 'Отправка пустой формы, неверного телефона, успешная отправка и ошибка сети: каждый сценарий озвучивается.' },
+      { title: 'Изображения и видео', text: 'У всех изображений есть alt (или пустой для декора), у видео субтитры и расшифровка.' },
+      { title: 'Уменьшенное движение', text: 'Включить «уменьшить движение» в системе: анимаций нет, страница работает.' },
+      { title: 'Заявление о доступности', text: 'На сайте есть страница с контактом для сообщений о барьерах. [Контакт и срок ответа].' }
+    ].map((c, i) => ({ ...c, border: i === 0 ? '0' : '1px solid #E8EBF1' }));
+    return { pairs, rules, checks };
+  }
+}
+</script>
+</body>
+</html>
