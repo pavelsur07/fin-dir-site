@@ -56,6 +56,22 @@ async function checkMenu(page, name) {
     await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
     assert.ok(await menu.evaluate(el => el.matches(':popover-open')), `${name}: internal scrolling keeps menu open`);
     await menu.evaluate(el => { el.scrollTop = 0; });
+    const itemStyles = await menu.locator('a, button').evaluateAll(items => items.map(item => {
+        const style = getComputedStyle(item);
+        return {
+            text: item.textContent.trim(),
+            border: style.borderTopWidth,
+            align: style.textAlign,
+            decoration: style.textDecorationLine,
+            height: item.getBoundingClientRect().height,
+        };
+    }));
+    for (const item of itemStyles) {
+        assert.equal(item.border, '0px', `${name}: ${item.text} should look like a menu item`);
+        assert.equal(item.align, 'left', `${name}: ${item.text} alignment`);
+        assert.equal(item.decoration, 'none', `${name}: ${item.text} decoration`);
+        assert.ok(item.height >= 44, `${name}: ${item.text} touch target`);
+    }
     const topLayer = await menu.evaluate(el => {
         const box = el.getBoundingClientRect();
         const hit = document.elementFromPoint(box.left + box.width / 2, box.top + Math.min(25, box.height / 2));

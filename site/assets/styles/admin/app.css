@@ -57,6 +57,6 @@
   /* Не переопределяем браузерный display:none закрытого popover. */
   .admin-row-menu:not([popover]), .admin-row-menu[popover]:popover-open {
     display: grid;
-    gap: var(--spacing-2);
+    gap: var(--spacing-1);
   }
 }

@@ -1,9 +1,10 @@
-<div class="flex flex-wrap gap-2">
+{% set action_template = as_menu|default(false) ? 'admin/_menu_item.html.twig' : 'admin/_button.html.twig' %}
+<div class="{{ as_menu|default(false) ? 'grid gap-1' : 'flex flex-wrap gap-2' }}">
     {% for transition in actions %}
         <form method="post" action="{{ path('admin_case_status', {id: id, action: transition.action}) }}">
             <input type="hidden" name="_token" value="{{ csrf_token('case-status') }}">
             {% if back is defined %}<input type="hidden" name="back" value="{{ back }}">{% endif %}
-            {% include 'admin/_button.html.twig' with {label: transition.label} only %}
+            {% include action_template with {label: transition.label} only %}
         </form>
     {% endfor %}
 </div>

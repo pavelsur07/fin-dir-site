@@ -68,7 +68,7 @@
                         <td class="border-b border-border-subtle px-3 py-2 align-top">
                             {% embed 'admin/_row_menu.html.twig' with {menu_id: 'lead-actions-' ~ lead.id, menu_label: 'Действия: обращение №' ~ lead.id, lead: lead, statuses: statuses, token: token, criteria: criteria, list_url: list_url, list_url_first_page: list_url_first_page, notifications_enabled: notifications_enabled} only %}
                                 {% block actions %}
-                                <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_lead_show', {id: lead.id}) }}">Открыть</a>
+                                {% include 'admin/_menu_item.html.twig' with {label: 'Открыть', href: path('admin_lead_show', {id: lead.id})} only %}
                                 <hr class="my-1 border-t border-border-subtle">
                                 {% for status in statuses|filter(status => status != lead.status) %}
                                     {# Меняем только статус: дата контакта уходит текущей, версия ловит правку из другого окна. #}
@@ -78,7 +78,7 @@
                                         <input type="hidden" name="status" value="{{ status.value }}">
                                         <input type="hidden" name="next_contact_at" value="{{ lead.nextContactAt ? lead.nextContactAt|date('Y-m-d') }}">
                                         <input type="hidden" name="back" value="{{ criteria.status ? list_url_first_page : list_url }}">
-                                        {% include 'admin/_button.html.twig' with {label: 'Статус: ' ~ status.label} only %}
+                                        {% include 'admin/_menu_item.html.twig' with {label: 'Статус: ' ~ status.label} only %}
                                     </form>
                                 {% endfor %}
                                 <hr class="my-1 border-t border-border-subtle">
@@ -86,13 +86,13 @@
                                     <form method="post" action="{{ path('admin_lead_notify', {id: lead.id}) }}">
                                         <input type="hidden" name="_token" value="{{ token }}">
                                         <input type="hidden" name="back" value="{{ list_url }}">
-                                        {% include 'admin/_button.html.twig' with {label: 'Отправить уведомление'} only %}
+                                        {% include 'admin/_menu_item.html.twig' with {label: 'Отправить уведомление'} only %}
                                     </form>
                                 {% endif %}
                                 <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
                                     <input type="hidden" name="_token" value="{{ token }}">
                                     <input type="hidden" name="back" value="{{ list_url_first_page }}">
-                                    {% include 'admin/_button.html.twig' with {label: 'Удалить'} only %}
+                                    {% include 'admin/_menu_item.html.twig' with {label: 'Удалить', destructive: true} only %}
                                 </form>
                                 {% endblock %}
                             {% endembed %}

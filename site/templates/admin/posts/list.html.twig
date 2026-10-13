@@ -55,8 +55,8 @@
                         <td class="border-b border-border-subtle px-3 py-2 align-top">
                             {% embed 'admin/_row_menu.html.twig' with {menu_id: 'post-actions-' ~ post.id, menu_label: 'Действия: ' ~ post.title, post: post, status_actions: status_actions} only %}
                                 {% block actions %}
-                                <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_post_edit', {id: post.id}) }}">Редактировать</a>
-                                {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, actions: status_actions[post.status.value], back: 'list'} only %}
+                                {% include 'admin/_menu_item.html.twig' with {label: 'Редактировать', href: path('admin_post_edit', {id: post.id})} only %}
+                                {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, actions: status_actions[post.status.value], back: 'list', as_menu: true} only %}
                                 {% endblock %}
                             {% endembed %}
                         </td>
