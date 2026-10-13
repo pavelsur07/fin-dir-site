@@ -3,8 +3,8 @@
 {% block title %}Кейсы{% endblock %}
 
 {% block body %}
-    <div class="mb-4 flex flex-wrap gap-2">
-        <h1 class="mb-6 type-t2-article">Кейсы</h1>
+    <div class="mb-4 flex flex-wrap items-start gap-2">
+        <h1 class="min-w-0 type-t2-article">Кейсы</h1>
         {% include 'admin/_button.html.twig' with {label: 'Новый кейс', href: path('admin_case_new'), variant: 'primary'} only %}
     </div>
 
@@ -34,7 +34,7 @@
                 <tbody>
                 {% for case in cases %}
                     <tr>
-                        <td class="border-b border-border-subtle px-3 py-2 align-top">
+                        <td class="admin-cell-text border-b border-border-subtle px-3 py-2 align-top">
                             <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_case_edit', {id: case.id}) }}">{{ case.title }}</a>
                             {% if case.featured %}<span class="ml-2 inline-block rounded-full bg-surface-muted px-2 py-1 type-t7 font-semibold text-fg-secondary">Главный</span>{% endif %}
                             <div class="type-t6 text-fg-secondary">
@@ -50,12 +50,12 @@
                         <td class="border-b border-border-subtle px-3 py-2 align-top">{{ case.updatedAt|date('d.m.Y H:i') }}</td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">{{ case.publishedAt ? case.publishedAt|date('d.m.Y') : '—' }}</td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">
-                            <details class="relative"><summary data-admin-menu-toggle class="w-fit cursor-pointer list-none rounded-md border border-border-strong bg-white px-3 py-1 type-t3 text-fg hover:bg-surface-muted" aria-controls="case-actions-{{ case.id }}" aria-label="Действия: {{ case.title }}">…</summary>
-                            <div data-admin-row-menu class="absolute right-0 top-full z-20 grid min-w-sidebar gap-2 rounded-lg border bg-white p-2 shadow-lg" id="case-actions-{{ case.id }}">
+                            {% embed 'admin/_row_menu.html.twig' with {menu_id: 'case-actions-' ~ case.id, menu_label: 'Действия: ' ~ case.title, case: case} only %}
+                                {% block actions %}
                                 <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_case_edit', {id: case.id}) }}">Редактировать</a>
                                 {% include 'admin/cases/_status_actions.html.twig' with {id: case.id, actions: case.status.actions, back: 'list'} only %}
-                            </div>
-                            </details>
+                                {% endblock %}
+                            {% endembed %}
                         </td>
                     </tr>
                 {% endfor %}

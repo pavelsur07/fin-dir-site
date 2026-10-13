@@ -40,13 +40,14 @@ Symfony остаётся владельцем бизнес-логики, дан�
 |---|---|
 | `docs/architecture/PATTERNS.md` | Перед планированием и изменением архитектуры и кода |
 | `SITE_RULES.md` | Перед любыми изменениями Public Website |
+| `ADMIN_RULES.md` | Перед изменениями Admin UI и его CSS/JS |
 | `Makefile` | Единственный источник команд запуска и проверок |
 | `README.md` | Локальный запуск проекта |
 | `infra/traefik/README.md` | Правила общего reverse-proxy хоста |
 | `conwix/README.md` | Работа со статическим сайтом conwix.com |
 
 При расхождении документов приоритет: `PATTERNS.md` (код и архитектура),
-`SITE_RULES.md` (публичный сайт), затем этот файл. О противоречии с фактическим
+`SITE_RULES.md` (публичный сайт), `ADMIN_RULES.md` (административный UI), затем этот файл. О противоречии с фактическим
 кодом или ТЗ — см. раздел 15 «Остановка работы».
 
 ## 3. Технологический стек
@@ -94,7 +95,7 @@ API layer или инфраструктурный компонент без ко
 ```text
 project/
 ├── site/                         # Symfony: Public Website + backend/API
-│   ├── assets/                   # Исходники website assets (Tailwind entrypoint, JS)
+│   ├── assets/                   # Изолированные website/admin assets и shared foundations
 │   ├── bin/
 │   ├── config/
 │   ├── migrations/
@@ -260,8 +261,10 @@ site/tests/
 - изменение существующего публичного URL после публикации требует сохранения корректного redirect, если старый URL уже мог быть проиндексирован или использован;
 - не создавать собственные CSS-правила, переменные, темы Tailwind или дубли компонентов; использовать только классы темы из `design-system-inbox/` по `SITE_RULES.md`.
 
-После изменения исходников website assets (`site/assets/**`) обязательна
-пересборка compiled assets — см. раздел 14.8.
+После изменения исходников Website (`site/assets/styles/website/**`,
+`site/assets/scripts/website/**`) обязательна пересборка `make website-assets`.
+При изменении общих foundations (`site/assets/styles/shared/**`) пересобрать
+обе UI-зоны командой `make assets` — см. раздел 14.8.
 
 ## 8. Admin React
 
@@ -276,6 +279,13 @@ React Admin.
 (memory provider, хеш пароля в env `ADMIN_PASSWORD_HASH`). Страница входа
 остаётся Symfony-формой и после появления React Admin. Новые разделы
 управления контентом на Twig добавляются только до создания `frontend/`.
+
+Стили и JavaScript Admin изолированы от Public Website. Для временного Twig
+Admin обязательны `ADMIN_RULES.md`, собственные исходники
+`site/assets/styles/admin/`, `site/assets/scripts/admin/`, compiled assets
+`site/public/assets/admin/` и независимый хеш `admin_asset_version`. Общие
+шрифты и токены разрешены в `site/assets/styles/shared/`; entrypoint и JS
+Website не импортировать. Изменения оформления Admin не меняют Public Website.
 
 Базовая схема:
 
@@ -927,13 +937,13 @@ make test CMD="--filter SmokeTest"
 Правила:
 
 - `make deptrac` обязателен при добавлении или перемещении классов между слоями;
-- после изменения исходников website assets (`site/assets/**`) выполнить `make assets`; свежесть compiled assets контролирует `make lint` через `assets-check`;
+- после изменения website assets выполнить `make website-assets`, admin assets — `make admin-assets`, общих `site/assets/styles/shared/**` — `make assets`; свежесть compiled assets контролирует `make lint` через `assets-check`;
 - миграции: сгенерировать — `make diff`, применить — `make migrate`;
 - frontend lint, tests и production build для React Admin — по настройкам `frontend/`, когда он появится;
 - локально запускать проверки затронутого поведения; полный `make ci` нужен при широких изменениях, влияющих на несколько модулей, общую конфигурацию или зависимости, а также по требованиям задачи/релиза;
 - CI остаётся обязательным согласно действующему pipeline; локально дублировать уже прошедший CI для той же версии кода без причины не нужно;
 - для чисто документальных правок достаточно прочитать diff, проверить ссылки и `git diff --check`; тесты приложения не требуются;
-- для Twig использовать точечный lint и проверку отображения; при изменении Tailwind-классов выполнять требования сборки из `SITE_RULES.md`;
+- для Twig использовать точечный lint и проверку отображения; при изменении Tailwind-классов выполнять требования сборки своей UI-зоны из `SITE_RULES.md` или `ADMIN_RULES.md`;
 - после успешных проверок повторять их только при новых изменениях, сбоях или конкретном непроверенном риске.
 
 Не утверждать, что тесты прошли, если они не запускались. Если проверка

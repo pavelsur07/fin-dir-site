@@ -334,7 +334,7 @@ final class AdminPostTest extends WebTestCase
         self::assertSelectorExists('#post-panel-cover input[type="file"][name="post[coverUpload]"][accept="image/png"]');
         self::assertSelectorExists('#post-panel-seo input[name="post[metaTitle]"]');
         self::assertSelectorExists('form[data-admin-post-form][enctype="multipart/form-data"]');
-        self::assertSelectorExists('script[src^="/assets/website/admin-tabs.js?v="]');
+        self::assertSelectorExists('script[src^="/assets/admin/tabs.js?v="]');
     }
 
     public function testCreateDraftWithCover(): void

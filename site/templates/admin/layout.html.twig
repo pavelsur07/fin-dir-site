@@ -1,4 +1,4 @@
-{% set vf_asset_version = '3cb279c862e7' %}
+{% set admin_asset_version = 'f75579ca65aa' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     {# Manrope набраны заголовки страниц: без предзагрузки H1 меняет начертание после загрузки шрифта. #}
     <link rel="preload" href="/assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-    <link href="/assets/website/app.css?v={{ vf_asset_version }}" rel="stylesheet">
+    <link href="/assets/admin/app.css?v={{ admin_asset_version }}" rel="stylesheet">
 </head>
 <body class="bg-paper font-sans text-navy-900">
 {% block page %}
@@ -23,9 +23,9 @@
     ] %}
     {# Счётчик считается один раз (фрагмент-контроллер) и выводится в обоих местах меню. #}
     {% set counter %}{{ render(controller('App\\Lead\\Controller\\Admin\\LeadCounterController')) }}{% endset %}
-    <a class="fixed left-4 top-2 z-20 -translate-y-24 rounded-md bg-white px-3 py-2 text-fg focus:translate-y-0" href="#main">К содержимому</a>
+    <a class="fixed left-4 top-2 admin-skip-link -translate-y-24 rounded-md bg-white px-3 py-2 text-fg focus:translate-y-0" href="#main">К содержимому</a>
     <div class="flex min-h-screen">
-        <div data-admin-sidebar class="dark sticky top-0 hidden h-screen w-sidebar shrink-0 flex-col overflow-y-auto bg-surface px-4 py-6 text-white lg:flex">
+        <div data-admin-sidebar class="admin-navigation admin-sidebar dark sticky top-0 hidden w-sidebar shrink-0 flex-col overflow-y-auto bg-surface px-4 py-6 text-white lg:flex">
             <a class="mb-6 flex items-center gap-3 no-underline" href="{{ path('admin_dashboard') }}" aria-label="Ваш Финдир — Админка">
                 {% include 'website/components/_logo.html.twig' with {s: 32, dark: true} only %}
                 <span class="type-t7 text-fg-secondary">Админка</span>
@@ -34,18 +34,18 @@
         </div>
         <div class="min-w-0 flex-1">
             {# Узкий экран: сайдбар скрыт, меню раскрывается нативным details без JS. #}
-            <details data-admin-mobile-menu class="dark sticky top-0 z-10 bg-surface p-4 text-white lg:hidden">
-                <summary>
+            <details data-admin-mobile-menu class="admin-navigation admin-mobile-menu dark sticky top-0 bg-surface p-4 text-white lg:hidden">
+                <summary class="cursor-pointer focus-visible:shadow-focus">
                     {# Бренд скрыт от дикторов: кнопка должна называться «Меню», а не всей строкой. #}
                     <span class="mb-6 flex items-center gap-3" aria-hidden="true">
                         {% include 'website/components/_logo.html.twig' with {s: 24, dark: true} only %}
                         <span class="type-t7 text-fg-secondary">Админка</span>
                     </span>
-                    <span class="inline-flex items-center rounded-md border border-border-strong px-3 py-1">Меню{{ counter }}</span>
+                    <span class="inline-flex items-center rounded-md border border-border-strong min-h-11 px-3 py-1">Меню{{ counter }}</span>
                 </summary>
                 {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
             </details>
-            <main class="p-4 lg:p-8" id="main">
+            <main class="admin-content p-4 lg:p-8" id="main" tabindex="-1">
                 {% for message in app.flashes('success') %}
                     <p class="rounded-lg border border-success-border bg-success-bg p-4 text-success" role="status">{{ message }}</p>
                 {% endfor %}
@@ -54,6 +54,7 @@
         </div>
     </div>
 {% endblock %}
+<script src="/assets/admin/row-menus.js?v={{ admin_asset_version }}" defer></script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

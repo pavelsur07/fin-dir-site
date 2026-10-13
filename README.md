@@ -65,6 +65,12 @@ make migrate   # применить
 
 ## Админка
 
+CSS/JS отделены от Public Website; правила — [ADMIN_RULES.md](ADMIN_RULES.md).
+`make admin-assets` собирает только Admin, `make admin-asset-version` выдаёт
+хеш для admin layout, `make admin-assets-check` проверяет свежесть.
+`make assets` собирает обе зоны. `make admin-browser-check` проверяет меню,
+формы и адаптивность в Chromium на тестовых данных (нужен dev nginx на 8001).
+
 `/admin` — раздел контент-менеджера (временно на Twig, см. `AGENTS.md` §8).
 Пользователь один — `admin`, сущности нет. Пароль задаётся **хешем** в env
 `ADMIN_PASSWORD_HASH`; открытый пароль нигде не хранится. В dev вход

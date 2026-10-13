@@ -3,8 +3,8 @@
 {% block title %}Обращения{% endblock %}
 
 {% block body %}
-    <div class="mb-4 flex flex-wrap gap-2">
-        <h1 class="mb-6 type-t2-article">Обращения</h1>
+    <div class="mb-4 flex flex-wrap items-start gap-2">
+        <h1 class="min-w-0 type-t2-article">Обращения</h1>
     </div>
 
     {% for message in app.flashes('error') %}<p class="rounded-lg border border-error-border bg-error-bg p-4 text-error" role="alert">{{ message }}</p>{% endfor %}
@@ -55,7 +55,7 @@
                     <tr>
                         <td class="border-b border-border-subtle px-3 py-2 align-top"><a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_lead_show', {id: lead.id}) }}">{{ lead.id }}</a></td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">{{ lead.createdAt|date('d.m.Y H:i') }}</td>
-                        <td class="border-b border-border-subtle px-3 py-2 align-top">
+                        <td class="admin-cell-text border-b border-border-subtle px-3 py-2 align-top">
                             <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_lead_show', {id: lead.id}) }}">{{ lead.name }}</a>
                             <div class="type-t6 text-fg-secondary">{{ lead.contact }}</div>
                         </td>
@@ -66,8 +66,8 @@
                         </td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">{{ lead.nextContactAt ? lead.nextContactAt|date('d.m.Y') : '—' }}</td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">
-                            <details class="relative"><summary data-admin-menu-toggle class="w-fit cursor-pointer list-none rounded-md border border-border-strong bg-white px-3 py-1 type-t3 text-fg hover:bg-surface-muted" aria-controls="lead-actions-{{ lead.id }}" aria-label="Действия: обращение №{{ lead.id }}">…</summary>
-                            <div data-admin-row-menu class="absolute right-0 top-full z-20 grid min-w-sidebar gap-2 rounded-lg border bg-white p-2 shadow-lg" id="lead-actions-{{ lead.id }}">
+                            {% embed 'admin/_row_menu.html.twig' with {menu_id: 'lead-actions-' ~ lead.id, menu_label: 'Действия: обращение №' ~ lead.id, lead: lead, statuses: statuses, token: token, criteria: criteria, list_url: list_url, list_url_first_page: list_url_first_page, notifications_enabled: notifications_enabled} only %}
+                                {% block actions %}
                                 <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_lead_show', {id: lead.id}) }}">Открыть</a>
                                 <hr class="my-1 border-t border-border-subtle">
                                 {% for status in statuses|filter(status => status != lead.status) %}
@@ -94,8 +94,8 @@
                                     <input type="hidden" name="back" value="{{ list_url_first_page }}">
                                     {% include 'admin/_button.html.twig' with {label: 'Удалить'} only %}
                                 </form>
-                            </div>
-                            </details>
+                                {% endblock %}
+                            {% endembed %}
                         </td>
                     </tr>
                 {% endfor %}

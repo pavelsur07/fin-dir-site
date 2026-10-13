@@ -13,7 +13,7 @@ UID := $(shell id -u)
 GID := $(shell id -g)
 
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
-        assets assets-watch asset-version assets-check ds-check lint cs cs-fix phpstan test test-db ci \
+        assets assets-watch asset-version assets-check website-assets admin-assets website-assets-watch admin-assets-watch website-assets-check admin-assets-check admin-asset-version admin-browser-fixtures admin-browser-check admin-browser-run ds-check lint cs cs-fix phpstan test test-db ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
 
 # Первый запуск Symfony dev после clone
@@ -82,54 +82,73 @@ cache-clear:
 deptrac:
 	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
 
-# Tailwind работает только во время сборки. Nginx раздаёт compiled website assets.
-assets:
+# Изолированные bundles Public Website и временного Twig Admin.
+assets: website-assets admin-assets
+
+website-assets:
 	rm -rf -- site/public/assets/website
 	mkdir -p site/public/assets/website
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --minify
-	cp site/assets/scripts/website/analytics.js site/public/assets/website/analytics.js
-	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
-	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
-	cp site/assets/scripts/website/article-toc.js site/public/assets/website/article-toc.js
-	cp site/assets/scripts/website/admin-tabs.js site/public/assets/website/admin-tabs.js
+	cp site/assets/scripts/website/*.js site/public/assets/website/
 
-assets-watch:
+admin-assets:
+	rm -rf -- site/public/assets/admin
+	mkdir -p site/public/assets/admin
+	./scripts/tailwindcss.sh -i site/assets/styles/admin/app.css -o site/public/assets/admin/app.css --minify
+	cp site/assets/scripts/admin/*.js site/public/assets/admin/
+
+assets-watch: website-assets-watch
+
+website-assets-watch:
 	mkdir -p site/public/assets/website
-	cp site/assets/scripts/website/analytics.js site/public/assets/website/analytics.js
-	cp site/assets/scripts/website/navigation.js site/public/assets/website/navigation.js
-	cp site/assets/scripts/website/metrika.js site/public/assets/website/metrika.js
-	cp site/assets/scripts/website/article-toc.js site/public/assets/website/article-toc.js
-	cp site/assets/scripts/website/admin-tabs.js site/public/assets/website/admin-tabs.js
+	cp site/assets/scripts/website/*.js site/public/assets/website/
 	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o site/public/assets/website/app.css --watch
 
-asset-version:
-	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js site/public/assets/website/admin-tabs.js | sha256sum | cut -c1-12
+admin-assets-watch:
+	mkdir -p site/public/assets/admin
+	cp site/assets/scripts/admin/*.js site/public/assets/admin/
+	./scripts/tailwindcss.sh -i site/assets/styles/admin/app.css -o site/public/assets/admin/app.css --watch
 
-assets-check:
-	@temporary=$$(mktemp -d); \
+asset-version:
+	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js | sha256sum | cut -c1-12
+
+admin-asset-version:
+	@cat site/public/assets/admin/app.css site/public/assets/admin/row-menus.js site/public/assets/admin/tabs.js | sha256sum | cut -c1-12
+
+# Только тестовая БД: PHPUnit/DAMA откатывает синтетические записи.
+admin-browser-fixtures: test-db
+	$(TEST_CLI) env ADMIN_BROWSER_FIXTURES=/app/var/tests/admin-browser vendor/bin/phpunit tests/Admin/AdminBrowserFixturesTest.php
+
+admin-browser-check: admin-assets-check admin-browser-fixtures
+	$(MAKE) admin-browser-run
+
+admin-browser-run:
+	docker run --rm --network host -v "$(CURDIR):/workspace:ro" -v "$(CURDIR)/site/var/tests/admin-browser:/artifacts" -w /workspace mcr.microsoft.com/playwright:v1.62.1-noble sh -c 'npm install --prefix /tmp/admin-browser --no-audit --no-fund playwright@1.62.1 >/dev/null && NODE_PATH=/tmp/admin-browser/node_modules node scripts/check-admin-browser.cjs'
+
+assets-check: website-assets-check admin-assets-check
+
+website-assets-check admin-assets-check:
+	@set -eu; temporary=$$(mktemp -d); \
 	trap 'rm -rf -- "$$temporary"' EXIT HUP INT TERM; \
-	./scripts/tailwindcss.sh -i site/assets/styles/website/app.css -o "$$temporary/app.css" --minify; \
-	cp site/assets/scripts/website/analytics.js "$$temporary/analytics.js"; \
-	cp site/assets/scripts/website/navigation.js "$$temporary/navigation.js"; \
-	cp site/assets/scripts/website/metrika.js "$$temporary/metrika.js"; \
-	cp site/assets/scripts/website/article-toc.js "$$temporary/article-toc.js"; \
-	cp site/assets/scripts/website/admin-tabs.js "$$temporary/admin-tabs.js"; \
-	diff --brief --recursive "$$temporary" site/public/assets/website >/dev/null || { \
-		echo 'Compiled website assets are stale. Run make assets.' >&2; \
+	bundle=$$(echo "$@" | cut -d- -f1); \
+	./scripts/tailwindcss.sh -i "site/assets/styles/$$bundle/app.css" -o "$$temporary/app.css" --minify; \
+	cp site/assets/scripts/$$bundle/*.js "$$temporary/"; \
+	diff --brief --recursive "$$temporary" "site/public/assets/$$bundle" >/dev/null || { \
+		echo "Compiled $$bundle assets are stale. Run make $$bundle-assets." >&2; \
 		exit 1; \
 	}
-	@if grep -Eiq 'Inter Variable|inter-[[:alnum:]-]+[.]woff2|--font-(sans|display|mono):[^;]*Inter|font-family:[^;]*Inter' site/assets/styles/website/app.css site/assets/styles/website/vf-theme.css site/assets/styles/website/vf-fonts.css site/public/assets/website/app.css; then \
-		echo 'Inter font fallback found in website CSS.' >&2; \
+	@if grep -Eiq 'Inter Variable|inter-[[:alnum:]-]+[.]woff2|--font-(sans|display|mono):[^;]*Inter|font-family:[^;]*Inter' site/assets/styles/shared/*.css site/public/assets/website/app.css site/public/assets/admin/app.css; then \
+		echo 'Inter font fallback found in CSS.' >&2; \
 		exit 1; \
 	fi
 	@if find site/public/assets/fonts -maxdepth 1 -type f -iname 'inter-*.woff2' -print -quit | grep -q .; then \
-		echo 'Inter font file found in website assets.' >&2; \
+		echo 'Inter font file found in assets.' >&2; \
 		exit 1; \
 	fi
 
-# Проверка всех классов сайта, админки, JS и Markdown по собранной теме.
 ds-check: assets-check
-	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/website/app.css site/templates site/assets/scripts/website site/src/Publication/Adapter
+	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter
+	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter
 
 # --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
 

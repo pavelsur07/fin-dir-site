@@ -4,15 +4,15 @@
 
 {% block body %}
     {% set token = csrf_token('lead-admin') %}
-    <div class="mb-4 flex flex-wrap gap-2">
-        <h1 class="mb-6 type-t2-article">Обращение №{{ lead.id }}</h1>
+    <div class="mb-4 flex flex-wrap items-start gap-2">
+        <h1 class="min-w-0 type-t2-article">Обращение №{{ lead.id }}</h1>
         <span class="inline-block rounded-full px-2 py-1 type-t7 font-semibold {{ lead.status.value == 'new' ? 'bg-accent-fill text-white' : (lead.status.value == 'qualified' ? 'bg-success-bg text-success' : 'bg-surface-muted text-fg-secondary') }}">{{ lead.status.label }}</span>
     </div>
     <p><a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_lead_list') }}">← Все обращения</a></p>
 
     {% for message in app.flashes('error') %}<p class="rounded-lg border border-error-border bg-error-bg p-4 text-error" role="alert">{{ message }}</p>{% endfor %}
 
-    <div class="max-w-container rounded-lg border bg-white p-6">
+    <div class="max-w-container rounded-lg border bg-white p-4 md:p-6">
         <dl class="grid gap-2 md:grid-cols-2">
             <dt>Получено</dt><dd>{{ lead.createdAt|date('d.m.Y H:i') }}</dd>
             <dt>Форма</dt><dd>{{ forms[lead.formKey].title ?? lead.formKey }}</dd>
@@ -52,7 +52,7 @@
     </div>
 
     <h2 class="mb-3 mt-8 type-t3">Работа с обращением</h2>
-    <form class="max-w-container rounded-lg border bg-white p-6" method="post" action="{{ path('admin_lead_update', {id: lead.id}) }}">
+    <form class="max-w-container rounded-lg border bg-white p-4 md:p-6" method="post" action="{{ path('admin_lead_update', {id: lead.id}) }}">
         <input type="hidden" name="_token" value="{{ token }}">
         <input type="hidden" name="version" value="{{ lead.version }}">
         <div class="mb-4">
@@ -69,7 +69,7 @@
     </form>
 
     <h2 class="mb-3 mt-8 type-t3">Заметки</h2>
-    <form class="max-w-container rounded-lg border bg-white p-6" method="post" action="{{ path('admin_lead_note', {id: lead.id}) }}">
+    <form class="max-w-container rounded-lg border bg-white p-4 md:p-6" method="post" action="{{ path('admin_lead_note', {id: lead.id}) }}">
         <input type="hidden" name="_token" value="{{ token }}">
         <div class="mb-4">
             <label class="grid gap-1 font-medium" for="lead-note">Новая заметка</label>
@@ -93,7 +93,7 @@
     {% endif %}
 
     <h2 class="mb-3 mt-8 type-t3">Удаление</h2>
-    <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="max-w-container rounded-lg border bg-white p-6" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
+    <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="max-w-container rounded-lg border bg-white p-4 md:p-6" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
         <input type="hidden" name="_token" value="{{ token }}">
         <p class="type-t6 text-fg-secondary">Удаляет обращение и заметки без возможности восстановления — например, по запросу человека на удаление персональных данных.</p>
         {% include 'admin/_button.html.twig' with {label: 'Удалить обращение'} only %}

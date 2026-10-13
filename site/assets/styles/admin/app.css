@@ -1,0 +1,62 @@
+@import "tailwindcss" source(none);
+@import "../shared/vf-fonts.css";
+@import "../shared/vf-theme.css";
+@import "../shared/vf-palette.css";
+@source "../../../templates/admin";
+@source "../../../templates/website/components/_logo.html.twig";
+@source "../../../assets/scripts/admin";
+@source "../../../src/Publication/Adapter";
+
+/* Слои обычного документа; popover рисуется браузером в top layer. */
+@layer base {
+  :root {
+    --admin-layer-navigation: 10;
+    --admin-layer-skip-link: 20;
+  }
+}
+
+@layer components {
+  .admin-navigation { z-index: var(--admin-layer-navigation); }
+  .admin-skip-link { z-index: var(--admin-layer-skip-link); }
+  .admin-mobile-menu { max-height: 100dvh; overflow-y: auto; }
+  .admin-sidebar { height: 100dvh; }
+  .admin-login { min-height: 100dvh; }
+  .admin-login-card { max-width: var(--container-modal-sm); }
+  .admin-content { overflow-wrap: anywhere; }
+  .admin-content table { min-width: var(--container-measure); overflow-wrap: normal; }
+  .admin-cell-text {
+    min-width: var(--container-crumb);
+    max-width: var(--container-lead);
+    overflow-wrap: anywhere;
+  }
+  .admin-content :where(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
+    min-width: 0;
+    max-width: 100%;
+    min-height: var(--spacing-control-touch);
+  }
+  .admin-content :where(input, select, textarea):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .admin-content :where(dl > dd) { min-width: 0; }
+  .admin-row-menu {
+    width: var(--container-sidebar);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .admin-row-menu form { min-width: 0; width: 100%; }
+  .admin-row-menu :where(button, a) { width: 100%; min-height: var(--spacing-control-touch); }
+  .admin-row-menu[popover] {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    max-width: calc(100vw - var(--spacing-8));
+    max-height: calc(100dvh - var(--spacing-8));
+    overflow-y: auto;
+  }
+  /* Не переопределяем браузерный display:none закрытого popover. */
+  .admin-row-menu:not([popover]), .admin-row-menu[popover]:popover-open {
+    display: grid;
+    gap: var(--spacing-2);
+  }
+}
