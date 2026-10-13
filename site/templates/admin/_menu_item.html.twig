@@ -1,0 +1,7 @@
+{# Пункт меню: ссылка для перехода, submit-кнопка для серверного действия. #}
+{% set item_classes = 'inline-flex min-h-11 w-full items-center rounded-md px-3 py-2 text-left type-t6 font-medium no-underline transition-colors focus-visible:shadow-focus ' ~ (destructive|default(false) ? 'text-error hover:bg-error-bg' : 'text-fg hover:bg-surface-muted') %}
+{% if href|default(null) %}
+    <a href="{{ href }}" class="{{ item_classes }}">{{ label }}</a>
+{% else %}
+    <button type="submit" class="{{ item_classes }}">{{ label }}</button>
+{% endif %}

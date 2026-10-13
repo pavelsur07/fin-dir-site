@@ -1,4 +1,4 @@
-{% set admin_asset_version = 'f75579ca65aa' %}
+{% set admin_asset_version = '71b527376628' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -43,7 +43,7 @@
                     </span>
                     <span class="inline-flex items-center rounded-md border border-border-strong min-h-11 px-3 py-1">Меню{{ counter }}</span>
                 </summary>
-                {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter} only %}
+                {% include 'admin/_nav.html.twig' with {menu: menu, route: route, counter: counter, mobile: true} only %}
             </details>
             <main class="admin-content p-4 lg:p-8" id="main" tabindex="-1">
                 {% for message in app.flashes('success') %}

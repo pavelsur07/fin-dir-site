@@ -52,8 +52,8 @@
                         <td class="border-b border-border-subtle px-3 py-2 align-top">
                             {% embed 'admin/_row_menu.html.twig' with {menu_id: 'case-actions-' ~ case.id, menu_label: 'Действия: ' ~ case.title, case: case} only %}
                                 {% block actions %}
-                                <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_case_edit', {id: case.id}) }}">Редактировать</a>
-                                {% include 'admin/cases/_status_actions.html.twig' with {id: case.id, actions: case.status.actions, back: 'list'} only %}
+                                {% include 'admin/_menu_item.html.twig' with {label: 'Редактировать', href: path('admin_case_edit', {id: case.id})} only %}
+                                {% include 'admin/cases/_status_actions.html.twig' with {id: case.id, actions: case.status.actions, back: 'list', as_menu: true} only %}
                                 {% endblock %}
                             {% endembed %}
                         </td>

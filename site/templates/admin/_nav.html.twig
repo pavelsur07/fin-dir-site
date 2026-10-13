@@ -14,5 +14,6 @@
 <form data-admin-account class="mt-auto grid gap-2 border-t px-2 pt-4" method="post" action="{{ logout_path('admin') }}">
     <span class="type-t6 text-fg-secondary">{{ app.user.userIdentifier }}</span>
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-    {% include 'admin/_button.html.twig' with {label: 'Выйти'} only %}
+    {% set account_action_template = mobile|default(false) ? 'admin/_menu_item.html.twig' : 'admin/_button.html.twig' %}
+    {% include account_action_template with {label: 'Выйти'} only %}
 </form>
