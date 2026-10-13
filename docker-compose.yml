@@ -28,8 +28,8 @@ services:
             # Только dev: хеш пароля "admin". $$ -- экранирование $ для compose.
             ADMIN_PASSWORD_HASH: '$$2y$$13$$je2kd3VBIX8ArfiNwlTXF.RRLbnCETo7kI9ABqYqp7BTYgx9T18ku'
             # Уведомления о заявках: пусто -- выключены. Для проверки подставить тестового бота.
-            TELEGRAM_BOT_TOKEN: ${VF_TELEGRAM_BOT_TOKEN:-}
-            TELEGRAM_LEAD_CHAT_ID: ${VF_TELEGRAM_LEAD_CHAT_ID:-}
+            LEAD_RELAY_URL: ${VF_LEAD_RELAY_URL:-}
+            LEAD_RELAY_TOKEN: ${VF_LEAD_RELAY_TOKEN:-}
         depends_on:
             site-postgres:
                 condition: service_healthy
@@ -75,8 +75,8 @@ services:
             # Только dev: хеш пароля "admin". $$ -- экранирование $ для compose.
             ADMIN_PASSWORD_HASH: '$$2y$$13$$je2kd3VBIX8ArfiNwlTXF.RRLbnCETo7kI9ABqYqp7BTYgx9T18ku'
             # Уведомления о заявках: пусто -- выключены. Для проверки подставить тестового бота.
-            TELEGRAM_BOT_TOKEN: ${VF_TELEGRAM_BOT_TOKEN:-}
-            TELEGRAM_LEAD_CHAT_ID: ${VF_TELEGRAM_LEAD_CHAT_ID:-}
+            LEAD_RELAY_URL: ${VF_LEAD_RELAY_URL:-}
+            LEAD_RELAY_TOKEN: ${VF_LEAD_RELAY_TOKEN:-}
         depends_on:
             site-postgres:
                 condition: service_healthy

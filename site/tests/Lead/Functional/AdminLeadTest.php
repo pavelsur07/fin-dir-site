@@ -234,8 +234,8 @@ final class AdminLeadTest extends WebTestCase
             new MockHttpClient(),
             self::getContainer()->get(UrlGeneratorInterface::class),
             'https://vashfindir.ru',
+            'https://mybots.vashfindir.ru/api/leads',
             'test-token',
-            '-100123',
         ));
         $this->logIn();
         $crawler = $this->client->request('GET', '/admin/leads');

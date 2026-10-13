@@ -126,14 +126,14 @@ final class LeadRegistrationTest extends KernelTestCase
         $lead = $this->lead($id);
         self::assertSame(LeadStatus::NEW, $lead->status());
         self::assertNull($lead->notifiedAt());
-        self::assertSame('Telegram API responded 502', $lead->notificationError());
+        self::assertSame('Lead relay responded 502', $lead->notificationError());
     }
 
     public function testSuccessfulNotificationIsSentWithoutPersonalData(): void
     {
         $sent = null;
         $http = new MockHttpClient(static function (string $method, string $url, array $options) use (&$sent): MockResponse {
-            $sent = ['url' => $url, 'body' => (string) $options['body']];
+            $sent = ['url' => $url, 'body' => (string) $options['body'], 'headers' => $options['headers'] ?? []];
 
             return new MockResponse('{"ok":true}', ['http_code' => 200]);
         });
@@ -146,7 +146,14 @@ final class LeadRegistrationTest extends KernelTestCase
 
         self::assertNotNull($this->lead($id)->notifiedAt());
         self::assertIsArray($sent);
-        self::assertStringContainsString('/bottest-token/sendMessage', $sent['url']);
+        self::assertSame('https://mybots.vashfindir.ru/api/leads', $sent['url']);
+        $headers = [];
+        foreach ($sent['headers'] as $name => $values) {
+            foreach ((array) $values as $value) {
+                $headers[] = \is_int($name) ? strtolower($value) : strtolower($name).': '.$value;
+            }
+        }
+        self::assertContains('x-lead-token: test-token', $headers);
         self::assertStringNotContainsString('Иван', $sent['body']);
         self::assertStringNotContainsString('9001234567', $sent['body']);
         self::assertStringContainsString('\/admin\/leads\/'.$id, $sent['body']);
@@ -213,8 +220,8 @@ final class LeadRegistrationTest extends KernelTestCase
             $http,
             self::getContainer()->get(UrlGeneratorInterface::class),
             'https://vashfindir.ru',
+            'https://mybots.vashfindir.ru/api/leads',
             'test-token',
-            '-100123',
         );
 
         return new LeadNotificationSender($notifier, self::getContainer()->get(LeadRepository::class), $this->entityManager, $this->clock);

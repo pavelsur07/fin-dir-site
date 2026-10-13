@@ -91,8 +91,8 @@ jobs:
                       export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
                       export VF_SITE_DB_PASSWORD='${{ secrets.VF_SITE_DB_PASSWORD }}'
                       export VF_ADMIN_PASSWORD_HASH='${{ secrets.VF_ADMIN_PASSWORD_HASH }}'
-                      export VF_TELEGRAM_BOT_TOKEN='${{ secrets.VF_TELEGRAM_BOT_TOKEN }}'
-                      export VF_TELEGRAM_LEAD_CHAT_ID='${{ secrets.VF_TELEGRAM_LEAD_CHAT_ID }}'
+                      export VF_LEAD_RELAY_URL='${{ secrets.VF_LEAD_RELAY_URL }}'
+                      export VF_LEAD_RELAY_TOKEN='${{ secrets.VF_LEAD_RELAY_TOKEN }}'
                       export GHCR_OWNER='${{ github.repository_owner }}'
                       export IMAGE_TAG='${{ env.IMAGE_TAG }}'
                       
