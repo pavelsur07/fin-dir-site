@@ -148,7 +148,7 @@ final class LeadRegistrationTest extends KernelTestCase
         self::assertIsArray($sent);
         self::assertSame('https://mybots.vashfindir.ru/api/leads', $sent['url']);
         $headers = [];
-        foreach ($sent['headers'] ?? [] as $name => $values) {
+        foreach ($sent['headers'] as $name => $values) {
             foreach ((array) $values as $value) {
                 $headers[] = \is_int($name) ? strtolower($value) : strtolower($name).': '.$value;
             }
