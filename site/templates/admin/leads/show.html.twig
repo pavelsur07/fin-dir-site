@@ -73,7 +73,7 @@
         <input type="hidden" name="_token" value="{{ token }}">
         <div class="mb-4">
             <label class="grid gap-1 font-medium" for="lead-note">Новая заметка</label>
-            <textarea class="min-h-24 w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5" id="lead-note" name="text" rows="3" required maxlength="5000"></textarea>
+            <textarea class="w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5" id="lead-note" name="text" rows="3" required maxlength="5000"></textarea>
         </div>
         {% include 'admin/_button.html.twig' with {label: 'Добавить заметку'} only %}
     </form>

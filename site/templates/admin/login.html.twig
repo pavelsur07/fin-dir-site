@@ -20,11 +20,15 @@
                 </p>
             {% endif %}
 
-            <label class="grid gap-1 font-medium" for="username">Логин</label>
-            <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+            <div>
+                <label class="grid gap-1 font-medium" for="username">Логин</label>
+                <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+            </div>
 
-            <label class="grid gap-1 font-medium" for="password">Пароль</label>
-            <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="password" id="password" name="_password" autocomplete="current-password" required>
+            <div>
+                <label class="grid gap-1 font-medium" for="password">Пароль</label>
+                <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="password" id="password" name="_password" autocomplete="current-password" required>
+            </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

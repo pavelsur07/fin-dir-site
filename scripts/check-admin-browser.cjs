@@ -25,6 +25,26 @@ async function checkPage(page, name) {
     assert.ok(state.scripts.every(src => src.startsWith('/assets/admin/')), `${name}: JS isolation`);
 }
 
+async function checkControlScale(page, name, scale = 1) {
+    const controls = await page.locator('.admin-content input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]), .admin-content select, .admin-content textarea, .admin-content button[type="submit"], .admin-content a.inline-flex, .admin-content h1, .admin-checkbox label').evaluateAll(elements => elements.filter(el => el.getClientRects().length).map(el => {
+        const style = getComputedStyle(el);
+        return {tag: el.tagName, font: parseFloat(style.fontSize), line: parseFloat(style.lineHeight), height: el.getBoundingClientRect().height, checkbox: el.matches('.admin-checkbox label')};
+    }));
+    for (const control of controls) {
+        if (control.tag === 'H1') {
+            assert.equal(control.font, 28 * scale, `${name}: page heading size`);
+            assert.equal(control.line, 36 * scale, `${name}: page heading line height`);
+            continue;
+        }
+        assert.ok(control.height >= 44 * scale - 1, `${name}: control target ${JSON.stringify(control)}`);
+        const input = ['INPUT', 'SELECT', 'TEXTAREA'].includes(control.tag);
+        assert.equal(control.font, (input ? 16 : 14) * scale, `${name}: control font ${JSON.stringify(control)}`);
+        // Нативный select в Chromium сообщает normal вместо числового line-height.
+        if (control.tag !== 'SELECT') assert.equal(control.line, (input ? 24 : 20) * scale, `${name}: control line height`);
+        if (control.tag === 'TEXTAREA') assert.ok(control.height >= 128 * scale, `${name}: textarea size`);
+    }
+}
+
 async function clickMenuButton(page, button) {
     await button.scrollIntoViewIfNeeded();
     await button.focus();
@@ -133,6 +153,7 @@ async function checkMenu(page, name) {
             for (const name of names) {
                 await load(page, name);
                 await checkPage(page, name);
+                await checkControlScale(page, name);
                 if (['posts', 'cases', 'leads'].includes(name)) {
                     await checkMenu(page, `${name} ${viewport.width}x${viewport.height}`);
                 }
@@ -160,6 +181,22 @@ async function checkMenu(page, name) {
             assert.deepEqual(errors, [], `Browser errors at ${viewport.width}x${viewport.height}`);
             await context.close();
         }
+
+        // Удвоенный базовый размер текста: элементы растут, действия доступны.
+        const enlarged = await browser.newContext({viewport: {width: 375, height: 900}});
+        const enlargedPage = await enlarged.newPage();
+        await enlargedPage.route('**/__admin_fixture/*', route => route.fulfill({
+            contentType: 'text/html', body: fs.readFileSync(`${root}/${route.request().url().split('/').pop()}.html`, 'utf8'),
+        }));
+        for (const name of names) {
+            await load(enlargedPage, name);
+            await enlargedPage.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+            await checkPage(enlargedPage, name);
+            await checkControlScale(enlargedPage, name, 2);
+            if (name === 'login') await enlargedPage.screenshot({path: '/artifacts/login-text-200.png', fullPage: true});
+            checks++;
+        }
+        await enlarged.close();
 
         // Без JS раскрытие остаётся в потоке, доступно клавиатурой и не обрезается.
         for (const javaScriptEnabled of [false, true]) {

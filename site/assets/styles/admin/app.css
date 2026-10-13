@@ -10,12 +10,48 @@
 /* Слои обычного документа; popover рисуется браузером в top layer. */
 @layer base {
   :root {
+    /* Локальная шкала Admin: shared и Website остаются неизменными. */
+    --spacing-control-touch: 2.75rem;
+    --text-t5: 1rem;
+    --text-t5--line-height: 1.5rem;
+    --text-t6: 0.875rem;
+    --text-t6--line-height: 1.25rem;
+    --text-t2-article: 1.75rem;
+    --text-t2-article--line-height: 2.25rem;
+    --text-t3: 1.25rem;
+    --text-t3--line-height: 1.75rem;
+    --text-t3--font-weight: 600;
     --admin-layer-navigation: 10;
     --admin-layer-skip-link: 20;
   }
 }
 
 @layer components {
+  .admin-ui { font-size: var(--text-t5); line-height: var(--text-t5--line-height); }
+  .admin-content :where(label) {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: var(--text-t6);
+    line-height: var(--text-t6--line-height);
+    font-weight: 500;
+  }
+  .admin-content :where([id$="_help"], form ul, [role="alert"]) {
+    font-size: var(--text-t6);
+    line-height: var(--text-t6--line-height);
+  }
+  .admin-content :where([id$="_help"], form ul) { margin-top: 0.25rem; }
+  .admin-content :where(input[type="checkbox"], input[type="radio"]) {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+  .admin-checkbox { display: flex; align-items: center; gap: 0.5rem; }
+  .admin-content .admin-checkbox label {
+    display: flex;
+    align-items: center;
+    min-height: var(--spacing-control-touch);
+    margin-bottom: 0;
+  }
   .admin-navigation { z-index: var(--admin-layer-navigation); }
   .admin-skip-link { z-index: var(--admin-layer-skip-link); }
   .admin-mobile-menu { max-height: 100dvh; overflow-y: auto; }
@@ -34,6 +70,7 @@
     max-width: 100%;
     min-height: var(--spacing-control-touch);
   }
+  .admin-content :where(textarea) { min-height: 8rem; resize: vertical; }
   .admin-content :where(input, select, textarea):focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;

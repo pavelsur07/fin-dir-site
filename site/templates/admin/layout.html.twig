@@ -1,4 +1,4 @@
-{% set admin_asset_version = '71b527376628' %}
+{% set admin_asset_version = '98b2a654841f' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -11,7 +11,7 @@
     <link rel="preload" href="/assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link href="/assets/admin/app.css?v={{ admin_asset_version }}" rel="stylesheet">
 </head>
-<body class="bg-paper font-sans text-navy-900">
+<body class="admin-ui bg-paper font-sans text-navy-900">
 {% block page %}
     {% set route = app.request.attributes.get('_route') ?? '' %}
     {# Один список разделов: новый раздел админки -- одна строка здесь. #}
