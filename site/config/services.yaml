@@ -6,8 +6,8 @@ parameters:
   # Обложки статей. URL совпадает с PostCover::URL_PREFIX; в production -- том site_uploads.
   vf.post_cover.dir: '%kernel.project_dir%/public/uploads/posts'
   # Пусто -- уведомления о заявках выключены, заявки всё равно сохраняются.
-  env(TELEGRAM_BOT_TOKEN): ''
-  env(TELEGRAM_LEAD_CHAT_ID): ''
+  env(LEAD_RELAY_URL): ''
+  env(LEAD_RELAY_TOKEN): ''
 
 services:
   _defaults:

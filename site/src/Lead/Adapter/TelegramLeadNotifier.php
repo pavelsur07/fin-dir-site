@@ -10,9 +10,12 @@ use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * Уведомление в Telegram через Bot API. Синхронно, с коротким таймаутом:
- * недоступный Telegram задерживает ответ формы максимум на TIMEOUT секунд
- * и никогда не теряет обращение -- оно уже сохранено до вызова.
+ * Уведомление о заявке через релей бота (vf_materials_bot, POST /api/leads).
+ * Сайт на RU-хостинге не достаёт до api.telegram.org (блокировка), поэтому
+ * отдаёт готовый текст релею, а тот пересылает его в Telegram из NL.
+ * Синхронно, с коротким таймаутом: недоступный релей задерживает ответ формы
+ * максимум на TIMEOUT секунд и никогда не теряет обращение -- оно уже сохранено
+ * до вызова.
  */
 final class TelegramLeadNotifier
 {
@@ -22,14 +25,14 @@ final class TelegramLeadNotifier
         private readonly HttpClientInterface $httpClient,
         private readonly UrlGeneratorInterface $urlGenerator,
         #[Autowire('%vf.site_url%')] private readonly string $siteUrl,
-        #[Autowire('%env(TELEGRAM_BOT_TOKEN)%')] private readonly string $botToken,
-        #[Autowire('%env(TELEGRAM_LEAD_CHAT_ID)%')] private readonly string $chatId,
+        #[Autowire('%env(LEAD_RELAY_URL)%')] private readonly string $relayUrl,
+        #[Autowire('%env(LEAD_RELAY_TOKEN)%')] private readonly string $relayToken,
     ) {
     }
 
     public function isEnabled(): bool
     {
-        return '' !== $this->botToken && '' !== $this->chatId;
+        return '' !== $this->relayUrl && '' !== $this->relayToken;
     }
 
     /**
@@ -42,24 +45,22 @@ final class TelegramLeadNotifier
         }
 
         try {
-            $response = $this->httpClient->request('POST', \sprintf('https://api.telegram.org/bot%s/sendMessage', $this->botToken), [
+            $response = $this->httpClient->request('POST', $this->relayUrl, [
                 'timeout' => self::TIMEOUT,
                 'max_duration' => self::TIMEOUT,
+                'headers' => ['X-Lead-Token' => $this->relayToken],
                 'json' => [
-                    'chat_id' => $this->chatId,
                     'text' => $notification->text($this->siteUrl.$this->urlGenerator->generate('admin_lead_show', ['id' => $notification->leadId])),
-                    'parse_mode' => 'HTML',
-                    'disable_web_page_preview' => true,
                 ],
             ]);
 
             $status = $response->getStatusCode();
             if (200 !== $status) {
-                return \sprintf('Telegram API responded %d', $status);
+                return \sprintf('Lead relay responded %d', $status);
             }
         } catch (ExceptionInterface $e) {
             // Сообщение исключения может содержать URL с токеном -- наружу только класс.
-            return 'Telegram request failed: '.$e::class;
+            return 'Lead relay request failed: '.$e::class;
         }
 
         return null;
