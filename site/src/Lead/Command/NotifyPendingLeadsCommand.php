@@ -27,7 +27,7 @@ final class NotifyPendingLeadsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->sender->isEnabled()) {
-            $output->writeln('Уведомления выключены: TELEGRAM_BOT_TOKEN или TELEGRAM_LEAD_CHAT_ID не заданы.');
+            $output->writeln('Уведомления выключены: LEAD_RELAY_URL или LEAD_RELAY_TOKEN не заданы.');
 
             return Command::SUCCESS;
         }

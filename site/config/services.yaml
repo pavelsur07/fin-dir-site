@@ -4,8 +4,8 @@ parameters:
   vf.article_form.title: 'Вопрос по вашей ситуации?'
   vf.article_form.text: 'Консультант ответит в Telegram или перезвонит в течение часа.'
   # Пусто -- уведомления о заявках выключены, заявки всё равно сохраняются.
-  env(TELEGRAM_BOT_TOKEN): ''
-  env(TELEGRAM_LEAD_CHAT_ID): ''
+  env(LEAD_RELAY_URL): ''
+  env(LEAD_RELAY_TOKEN): ''
 
 services:
   _defaults:
