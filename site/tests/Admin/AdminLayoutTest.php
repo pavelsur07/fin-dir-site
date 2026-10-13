@@ -92,19 +92,42 @@ final class AdminLayoutTest extends WebTestCase
         self::assertSelectorExists('form[action="/admin/login"] input[name="_username"]');
     }
 
-    public function testAdminUsesSharedTailwindStylesheet(): void
+    /** @return iterable<string, array{string}> */
+    public static function assetPages(): iterable
     {
-        $this->client->request('GET', '/admin/login');
+        yield 'login' => ['/admin/login'];
+        yield 'dashboard' => ['/admin'];
+        yield 'post form' => ['/admin/posts/new'];
+    }
 
-        self::assertSelectorNotExists('style');
+    #[DataProvider('assetPages')]
+    public function testAdminLoadsOnlyItsOwnAssets(string $path): void
+    {
+        if ('/admin/login' !== $path) {
+            $this->logIn();
+        }
+        $this->client->request('GET', $path);
+
+        self::assertResponseIsSuccessful();
         self::assertSelectorCount(1, 'link[rel="stylesheet"]');
-        self::assertSelectorCount(0, 'script');
+        self::assertSelectorExists('link[rel="stylesheet"][href^="/assets/admin/app.css?v="]');
+        self::assertSelectorExists('script[src^="/assets/admin/row-menus.js?v="]');
+        self::assertSelectorNotExists('link[href^="/assets/website/"], script[src^="/assets/website/"]');
+        if ('/admin/posts/new' === $path) {
+            self::assertSelectorExists('script[src^="/assets/admin/tabs.js?v="]');
+        }
+    }
+
+    public function testAdminAssetVersionMatchesItsOwnBundle(): void
+    {
         $root = self::getContainer()->getParameter('kernel.project_dir');
-        $css = file_get_contents($root.'/public/assets/website/app.css');
-        self::assertIsString($css);
-        self::assertFileDoesNotExist($root.'/public/assets/admin/admin.css');
-        self::assertFileDoesNotExist($root.'/public/assets/admin/admin.js');
-        self::assertSelectorExists('link[rel="stylesheet"][href^="/assets/website/app.css?v="]');
+        $contents = '';
+        foreach (['app.css', 'row-menus.js', 'tabs.js'] as $asset) {
+            $contents .= (string) file_get_contents($root.'/public/assets/admin/'.$asset);
+        }
+        $version = substr(hash('sha256', $contents), 0, 12);
+        $this->client->request('GET', '/admin/login');
+        self::assertSelectorExists('link[href="/assets/admin/app.css?v='.$version.'"]');
     }
 
     private function logIn(): void

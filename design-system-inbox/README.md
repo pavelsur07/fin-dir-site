@@ -4,8 +4,8 @@
 
 | Файл | Куда в проекте |
 |---|---|
-| `vf-theme.css` | `site/assets/styles/website/vf-theme.css` — тема Tailwind v4 |
-| `vf-fonts.css` | `site/assets/styles/website/vf-fonts.css` — @font-face |
+| `vf-theme.css` | `site/assets/styles/shared/vf-theme.css` — тема Tailwind v4 |
+| `vf-fonts.css` | `site/assets/styles/shared/vf-fonts.css` — @font-face |
 | `fonts/*.woff2` | `site/public/assets/fonts/` — Manrope, IBM Plex Sans и IBM Plex Mono, кириллица + латиница + ₽ |
 | `check-templates.mjs` | `scripts/check-templates.mjs` — проверка шаблонов |
 | `MIGRATION.md` | остаётся здесь — таблица замены текущих классов сайта |
@@ -22,13 +22,15 @@ npm в проекте не нужен: Tailwind собирается standalone 
 ```css
 /* site/assets/styles/website/app.css */
 @import "tailwindcss" source(none);
-@import "./vf-fonts.css";
-@import "./vf-theme.css";
+@import "../shared/vf-fonts.css";
+@import "../shared/vf-theme.css";
+@import "../shared/vf-palette.css";
 @source "../../../templates/website";
-@source "../../../templates/admin";
 @source "../../../assets/scripts/website";
 @source "../../../src/Publication/Adapter";
 ```
+
+Admin использует независимые entrypoint и bundle по `ADMIN_RULES.md`. Общими остаются fonts/theme/palette.
 
 Шрифты подключаются по абсолютному пути `/assets/fonts/…`, поэтому лежат вне `site/public/assets/website/` и не мешают `make assets-check`.
 

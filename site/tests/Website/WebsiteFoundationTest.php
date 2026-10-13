@@ -99,11 +99,11 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'admin-tabs.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js'] as $asset) {
             $contents .= (string) file_get_contents($root.'/public/assets/website/'.$asset);
         }
         $version = substr(hash('sha256', $contents), 0, 12);
-        foreach (['website/layouts/base.html.twig', 'admin/layout.html.twig'] as $layout) {
+        foreach (['website/layouts/base.html.twig'] as $layout) {
             $template = (string) file_get_contents($root.'/templates/'.$layout);
             self::assertStringContainsString("{% set vf_asset_version = '$version' %}", $template);
         }

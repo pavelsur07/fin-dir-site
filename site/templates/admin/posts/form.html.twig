@@ -3,19 +3,19 @@
 {% block title %}{{ post ? 'Редактирование' : 'Новая статья' }}{% endblock %}
 
 {% block javascripts %}
-    <script src="/assets/website/admin-tabs.js?v={{ vf_asset_version }}" defer></script>
+    <script src="/assets/admin/tabs.js?v={{ admin_asset_version }}" defer></script>
 {% endblock %}
 
 {% block body %}
-    <div class="mb-4 flex flex-wrap gap-2">
-        <h1 class="mb-6 type-t2-article">{{ post ? post.title : 'Новая статья' }}</h1>
+    <div class="mb-4 flex flex-wrap items-start gap-2">
+        <h1 class="min-w-0 type-t2-article">{{ post ? post.title : 'Новая статья' }}</h1>
         {% if post %}
             <span class="inline-block rounded-full px-2 py-1 type-t7 font-semibold {{ post.status.value == 'published' ? 'bg-success-bg text-success' : 'bg-surface-muted text-fg-secondary' }}">{{ post.status.label }}</span>
         {% endif %}
     </div>
 
     {% if post %}
-        <div class="mb-4 flex flex-wrap gap-2">
+        <div class="mb-4 flex flex-wrap items-start gap-2">
             {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, actions: status_actions} only %}
             <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_post_preview', {id: post.id}) }}">Предпросмотр</a>
             {% if post.status.value == 'published' %}
@@ -32,12 +32,12 @@
         {id: 'seo', label: 'SEO', fields: [form.metaTitle, form.metaDescription, form.formTitle]},
     ] %}
 
-    {{ form_start(form, {attr: {'data-admin-post-form': '', class: 'max-w-container rounded-lg border bg-white p-6', novalidate: 'novalidate'}}) }}
+    {{ form_start(form, {attr: {'data-admin-post-form': '', class: 'max-w-container rounded-lg border bg-white p-4 md:p-6', novalidate: 'novalidate'}}) }}
         {% if form.vars.errors|length > 0 %}
             <div data-admin-form-errors class="mb-4 rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
         {% endif %}
 
-        {# Без JS список вкладок скрыт, разделы идут подряд с заголовками. admin-tabs.js включает вкладки. #}
+        {# Без JS список вкладок скрыт, разделы идут подряд с заголовками. tabs.js включает вкладки. #}
         <div class="mb-6 flex flex-wrap gap-2 border-b border-border-subtle" role="tablist" aria-label="Разделы статьи" data-admin-tabs hidden>
             {% for tab in tabs %}
                 {% set invalid = tab.fields|filter(field => not field.vars.valid)|length > 0 %}

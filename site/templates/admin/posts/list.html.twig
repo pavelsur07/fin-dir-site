@@ -3,8 +3,8 @@
 {% block title %}Публикации{% endblock %}
 
 {% block body %}
-    <div class="mb-4 flex flex-wrap gap-2">
-        <h1 class="mb-6 type-t2-article">Публикации</h1>
+    <div class="mb-4 flex flex-wrap items-start gap-2">
+        <h1 class="min-w-0 type-t2-article">Публикации</h1>
         {% include 'admin/_button.html.twig' with {label: 'Новая статья', href: path('admin_post_new'), variant: 'primary'} only %}
     </div>
 
@@ -39,7 +39,7 @@
                 <tbody>
                 {% for post in pager.currentPageResults %}
                     <tr>
-                        <td class="border-b border-border-subtle px-3 py-2 align-top">
+                        <td class="admin-cell-text border-b border-border-subtle px-3 py-2 align-top">
                             <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_post_edit', {id: post.id}) }}">{{ post.title }}</a>
                             <div class="type-t6 text-fg-secondary">
                                 {% if post.status.value == 'published' %}
@@ -53,12 +53,12 @@
                         <td class="border-b border-border-subtle px-3 py-2 align-top">{{ post.updatedAt|date('d.m.Y H:i') }}</td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">{{ post.publishedAt ? post.publishedAt|date('d.m.Y') : '—' }}</td>
                         <td class="border-b border-border-subtle px-3 py-2 align-top">
-                            <details class="relative"><summary data-admin-menu-toggle class="w-fit cursor-pointer list-none rounded-md border border-border-strong bg-white px-3 py-1 type-t3 text-fg hover:bg-surface-muted" aria-controls="post-actions-{{ post.id }}" aria-label="Действия: {{ post.title }}">…</summary>
-                            <div data-admin-row-menu class="absolute right-0 top-full z-20 grid min-w-sidebar gap-2 rounded-lg border bg-white p-2 shadow-lg" id="post-actions-{{ post.id }}">
+                            {% embed 'admin/_row_menu.html.twig' with {menu_id: 'post-actions-' ~ post.id, menu_label: 'Действия: ' ~ post.title, post: post, status_actions: status_actions} only %}
+                                {% block actions %}
                                 <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_post_edit', {id: post.id}) }}">Редактировать</a>
                                 {% include 'admin/posts/_status_actions.html.twig' with {id: post.id, actions: status_actions[post.status.value], back: 'list'} only %}
-                            </div>
-                            </details>
+                                {% endblock %}
+                            {% endembed %}
                         </td>
                     </tr>
                 {% endfor %}

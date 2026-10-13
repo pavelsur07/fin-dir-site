@@ -3,15 +3,15 @@
 {% block title %}{{ case ? 'Редактирование кейса' : 'Новый кейс' }}{% endblock %}
 
 {% block body %}
-    <div class="mb-4 flex flex-wrap gap-2">
-        <h1 class="mb-6 type-t2-article">{{ case ? case.title : 'Новый кейс' }}</h1>
+    <div class="mb-4 flex flex-wrap items-start gap-2">
+        <h1 class="min-w-0 type-t2-article">{{ case ? case.title : 'Новый кейс' }}</h1>
         {% if case %}
             <span class="inline-block rounded-full px-2 py-1 type-t7 font-semibold {{ case.status.value == 'published' ? 'bg-success-bg text-success' : 'bg-surface-muted text-fg-secondary' }}">{{ case.status.label }}</span>
         {% endif %}
     </div>
 
     {% if case %}
-        <div class="mb-4 flex flex-wrap gap-2">
+        <div class="mb-4 flex flex-wrap items-start gap-2">
             {% include 'admin/cases/_status_actions.html.twig' with {id: case.id, actions: case.status.actions} only %}
             {% if case.status.value == 'published' %}
                 <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('app_cases_show', {slug: case.slug}) }}" target="_blank" rel="noopener">Открыть на сайте</a>
@@ -19,7 +19,7 @@
         </div>
     {% endif %}
 
-    {{ form_start(form, {attr: {'data-admin-case-form': '', class: 'max-w-container rounded-lg border bg-white p-6', novalidate: 'novalidate'}}) }}
+    {{ form_start(form, {attr: {'data-admin-case-form': '', class: 'max-w-container rounded-lg border bg-white p-4 md:p-6', novalidate: 'novalidate'}}) }}
         {% if form.vars.errors|length > 0 %}
             <div data-admin-form-errors class="rounded-lg border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert">{{ form_errors(form) }}</div>
         {% endif %}

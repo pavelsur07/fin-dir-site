@@ -4,9 +4,9 @@
 
 {# Страница входа -- без сайдбара и меню: только карточка по центру. #}
 {% block page %}
-    <main class="p-4 lg:p-8">
-        <form class="rounded-lg border bg-white p-6" method="post" action="{{ path('admin_login') }}">
-            <h1 class="mb-6 type-t2-article">Вход в админку</h1>
+    <main class="admin-content admin-login flex items-center justify-center p-4 lg:p-8">
+        <form class="admin-login-card grid w-full gap-4 rounded-lg border bg-white p-4 md:p-6" method="post" action="{{ path('admin_login') }}">
+            <h1 class="type-t2-article">Вход в админку</h1>
 
             {% if error %}
                 <p class="rounded-lg border border-error-border bg-error-bg p-4 text-error" role="alert">
@@ -21,10 +21,10 @@
             {% endif %}
 
             <label class="grid gap-1 font-medium" for="username">Логин</label>
-            <input class="min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
+            <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="text" id="username" name="_username" value="{{ last_username }}" autocomplete="username" required autofocus>
 
             <label class="grid gap-1 font-medium" for="password">Пароль</label>
-            <input class="min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="password" id="password" name="_password" autocomplete="current-password" required>
+            <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" type="password" id="password" name="_password" autocomplete="current-password" required>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

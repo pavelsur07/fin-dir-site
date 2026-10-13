@@ -72,9 +72,9 @@ jobs:
 
             - name: Check design system classes
               working-directory: .
-              run: >-
-                  node scripts/check-templates.mjs site/public/assets/website/app.css
-                  site/templates site/assets/scripts/website site/src/Publication/Adapter
+              run: |
+                  node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter
+                  node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter
 
             - name: Lint YAML
               run: php bin/console lint:yaml config
