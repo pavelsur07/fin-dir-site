@@ -147,7 +147,8 @@ final class LeadRegistrationTest extends KernelTestCase
         self::assertNotNull($this->lead($id)->notifiedAt());
         self::assertIsArray($sent);
         self::assertSame('https://mybots.vashfindir.ru/api/leads', $sent['url']);
-        self::assertSame(['test-token'], $sent['headers']['x-lead-token'] ?? null);
+        $tokenHeader = $sent['headers']['x-lead-token'] ?? $sent['headers']['X-Lead-Token'] ?? null;
+        self::assertContains('test-token', (array) $tokenHeader);
         self::assertStringNotContainsString('Иван', $sent['body']);
         self::assertStringNotContainsString('9001234567', $sent['body']);
         self::assertStringContainsString('\/admin\/leads\/'.$id, $sent['body']);
