@@ -18,7 +18,7 @@ final class SitemapController extends AbstractController
     /** Публичные индексируемые страницы. Новая страница сайта добавляется сюда. */
     private const array STATIC_ROUTES = [
         'home', 'app_services_index', 'service_financial_director', 'app_cases_index', 'app_about_index', 'app_partners_index',
-        'gazeta_index', 'privacy', 'offer', 'consent',
+        'gazeta_index',
     ];
 
     #[Route('/sitemap.xml', name: 'sitemap', methods: ['GET'], format: 'xml')]

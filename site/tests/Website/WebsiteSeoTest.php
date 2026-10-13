@@ -17,8 +17,8 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertSelectorCount(1, 'h1');
         self::assertSelectorTextContains('h1', 'Увеличиваем прибыль через систему в финансах');
         self::assertSelectorCount(1, 'title');
-        self::assertSelectorTextContains('title', 'Увеличиваем прибыль через систему финансового управления');
-        self::assertSelectorExists('meta[name="description"][content*="расти в прибыли"]');
+        self::assertSelectorTextContains('title', 'Финансовое управление бизнесом и финдир на аутсорсинге');
+        self::assertSelectorExists('meta[name="description"][content*="Управленческий учёт"]');
         self::assertSelectorExists('main #lead-form');
         self::assertSelectorExists('main img[src="/assets/people/pavel-novikov.png"][alt*="Павел Новиков"]');
         self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
@@ -54,6 +54,9 @@ final class WebsiteSeoTest extends WebTestCase
                 $type = $document['@type'] ?? null;
                 self::assertIsString($type);
                 $types[] = $type;
+                if ('Service' === $type) {
+                    self::assertSame('Управленческий учёт и финансовое планирование для бизнеса', $document['serviceType'] ?? null);
+                }
             }
         }
 
@@ -62,6 +65,26 @@ final class WebsiteSeoTest extends WebTestCase
         }
         // FAQPage допустим только при видимом FAQ: вопросы разметки совпадают с вопросами секции.
         self::assertSelectorCount(5, 'section[aria-labelledby="home-faq-title"] details > summary');
+    }
+
+    public function testSitemapExcludesNoindexLegalPages(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/sitemap.xml');
+        self::assertResponseIsSuccessful();
+        $xml = simplexml_load_string((string) $client->getResponse()->getContent());
+        self::assertNotFalse($xml);
+        $urls = [];
+        foreach ($xml->url as $url) {
+            $urls[] = (string) $url->loc;
+        }
+        self::assertContains('https://vashfindir.ru/', $urls);
+        foreach (['/privacy', '/offer', '/consent'] as $path) {
+            $client->request('GET', $path);
+            self::assertResponseIsSuccessful();
+            self::assertSelectorExists('meta[name="robots"][content="noindex, follow"]');
+            self::assertNotContains('https://vashfindir.ru'.$path, $urls);
+        }
     }
 
     public function testSeoStaticFilesExistAndAreConsistent(): void
