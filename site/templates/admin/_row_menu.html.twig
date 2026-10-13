@@ -1,6 +1,6 @@
 {# Без JS / Popover API действия раскрываются в потоке таблицы и не обрезаются. #}
 <details data-admin-actions>
-    <summary data-admin-menu-toggle class="inline-flex min-h-11 min-w-control-touch cursor-pointer list-none items-center justify-center rounded-md border border-border-strong bg-white px-3 py-1 type-t3 text-fg hover:bg-surface-muted focus-visible:shadow-focus" aria-controls="{{ menu_id }}" aria-label="{{ menu_label }}">…</summary>
+    <summary data-admin-menu-toggle class="inline-flex min-h-control-touch min-w-control-touch cursor-pointer list-none items-center justify-center rounded-md border border-border-strong bg-white px-3 py-1 type-t3 text-fg hover:bg-surface-muted focus-visible:shadow-focus" aria-controls="{{ menu_id }}" aria-label="{{ menu_label }}">…</summary>
     <div data-admin-row-menu class="admin-row-menu rounded-lg border bg-white p-2 shadow-lg" id="{{ menu_id }}" role="group" aria-label="{{ menu_label }}">
         {% block actions %}{% endblock %}
     </div>

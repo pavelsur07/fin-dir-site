@@ -34,8 +34,10 @@
         {% endfor %}
 
         <div class="mb-4">
-            {{ form_widget(form.featured) }}
-            {{ form_label(form.featured) }}
+            <div class="admin-checkbox">
+                {{ form_widget(form.featured) }}
+                {{ form_label(form.featured) }}
+            </div>
             {{ form_help(form.featured) }}
             {{ form_errors(form.featured) }}
         </div>
