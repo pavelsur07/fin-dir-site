@@ -117,7 +117,8 @@ jobs:
                   for tc in tree.iter('testcase'):
                       for failure in list(tc.iter('failure')) + list(tc.iter('error')):
                           name = f"{tc.get('classname')}::{tc.get('name')}"
-                          message = (failure.get('message') or '').replace('%', '%25')
-                          message = message.replace('\r', '%0D').replace('\n', '%0A')
-                          print(f'::error title=Failed test::{name}: {message}')
+                          detail = (failure.get('message') or '').strip() or (failure.text or '').strip()
+                          detail = detail[:800].replace('%', '%25')
+                          detail = detail.replace('\r', '%0D').replace('\n', '%0A')
+                          print(f'::error title=Failed test::{name}: {detail}')
                   PY
