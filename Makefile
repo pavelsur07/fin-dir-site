@@ -12,6 +12,8 @@ TRAEFIK=$(DC) -p traefik -f infra/traefik/docker-compose.yml
 UID := $(shell id -u)
 GID := $(shell id -g)
 
+.PHONY: website-seo-browser-check
+
 .PHONY: init prepare build rebuild install update up down restart check console migrate diff shell logs cache-clear clean-cache clean-local ps deptrac \
         assets assets-watch asset-version assets-check website-assets admin-assets website-assets-watch admin-assets-watch website-assets-check admin-assets-check admin-asset-version admin-browser-fixtures admin-browser-check admin-browser-run ds-check lint cs cs-fix phpstan test test-db ci \
         traefik-config traefik-network traefik-up traefik-logs traefik-ps
@@ -124,6 +126,9 @@ admin-browser-check: admin-assets-check admin-browser-fixtures
 
 admin-browser-run:
 	docker run --rm --network host -v "$(CURDIR):/workspace:ro" -v "$(CURDIR)/site/var/tests/admin-browser:/artifacts" -w /workspace mcr.microsoft.com/playwright:v1.62.1-noble sh -c 'npm install --prefix /tmp/admin-browser --no-audit --no-fund playwright@1.62.1 >/dev/null && NODE_PATH=/tmp/admin-browser/node_modules node scripts/check-admin-browser.cjs'
+
+website-seo-browser-check:
+	docker run --rm --network host -v "$(CURDIR):/workspace:ro" -w /workspace --entrypoint node zenika/alpine-chrome:with-puppeteer scripts/check-website-seo-browser.cjs
 
 assets-check: website-assets-check admin-assets-check
 

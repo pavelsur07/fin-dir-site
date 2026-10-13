@@ -13,7 +13,13 @@
                 <li class="flex flex-col gap-4">
                     <div class="flex aspect-portrait items-center justify-center overflow-hidden rounded-lg bg-border-subtle">
                         {% if person.photo|default(null) %}
-                            <img class="size-full object-cover object-top" src="{{ person.photo }}" alt="{{ person.name }}, {{ person.role|lower }}" width="1122" height="1402" loading="lazy" decoding="async">
+                            {% include 'website/components/_portrait.html.twig' with {
+                                src: person.photo,
+                                webp_base: person.photo_webp|default(null),
+                                alt: person.name ~ ', ' ~ person.role|lower,
+                                class: 'size-full object-cover object-top',
+                                sizes: '(min-width: 1200px) 266px, (min-width: 1024px) calc((100vw - 136px) / 4), (min-width: 768px) calc((100vw - 96px) / 2), calc(100vw - 32px)',
+                            } only %}
                         {% else %}
                             <span class="type-t2 text-fg-secondary" aria-hidden="true">{{ initials }}</span>
                         {% endif %}
