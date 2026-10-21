@@ -214,3 +214,59 @@ traefik-logs:
 
 traefik-ps:
 	$(TRAEFIK) ps
+
+# PHP release checks. Production artifacts use separate tags and an isolated DB.
+PHP_FPM_IMAGE ?= vf-check/php-fpm:8.4.27
+PHP_CLI_IMAGE ?= vf-check/php-cli:8.4.27
+export PHP_FPM_IMAGE PHP_CLI_IMAGE
+PHP_SMOKE = $(DC) -p vf-php-upgrade-smoke -f docker-compose.php-smoke.yml
+PROD_DC = $(DC) -p vashfindir -f docker-compose.prod.yml
+PHP_RUNTIME = -v "$(CURDIR)/scripts/check-php-runtime.php:/check-php-runtime.php:ro"
+
+.PHONY: php-runtime-check php-production-build php-production-check php-production-smoke php-deployed-check php-production-rollback
+
+php-runtime-check:
+	docker run --rm $(PHP_RUNTIME) vashfindir-site-php-cli:dev php /check-php-runtime.php
+	docker run --rm $(PHP_RUNTIME) vashfindir-site-php-fpm:dev php /check-php-runtime.php
+	docker run --rm vashfindir-site-php-fpm:dev sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'
+	$(CLI) composer check-platform-reqs
+
+php-production-build:
+	docker build --pull -f site/docker/production/php-fpm/Dockerfile -t $(PHP_FPM_IMAGE) site
+	docker build --pull -f site/docker/production/php-cli/Dockerfile -t $(PHP_CLI_IMAGE) site
+
+php-production-check:
+	docker run --rm $(PHP_RUNTIME) $(PHP_FPM_IMAGE) php /check-php-runtime.php
+	docker run --rm $(PHP_RUNTIME) $(PHP_CLI_IMAGE) php /check-php-runtime.php
+	docker run --rm $(PHP_RUNTIME) $(PHP_FPM_IMAGE) php /check-php-runtime.php production-fpm
+	docker run --rm $(PHP_FPM_IMAGE) sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'
+
+# Always clean up this dedicated project, including on a failed smoke test.
+php-production-smoke: php-production-check
+	@set -eu; trap '$(PHP_SMOKE) down --volumes' EXIT HUP INT TERM; \
+	$(PHP_SMOKE) up -d --wait site-postgres; \
+	$(PHP_SMOKE) run --rm site-php-cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration; \
+	$(PHP_SMOKE) run --rm site-php-cli php bin/console cache:warmup; \
+	$(PHP_SMOKE) up -d --wait --scale site-php-fpm=2 site; \
+	python3 scripts/check-php-http.py
+
+# Deployed version check covers every replica, not only Compose exec's default.
+php-deployed-check:
+	@set -eu; ids=$$($(PROD_DC) ps -q site-php-fpm); test "$$(echo "$$ids" | wc -w)" -eq 2; \
+	for container in $$ids; do \
+		docker exec -i "$$container" php < scripts/check-php-runtime.php; \
+		docker exec "$$container" sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'; \
+	done
+	$(PROD_DC) run --rm -T site-php-cli php < scripts/check-php-runtime.php
+
+# Emergency use with compatible checkout and exported production environment.
+# Both recorded image digests required. May briefly interrupt PHP requests.
+export PHP_ROLLBACK_FPM_IMAGE PHP_ROLLBACK_CLI_IMAGE
+ROLLBACK_DC = $(PROD_DC) -f docker-compose.php-rollback.yml
+php-production-rollback:
+	@printf '%s\n' "$(PHP_ROLLBACK_FPM_IMAGE)" | grep -Eq '^ghcr[.]io/[^/]+/vashfindir-site-php-fpm@sha256:[0-9a-f]{64}$$' || { echo 'Recorded FPM image@sha256 digest is required' >&2; exit 1; }
+	@printf '%s\n' "$(PHP_ROLLBACK_CLI_IMAGE)" | grep -Eq '^ghcr[.]io/[^/]+/vashfindir-site-php-cli@sha256:[0-9a-f]{64}$$' || { echo 'Recorded CLI image@sha256 digest is required' >&2; exit 1; }
+	$(ROLLBACK_DC) pull site-php-fpm site-php-cli
+	$(ROLLBACK_DC) up -d --no-deps --wait --scale site-php-fpm=2 site-php-fpm
+	$(ROLLBACK_DC) exec -T site sh -ec 'nginx -t; nginx -s reload; wget -qO- http://127.0.0.1/health | grep -qx alive'
+	$(ROLLBACK_DC) run --rm site-php-cli php bin/console dbal:run-sql 'select 1'
