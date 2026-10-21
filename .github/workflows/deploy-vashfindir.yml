@@ -58,6 +58,14 @@ jobs:
                   docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest
                   docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest
 
+            # The deploy host only needs Docker/Compose, not GNU Make.
+            - name: Render deployed PHP check from Makefile
+              id: deployed_check
+              shell: bash
+              run: |
+                  check_script=$(make --no-print-directory --dry-run php-deployed-check DC='$$PHP_CHECK_COMPOSE' | base64 -w0)
+                  printf 'script=%s\n' "$check_script" >> "$GITHUB_OUTPUT"
+
             - name: Deploy Symfony over SSH
               uses: appleboy/ssh-action@v1.2.0
               with:
@@ -114,7 +122,7 @@ jobs:
                       # деплой с уже работающими контейнерами (project=vashfindir).
                       COMPOSE=("${COMPOSE_CMD[@]}" -p vashfindir -f "${COMPOSE_FILE}")
                       
-                      command -v make >/dev/null
+                      export PHP_CHECK_COMPOSE="${COMPOSE_CMD[*]}"
 
                       echo "==> render compose config"
                       "${COMPOSE[@]}" config > /tmp/vashfindir.compose.rendered.yml
@@ -177,7 +185,7 @@ jobs:
                       "${COMPOSE[@]}" exec -T site sh -lc 'nginx -t && nginx -s reload'
 
                       echo "==> verify deployed PHP in both replicas and CLI"
-                      make php-deployed-check DC="${COMPOSE_CMD[*]}"
+                      printf '%s' '${{ steps.deployed_check.outputs.script }}' | base64 -d | bash -eu
 
                       echo "==> status"
                       "${COMPOSE[@]}" ps site site-php-fpm

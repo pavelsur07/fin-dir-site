@@ -165,7 +165,9 @@ project `vf-php-upgrade-smoke`, временный PostgreSQL и порт `127.0
 и до публикации production-образов. Composer platform.php остаётся 8.4.1:
 это минимальная платформа разрешения зависимостей, а не версия контейнера.
 
-На deploy-хосте `make php-deployed-check` проверяет обе FPM-реплики и CLI.
+`make php-deployed-check` проверяет обе FPM-реплики и CLI. Workflow формирует
+этот сценарий через `make --dry-run` на runner и выполняет его на deploy-хосте:
+установка Make на production-сервер не требуется.
 Команда требует обычные production environment variables и IMAGE_TAG релиза.
 Workflow сохраняет предыдущие image references/digests в логе перед обновлением.
 Перед аварийным откатом проверить наличие обоих images в GHCR и совместимость
@@ -176,3 +178,9 @@ checkout (включая public assets/config). Экспортировать pro
 эту неизменяемую пару images, перезагружает
 Nginx и проверяет health/DB. Она может кратко прервать PHP-запросы; после неё
 нужно проверить публичный HTTP и Admin. БД и volumes не откатываются.
+
+Если Make отсутствует на deploy-хосте, сформировать сценарий отката на машине
+с Make через `make --no-print-directory --dry-run php-production-rollback > rollback.sh`
+при заданных digest variables. Перед выполнением `bash -eu rollback.sh` на
+сервере экспортировать те же digest variables и production environment.
+Проверить совместимость checkout и содержимое сценария до запуска.
