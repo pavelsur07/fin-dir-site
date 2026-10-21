@@ -133,3 +133,15 @@ make-цель отката; повторить health/HTTP/DB проверки. 
 - Production smoke на двух FPM-репликах прошёл: public HTTP без сессии,
   login, shared session, отказ поддельного CSRF для login/logout, logout.
   Изолированное окружение удалено после проверки.
+- PR #238 влит: `d5da6c0c4fa3bfde4890e05c20737385c60b02cd`.
+  Первый deployment остановился до pull/миграций/замены контейнеров:
+  https://github.com/pavelsur07/fin-dir-site/actions/runs/39659733696.
+  Причина: новый host preflight обнаружил отсутствие Make. Публичный HTTP
+  во время попытки: 10/10 ответов 200.
+- Исправление: postdeploy shell-сценарий формируется из Makefile через dry-run
+  на GitHub runner, передаётся как base64 output и выполняется на хосте с
+  выбранной Compose-командой. Новые пакеты на production-хост не устанавливаются.
+- Целевые проверки сформированного/base64-сценария прошли: обе реплики и CLI
+  вызываются; 0/1/3 реплики и ошибка runtime отклоняются. `bash -n` прошёл.
+  Повторное read-only ревью wiring: добавлен explicit Bash с pipefail, чтобы
+  ошибка Make при формировании сценария не маскировалась успешным base64.
