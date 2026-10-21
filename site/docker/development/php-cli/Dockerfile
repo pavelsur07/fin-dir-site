@@ -1,4 +1,4 @@
-FROM php:8.4-cli-alpine
+FROM php:8.4.27-cli-alpine3.24@sha256:bccf6e169aaeb823e3d8d925a257629d3c5f7944b1ffa859e986b730bdb94193
 
 ENV TZ=Europe/Moscow
 

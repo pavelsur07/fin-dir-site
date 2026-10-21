@@ -1,0 +1,6 @@
+# Only used by make php-production-rollback with the recorded immutable pair.
+services:
+  site-php-fpm:
+    image: ${PHP_ROLLBACK_FPM_IMAGE:?Recorded FPM image with digest is required}
+  site-php-cli:
+    image: ${PHP_ROLLBACK_CLI_IMAGE:?Recorded CLI image with digest is required}

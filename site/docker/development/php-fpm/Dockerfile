@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.4.27-fpm-alpine3.24@sha256:8193f7c711715c88452ebe51d4ee7769172a3fa917446a8820cf84192da2c555
 
 ENV TZ=Europe/Moscow
 

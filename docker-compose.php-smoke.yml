@@ -1,0 +1,59 @@
+# Isolated production-artifact check. No production secrets, volumes or networks.
+services:
+  site-postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: smoke
+      POSTGRES_PASSWORD: smoke
+      POSTGRES_DB: smoke
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U smoke -d smoke]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  site-php-cli:
+    image: ${PHP_CLI_IMAGE:-vf-check/php-cli:8.4.27}
+    profiles: [cli]
+    environment: &app-env
+      APP_ENV: prod
+      APP_DEBUG: '0'
+      APP_SECRET: php-upgrade-smoke-only
+      DEFAULT_URI: http://127.0.0.1:18041
+      DATABASE_URL: postgresql://smoke:smoke@site-postgres:5432/smoke?serverVersion=17&charset=utf8
+      # Synthetic admin/admin credentials, same as dev.
+      ADMIN_PASSWORD_HASH: '$$2y$$13$$je2kd3VBIX8ArfiNwlTXF.RRLbnCETo7kI9ABqYqp7BTYgx9T18ku'
+      LEAD_RELAY_URL: ''
+      LEAD_RELAY_TOKEN: ''
+    depends_on:
+      site-postgres:
+        condition: service_healthy
+
+  site-php-fpm:
+    image: ${PHP_FPM_IMAGE:-vf-check/php-fpm:8.4.27}
+    environment: *app-env
+    depends_on:
+      site-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, php, -r, "exit(@fsockopen('127.0.0.1', 9000) ? 0 : 1);"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  site:
+    image: nginx:1.27-alpine
+    ports: ['127.0.0.1:18041:80']
+    volumes:
+      - ./site/public:/app/public:ro
+      - ./site/docker/common/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      site-php-fpm:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, -qO-, 'http://127.0.0.1/health']
+      interval: 2s
+      timeout: 3s
+      retries: 20

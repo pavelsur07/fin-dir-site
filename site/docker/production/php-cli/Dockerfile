@@ -1,4 +1,4 @@
-FROM php:8.4-cli-alpine AS php-base
+FROM php:8.4.27-cli-alpine3.24@sha256:bccf6e169aaeb823e3d8d925a257629d3c5f7944b1ffa859e986b730bdb94193 AS php-base
 
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
@@ -54,6 +54,7 @@ RUN composer dump-autoload \
     --classmap-authoritative \
     --no-interaction \
     --no-scripts \
+ && composer check-platform-reqs --no-dev \
  && rm -rf /root/.composer/cache /tmp/cache
 
 

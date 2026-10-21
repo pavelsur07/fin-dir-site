@@ -41,31 +41,22 @@ jobs:
             - name: Login to GHCR
               run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u "${{ github.actor }}" --password-stdin
 
-            - name: Build PHP-FPM image
+            - name: Build and verify production images
+              env:
+                  PHP_FPM_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:${{ env.IMAGE_TAG }}
+                  PHP_CLI_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:${{ env.IMAGE_TAG }}
               run: |
-                  docker build \
-                    -f site/docker/production/php-fpm/Dockerfile \
-                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest \
-                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:${{ env.IMAGE_TAG }} \
-                    site
+                  make php-production-build
+                  make php-production-smoke
 
-            - name: Push PHP-FPM image
+            - name: Push verified PHP images
               run: |
-                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest
+                  docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:${{ env.IMAGE_TAG }} ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest
+                  docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:${{ env.IMAGE_TAG }} ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest
                   docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:${{ env.IMAGE_TAG }}
-
-            - name: Build PHP-CLI image
-              run: |
-                  docker build \
-                    -f site/docker/production/php-cli/Dockerfile \
-                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest \
-                    -t ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:${{ env.IMAGE_TAG }} \
-                    site
-
-            - name: Push PHP-CLI image
-              run: |
-                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest
                   docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:${{ env.IMAGE_TAG }}
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_FPM }}:latest
+                  docker push ${{ env.REGISTRY }}/${{ env.IMAGE_PHP_CLI }}:latest
 
             - name: Deploy Symfony over SSH
               uses: appleboy/ssh-action@v1.2.0
@@ -83,6 +74,16 @@ jobs:
                       echo "==> cd ${DEPLOY_PATH}"
                       cd "${DEPLOY_PATH}"
                       
+                      echo "==> previous release images (rollback record)"
+                      for previous in $(docker ps -q --filter label=com.docker.compose.project=vashfindir \
+                          --filter label=com.docker.compose.service=site-php-fpm); do
+                          previous_fpm=$(docker inspect --format '{{.Config.Image}}' "$previous")
+                          previous_cli="${previous_fpm/vashfindir-site-php-fpm/vashfindir-site-php-cli}"
+                          docker image inspect --format '{{json .RepoDigests}}' "$previous_fpm"
+                          docker image inspect --format '{{json .RepoDigests}}' "$previous_cli"
+                      done
+                      git rev-parse HEAD
+
                       echo "==> git sync"
                       git fetch --all --prune
                       git reset --hard origin/${{ github.ref_name }}
@@ -113,6 +114,8 @@ jobs:
                       # деплой с уже работающими контейнерами (project=vashfindir).
                       COMPOSE=("${COMPOSE_CMD[@]}" -p vashfindir -f "${COMPOSE_FILE}")
                       
+                      command -v make >/dev/null
+
                       echo "==> render compose config"
                       "${COMPOSE[@]}" config > /tmp/vashfindir.compose.rendered.yml
                       
@@ -172,6 +175,9 @@ jobs:
                       # DNS-кеш upstream'а.
                       echo "==> reload nginx"
                       "${COMPOSE[@]}" exec -T site sh -lc 'nginx -t && nginx -s reload'
+
+                      echo "==> verify deployed PHP in both replicas and CLI"
+                      make php-deployed-check DC="${COMPOSE_CMD[*]}"
 
                       echo "==> status"
                       "${COMPOSE[@]}" ps site site-php-fpm

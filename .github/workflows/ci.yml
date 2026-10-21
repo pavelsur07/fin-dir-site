@@ -46,14 +46,17 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v5
 
-            # Версия совпадает с php:8.4 в docker/development и docker/production.
+            # Точная версия совпадает с Docker images development и production.
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.4.27"
                   tools: composer:v2
                   extensions: pdo_pgsql, pgsql, zip, bcmath, xml
                   coverage: none
+
+            - name: Check PHP runtime
+              run: php ../scripts/check-php-runtime.php
 
             # Без --no-check-lock: рассинхрон composer.json и composer.lock
             # это как раз то, что здесь надо ловить.
@@ -122,3 +125,12 @@ jobs:
                           detail = detail.replace('\r', '%0D').replace('\n', '%0A')
                           print(f'::error title=Failed test::{name}: {detail}')
                   PY
+
+    production-images:
+        runs-on: ubuntu-24.04
+        steps:
+            - uses: actions/checkout@v5
+            - name: Build production artifacts
+              run: make php-production-build
+            - name: Check production runtime and HTTP authentication
+              run: make php-production-smoke

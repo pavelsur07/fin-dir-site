@@ -1,6 +1,7 @@
 # Ваш ФинДиректор
 
-Сайт на Symfony с Nginx и PHP-FPM.
+Сайт на Symfony с Nginx и PHP-FPM. Dev, production и CI используют PHP 8.4.27;
+Docker-образы закреплены на Alpine 3.24 с digest.
 
 ## Локальный запуск
 
@@ -146,3 +147,32 @@ Reverse-proxy хоста вынесен в `infra/traefik/` — см. README т�
 Менять `site` (образ, метки, healthcheck) — законно, но такой деплой один раз
 пересоздаст nginx и даст короткое окно 404. Правки только кода и php-образа
 простоя не дают.
+
+### Проверки обновления PHP
+
+```bash
+make build install
+make php-runtime-check
+make php-production-build
+make php-production-smoke
+```
+
+Production smoke собирается без dev dependencies и использует отдельный Compose
+project `vf-php-upgrade-smoke`, временный PostgreSQL и порт `127.0.0.1:18041`.
+Проверяются версия/расширения PHP, FPM config, OPcache, права, прогрев кеша,
+публичные страницы и Admin login/session/CSRF/logout на синтетических данных.
+После проверки окружение удаляется. Эти же проверки выполняются в PR CI
+и до публикации production-образов. Composer platform.php остаётся 8.4.1:
+это минимальная платформа разрешения зависимостей, а не версия контейнера.
+
+На deploy-хосте `make php-deployed-check` проверяет обе FPM-реплики и CLI.
+Команда требует обычные production environment variables и IMAGE_TAG релиза.
+Workflow сохраняет предыдущие image references/digests в логе перед обновлением.
+Перед аварийным откатом проверить наличие обоих images в GHCR и совместимость
+checkout (включая public assets/config). Экспортировать production variables и
+`PHP_ROLLBACK_FPM_IMAGE=ghcr.io/<owner>/vashfindir-site-php-fpm@sha256:<digest>`,
+`PHP_ROLLBACK_CLI_IMAGE=ghcr.io/<owner>/vashfindir-site-php-cli@sha256:<digest>`
+из записи предыдущего релиза. Команда `make php-production-rollback` использует
+эту неизменяемую пару images, перезагружает
+Nginx и проверяет health/DB. Она может кратко прервать PHP-запросы; после неё
+нужно проверить публичный HTTP и Admin. БД и volumes не откатываются.
