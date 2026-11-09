@@ -30,14 +30,32 @@ const puppeteer = require('/usr/src/app/node_modules/puppeteer');
             await page.evaluate(() => document.fonts.ready);
             await page.$eval('[aria-labelledby="home-team-title"]', node => node.scrollIntoView());
             await page.waitForFunction(() => [...document.querySelectorAll('[aria-labelledby="home-team-title"] img')].every(img => img.complete && img.naturalWidth > 0));
-            const result = await page.evaluate(() => ({
-                overflow: document.documentElement.scrollWidth > innerWidth,
-                images: [...document.querySelectorAll('[aria-labelledby="home-team-title"] img')].map(img => img.currentSrc),
-                hero: document.querySelector('#home-hero-title').closest('section').querySelector('img').currentSrc,
-                canonical: document.querySelector('link[rel="canonical"]').href,
-                metrika: (window.ym.a || []).some(args => args[0] === '105455340' && args[1] === 'init'),
-            }));
+            const result = await page.evaluate(() => {
+                const heading = document.querySelector('#home-hero-title');
+                const textNodes = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+                let end = textNodes.nextNode();
+                const phrase = document.createRange();
+                phrase.setStart(end, 0);
+                let remaining = 'Финансовый директор,'.length;
+                while (remaining > end.length) {
+                    remaining -= end.length;
+                    end = textNodes.nextNode();
+                }
+                phrase.setEnd(end, remaining);
+                return {
+                    headingRight: heading.getBoundingClientRect().right,
+                    phraseRects: [...phrase.getClientRects()].map(rect => ({top: rect.top, left: rect.left, right: rect.right})),
+                    overflow: document.documentElement.scrollWidth > innerWidth,
+                    images: [...document.querySelectorAll('[aria-labelledby="home-team-title"] img')].map(img => img.currentSrc),
+                    hero: document.querySelector('#home-hero-title').closest('section').querySelector('img').currentSrc,
+                    canonical: document.querySelector('link[rel="canonical"]').href,
+                    metrika: (window.ym.a || []).some(args => args[0] === '105455340' && args[1] === 'init'),
+                };
+            });
             assert.equal(result.overflow, false);
+            assert.ok(result.headingRight <= width, `Заголовок выходит за экран ${width}px`);
+            assert.equal(new Set(result.phraseRects.map(rect => Math.round(rect.top))).size, 1, `Фраза переносится на ${width}px`);
+            assert.ok(result.phraseRects.every(rect => rect.left >= 0 && rect.right <= result.headingRight + 1), `Фраза выходит за колонку заголовка ${width}px`);
             assert.equal(result.canonical, 'https://vashfindir.ru/');
             assert.equal(result.metrika, true);
             assert.equal(result.images.length, 3);
