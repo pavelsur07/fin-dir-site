@@ -35,6 +35,7 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertSelectorExists('meta[name="twitter:card"][content="summary_large_image"]');
 
         self::assertSelectorCount(1, 'script[src^="/assets/website/metrika.js?v="][defer]');
+        self::assertSelectorCount(1, 'script[src^="/assets/website/bitrix24.js?v="][defer]');
     }
 
     public function testHomepageJsonLdIsValidAndMatchesPageContent(): void

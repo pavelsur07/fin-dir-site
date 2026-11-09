@@ -112,7 +112,7 @@ admin-assets-watch:
 	./scripts/tailwindcss.sh -i site/assets/styles/admin/app.css -o site/public/assets/admin/app.css --watch
 
 asset-version:
-	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js | sha256sum | cut -c1-12
+	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js site/public/assets/website/bitrix24.js | sha256sum | cut -c1-12
 
 admin-asset-version:
 	@cat site/public/assets/admin/app.css site/public/assets/admin/row-menus.js site/public/assets/admin/tabs.js | sha256sum | cut -c1-12

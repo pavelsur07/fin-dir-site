@@ -1,4 +1,4 @@
-{% set vf_asset_version = 'c527d14aefd9' %}
+{% set vf_asset_version = '3e6cb7ee0a1d' %}
 <!doctype html>
 {# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
 <html lang="ru">
@@ -142,5 +142,7 @@
     {% block javascripts %}
         <script src="/assets/website/navigation.js?v={{ vf_asset_version }}" defer></script>
     {% endblock %}
+    {# Вне блоков: страницы не могут случайно убрать чат, переопределив javascripts или analytics. #}
+    <script src="/assets/website/bitrix24.js?v={{ vf_asset_version }}" defer></script>
 </body>
 </html>
