@@ -41,6 +41,16 @@ services:
       traefik.http.routers.vf-docmost.entrypoints: websecure
       traefik.http.routers.vf-docmost.tls.certresolver: le
       traefik.http.routers.vf-docmost.service: vf-docmost
+      # Public landing page; editing/authentication keep their original routes.
+      traefik.http.routers.vf-docmost-home.rule: Host(`docs.vashfindir.ru`) && Path(`/`)
+      traefik.http.routers.vf-docmost-home.entrypoints: websecure
+      traefik.http.routers.vf-docmost-home.tls.certresolver: le
+      traefik.http.routers.vf-docmost-home.service: vf-docmost
+      traefik.http.routers.vf-docmost-home.priority: "100"
+      traefik.http.routers.vf-docmost-home.middlewares: vf-docmost-home
+      traefik.http.middlewares.vf-docmost-home.redirectregex.regex: ^https?://docs[.]vashfindir[.]ru/.*
+      traefik.http.middlewares.vf-docmost-home.redirectregex.replacement: https://docs.vashfindir.ru/share/hn9f97nx4m/p/vaIvbFr1b5
+      traefik.http.middlewares.vf-docmost-home.redirectregex.permanent: "false"
       traefik.http.routers.vf-docmost-http.rule: Host(`docs.vashfindir.ru`)
       traefik.http.routers.vf-docmost-http.entrypoints: web
       traefik.http.routers.vf-docmost-http.middlewares: vf-docmost-https

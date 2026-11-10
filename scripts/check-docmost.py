@@ -11,6 +11,7 @@ import shlex
 import subprocess
 import tarfile
 import tempfile
+import time
 import urllib.error
 import urllib.request
 
@@ -90,6 +91,10 @@ def static_checks(directory, env):
     assert labels["traefik.http.middlewares.vf-docmost-https.redirectscheme.scheme"] == "https"
     assert labels["traefik.http.routers.vf-docmost.tls.certresolver"] == "le"
     assert labels["traefik.http.routers.vf-docmost.entrypoints"] == "websecure"
+    assert labels["traefik.http.routers.vf-docmost-home.rule"] == "Host(`docs.vashfindir.ru`) && Path(`/`)"
+    assert labels["traefik.http.routers.vf-docmost-home.tls.certresolver"] == "le"
+    assert labels["traefik.http.middlewares.vf-docmost-home.redirectregex.permanent"] == "false"
+    assert labels["traefik.http.middlewares.vf-docmost-home.redirectregex.replacement"] == "https://docs.vashfindir.ru/share/hn9f97nx4m/p/vaIvbFr1b5"
 
     for missing in ("DOCMOST_APP_SECRET", "DOCMOST_DB_PASSWORD"):
         result = run(command + ["config", "--quiet"], env=dict(env, **{missing: ""}), check=False)
@@ -102,6 +107,72 @@ def static_checks(directory, env):
     assert smoke_settings["services"]["docmost"]["labels"]["traefik.enable"] == "false"
     print("PASS: configuration, required secrets, bootstrap and network/volume isolation", flush=True)
     return smoke_command
+
+
+def routing_checks(command, env, directory):
+    """Exercise the rendered production rules on a disposable Traefik, without ACME."""
+    labels = config(command, env)["services"]["docmost"]["labels"]
+    routers = {}
+    for name in ("vf-docmost", "vf-docmost-home"):
+        prefix = "traefik.http.routers." + name + "."
+        routers[name] = {
+            "rule": labels[prefix + "rule"], "entryPoints": ["websecure"],
+            "service": labels[prefix + "service"],
+        }
+        if prefix + "middlewares" in labels:
+            routers[name]["middlewares"] = labels[prefix + "middlewares"].split(",")
+        if prefix + "priority" in labels:
+            routers[name]["priority"] = int(labels[prefix + "priority"])
+    prefix = "traefik.http.middlewares.vf-docmost-home.redirectregex."
+    dynamic = {"http": {
+        "routers": routers,
+        "middlewares": {"vf-docmost-home": {"redirectRegex": {
+            "regex": labels[prefix + "regex"], "replacement": labels[prefix + "replacement"],
+            "permanent": labels[prefix + "permanent"] == "true",
+        }}},
+        # An unreachable backend makes passthrough routes distinguishable (502).
+        "services": {"vf-docmost": {"loadBalancer": {"servers": [{"url": "http://127.0.0.1:1"}]}}},
+    }}
+    (directory / "routes.json").write_text(json.dumps(dynamic))
+    container = run([
+        "docker", "run", "--detach", "--rm", "--publish", "127.0.0.1::8080",
+        "--volume", str(directory) + ":/dynamic:ro", "traefik:v3.6.17",
+        "--entrypoints.websecure.address=:8080", "--providers.file.filename=/dynamic/routes.json",
+        "--log.level=ERROR",
+    ], env=env).stdout.strip()
+
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, request, response, code, message, headers, url):
+            return None
+
+    try:
+        port = run(["docker", "port", container, "8080/tcp"], env=env).stdout.strip().rsplit(":", 1)[1]
+        opener = urllib.request.build_opener(NoRedirect())
+
+        def get(path, host="docs.vashfindir.ru"):
+            request = urllib.request.Request("http://127.0.0.1:" + port + path, headers={"Host": host})
+            try:
+                response = opener.open(request, timeout=5)
+            except urllib.error.HTTPError as error:
+                response = error
+            with response:
+                return response.code, response.headers.get("Location")
+
+        for attempt in range(50):
+            try:
+                if get("/")[0] == 302:
+                    break
+            except (urllib.error.URLError, ConnectionResetError):
+                pass
+            time.sleep(0.2)
+        for path in ("/", "/?utm_source=website"):
+            assert get(path) == (302, labels[prefix + "replacement"]), "Public homepage did not redirect"
+        for path in ("/login", "/home", "/api/health", "/api/workspace/info", "/share/example/p/page"):
+            assert get(path)[0] == 502, f"{path} was intercepted instead of reaching Docmost"
+        assert get("/", "other.example")[0] == 404
+        print("PASS: real Traefik public-home redirect; login/API/share routes and other hosts unaffected", flush=True)
+    finally:
+        run(["docker", "rm", "--force", container], env=env)
 
 
 def request_http(opener, path, payload=None, expected=200):
@@ -207,6 +278,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="vf-docmost-check-") as temporary:
         command = static_checks(Path(temporary), env)
         if args.smoke:
+            routing_checks(command, env, Path(temporary))
             smoke_checks(command, env)
 
 
