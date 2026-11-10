@@ -25,7 +25,7 @@ final class PrivacyPolicyTest extends WebTestCase
         }
         // Ссылки на несуществующий пункт заменены на раздел 3.1.
         self::assertStringNotContainsString('пункте 3.3', $crawler->filter('main')->text());
-        self::assertSelectorTextContains('[data-vf-section="privacy-hero"]', 'v1.4');
+        self::assertSelectorTextContains('[data-vf-section="privacy-hero"]', 'v1.5');
         // Политика не противоречит согласию: срок 3 года, рассылки -- только по отдельному согласию.
         $main = $crawler->filter('main')->text();
         self::assertStringNotContainsString('без ограничения срока', $main);

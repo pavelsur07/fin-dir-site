@@ -85,31 +85,34 @@ final class AboutPageTest extends WebTestCase
         self::assertFileExists(dirname(__DIR__, 2).'/public/assets/people/nataliy-novikova-portrait.png');
     }
 
-    public function testRequisitesBelongToFinKonsalting(): void
+    public function testRequisitesBelongToNovikova(): void
     {
         $client = static::createClient();
         $client->request('GET', '/about');
 
         $text = (string) $client->getCrawler()->filter('main section[aria-labelledby="about-requisites-title"]')->text();
-        foreach (['ООО «Фин Консалтинг»', '6140000234 / 616801001', '1156188000176', 'Ростовская обл., г. Ростов-на-Дону, ул. Малиновского, д. 3б, офис 8', 'АО «АЛЬФА-БАНК»'] as $expected) {
+        foreach (['ИП Новикова Наталья Анатольевна', '860224303900', '323619600098384', '346781, Россия, Ростовская область, г. Азов, ул. Севастопольская, 81, кв. 76', '40802810426140004223', 'Филиал «Ростовский» АО «Альфа-Банк»', '7728168971', '046015207', '30101810500000000207'] as $expected) {
             self::assertStringContainsString($expected, $text);
         }
         self::assertStringNotContainsString('Демо-банк', $text);
         self::assertStringNotContainsString('Демонстрационная', $text);
     }
 
-    public function testFooterAndLegalPagesNameTheSameLegalEntity(): void
+    public function testFooterAndLegalPagesNameTheSameEntrepreneur(): void
     {
         $client = static::createClient();
 
-        foreach (['/', '/privacy', '/consent'] as $path) {
+        foreach (['/', '/about', '/privacy', '/consent'] as $path) {
             $client->request('GET', $path);
-            self::assertStringContainsString('ООО «Фин Консалтинг»', (string) $client->getResponse()->getContent(), $path);
+            self::assertSelectorTextContains('footer', 'ИП Новикова Н.А. · ИНН 860224303900 · ОГРНИП 323619600098384', $path);
+            self::assertSelectorTextContains('footer', 'Товарный знак «Ваш Финдир» зарегистрирован № 1260644', $path);
+            self::assertStringNotContainsString('ООО «Фин Консалтинг»', (string) $client->getResponse()->getContent(), $path);
             self::assertStringNotContainsString('ООО «Ваш Финдир»', (string) $client->getResponse()->getContent(), $path);
         }
         $client->request('GET', '/privacy');
-        self::assertSelectorTextContains('#privacy-requisites', 'КПП: 616801001');
-        self::assertSelectorTextContains('#privacy-requisites', 'Ростовская обл., г. Ростов-на-Дону, ул. Малиновского, д. 3б, офис 8');
+        self::assertSelectorTextContains('#privacy-requisites', 'Индивидуальный предприниматель Новикова Наталья Анатольевна');
+        self::assertSelectorTextNotContains('#privacy-requisites', 'КПП');
+        self::assertSelectorTextContains('#privacy-requisites', '346781, Россия, Ростовская область, г. Азов, ул. Севастопольская, 81, кв. 76');
     }
 
     public function testAboutPageKeepsTrustFactsAsCards(): void
