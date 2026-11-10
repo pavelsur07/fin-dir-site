@@ -270,3 +270,67 @@ php-production-rollback:
 	$(ROLLBACK_DC) up -d --no-deps --wait --scale site-php-fpm=2 site-php-fpm
 	$(ROLLBACK_DC) exec -T site sh -ec 'nginx -t; nginx -s reload; wget -qO- http://127.0.0.1/health | grep -qx alive'
 	$(ROLLBACK_DC) run --rm site-php-cli php bin/console dbal:run-sql 'select 1'
+
+# Docmost is an independent Compose project; secrets never appear in config output.
+DOCMOST_ENV ?= docmost/.env
+DOCMOST = $(DC) --env-file $(DOCMOST_ENV) -p vf-docmost -f docker-compose.docmost.yml
+
+.PHONY: docmost-init docmost-config docmost-check docmost-pull docmost-up docmost-down docmost-ps docmost-logs docmost-health docmost-smoke
+
+docmost-init:
+	python3 scripts/init-docmost.py "$(DOCMOST_ENV)"
+
+docmost-config:
+	$(DOCMOST) config --quiet
+
+docmost-check:
+	python3 scripts/check-docmost.py
+
+docmost-pull: docmost-config
+	$(DOCMOST) pull --quiet
+
+docmost-up: docmost-config
+	docker network inspect traefik_web >/dev/null
+	$(DOCMOST) up -d --wait --wait-timeout 240 db redis
+	python3 scripts/check-docmost.py --ready "$(DOCMOST_ENV)"
+	$(DOCMOST) up -d --wait --wait-timeout 240
+
+docmost-down:
+	$(DOCMOST) down
+
+docmost-ps:
+	$(DOCMOST) ps
+
+docmost-logs:
+	$(DOCMOST) logs --tail=100 -f docmost
+
+docmost-health:
+	$(DOCMOST) exec -T docmost node -e "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+
+docmost-smoke:
+	python3 scripts/check-docmost.py --smoke
+
+.PHONY: docmost-public-health docmost-stop docmost-db-dump docmost-files-dump
+
+docmost-public-health:
+	curl --fail --silent --show-error --retry 20 --retry-all-errors --retry-delay 3 --max-time 15 https://docs.vashfindir.ru/api/health
+
+docmost-stop:
+	$(DOCMOST) stop docmost
+
+docmost-db-dump:
+	@$(DOCMOST) exec -T db pg_dump -U docmost -d docmost -Fc
+
+docmost-files-dump:
+	@$(DOCMOST) run --rm --no-deps -T --label traefik.enable=false --user root --entrypoint tar docmost -czf - -C /app/data/storage .
+
+.PHONY: docmost-init-if-needed docmost-bootstrap docmost-publish
+
+docmost-init-if-needed:
+	@if ! test -e "$(DOCMOST_ENV)"; then python3 scripts/init-docmost.py "$(DOCMOST_ENV)"; fi
+
+docmost-bootstrap:
+	python3 scripts/bootstrap-docmost.py --env-file "$(DOCMOST_ENV)" $(DOCMOST)
+
+docmost-publish:
+	python3 scripts/bootstrap-docmost.py --publish --env-file "$(DOCMOST_ENV)" $(DOCMOST)

@@ -1,0 +1,83 @@
+name: Deploy docs.vashfindir.ru
+
+# No automatic first installation or application upgrades on push.
+on:
+  workflow_dispatch:
+    inputs:
+      initialize:
+        description: Create an owner only if the private installation has no workspace
+        type: boolean
+        default: false
+      owner_email:
+        description: Initial owner email (required when initialize is true)
+        type: string
+        default: ""
+      publish:
+        description: Publish the initialized installation (requires working DNS)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    uses: ./.github/workflows/ci-docmost.yml
+
+  deploy-docmost:
+    needs: checks
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+    concurrency:
+      group: host-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - name: Prepare deployment from Makefile
+        env:
+          INITIALIZE: ${{ inputs.initialize }}
+          PUBLISH: ${{ inputs.publish }}
+          DOCMOST_OWNER_EMAIL: ${{ inputs.owner_email }}
+          DOCMOST_OWNER_PASSWORD: ${{ secrets.DOCMOST_BOOTSTRAP_PASSWORD }}
+        run: |
+          python3 - <<'PY'
+          import os, re
+          email = os.environ['DOCMOST_OWNER_EMAIL']
+          password = os.environ['DOCMOST_OWNER_PASSWORD']
+          required = os.environ['INITIALIZE'] == 'true'
+          assert not (email or required) or re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', email), 'Invalid owner email'
+          assert not (password or required) or re.fullmatch(r'[A-Za-z0-9_-]{24,}', password), 'Set DOCMOST_BOOTSTRAP_PASSWORD to a random URL-safe secret'
+          PY
+          cat > /tmp/docmost-deploy.sh <<'SH'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          test "$(git branch --show-current)" = "$DEPLOY_REF"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          git fetch origin "$DEPLOY_SHA"
+          git merge --ff-only "$DEPLOY_SHA"
+          test "$(git rev-parse HEAD)" = "$DEPLOY_SHA"
+          SH
+          make --no-print-directory --dry-run docmost-init-if-needed docmost-pull docmost-up docmost-health >> /tmp/docmost-deploy.sh
+          if [ "$INITIALIZE" = true ]; then
+            make --no-print-directory --dry-run docmost-bootstrap >> /tmp/docmost-deploy.sh
+          fi
+          if [ "$PUBLISH" = true ]; then
+            make --no-print-directory --dry-run docmost-publish docmost-up docmost-public-health >> /tmp/docmost-deploy.sh
+          fi
+          bash -n /tmp/docmost-deploy.sh
+      - name: Deploy the independent Docmost stack
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_REF: ${{ github.ref_name }}
+          DEPLOY_SHA: ${{ github.sha }}
+          DOCMOST_OWNER_EMAIL: ${{ inputs.owner_email }}
+          DOCMOST_OWNER_PASSWORD: ${{ secrets.DOCMOST_BOOTSTRAP_PASSWORD }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          envs: DEPLOY_PATH,DEPLOY_REF,DEPLOY_SHA,DOCMOST_OWNER_EMAIL,DOCMOST_OWNER_PASSWORD
+          command_timeout: 15m
+          script_path: /tmp/docmost-deploy.sh

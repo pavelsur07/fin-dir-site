@@ -126,6 +126,10 @@ Production-окружение описано в `docker-compose.prod.yml`. Дл�
 
 Reverse-proxy хоста вынесен в `infra/traefik/` — см. README там.
 
+Документация SaaS на `docs.vashfindir.ru` запускается отдельным стеком Docmost:
+см. [docmost/README.md](docmost/README.md). Проверки — `make docmost-check` и
+`make docmost-smoke`; первый запуск закрыт до создания владельца workspace.
+
 ### Выкатка без простоя
 
 Замеряно на проде: 264 запроса подряд во время деплоя, все 200.

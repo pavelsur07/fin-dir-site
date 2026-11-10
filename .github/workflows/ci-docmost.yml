@@ -1,0 +1,24 @@
+name: CI Docmost
+
+on:
+  pull_request:
+    paths:
+      - "docker-compose.docmost*.yml"
+      - "docmost/**"
+      - "scripts/*docmost*"
+      - "Makefile"
+      - ".github/workflows/*docmost.yml"
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  docmost:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      # Only synthetic secrets; the smoke project is removed on success or failure.
+      - name: Validate configuration and test a disposable Docmost
+        run: make docmost-smoke
