@@ -36,18 +36,24 @@ final class WebsiteFoundationTest extends WebTestCase
             // Инлайновые SVG -- только декоративные иконки; логотип -- файлы SVG в <img>.
             // Число иконок /cases зависит от количества кейсов в БД -- его проверяет CaseIndexTest.
             if ('/cases' !== $path) {
-                // На главной у каждой карточки кейсов из компонента LatestResults своя иконка-стрелка: 21 базовая (20 иконок и дуги Hero) + по одной на карточку.
-                $caseCards = '/' === $path ? $client->getCrawler()->filter('[data-vf-component="case-card"]')->count() : 0;
-                self::assertSelectorCount((['/' => 21, '/about' => 2, '/gazeta' => 2][$path] ?? 0) + $caseCards, 'body svg', $path);
+                if ('/' === $path) {
+                    // Иконок на главной много (галочки, этапы маршрута, форма): все они декоративные.
+                    self::assertSame($client->getCrawler()->filter('body svg[aria-hidden="true"]')->count(), $client->getCrawler()->filter('body svg')->count(), $path);
+                } else {
+                    self::assertSelectorCount(['/about' => 2, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
+                }
             }
             // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем.
             self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
             if ('/' === $path) {
-                self::assertSelectorCount(8, 'main section[aria-labelledby="home-pain-points-title"] svg[aria-hidden="true"]');
-                self::assertSelectorCount(7, 'main section[aria-labelledby="home-fit-title"] svg[aria-hidden="true"]');
-                self::assertSelectorExists('main section[aria-labelledby="home-process-title"] > div > h2#home-process-title');
-                self::assertSelectorExists('main section[aria-labelledby="home-trust-data-title"] > div > h2#home-trust-data-title');
-                self::assertSelectorExists('main section[aria-labelledby="home-profit-path-title"] > div > h2#home-profit-path-title');
+                // Состав главной (ноябрь 2026): секции из макета, прежние секции на главной не подключены.
+                foreach (['home-hero-title', 'home-services-title', 'home-advantages-title', 'home-route-title', 'home-integrations-title', 'home-team-title', 'home-faq-title', 'lead-form-title'] as $titleId) {
+                    self::assertSelectorExists('main section[aria-labelledby="'.$titleId.'"]', $titleId);
+                }
+                self::assertSelectorExists('main section[data-vf-section="trust-strip"]');
+                foreach (['home-pain-points-title', 'home-fit-title', 'home-process-title', 'home-trust-data-title', 'home-profit-path-title', 'home-cabinet-preview-title'] as $titleId) {
+                    self::assertSelectorNotExists('#'.$titleId, $titleId);
+                }
                 self::assertSelectorCount(4, 'main section[aria-labelledby="home-team-title"] li');
                 self::assertSelectorCount(1, 'main section[aria-labelledby="home-team-title"] img[alt="Павел Новиков, управляющий партнёр"]');
             }
@@ -90,7 +96,7 @@ final class WebsiteFoundationTest extends WebTestCase
         }
         $wrapper = (string) file_get_contents($wrapperPath);
         self::assertStringContainsString("TAILWIND_VERSION='4.3.3'", $wrapper);
-        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js'] as $script) {
+        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js', 'tabs.js'] as $script) {
             self::assertSame(file_get_contents($root.'/assets/scripts/website/'.$script), file_get_contents($root.'/public/assets/website/'.$script));
         }
     }
@@ -99,7 +105,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js', 'tabs.js'] as $asset) {
             $contents .= (string) file_get_contents($root.'/public/assets/website/'.$asset);
         }
         $version = substr(hash('sha256', $contents), 0, 12);

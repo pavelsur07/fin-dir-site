@@ -13,9 +13,9 @@
 
   /* Синий — цвет действия (палитра B, ноябрь 2026): кнопки, ссылки, активные состояния.
      Красный остаётся фирменным знаком — только логотип и айдентика. */
-  --color-blue-50: #f2f5fb; --color-blue-100: #e6edfa; --color-blue-200: #cfddf9;
-  --color-blue-300: #a9c1fa; --color-blue-600: #1e40af; --color-blue-700: #1a3591;
-  --color-blue-800: #152b77;
+  --color-cobalt-50: #f2f5fb; --color-cobalt-100: #e6edfa; --color-cobalt-200: #cfddf9;
+  --color-cobalt-300: #a9c1fa; --color-cobalt-600: #1e40af; --color-cobalt-700: #1a3591;
+  --color-cobalt-800: #152b77;
 
   --color-paper: #f7f8fb; --color-success: #0f7a5c; --color-warning: #a15c00;
   --shadow-focus-inverse: 0 0 0 2px #0B1020, 0 0 0 4px #A9C1FA;

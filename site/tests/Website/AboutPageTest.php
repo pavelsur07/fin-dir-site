@@ -29,7 +29,7 @@ final class AboutPageTest extends WebTestCase
         // Команда -- те же данные, что на главной.
         self::assertSelectorCount(4, 'main section[aria-labelledby="about-team-title"] li');
         self::assertSelectorCount(1, 'main section[aria-labelledby="about-team-title"] img[alt="Павел Новиков, управляющий партнёр"]');
-        self::assertSelectorTextContains('#about-team-title', 'Кто будет вашим финдиром');
+        self::assertSelectorTextContains('#about-team-title', 'Кто будет с вами работать');
 
         self::assertSelectorCount(3, 'main section[aria-labelledby="about-facts-title"] li');
         self::assertSelectorCount(3, 'main section[aria-labelledby="about-process-title"] li');
@@ -38,13 +38,13 @@ final class AboutPageTest extends WebTestCase
         self::assertSelectorExists('main section[aria-labelledby="cta-banner-title"] .dark a[href="/#lead-form"]');
     }
 
-    public function testHomeKeepsTeamAndTrustSectionIds(): void
+    public function testHomeKeepsTeamAndTrustStrip(): void
     {
         $client = static::createClient();
         $client->request('GET', '/');
 
         self::assertSelectorCount(4, 'main section[aria-labelledby="home-team-title"] li');
-        self::assertSelectorExists('#home-trust-data-title');
+        self::assertSelectorExists('main section[data-vf-section="trust-strip"]');
     }
 
     public function testHomeHasNoTrustFactsRow(): void

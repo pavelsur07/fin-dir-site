@@ -1,47 +1,43 @@
-{# Дата актуальности показателя «230+ компаний»; null — подпись выводится без даты. Пробелы в дате неразрывные (U+00A0). #}
-{% set hero_proof_date = '1 октября 2026' %}
-{# Показатели доверия Hero: число и единица разделены неразрывным пробелом (U+00A0). #}
-{% set hero_proof = [
-    {value: 'с 2015', unit: 'года', text: 'помогаем собственникам выстраивать финансовое управление'},
-    {value: '230+', unit: 'компаний', text: 'прошли через нас', dated: true},
-    {value: 'до 8', unit: 'числа', text: 'закрываем месяц и показываем цифры собственнику'},
-    {value: '15', unit: 'отраслей', text: 'где уже работает наша система финансового управления'},
-] %}
-<section class="overflow-hidden border-b border-border-subtle bg-surface-muted text-fg" aria-labelledby="home-hero-title">
-    <div class="mx-auto grid w-full max-w-container items-center gap-8 px-3 py-10 md:px-8 lg:grid-cols-2 lg:gap-16 lg:py-16 xl:gap-12">
-        <div class="relative z-10">
-            <h1 class="font-display text-t-code font-extrabold tracking-tight text-balance text-fg md:type-t2 xl:type-t1" id="home-hero-title"><span class="whitespace-nowrap">Финансовый директор,</span> который помогает зарабатывать больше</h1>
-            <p class="mt-6 max-w-lead type-t4 text-fg-secondary">Финдир на аутсорсинге + сервис учёта.<br>Еженедельные точки роста для вашего бизнеса.</p>
-            <dl class="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 md:grid-cols-2">
-                {% for item in hero_proof %}
-                    <div>
-                        <dt class="type-t8 tabular-nums text-fg">{{ item.value }} <span class="text-accent">{{ item.unit }}</span></dt>
-                        <dd class="mt-1 type-t6 text-fg-secondary">{{ item.text }}{% if item.dated|default(false) and hero_proof_date %}, данные на {{ hero_proof_date }}{% endif %}</dd>
-                    </div>
-                {% endfor %}
-            </dl>
+{#
+    Первый экран главной. Показатели доверия вынесены в sections/_trust_strip.
+    Аргументы: chips [строки], lead, note, primary {label, href}, secondary {label, href}, badge {title, text}.
+#}
+<section class="overflow-hidden bg-surface text-fg" aria-labelledby="home-hero-title" data-vf-section="hero">
+    <div class="mx-auto grid w-full max-w-container items-center gap-10 px-4 pt-8 pb-12 md:px-8 lg:grid-cols-2 lg:gap-12 lg:py-16">
+        <div class="relative z-10 flex min-w-0 flex-col gap-6">
+            {% if chips|default([]) is not empty %}
+                <ul class="flex flex-wrap gap-2">
+                    {% for chip in chips %}
+                        <li class="rounded-full bg-surface-muted px-3 py-1 type-t7 font-semibold text-fg-secondary">{{ chip }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <h1 class="font-display text-balance type-t2 text-fg md:type-t1" id="home-hero-title"><span class="xl:whitespace-nowrap">Финансовый директор,</span> который помогает зарабатывать <span class="text-accent">больше</span></h1>
+            <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
+            <div class="flex flex-col gap-3 md:flex-row md:flex-wrap">
+                {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, variant: 'primary', full_mobile: true} only %}
+                {% if secondary|default(null) %}
+                    {% include 'website/components/_button.html.twig' with {label: secondary.label, href: secondary.href, variant: 'secondary', full_mobile: true} only %}
+                {% endif %}
+            </div>
+            {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-muted">{{ note }}</p>{% endif %}
         </div>
 
-        <div class="relative mx-auto mt-10 aspect-square w-full max-w-lead lg:mt-0">
-            <div class="absolute inset-0 rounded-full bg-ink-100"></div>
-            <svg class="pointer-events-none absolute -inset-14/100 size-128/100 fill-none" viewBox="0 0 100 100" aria-hidden="true">
-                <circle class="stroke-ink-200" cx="50" cy="50" r="49.5" stroke-width=".25"/>
-                <circle class="stroke-ink-100" cx="50" cy="50" r="44" stroke-width=".25"/>
-            </svg>
-            {# Внутренний круг (inset 7 %) обрезает фото: то же, что clip-path: circle(43 %) на всём контейнере. Обёртка -inset-7/86 возвращает координаты контейнера для bottom 7 % и height 88 %. #}
-            <div class="absolute inset-7/100 overflow-hidden rounded-full bg-ink-200">
-                <div class="absolute -inset-7/86">
-                    <picture>
-                        <source srcset="/assets/people/pavel-novikov-800.avif" type="image/avif" width="800" height="1000">
-                        <source srcset="/assets/people/pavel-novikov-800.webp" type="image/webp" width="800" height="1000">
-                        <img class="absolute bottom-7/100 left-1/2 h-88/100 w-auto max-w-none -translate-x-1/2" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" fetchpriority="high">
-                    </picture>
-                </div>
-            </div>
-            <div class="absolute -bottom-2 left-0 rounded-md bg-navy-900 px-4 py-3 text-white">
-                <p class="type-h4">Павел Новиков</p>
-                <p class="type-t6 text-ink-200">Управляющий партнёр</p>
-            </div>
+        {# Фото на синей панели с наклонными полосами: полосы декоративные, aria-hidden. #}
+        <div class="relative isolate mx-auto aspect-square w-full max-w-lead overflow-hidden rounded-xl bg-cobalt-100 lg:max-w-none">
+            <div class="absolute inset-y-0 left-1/4 w-1/4 -skew-x-12 bg-cobalt-200" aria-hidden="true"></div>
+            <div class="absolute inset-y-0 left-1/2 w-1/6 -skew-x-12 bg-cobalt-50" aria-hidden="true"></div>
+            <picture>
+                <source srcset="/assets/people/pavel-novikov-800.avif" type="image/avif" width="800" height="1000">
+                <source srcset="/assets/people/pavel-novikov-800.webp" type="image/webp" width="800" height="1000">
+                <img class="absolute bottom-0 left-3/5 h-11/12 w-auto max-w-none -translate-x-1/2" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" fetchpriority="high">
+            </picture>
+            {% if badge|default(null) %}
+                <p class="absolute top-4 left-4 flex max-w-1/2 flex-col gap-1 rounded-lg bg-surface p-4 shadow-md md:top-6 md:left-6">
+                    <span class="type-t7 font-semibold text-accent">{{ badge.title }}</span>
+                    <span class="type-t6 font-semibold text-fg">{{ badge.text }}</span>
+                </p>
+            {% endif %}
         </div>
     </div>
 </section>

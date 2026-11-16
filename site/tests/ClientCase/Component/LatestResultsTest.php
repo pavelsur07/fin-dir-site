@@ -11,11 +11,12 @@ use Twig\Environment;
 
 final class LatestResultsTest extends WebTestCase
 {
-    public function testHomeAndServicePagesLoadCasesThemselves(): void
+    public function testServicePageLoadsCasesItself(): void
     {
         $client = static::createClient();
 
-        foreach (['/' => ['home-cases', 'bg-surface-muted'], '/services/finansovyy-direktor-na-autsorsinge' => ['service-cases', 'bg-surface']] as $path => [$id, $background]) {
+        // На главной кейсов нет с ноября 2026 (секция не входит в макет); компонент работает на странице услуги.
+        foreach (['/services/finansovyy-direktor-na-autsorsinge' => ['service-cases', 'bg-surface']] as $path => [$id, $background]) {
             $client->request('GET', $path);
 
             self::assertResponseIsSuccessful($path);
@@ -45,10 +46,10 @@ final class LatestResultsTest extends WebTestCase
             ClientCaseBuilder::aCase()->withSlug('draft')->withTitle('Черновик')->build(),
         );
 
-        $client->request('GET', '/');
+        $client->request('GET', '/services/finansovyy-direktor-na-autsorsinge');
 
-        self::assertSelectorCount(1, '#home-cases [data-vf-component="case-card"]');
-        self::assertSelectorTextNotContains('#home-cases', 'Черновик');
+        self::assertSelectorCount(1, '#service-cases [data-vf-component="case-card"]');
+        self::assertSelectorTextNotContains('#service-cases', 'Черновик');
     }
 
     public function testSectionIsAbsentWithoutPublishedCases(): void
