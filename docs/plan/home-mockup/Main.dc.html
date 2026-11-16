@@ -42,6 +42,8 @@ a{color:#0B1020}a:hover{color:{{accent}}}
 .rt-text{grid-column:2;grid-row:2;align-items:flex-start!important}
 }
 @media (max-width:1023px){.vf-faq-side{position:static!important}}
+@media (max-width:1023px){.vf-rep{grid-template-columns:1fr!important}}
+@media (max-width:640px){.vf-rep-left{grid-template-columns:1fr!important}}
 </style>
 </helmet>
 <div style="font-family: Inter, 'Helvetica Neue', Arial, sans-serif; color: #0B1020; background: #FFFFFF; min-height: 740px; box-sizing: border-box">
@@ -256,6 +258,40 @@ a{color:#0B1020}a:hover{color:{{accent}}}
 </ol>
 </div>
 </section>
+<section id="reports" aria-labelledby="reports-title" style="padding: 56px 0 40px; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 id="reports-title" style="margin: 0; text-align: left; font-size: clamp(32px, 3.6vw, 52px); line-height: 1.12; font-weight: 700; letter-spacing: -0.02em">Что вы получаете</h2>
+<p style="margin: 0; max-width: 36em; font-size: 18px; line-height: 1.6; color: #334155; text-wrap: pretty">Цифры для решений, а не отчёты ради отчётов: каждую неделю — деньги и маржа, раз в месяц — полный набор.</p>
+</div>
+<div class="vf-rep" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 20px; align-items: stretch">
+<div class="vf-rep-left" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px">
+<div style="box-sizing: border-box; padding: 28px; border-radius: 20px; background: #F2F5FB; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 9999px; font-size: 13px; font-weight: 600; background: #FFFFFF; color: #1E40AF; border: 1px solid #CFDDF9">Каждую неделю</span>
+<span style="font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0B1020">ДДС</span>
+<span style="font-size: 17px; line-height: 1.35; font-weight: 600; color: #0B1020">Движение денег и платёжный календарь</span>
+<span style="font-size: 15px; line-height: 1.5; color: #475569; text-wrap: pretty">Откуда пришли и куда ушли деньги, хватит ли их на платежи ближайших недель</span>
+</div>
+<div style="box-sizing: border-box; padding: 28px; border-radius: 20px; background: #F2F5FB; display: flex; flex-direction: column; gap: 12px">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 9999px; font-size: 13px; font-weight: 600; background: #FFFFFF; color: #1E40AF; border: 1px solid #CFDDF9">Каждую неделю</span>
+<span style="font-size: 30px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0B1020">ОПиУ</span>
+<span style="font-size: 17px; line-height: 1.35; font-weight: 600; color: #0B1020">Прибыль до валовой маржи CM3</span>
+<span style="font-size: 15px; line-height: 1.5; color: #475569; text-wrap: pretty">Сколько осталось после себестоимости, рекламы, логистики и хранения</span>
+</div>
+<div style="grid-column: 1 / -1; box-sizing: border-box; padding: 28px; border-radius: 20px; background: #E6EDFA; display: flex; flex-direction: column; gap: 14px">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 9999px; font-size: 13px; font-weight: 600; background: #0B1020; color: #FFFFFF">Раз в месяц</span>
+<span style="font-size: 24px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; color: #0B1020">Полный набор отчётов</span>
+<ul style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 20px"><li style="display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid #DCE3EE"><span style="font-size: 17px; font-weight: 700; color: #0B1020">ДДС</span><span style="font-size: 14px; line-height: 1.45; color: #475569">движение денег за месяц</span></li><li style="display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid #DCE3EE"><span style="font-size: 17px; font-weight: 700; color: #0B1020">ОПиУ</span><span style="font-size: 14px; line-height: 1.45; color: #475569">до чистой прибыли</span></li><li style="display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid #DCE3EE"><span style="font-size: 17px; font-weight: 700; color: #0B1020">Баланс</span><span style="font-size: 14px; line-height: 1.45; color: #475569">что есть у бизнеса и сколько он должен</span></li></ul>
+</div>
+</div>
+<div style="box-sizing: border-box; padding: 32px; border-radius: 20px; background: #0B1020; color: #FFFFFF; display: flex; flex-direction: column; gap: 16px">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 9999px; font-size: 13px; font-weight: 600; background: #1E40AF; color: #FFFFFF">Каждую неделю</span>
+<h3 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em">Аналитическая записка</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #CBD5E1; text-wrap: pretty">Что изменилось, почему и что делать. Не таблица, а выводы финдира с цифрами и графиками.</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px"><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Главное за неделю — в нескольких строках</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Выручка и маржа по неделям</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Ключевые показатели и unit-экономика</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Куда ушла маржа: реклама, склад, нераспределённые затраты</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Что изменилось по крупнейшим товарам</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Убыточные позиции и реклама</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>Замороженные остатки</span></li><li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.45; color: #E3EAFE"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9C1FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M20 6 9 17l-5-5"></path></svg><span>План действий с ожидаемым эффектом</span></li></ul>
+<p style="margin: auto 0 0; padding-top: 14px; border-top: 1px solid #1F2840; font-size: 13px; line-height: 1.5; color: #A9C1FA">Пример: еженедельная записка по Ozon — 14 графиков и таблиц, план действий в конце.</p>
+</div>
+</div>
+</section>
 <section id="automation" aria-labelledby="automation-title" style="padding: 56px 0 40px; display: flex; flex-direction: column; gap: 48px">
 <h2 id="automation-title" style="margin: 0; text-align: left; font-size: clamp(32px, 3.6vw, 52px); line-height: 1.12; font-weight: 700; letter-spacing: -0.02em">Автоматизация процессов</h2>
 <div style="display: flex; flex-wrap: wrap; align-items: stretch; border-radius: 28px; background: #F2F5FB; overflow: hidden">
@@ -375,7 +411,7 @@ a{color:#0B1020}a:hover{color:{{accent}}}
 </main>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1E40AF","options":["#1E40AF","#2563EB","#0F7B52"]},"$preview":{"width":1440,"height":5780}}'>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1E40AF","options":["#1E40AF","#2563EB","#0F7B52"]},"$preview":{"width":1440,"height":6620}}'>
 class Component extends DCLogic {
 renderVals() {
 const accent = this.props.accent ?? '#1E40AF';
