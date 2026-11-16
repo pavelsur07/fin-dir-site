@@ -1,0 +1,72 @@
+{#
+    «Как начинаем работу»: маршрут этапов с линией прогресса. С lg -- горизонтальная линия, до lg -- вертикальная.
+    Аргументы: id, title, subtitle, eta {label, value},
+    steps [{icon, duration, title, text, kind ('step' | 'milestone' | 'finish' | 'next'), label (необязательно)}].
+    Этап kind 'next' -- продолжение после финиша: к нему ведёт пунктир.
+#}
+{% set tiles = {
+    step: 'bg-cobalt-100 text-accent',
+    milestone: 'bg-accent-fill text-on-accent',
+    finish: 'bg-navy-900 text-white',
+    next: 'border-2 border-dashed border-cobalt-300 bg-surface text-accent',
+} %}
+{% set chips = {
+    step: 'border-border text-fg',
+    milestone: 'border-accent-fill bg-accent-fill text-on-accent',
+    finish: 'border-border text-fg',
+    next: 'border-dashed border-cobalt-300 text-accent',
+} %}
+<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="route">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <div class="mb-10 flex flex-col gap-6 md:mb-12 lg:flex-row lg:items-end lg:justify-between">
+            <div class="flex flex-col gap-3">
+                <h2 class="font-display type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+                {% if subtitle|default(null) %}<p class="max-w-measure type-t4 text-fg-secondary">{{ subtitle }}</p>{% endif %}
+            </div>
+            {% if eta|default(null) %}
+                <p class="dark flex items-center gap-4 self-start rounded-lg bg-surface py-3 pr-6 pl-3 lg:self-auto">
+                    <span class="flex size-control-md shrink-0 items-center justify-center rounded-md bg-accent-fill text-on-accent" aria-hidden="true">
+                        {% include 'website/components/_icon.html.twig' with {name: 'clock', class: 'size-icon-md'} only %}
+                    </span>
+                    <span class="flex flex-col">
+                        <span class="type-t7 text-fg-secondary">{{ eta.label }}</span>
+                        <span class="type-t3 text-fg">{{ eta.value }}</span>
+                    </span>
+                </p>
+            {% endif %}
+        </div>
+        <ol class="grid grid-cols-1 {{ {6: 'lg:grid-cols-6', 7: 'lg:grid-cols-7', 8: 'lg:grid-cols-8'}[steps|length]|default('lg:grid-cols-8') }}">
+            {% for step in steps %}
+                {% set kind = step.kind|default('step') %}
+                {% set before_next = not loop.last and steps[loop.index].kind|default('step') == 'next' %}
+                <li class="relative flex gap-4 lg:flex-col lg:items-center lg:gap-3 lg:px-2 lg:text-center">
+                    {% if not loop.last %}
+                        {% if before_next %}
+                            <span class="absolute top-16 left-1/2 hidden w-full border-t-2 border-dashed border-cobalt-300 lg:block" aria-hidden="true"></span>
+                        {% else %}
+                            <span class="absolute top-16 left-1/2 hidden h-px w-full bg-border lg:block" aria-hidden="true"></span>
+                        {% endif %}
+                    {% endif %}
+                    <div class="flex flex-col items-center lg:order-2">
+                        <span class="relative z-10 flex size-control-xl shrink-0 items-center justify-center rounded-lg {{ tiles[kind] }}" aria-hidden="true">
+                            {% include 'website/components/_icon.html.twig' with {name: step.icon, class: 'size-icon-lg'} only %}
+                        </span>
+                        {% if not loop.last %}
+                            {% if before_next %}
+                                <span class="w-0 grow border-l-2 border-dashed border-cobalt-300 lg:hidden" aria-hidden="true"></span>
+                            {% else %}
+                                <span class="w-px grow bg-border lg:hidden" aria-hidden="true"></span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col items-start gap-1 {{ loop.last ? 'pb-0' : 'pb-8' }} lg:contents">
+                        <span class="mb-1 inline-flex h-control-xs items-center rounded-full border px-2 type-t7 font-semibold whitespace-nowrap lg:order-1 lg:mb-0 {{ chips[kind] }}">{{ step.duration }}</span>
+                        {% if step.label|default(null) %}<span class="type-t7 font-semibold text-accent lg:order-3">{{ step.label }}</span>{% endif %}
+                        <h3 class="type-h4 text-balance lg:order-3 {{ kind == 'next' ? 'text-accent' : 'text-fg' }}">{{ step.title }}</h3>
+                        <p class="type-t6 text-fg-secondary lg:order-4">{{ step.text }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+</section>

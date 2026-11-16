@@ -1,0 +1,8 @@
+{#
+    Скриншот кабинета с лёгким наклоном. Аргументы: image -- имя файла в /assets/screens/ с версией (без -720/-1440), alt,
+    class (необязательно) -- позиционирование в родителе.
+#}
+<picture class="contents">
+    <source type="image/webp" srcset="/assets/screens/{{ image }}-720.webp 720w, /assets/screens/{{ image }}-1440.webp 1440w" sizes="(min-width: 1024px) 560px, 90vw">
+    <img class="aspect-screenshot w-full rotate-2 rounded-lg bg-white shadow-lg {{ class|default('') }}" src="/assets/screens/{{ image }}-720.webp" width="720" height="450" loading="lazy" decoding="async" alt="{{ alt }}">
+</picture>

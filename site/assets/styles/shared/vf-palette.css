@@ -11,12 +11,34 @@
   --color-red-50: #fdf2f4; --color-red-100: #fbe3e7; --color-red-500: #cf1a38;
   --color-red-600: #b00020; --color-red-700: #8a0019;
 
+  /* Синий — цвет действия (палитра B, ноябрь 2026): кнопки, ссылки, активные состояния.
+     Красный остаётся фирменным знаком — только логотип и айдентика. */
+  --color-cobalt-50: #f2f5fb; --color-cobalt-100: #e6edfa; --color-cobalt-200: #cfddf9;
+  --color-cobalt-300: #a9c1fa; --color-cobalt-600: #1e40af; --color-cobalt-700: #1a3591;
+  --color-cobalt-800: #152b77;
+
   --color-paper: #f7f8fb; --color-success: #0f7a5c; --color-warning: #a15c00;
+  --shadow-focus-inverse: 0 0 0 2px #0B1020, 0 0 0 4px #A9C1FA;
 
   --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
   --spacing-11: 44px;
   --shadow-card: 0 1px 2px rgb(11 16 32 / .06), 0 4px 12px rgb(11 16 32 / .06);
   --shadow-pop: 0 8px 32px rgb(11 16 32 / .16);
+}
+/* Семантический акцент переведён с crimson на синий; имена токенов темы не меняются. */
+:root {
+  --accent: #1E40AF;
+  --accent-fill: #1E40AF;
+  --accent-fill-hover: #1A3591;
+  --accent-fill-active: #152B77;
+  --focus-ring: #CFDDF9;
+}
+.dark {
+  --accent: #A9C1FA;
+  --accent-fill: #1E40AF;
+  --accent-fill-hover: #2D52C4;
+  --accent-fill-active: #2D52C4;
+  --focus-ring: #152B77;
 }
 @layer base {
   .dark {

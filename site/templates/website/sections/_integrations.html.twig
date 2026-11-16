@@ -1,0 +1,33 @@
+{#
+    «Автоматизация процессов»: текст и сетка интеграций.
+    Аргументы: id, title, heading, text, cta {label, href}, label (подпись над сеткой),
+    logos [{name, src, size ('sm' | 'md' | 'lg', по умолчанию md)} -- SVG в /assets/integrations/ | {name} без src -- плитка с названием текстом].
+    size выравнивает визуальный вес: широкие логотипы -- sm, высокие -- lg.
+#}
+<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="integrations">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <h2 class="mb-8 font-display type-t2-article text-fg md:mb-12 md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+        <div class="relative isolate grid gap-8 overflow-hidden rounded-xl bg-cobalt-100 p-6 md:p-10 lg:grid-cols-2 lg:items-center lg:gap-12 lg:p-12">
+            <div class="absolute inset-y-0 left-1/2 hidden w-1/6 -skew-x-12 bg-cobalt-200 lg:block" aria-hidden="true"></div>
+            <div class="flex flex-col items-start gap-6">
+                <h3 class="font-display type-t2-article text-fg">{{ heading }}</h3>
+                <p class="max-w-lead type-t5 text-fg-secondary">{{ text }}</p>
+                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'primary', full_mobile: true} only %}
+            </div>
+            <div class="flex flex-col gap-3">
+                <p class="self-start rounded-full bg-surface px-3 py-1 type-t7 font-semibold text-fg-secondary">{{ label }}</p>
+                <ul class="grid grid-cols-2 gap-3 md:grid-cols-4">
+                    {% for logo in logos %}
+                        <li class="flex h-control-xl items-center justify-center rounded-lg bg-surface px-4 md:h-16">
+                            {% if logo.src|default(null) %}
+                                <img class="{{ {sm: 'h-5', md: 'h-6', lg: 'h-10'}[logo.size|default('md')]|default('h-6') }} w-auto max-w-full" src="{{ logo.src }}" alt="{{ logo.name }}" loading="lazy" decoding="async">
+                            {% else %}
+                                <span class="type-t6 font-semibold text-fg">{{ logo.name }}</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

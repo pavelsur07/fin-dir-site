@@ -1,0 +1,60 @@
+{#
+    «Что входит»: вкладки с услугами (components/_tab_list + scripts/website/tabs.js).
+    Аргументы: id, title, cta {label, href},
+    items [{short, kicker, title, heading, bullets [], product, tone ('accent' | 'light'),
+            person {photo, photo_webp, alt} | screen {image, alt}}].
+    Панели лежат в одной ячейке сетки: высота блока равна самой высокой панели, переключение не сдвигает страницу.
+#}
+{% set tones = {
+    accent: 'dark bg-accent-fill text-fg',
+    light: 'bg-cobalt-100 text-fg',
+} %}
+<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="services-tabs">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <h2 class="mb-8 font-display type-t2-article text-fg md:mb-12 md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+        <div class="grid gap-6 lg:grid-cols-3 lg:gap-8" data-vf-tabs>
+            {% include 'website/components/_tab_list.html.twig' with {id: id, label: title, tabs: items} only %}
+            <div class="grid gap-6 lg:col-span-2" data-vf-tabpanels>
+                {% for item in items %}
+                    <div class="{{ tones[item.tone]|default(tones.accent) }} grid overflow-hidden rounded-xl md:grid-cols-2" role="tabpanel" id="{{ id }}-panel-{{ loop.index }}" aria-labelledby="{{ id }}-tab-{{ loop.index }}" tabindex="0">
+                        <div class="flex flex-col gap-6 p-6 md:p-10">
+                            <h3 class="font-display type-t2-article text-fg">{{ item.heading }}</h3>
+                            <ul class="flex flex-col gap-3">
+                                {% for bullet in item.bullets %}
+                                    <li class="flex gap-3 type-t5 text-fg">
+                                        {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'mt-1 size-icon-md shrink-0 text-accent'} only %}
+                                        <span>{{ bullet }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="mt-auto flex flex-col items-start gap-4">
+                                <p class="flex flex-col gap-2">
+                                    <span class="type-t7 font-medium text-fg-muted">Продукт</span>
+                                    <span class="rounded-full bg-surface-muted px-3 py-1 type-t6 font-semibold text-fg">{{ item.product }}</span>
+                                </p>
+                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', full_mobile: true} only %}
+                            </div>
+                        </div>
+                        {% if item.person|default(null) %}
+                            <div class="flex items-end justify-center px-6 pt-2 md:pt-10">
+                                <div class="w-1/2 md:w-full">
+                                    {% include 'website/components/_portrait.html.twig' with {
+                                        src: item.person.photo,
+                                        webp_base: item.person.photo_webp|default(null),
+                                        alt: item.person.alt,
+                                        class: 'block h-auto w-full',
+                                        sizes: '(min-width: 1024px) 380px, 75vw',
+                                    } only %}
+                                </div>
+                            </div>
+                        {% elseif item.screen|default(null) %}
+                            <div class="flex items-center p-6 pt-0 md:-mr-24 md:p-10 md:pl-0">
+                                {% include 'website/components/_screen.html.twig' with {image: item.screen.image, alt: item.screen.alt} only %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

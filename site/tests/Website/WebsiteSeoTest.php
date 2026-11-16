@@ -65,7 +65,7 @@ final class WebsiteSeoTest extends WebTestCase
             self::assertContains($expectedType, $types);
         }
         // FAQPage допустим только при видимом FAQ: вопросы разметки совпадают с вопросами секции.
-        self::assertSelectorCount(5, 'section[aria-labelledby="home-faq-title"] details > summary');
+        self::assertSelectorCount(8, 'section[aria-labelledby="home-faq-title"] details > summary');
     }
 
     public function testSitemapExcludesNoindexLegalPages(): void

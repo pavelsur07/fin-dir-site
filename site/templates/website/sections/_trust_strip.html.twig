@@ -1,0 +1,34 @@
+{#
+    Полоса доверия под первым экраном, без заголовка.
+    Аргументы: facts [{value, text, note}], people [{name, photo, photo_webp}] -- фото команды для аватаров,
+    team {text, link_label, href}. Пробелы внутри чисел и единиц -- неразрывные (U+00A0).
+#}
+<section class="bg-surface" aria-label="Почему нам можно доверять" data-vf-section="trust-strip">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <ul class="grid grid-cols-1 border-y border-border-subtle md:grid-cols-3">
+            {% for fact in facts %}
+                <li class="flex flex-col gap-2 border-border-subtle py-6 not-first:border-t md:px-6 md:not-first:border-t-0 md:not-first:border-l md:first:pl-0">
+                    <strong class="type-t8 text-fg">{{ fact.value }}</strong>
+                    <span class="type-t6 text-fg-secondary">{{ fact.text }}</span>
+                    {% if fact.note|default(null) %}<span class="type-t7 text-fg-muted">{{ fact.note }}</span>{% endif %}
+                </li>
+            {% endfor %}
+            <li class="flex flex-col gap-3 border-t border-border-subtle py-6 md:border-t-0 md:border-l md:px-6">
+                <span class="flex" aria-hidden="true">
+                    {% for person in people %}
+                        <span class="size-control-touch overflow-hidden rounded-full border-2 border-surface bg-surface-muted not-first:-ml-3">
+                            {% include 'website/components/_portrait.html.twig' with {
+                                src: person.photo,
+                                webp_base: person.photo_webp|default(null),
+                                alt: '',
+                                class: 'size-full object-cover object-top',
+                                sizes: '44px',
+                            } only %}
+                        </span>
+                    {% endfor %}
+                </span>
+                <span class="type-t6 text-fg-secondary">{{ team.text }} <a class="rounded-xs font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ team.href }}">{{ team.link_label }}</a></span>
+            </li>
+        </ul>
+    </div>
+</section>

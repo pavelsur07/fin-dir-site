@@ -1,0 +1,53 @@
+{#
+    «Преимущества работы»: вкладки, зеркально к «Что входит» -- список справа (components/_tab_list + scripts/website/tabs.js).
+    Аргументы: id, title, cta {label, href},
+    items [{short, kicker, title, lead (необязательно), text, tone ('ink' | 'accent' | 'light'),
+            screen {image, alt} | person {photo, photo_webp, alt, caption}}].
+#}
+{% set tones = {
+    ink: 'dark bg-surface text-fg',
+    accent: 'dark bg-accent-fill text-fg',
+    light: 'bg-cobalt-100 text-fg',
+} %}
+<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="advantages">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <h2 class="mb-8 font-display type-t2-article text-fg md:mb-12 md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+        <div class="grid gap-6 lg:grid-cols-3 lg:gap-8" data-vf-tabs>
+            <div class="lg:order-last">
+                {% include 'website/components/_tab_list.html.twig' with {id: id, label: title, tabs: items} only %}
+            </div>
+            <div class="grid gap-6 lg:col-span-2" data-vf-tabpanels>
+                {% for item in items %}
+                    <div class="{{ tones[item.tone]|default(tones.ink) }} grid overflow-hidden rounded-xl md:grid-cols-2" role="tabpanel" id="{{ id }}-panel-{{ loop.index }}" aria-labelledby="{{ id }}-tab-{{ loop.index }}" tabindex="0">
+                        <div class="flex flex-col gap-4 p-6 md:p-10">
+                            <h3 class="font-display type-t2-article text-fg">{{ item.title }}</h3>
+                            {% if item.lead|default(null) %}<p class="type-t4 font-semibold text-accent">{{ item.lead }}</p>{% endif %}
+                            <p class="type-t5 text-fg-secondary">{{ item.text }}</p>
+                            <div class="mt-auto pt-4">
+                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', full_mobile: true} only %}
+                            </div>
+                        </div>
+                        {% if item.screen|default(null) %}
+                            <div class="flex items-center p-6 pt-0 md:-mr-24 md:p-10 md:pl-0">
+                                {% include 'website/components/_screen.html.twig' with {image: item.screen.image, alt: item.screen.alt} only %}
+                            </div>
+                        {% elseif item.person|default(null) %}
+                            <figure class="flex flex-col items-center justify-end gap-3 px-6 pt-2 md:pt-10">
+                                <div class="w-1/2 md:w-full">
+                                    {% include 'website/components/_portrait.html.twig' with {
+                                        src: item.person.photo,
+                                        webp_base: item.person.photo_webp|default(null),
+                                        alt: item.person.alt,
+                                        class: 'block h-auto w-full',
+                                        sizes: '(min-width: 1024px) 380px, 75vw',
+                                    } only %}
+                                </div>
+                                {% if item.person.caption|default(null) %}<figcaption class="sr-only">{{ item.person.caption }}</figcaption>{% endif %}
+                            </figure>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

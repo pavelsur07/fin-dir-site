@@ -5,7 +5,7 @@
         <ol>
             {% for step in steps %}
                 <li class="grid grid-cols-1 gap-2 border-t border-navy-200 py-6 last:border-b md:gap-3 lg:flex lg:items-center lg:gap-6">
-                    <span class="font-display text-t-code font-extrabold tabular-nums text-red-600 lg:w-16 lg:shrink-0" aria-hidden="true">{{ step.number }}</span>
+                    <span class="font-display text-t-code font-extrabold tabular-nums text-accent lg:w-16 lg:shrink-0" aria-hidden="true">{{ step.number }}</span>
                     <h3 class="type-t3 text-fg lg:min-w-0 lg:flex-1">{{ step.title }}</h3>
                     <p class="max-w-lead font-sans text-t5 text-navy-600 lg:min-w-0 lg:flex-1">{{ step.text }}</p>
                     <div class="lg:w-sidebar lg:shrink-0">
