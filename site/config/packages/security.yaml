@@ -15,6 +15,11 @@ security:
         dev:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+        # docs.vashfindir.ru -- только заглушка и 301 на основной сайт (DocsStubController):
+        # без firewall вход в админку на этом хосте невозможен, сессия не стартует.
+        docs:
+            host: ^docs\.vashfindir\.ru$
+            security: false
         # Только /admin: публичный сайт в firewall не попадает и сессию не стартует.
         admin:
             pattern: ^/admin
