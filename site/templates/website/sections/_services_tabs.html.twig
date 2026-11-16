@@ -2,56 +2,64 @@
     «Что входит»: вкладки с услугами (components/_tab_list + scripts/website/tabs.js).
     Аргументы: id, title, cta {label, href},
     items [{short, kicker, title, heading, bullets [], product, tone ('accent' | 'light'),
-            person {photo, photo_webp, alt} | screen {image, alt}}].
+            person {photo, photo_webp, alt} | screen {image, alt} -- PNG/WebP с прозрачным фоном в /assets/screens/}].
     Панели лежат в одной ячейке сетки: высота блока равна самой высокой панели, переключение не сдвигает страницу.
+    Раскладка: до md -- текст, картинка, кнопка во всю ширину; md -- картинка под текстом справа; с lg -- картинка у правого края карточки.
 #}
 {% set tones = {
     accent: 'dark bg-accent-fill text-fg',
     light: 'bg-cobalt-100 text-fg',
 } %}
-<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="services-tabs">
+{% set chips = {
+    accent: 'bg-white/20',
+    light: 'bg-navy-900/10',
+} %}
+<section class="bg-surface pt-16 pb-10 lg:pt-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="services-tabs">
     <div class="mx-auto w-full max-w-container px-4 md:px-8">
-        <h2 class="mb-8 font-display type-t2-article text-fg md:mb-12 md:type-t2" id="{{ id }}-title">{{ title }}</h2>
-        <div class="grid gap-6 lg:grid-cols-3 lg:gap-8" data-vf-tabs>
+        <h2 class="mb-4 font-display type-t2-article text-balance text-fg md:mb-12 md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
+        <div class="grid gap-4 lg:grid-cols-3 lg:gap-5" data-vf-tabs>
             {% include 'website/components/_tab_list.html.twig' with {id: id, label: title, tabs: items} only %}
             <div class="grid gap-6 lg:col-span-2" data-vf-tabpanels>
                 {% for item in items %}
-                    <div class="{{ tones[item.tone]|default(tones.accent) }} grid overflow-hidden rounded-xl md:grid-cols-2" role="tabpanel" id="{{ id }}-panel-{{ loop.index }}" aria-labelledby="{{ id }}-tab-{{ loop.index }}" tabindex="0">
-                        <div class="flex flex-col gap-6 p-6 md:p-10">
-                            <h3 class="font-display type-t2-article text-fg">{{ item.heading }}</h3>
-                            <ul class="flex flex-col gap-3">
+                    {% set tone = tones[item.tone] is defined ? item.tone : 'accent' %}
+                    <div class="{{ tones[tone] }} relative flex aspect-8/15 flex-col overflow-hidden rounded-xl md:aspect-4/5 lg:block lg:aspect-9/7" role="tabpanel" id="{{ id }}-panel-{{ loop.index }}" aria-labelledby="{{ id }}-tab-{{ loop.index }}" tabindex="0">
+                        <div class="relative z-10 flex flex-col items-start gap-4 px-5 pt-6 md:max-w-modal-md md:gap-6 md:p-10 lg:w-3/5 lg:max-w-none">
+                            <h3 class="font-display text-balance text-fg">
+                                <span class="type-t3 md:hidden">{{ item.title }}</span>
+                                <span class="hidden type-t2 md:inline">{{ item.heading }}</span>
+                            </h3>
+                            <ul class="flex list-disc flex-col gap-2 pl-5 type-t6 text-fg md:type-t5">
                                 {% for bullet in item.bullets %}
-                                    <li class="flex gap-3 type-t5 text-fg">
-                                        {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'mt-1 size-icon-md shrink-0 text-accent'} only %}
-                                        <span>{{ bullet }}</span>
-                                    </li>
+                                    <li>{{ bullet }}</li>
                                 {% endfor %}
                             </ul>
-                            <div class="mt-auto flex flex-col items-start gap-4">
-                                <p class="flex flex-col gap-2">
-                                    <span class="type-t7 font-medium text-fg-muted">Продукт</span>
-                                    <span class="rounded-full bg-surface-muted px-3 py-1 type-t6 font-semibold text-fg">{{ item.product }}</span>
-                                </p>
-                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', full_mobile: true} only %}
+                            <p class="flex flex-col items-start gap-2">
+                                <span class="hidden type-t6 font-medium text-fg-secondary md:block">Продукт</span>
+                                <span class="inline-flex min-h-control-sm items-center rounded-full px-4 type-t7 font-semibold text-fg md:min-h-control-md md:type-t6 md:font-semibold {{ chips[tone] }}">{{ item.product }}</span>
+                            </p>
+                            <div class="hidden md:block">
+                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', arrow: true} only %}
                             </div>
                         </div>
-                        {% if item.person|default(null) %}
-                            <div class="flex items-end justify-center px-6 pt-2 md:pt-10">
-                                <div class="w-1/2 md:w-full">
-                                    {% include 'website/components/_portrait.html.twig' with {
-                                        src: item.person.photo,
-                                        webp_base: item.person.photo_webp|default(null),
-                                        alt: item.person.alt,
-                                        class: 'block h-auto w-full',
-                                        sizes: '(min-width: 1024px) 380px, 75vw',
-                                    } only %}
-                                </div>
-                            </div>
-                        {% elseif item.screen|default(null) %}
-                            <div class="flex items-center p-6 pt-0 md:-mr-24 md:p-10 md:pl-0">
-                                {% include 'website/components/_screen.html.twig' with {image: item.screen.image, alt: item.screen.alt} only %}
-                            </div>
-                        {% endif %}
+                        <div class="relative mt-auto aspect-3/2 shrink-0 overflow-hidden md:aspect-auto lg:static">
+                            {% if item.person|default(null) %}
+                                {% include 'website/components/_portrait.html.twig' with {
+                                    src: item.person.photo,
+                                    webp_base: item.person.photo_webp|default(null),
+                                    alt: item.person.alt,
+                                    class: 'absolute bottom-0 left-1/2 block h-full w-auto max-w-none -translate-x-1/2 md:static md:mr-8 md:ml-auto md:h-auto md:w-2/5 md:translate-x-0 lg:absolute lg:right-0 lg:bottom-0 lg:left-auto lg:m-0 lg:h-4/5 lg:w-auto',
+                                    sizes: '(min-width: 1024px) 380px, (min-width: 768px) 290px, 190px',
+                                } only %}
+                            {% elseif item.screen|default(null) %}
+                                <picture class="contents">
+                                    <source srcset="/assets/screens/{{ item.screen.image }}.webp" type="image/webp">
+                                    <img class="absolute -right-8 -bottom-6 block h-auto w-6/7 max-w-none md:static md:-mt-6 md:-mr-12 md:-mb-4 md:ml-auto md:w-5/8 lg:absolute lg:-right-3/16 lg:-bottom-2 lg:m-0 lg:h-7/10 lg:w-auto" src="/assets/screens/{{ item.screen.image }}.png" alt="{{ item.screen.alt }}" width="{{ item.screen.width|default(1100) }}" height="{{ item.screen.height|default(934) }}" loading="lazy" decoding="async">
+                                </picture>
+                            {% endif %}
+                        </div>
+                        <div class="relative z-10 px-5 pt-4 pb-5 md:hidden">
+                            {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', class: 'w-full'} only %}
+                        </div>
                     </div>
                 {% endfor %}
             </div>

@@ -1,0 +1,54 @@
+{#
+    «Что вы получаете»: недельные отчёты, месячный набор и аналитическая записка.
+    Аргументы: id, title, lead, weekly [{label, title, subtitle, text}], monthly {label, title, items [{title, text}]},
+    note {label, title, text, items [], footnote}.
+    До md -- столбик (недельные → записка → месячный), md -- 2×2 и записка ниже, с lg -- 7/12 и 5/12.
+    Левая сетка -- contents до lg, поэтому её карточки упорядочиваются вместе с запиской.
+#}
+{% set pill = 'self-start rounded-full px-3 py-1 type-t7 font-semibold' %}
+<section class="bg-surface pt-16 pb-10" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="reports">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <div class="mb-10 flex flex-col gap-3 md:mb-12">
+            <h2 class="font-display type-t2-article text-fg md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
+            <p class="max-w-measure type-t4 text-fg-secondary">{{ lead }}</p>
+        </div>
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-12">
+            <div class="contents lg:col-span-7 lg:grid lg:grid-cols-2 lg:gap-5">
+                {% for card in weekly %}
+                    <div class="flex flex-col gap-3 rounded-xl bg-surface-muted p-6 md:p-8">
+                        <span class="{{ pill }} border border-cobalt-200 bg-white text-accent">{{ card.label }}</span>
+                        <h3 class="font-display type-t8 text-fg">{{ card.title }}</h3>
+                        <p class="type-t5 font-semibold text-fg">{{ card.subtitle }}</p>
+                        <p class="type-t6 text-fg-secondary">{{ card.text }}</p>
+                    </div>
+                {% endfor %}
+                <div class="order-2 flex flex-col gap-4 rounded-xl bg-cobalt-100 p-6 md:order-none md:col-span-2 md:p-8">
+                    <span class="{{ pill }} bg-navy-900 text-white">{{ monthly.label }}</span>
+                    <h3 class="type-t-code text-fg">{{ monthly.title }}</h3>
+                    <ul class="grid gap-3 md:grid-cols-3 md:gap-5">
+                        {% for item in monthly.items %}
+                            <li class="flex flex-col gap-1 border-t border-navy-900/10 pt-3">
+                                <span class="type-t5 font-semibold text-fg">{{ item.title }}</span>
+                                <span class="type-t6 text-fg-secondary">{{ item.text }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="dark order-1 flex flex-col gap-4 rounded-xl bg-surface p-6 text-fg md:order-none md:col-span-2 md:p-8 lg:col-span-5">
+                <span class="{{ pill }} bg-accent-fill text-on-accent">{{ note.label }}</span>
+                <h3 class="font-display type-t8 text-fg">{{ note.title }}</h3>
+                <p class="type-t5 text-fg-secondary">{{ note.text }}</p>
+                <ul class="flex flex-col gap-3">
+                    {% for item in note.items %}
+                        <li class="flex gap-3 type-t6 text-fg">
+                            {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'mt-0.5 size-icon-sm shrink-0 text-cobalt-300'} only %}
+                            <span>{{ item }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p class="mt-auto border-t border-border-subtle pt-4 type-t7 text-accent">{{ note.footnote }}</p>
+            </div>
+        </div>
+    </div>
+</section>

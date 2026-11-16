@@ -2,48 +2,77 @@
     «Преимущества работы»: вкладки, зеркально к «Что входит» -- список справа (components/_tab_list + scripts/website/tabs.js).
     Аргументы: id, title, cta {label, href},
     items [{short, kicker, title, lead (необязательно), text, tone ('ink' | 'accent' | 'light'),
-            screen {image, alt} | person {photo, photo_webp, alt, caption}}].
+            screen {image, width, height, alt} -- PNG/WebP с прозрачным фоном в /assets/screens/ |
+            person {photo, photo_webp | photo_800, alt, caption} -- photo_800: база файлов -800.avif/-800.webp для фото в полный рост}].
+    Раскладка: до md -- карточка без кнопки, экран или строка с аватаром внизу; md -- картинка под текстом и кнопкой;
+    с lg -- текст слева, кнопка внизу, картинка у правого края.
 #}
 {% set tones = {
     ink: 'dark bg-surface text-fg',
     accent: 'dark bg-accent-fill text-fg',
     light: 'bg-cobalt-100 text-fg',
 } %}
-<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="advantages">
+{% set leads = {ink: 'text-cobalt-300', accent: 'text-fg', light: 'text-accent'} %}
+{% set texts = {ink: 'text-fg-secondary', accent: 'text-cobalt-100', light: 'text-fg-secondary'} %}
+{% set rules = {ink: 'border-white/15', accent: 'border-white/15', light: 'border-navy-900/10'} %}
+<section class="bg-surface pt-16 pb-10" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="advantages">
     <div class="mx-auto w-full max-w-container px-4 md:px-8">
-        <h2 class="mb-8 font-display type-t2-article text-fg md:mb-12 md:type-t2" id="{{ id }}-title">{{ title }}</h2>
-        <div class="grid gap-6 lg:grid-cols-3 lg:gap-8" data-vf-tabs>
+        <h2 class="mb-4 font-display type-t2-article text-balance text-fg md:mb-12 md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
+        <div class="grid gap-4 lg:grid-cols-3 lg:gap-5" data-vf-tabs>
             <div class="lg:order-last">
-                {% include 'website/components/_tab_list.html.twig' with {id: id, label: title, tabs: items} only %}
+                {% include 'website/components/_tab_list.html.twig' with {id: id, label: title, tabs: items, mirror: true} only %}
             </div>
             <div class="grid gap-6 lg:col-span-2" data-vf-tabpanels>
                 {% for item in items %}
-                    <div class="{{ tones[item.tone]|default(tones.ink) }} grid overflow-hidden rounded-xl md:grid-cols-2" role="tabpanel" id="{{ id }}-panel-{{ loop.index }}" aria-labelledby="{{ id }}-tab-{{ loop.index }}" tabindex="0">
-                        <div class="flex flex-col gap-4 p-6 md:p-10">
-                            <h3 class="font-display type-t2-article text-fg">{{ item.title }}</h3>
-                            {% if item.lead|default(null) %}<p class="type-t4 font-semibold text-accent">{{ item.lead }}</p>{% endif %}
-                            <p class="type-t5 text-fg-secondary">{{ item.text }}</p>
-                            <div class="mt-auto pt-4">
-                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', full_mobile: true} only %}
-                            </div>
+                    {% set tone = tones[item.tone] is defined ? item.tone : 'ink' %}
+                    <div class="{{ tones[tone] }} relative flex aspect-3/4 flex-col gap-3 overflow-hidden rounded-xl px-5 pt-6 pb-5 md:aspect-6/7 md:gap-10 md:p-12 lg:aspect-11/10 lg:justify-between" role="tabpanel" id="{{ id }}-panel-{{ loop.index }}" aria-labelledby="{{ id }}-tab-{{ loop.index }}" tabindex="0">
+                        <div class="relative z-10 flex flex-col items-start gap-3 md:gap-6 lg:w-11/20">
+                            <h3 class="font-display type-t3 text-balance text-fg md:type-t2-article">{{ item.title }}</h3>
+                            {% if item.lead|default(null) %}<p class="type-t4 font-semibold {{ leads[tone] }} md:type-t3">{{ item.lead }}</p>{% endif %}
+                            <p class="type-t5 {{ texts[tone] }} md:type-t4">{{ item.text }}</p>
+                        </div>
+                        <div class="relative z-10 hidden md:block">
+                            {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', arrow: true} only %}
                         </div>
                         {% if item.screen|default(null) %}
-                            <div class="flex items-center p-6 pt-0 md:-mr-24 md:p-10 md:pl-0">
-                                {% include 'website/components/_screen.html.twig' with {image: item.screen.image, alt: item.screen.alt} only %}
+                            <div class="relative -mr-5 -mb-5 mt-auto aspect-2/1 shrink-0 md:m-0 md:-mr-24 md:-mb-16 md:aspect-auto lg:absolute lg:inset-0 lg:m-0">
+                                <picture class="contents">
+                                    <source srcset="/assets/screens/{{ item.screen.image }}.webp" type="image/webp">
+                                    <img class="absolute -right-6 -bottom-8 block h-auto w-5/7 max-w-none md:static md:ml-auto md:w-2/3 lg:absolute lg:-right-3/16 lg:bottom-8 lg:w-3/5" src="/assets/screens/{{ item.screen.image }}.png" alt="{{ item.screen.alt }}" width="{{ item.screen.width }}" height="{{ item.screen.height }}" loading="lazy" decoding="async">
+                                </picture>
                             </div>
                         {% elseif item.person|default(null) %}
-                            <figure class="flex flex-col items-center justify-end gap-3 px-6 pt-2 md:pt-10">
-                                <div class="w-1/2 md:w-full">
+                            {# До md -- строка с аватаром и подписью; с md -- фото у нижнего края карточки. #}
+                            <p class="mt-auto flex items-center gap-3 border-t pt-4 type-t6 font-semibold text-fg md:hidden {{ rules[tone] }}">
+                                <span class="size-12 shrink-0 overflow-hidden rounded-full bg-cobalt-100" aria-hidden="true">
+                                    {% include 'website/components/_portrait.html.twig' with {
+                                        src: item.person.avatar|default(item.person.photo),
+                                        webp_base: item.person.avatar_webp|default(item.person.photo_webp|default(null)),
+                                        alt: '',
+                                        class: 'size-full object-cover object-top',
+                                        sizes: '48px',
+                                    } only %}
+                                </span>
+                                {{ item.person.caption }}
+                            </p>
+                            <div class="hidden md:-mr-2 md:-mb-11 md:mt-auto md:block lg:absolute lg:inset-0 lg:m-0">
+                                {% set person_class = 'block h-auto max-w-none md:ml-auto md:w-1/3 lg:absolute lg:-right-5 lg:bottom-0 lg:h-4/5 lg:w-auto' %}
+                                {% if item.person.photo_800|default(null) %}
+                                    <picture>
+                                        <source srcset="{{ item.person.photo_800 }}-800.avif" type="image/avif">
+                                        <source srcset="{{ item.person.photo_800 }}-800.webp" type="image/webp">
+                                        <img class="{{ person_class }}" src="{{ item.person.photo }}" alt="{{ item.person.alt }}" width="1122" height="1402" loading="lazy" decoding="async">
+                                    </picture>
+                                {% else %}
                                     {% include 'website/components/_portrait.html.twig' with {
                                         src: item.person.photo,
                                         webp_base: item.person.photo_webp|default(null),
                                         alt: item.person.alt,
-                                        class: 'block h-auto w-full',
-                                        sizes: '(min-width: 1024px) 380px, 75vw',
+                                        class: person_class,
+                                        sizes: '(min-width: 1024px) 460px, 260px',
                                     } only %}
-                                </div>
-                                {% if item.person.caption|default(null) %}<figcaption class="sr-only">{{ item.person.caption }}</figcaption>{% endif %}
-                            </figure>
+                                {% endif %}
+                            </div>
                         {% endif %}
                     </div>
                 {% endfor %}

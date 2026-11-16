@@ -1,16 +1,25 @@
 {#
     Список вкладок для секций с переключением (sections/_services_tabs, sections/_advantages).
-    Аргументы: id -- префикс id секции, label -- подпись для скринридера, tabs [{short, kicker, title}].
-    На мобильном -- сегменты с коротким названием (3 в ряд или 2×2), с lg -- карточки с заголовком.
+    Аргументы: id -- префикс id секции, label -- подпись для скринридера, tabs [{short, kicker, title}],
+    mirror (true -- список справа от карточки: стрелки смотрят влево).
+    До md -- сегменты с коротким названием (3 в ряд или 2×2), md -- сегменты с kicker, с lg -- карточки с заголовком.
+    Иконка карточки меняется через group-aria-selected: стрелка у активной, «наружу» у неактивной.
     Без JS список скрыт (hidden) и видны все панели подряд; scripts/website/tabs.js показывает список и переключает панели.
 #}
-{% set columns = {2: 'grid-cols-2', 3: 'grid-cols-3', 4: 'grid-cols-2'}[tabs|length]|default('grid-cols-2') %}
+{% set columns = {2: 'grid-cols-2', 3: 'grid-cols-3', 4: 'grid-cols-2 md:grid-cols-4'}[tabs|length]|default('grid-cols-2') %}
+{% set active_icon = mirror|default(false) ? 'arrow-left' : 'arrow-right' %}
+{% set idle_icon = mirror|default(false) ? 'arrow-up-left' : 'arrow-up-right' %}
 <div class="grid {{ columns }} gap-1 rounded-lg bg-surface-muted p-1 lg:flex lg:flex-col lg:gap-3 lg:bg-transparent lg:p-0" role="tablist" aria-label="{{ label }}" hidden data-vf-tablist>
     {% for tab in tabs %}
-        <button class="flex min-h-control-lg items-center justify-center rounded-md px-2 type-t6 font-semibold text-fg-secondary transition-colors duration-fast motion-reduce:transition-none focus-visible:shadow-focus aria-selected:bg-surface aria-selected:text-accent aria-selected:shadow-sm lg:flex-col lg:items-start lg:justify-start lg:gap-2 lg:rounded-lg lg:border-2 lg:border-transparent lg:bg-surface-muted lg:p-6 lg:text-left lg:text-fg lg:aria-selected:border-accent lg:aria-selected:bg-surface lg:aria-selected:shadow-none" type="button" role="tab" id="{{ id }}-tab-{{ loop.index }}" aria-controls="{{ id }}-panel-{{ loop.index }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" tabindex="{{ loop.first ? '0' : '-1' }}">
-            <span class="lg:hidden">{{ tab.short }}</span>
-            <span class="hidden type-t7 font-semibold text-fg-muted lg:block">{{ tab.kicker }}</span>
-            <span class="hidden type-t3 lg:block">{{ tab.title }}</span>
+        <button class="group flex min-h-control-touch items-center justify-center rounded-md px-2 type-t6 font-semibold whitespace-nowrap text-fg-secondary transition-colors duration-fast motion-reduce:transition-none focus-visible:shadow-focus aria-selected:bg-surface aria-selected:text-accent aria-selected:shadow-sm lg:flex-col lg:items-stretch lg:justify-start lg:gap-3 lg:rounded-lg lg:border-2 lg:border-transparent lg:bg-surface-muted lg:p-6 lg:text-left lg:font-normal lg:whitespace-normal lg:text-fg lg:aria-selected:border-accent lg:aria-selected:bg-surface lg:aria-selected:shadow-none" type="button" role="tab" id="{{ id }}-tab-{{ loop.index }}" aria-controls="{{ id }}-panel-{{ loop.index }}" aria-selected="{{ loop.first ? 'true' : 'false' }}" tabindex="{{ loop.first ? '0' : '-1' }}">
+            <span class="md:hidden">{{ tab.short }}</span>
+            <span class="hidden md:inline lg:hidden">{{ tab.kicker }}</span>
+            <span class="hidden items-center justify-between gap-3 type-t6 font-medium text-fg-secondary lg:flex">
+                {{ tab.kicker }}
+                {% include 'website/components/_icon.html.twig' with {name: active_icon, class: 'hidden size-icon-sm shrink-0 text-accent group-aria-selected:block'} only %}
+                {% include 'website/components/_icon.html.twig' with {name: idle_icon, class: 'size-icon-sm shrink-0 group-aria-selected:hidden'} only %}
+            </span>
+            <span class="hidden type-t3 font-medium text-fg group-aria-selected:text-accent lg:block">{{ tab.title }}</span>
         </button>
     {% endfor %}
 </div>

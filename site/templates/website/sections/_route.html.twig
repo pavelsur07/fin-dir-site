@@ -16,11 +16,11 @@
     finish: 'border-border text-fg',
     next: 'border-dashed border-cobalt-300 text-accent',
 } %}
-<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="route">
+<section class="bg-surface pt-16 pb-10" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="route">
     <div class="mx-auto w-full max-w-container px-4 md:px-8">
         <div class="mb-10 flex flex-col gap-6 md:mb-12 lg:flex-row lg:items-end lg:justify-between">
             <div class="flex flex-col gap-3">
-                <h2 class="font-display type-t2-article text-fg md:type-t2" id="{{ id }}-title">{{ title }}</h2>
+                <h2 class="font-display type-t2-article text-fg md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
                 {% if subtitle|default(null) %}<p class="max-w-measure type-t4 text-fg-secondary">{{ subtitle }}</p>{% endif %}
             </div>
             {% if eta|default(null) %}
