@@ -47,7 +47,7 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
             if ('/' === $path) {
                 // Состав главной (ноябрь 2026): секции из макета, прежние секции на главной не подключены.
-                foreach (['home-hero-title', 'home-services-title', 'home-advantages-title', 'home-route-title', 'home-integrations-title', 'home-team-title', 'home-faq-title', 'lead-form-title'] as $titleId) {
+                foreach (['home-hero-title', 'home-services-title', 'home-advantages-title', 'home-route-title', 'home-reports-title', 'home-integrations-title', 'home-team-title', 'home-faq-title', 'lead-form-title'] as $titleId) {
                     self::assertSelectorExists('main section[aria-labelledby="'.$titleId.'"]', $titleId);
                 }
                 self::assertSelectorExists('main section[data-vf-section="trust-strip"]');
