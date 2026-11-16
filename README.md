@@ -126,9 +126,8 @@ Production-окружение описано в `docker-compose.prod.yml`. Дл�
 
 Reverse-proxy хоста вынесен в `infra/traefik/` — см. README там.
 
-Документация SaaS на `docs.vashfindir.ru` запускается отдельным стеком Docmost:
-см. [docmost/README.md](docmost/README.md). Проверки — `make docmost-check` и
-`make docmost-smoke`; первый запуск закрыт до создания владельца workspace.
+`docs.vashfindir.ru` обслуживает тот же Symfony: на `/` — заглушка «База знаний
+в разработке», остальные пути — 301 на тот же путь `vashfindir.ru`.
 
 ### Выкатка без простоя
 
