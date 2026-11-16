@@ -46,6 +46,7 @@ final class WebsiteSeoTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $types = [];
+        $faqQuestions = [];
         foreach ($crawler->filter('script[type="application/ld+json"]') as $node) {
             $documents = json_decode((string) $node->textContent, true);
             self::assertIsArray($documents, 'JSON-LD должен быть валидным JSON');
@@ -58,6 +59,9 @@ final class WebsiteSeoTest extends WebTestCase
                 if ('Service' === $type) {
                     self::assertSame('Управленческий учёт и финансовое планирование для бизнеса', $document['serviceType'] ?? null);
                 }
+                if ('FAQPage' === $type) {
+                    $faqQuestions = array_map(static fn (array $question): string => $question['name'], $document['mainEntity'] ?? []);
+                }
             }
         }
 
@@ -65,7 +69,12 @@ final class WebsiteSeoTest extends WebTestCase
             self::assertContains($expectedType, $types);
         }
         // FAQPage допустим только при видимом FAQ: вопросы разметки совпадают с вопросами секции.
-        self::assertSelectorCount(8, 'section[aria-labelledby="home-faq-title"] details > summary');
+        $summaries = $crawler->filter('section[data-vf-section="faq-split"][aria-labelledby="home-faq-title"] details > summary');
+        self::assertCount(7, $summaries);
+        self::assertSame($faqQuestions, $summaries->each(static fn ($summary): string => trim($summary->text())));
+        // Эксклюзивный аккордеон без JS: открыт только первый вопрос.
+        self::assertSelectorCount(1, 'section[aria-labelledby="home-faq-title"] details[name="home-faq"][open]');
+        self::assertSelectorCount(7, 'section[aria-labelledby="home-faq-title"] details[name="home-faq"]');
     }
 
     public function testSitemapExcludesNoindexLegalPages(): void

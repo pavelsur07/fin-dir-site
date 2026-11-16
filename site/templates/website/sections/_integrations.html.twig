@@ -3,30 +3,35 @@
     Аргументы: id, title, heading, text, cta {label, href}, label (подпись над сеткой),
     logos [{name, src, size ('sm' | 'md' | 'lg', по умолчанию md)} -- SVG в /assets/integrations/ | {name} без src -- плитка с названием текстом].
     size выравнивает визуальный вес: широкие логотипы -- sm, высокие -- lg.
+    С lg -- сетка 5 колонок: текст 2, логотипы 3 (4 плитки в ряд помещаются и на 1024 px). Полосы декоративные, aria-hidden.
 #}
-<section class="bg-surface py-16 md:py-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="integrations">
+<section class="bg-surface pt-16 pb-10" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="integrations">
     <div class="mx-auto w-full max-w-container px-4 md:px-8">
-        <h2 class="mb-8 font-display type-t2-article text-fg md:mb-12 md:type-t2" id="{{ id }}-title">{{ title }}</h2>
-        <div class="relative isolate grid gap-8 overflow-hidden rounded-xl bg-cobalt-100 p-6 md:p-10 lg:grid-cols-2 lg:items-center lg:gap-12 lg:p-12">
-            <div class="absolute inset-y-0 left-1/2 hidden w-1/6 -skew-x-12 bg-cobalt-200 lg:block" aria-hidden="true"></div>
-            <div class="flex flex-col items-start gap-6">
-                <h3 class="font-display type-t2-article text-fg">{{ heading }}</h3>
-                <p class="max-w-lead type-t5 text-fg-secondary">{{ text }}</p>
-                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'primary', full_mobile: true} only %}
+        <h2 class="mb-5 font-display type-t2-article text-fg md:mb-12 md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
+        <div class="relative isolate overflow-hidden rounded-xl bg-surface-muted lg:grid lg:grid-cols-5">
+            <div class="absolute top-1/2 -bottom-1/10 left-3/10 w-9/10 -skew-x-12 bg-cobalt-100 md:hidden" aria-hidden="true"></div>
+            <div class="relative flex flex-col items-start justify-center gap-5 px-5 pt-8 md:gap-6 md:px-12 md:pt-16 md:pb-10 lg:col-span-2 lg:pb-16">
+                <h3 class="font-display type-t3 text-fg md:type-t2">{{ heading }}</h3>
+                <p class="max-w-lead type-t5 text-fg-secondary md:type-t4">{{ text }}</p>
+                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'primary', size: 'xl', arrow: true, full_mobile: true} only %}
             </div>
-            <div class="flex flex-col gap-3">
-                <p class="self-start rounded-full bg-surface px-3 py-1 type-t7 font-semibold text-fg-secondary">{{ label }}</p>
-                <ul class="grid grid-cols-2 gap-3 md:grid-cols-4">
-                    {% for logo in logos %}
-                        <li class="flex h-control-xl items-center justify-center rounded-lg bg-surface px-4 md:h-16">
-                            {% if logo.src|default(null) %}
-                                <img class="{{ {sm: 'h-5', md: 'h-6', lg: 'h-10'}[logo.size|default('md')]|default('h-6') }} w-auto max-w-full" src="{{ logo.src }}" alt="{{ logo.name }}" loading="lazy" decoding="async">
-                            {% else %}
-                                <span class="type-t6 font-semibold text-fg">{{ logo.name }}</span>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+            <div class="relative px-5 pt-6 pb-6 md:flex md:items-center md:justify-center md:overflow-hidden md:px-12 md:py-16 lg:col-span-3 lg:px-6">
+                <div class="absolute -top-1/10 -bottom-1/10 left-7/50 hidden w-2/5 -skew-x-12 bg-cobalt-100 md:block" aria-hidden="true"></div>
+                <div class="absolute -top-1/10 -bottom-1/10 left-3/5 hidden w-7/10 -skew-x-12 bg-cobalt-200 md:block" aria-hidden="true"></div>
+                <div class="relative flex flex-col items-start gap-4 md:w-full md:items-center md:gap-5">
+                    <p class="inline-flex min-h-control-sm items-center rounded-full border border-border-subtle bg-surface px-3 type-t7 font-semibold text-fg-secondary md:type-t6 md:font-semibold" id="{{ id }}-label">{{ label }}</p>
+                    <ul class="grid w-full grid-cols-2 gap-3 md:grid-cols-4" aria-labelledby="{{ id }}-label">
+                        {% for logo in logos %}
+                            <li class="{{ logo.src|default(null) ? 'border-border-subtle' : 'border-dashed border-border-strong' }} flex h-16 items-center justify-center rounded-lg border bg-surface px-4 shadow-sm lg:h-24">
+                                {% if logo.src|default(null) %}
+                                    <img class="{{ {sm: 'h-5', md: 'h-6', lg: 'h-8 lg:h-10'}[logo.size|default('md')]|default('h-6') }} w-auto max-w-full" src="{{ logo.src }}" alt="{{ logo.name }}" loading="lazy" decoding="async">
+                                {% else %}
+                                    <span class="type-t6 font-semibold text-fg">{{ logo.name }}</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

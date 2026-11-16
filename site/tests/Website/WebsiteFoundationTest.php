@@ -56,6 +56,10 @@ final class WebsiteFoundationTest extends WebTestCase
                 }
                 self::assertSelectorCount(4, 'main section[aria-labelledby="home-team-title"] li');
                 self::assertSelectorCount(1, 'main section[aria-labelledby="home-team-title"] img[alt="Павел Новиков, управляющий партнёр"]');
+                // Все кнопки-ссылки главной ведут к форме заявки.
+                $buttonLinks = $client->getCrawler()->filter('main a[data-vf-component="button"]');
+                self::assertGreaterThan(0, $buttonLinks->count());
+                self::assertSame(['#lead-form'], array_values(array_unique($buttonLinks->each(static fn ($link): string => (string) $link->attr('href')))));
             }
             // Главная и страницы с шапкой (Page Header) имеют полноширинную секцию; текст остальных страниц остаётся в общем контейнере.
             // /cases: тёмный hero -- Page Header внутри обёртки .dark.

@@ -1,20 +1,30 @@
+{#
+    Кнопка или ссылка-кнопка.
+    Аргументы: label, href | type, variant ('primary' | 'secondary' | 'inverse'), size ('lg' | 'md' | 'md_tight' | 'xl'),
+    arrow (true -- стрелка → после текста), class, full_mobile, id, aria_label.
+    inverse -- белая кнопка главного действия на цветной карточке (bg-accent-fill или тёмной); в .dark акцент светлый,
+    поэтому текст там задан примитивом cobalt-600.
+#}
 {% set variant = variant|default('secondary') %}
 {% set variants = {
     primary: 'bg-accent-fill text-on-accent hover:bg-accent-fill-hover active:bg-accent-fill-active',
     secondary: 'border border-navy-900 bg-surface text-navy-900 hover:bg-surface-muted dark:border-white dark:bg-transparent dark:text-white dark:hover:bg-navy-700',
+    inverse: 'bg-white text-accent hover:bg-cobalt-50 active:bg-cobalt-100 dark:text-cobalt-600 dark:hover:bg-cobalt-100 dark:active:bg-cobalt-200',
 } %}
-{# Размер текста можно менять, а минимальная высота и отступы едины для всех кнопок. #}
+{# Размер задаёт текст и высоту; отступы и минимальная высота едины для lg/md, xl -- крупная кнопка первого экрана и карточек. #}
 {% set sizes = {
-    lg: 'type-t5',
-    md: 'type-t6',
-    md_tight: 'type-t6',
+    lg: 'min-h-11 px-5 type-t5',
+    md: 'min-h-11 px-5 type-t6',
+    md_tight: 'min-h-11 px-5 type-t6',
+    xl: 'min-h-control-lg px-6 type-t5',
 } %}
-{% set classes = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 font-semibold no-underline transition-colors duration-fast motion-reduce:transition-none focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-50 ' ~ sizes[size|default('lg')]|default(sizes.lg) ~ ' ' ~ variants[variant]|default(variants.secondary) %}
+{% set classes = 'inline-flex items-center justify-center gap-2 rounded-md font-semibold no-underline transition-colors duration-fast motion-reduce:transition-none focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-50 ' ~ sizes[size|default('lg')]|default(sizes.lg) ~ ' ' ~ variants[variant]|default(variants.secondary) %}
 {% if class|default(null) %}{% set classes = classes ~ ' ' ~ class %}{% endif %}
 {% if full_mobile|default(false) %}{% set classes = classes ~ ' w-full md:w-auto' %}{% endif %}
+{% set icon %}{% if arrow|default(false) %}{% include 'website/components/_icon.html.twig' with {name: 'arrow-right', class: 'size-icon-sm shrink-0'} only %}{% endif %}{% endset %}
 
 {% if href|default(null) %}
-    <a class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %}{% if aria_label|default(null) %} aria-label="{{ aria_label }}"{% endif %} href="{{ href }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}</a>
+    <a class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %}{% if aria_label|default(null) %} aria-label="{{ aria_label }}"{% endif %} href="{{ href }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}{{ icon }}</a>
 {% else %}
-    <button class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %}{% if aria_label|default(null) %} aria-label="{{ aria_label }}"{% endif %} type="{{ type|default('button') }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}</button>
+    <button class="{{ classes }}"{% if id|default(null) %} id="{{ id }}"{% endif %}{% if aria_label|default(null) %} aria-label="{{ aria_label }}"{% endif %} type="{{ type|default('button') }}" data-vf-component="button" data-vf-variant="{{ variant }}">{{ label }}{{ icon }}</button>
 {% endif %}

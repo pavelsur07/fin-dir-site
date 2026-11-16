@@ -27,16 +27,35 @@ final class LeadSubmitTest extends WebTestCase
         $crawler = $this->client->request('GET', '/');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorExists('form[data-vf-lead-form][method="post"][action="/lead"] button[type="submit"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="excursion"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="contact_type"][value="phone"][checked]');
+        // Главная: консультация по макету -- имя, один контакт и согласие; контракт POST /lead прежний.
+        self::assertSelectorCount(1, 'form[data-vf-lead-form]');
+        self::assertSelectorExists('#lead-form form[data-vf-lead-form][method="post"][action="/lead"] button[type="submit"]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="consultation"]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="_token"]');
         self::assertSelectorExists('form[data-vf-lead-form] input[name="website"][tabindex="-1"]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="name"][required]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="contact"][required]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="agreement"][required]');
+        self::assertSelectorNotExists('form[data-vf-lead-form] [name="task"]');
+        self::assertSelectorNotExists('form[data-vf-lead-form] input[name="contact_type"]');
         // Вебвизор Метрики не записывает ввод персональных данных.
-        foreach (['input[name="name"]', 'input[name="contact"]', 'input[name="answers[role_other]"]'] as $field) {
+        foreach (['input[name="name"]', 'input[name="contact"]'] as $field) {
             self::assertSelectorExists('form[data-vf-lead-form] '.$field.'.ym-disable-keys');
         }
         self::assertStringNotContainsString('демо-режиме', $crawler->filter('main')->text());
         self::assertSame([], $this->client->getResponse()->headers->getCookies());
+    }
+
+    public function testExcursionFormKeepsContactTypeAndPrivateFields(): void
+    {
+        $this->client->request('GET', '/services/finansovyy-direktor-na-autsorsinge');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="excursion"]');
+        self::assertSelectorExists('form[data-vf-lead-form] input[name="contact_type"][value="phone"][checked]');
+        foreach (['input[name="name"]', 'input[name="contact"]', 'input[name="answers[role_other]"]'] as $field) {
+            self::assertSelectorExists('form[data-vf-lead-form] '.$field.'.ym-disable-keys');
+        }
     }
 
     public function testValidSubmissionIsStored(): void

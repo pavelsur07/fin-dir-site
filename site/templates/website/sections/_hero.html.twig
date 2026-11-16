@@ -1,43 +1,44 @@
 {#
     Первый экран главной. Показатели доверия вынесены в sections/_trust_strip.
-    Аргументы: chips [строки], lead, note, primary {label, href}, secondary {label, href}, badge {title, text}.
+    Аргументы: chips [строки] -- метки внизу карточки, последняя выделена; lead, note, primary {label, href}, badge {title, text}.
+    С md весь экран -- одна карточка; на мобильном текст над карточкой, в карточке фото и метки-пилюли.
 #}
-<section class="overflow-hidden bg-surface text-fg" aria-labelledby="home-hero-title" data-vf-section="hero">
-    <div class="mx-auto grid w-full max-w-container items-center gap-10 px-4 pt-8 pb-12 md:px-8 lg:grid-cols-2 lg:gap-12 lg:py-16">
-        <div class="relative z-10 flex min-w-0 flex-col gap-6">
-            {% if chips|default([]) is not empty %}
-                <ul class="flex flex-wrap gap-2">
+<section class="bg-surface text-fg" aria-labelledby="home-hero-title" data-vf-section="hero">
+    <div class="mx-auto w-full max-w-container px-4 pt-6 md:px-8 md:pt-8">
+        <div class="md:overflow-hidden md:rounded-xl md:border md:border-border-subtle md:bg-surface-muted lg:grid lg:grid-cols-2">
+            <div class="relative z-10 flex min-w-0 flex-col items-start gap-5 md:gap-6 md:px-8 md:pt-16 md:pb-12">
+                <h1 class="font-display type-t2-article text-balance text-fg md:type-t2 lg:type-t1" id="home-hero-title"><span class="md:block md:whitespace-nowrap">Финансовый директор,</span> <span class="md:block md:whitespace-nowrap">который помогает</span> <span class="md:block md:whitespace-nowrap">зарабатывать <span class="text-accent">больше</span></span></h1>
+                <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
+                {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, variant: 'primary', size: 'xl', full_mobile: true} only %}
+                {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-secondary">{{ note }}</p>{% endif %}
+            </div>
+
+            {# На мобильном -- отдельная карточка с фото и метками; с md обёртка исчезает (contents), её блоки встают в общую карточку. #}
+            <div class="mt-6 overflow-hidden rounded-xl border border-border-subtle bg-surface-muted md:contents">
+                {# Фото на наклонных полосах: полосы декоративные, aria-hidden. #}
+                <div class="relative isolate aspect-square overflow-hidden md:aspect-4/3 lg:aspect-auto">
+                    <div class="absolute -top-1/10 -bottom-1/10 left-3/50 w-11/25 -skew-x-12 bg-cobalt-100" aria-hidden="true"></div>
+                    <div class="absolute -top-1/10 -bottom-1/10 left-14/25 w-7/10 -skew-x-12 bg-cobalt-200" aria-hidden="true"></div>
+                    <picture>
+                        <source srcset="/assets/people/pavel-novikov-800.avif" type="image/avif" width="800" height="1000">
+                        <source srcset="/assets/people/pavel-novikov-800.webp" type="image/webp" width="800" height="1000">
+                        <img class="absolute top-0 left-13/20 h-11/8 w-auto max-w-none -translate-x-1/2 md:top-auto md:bottom-0 md:left-1/2 md:h-11/12 md:-translate-x-2/5" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" fetchpriority="high">
+                    </picture>
+                    {% if badge|default(null) %}
+                        <p class="absolute top-3 left-3 flex w-2/5 flex-col gap-1 rounded-lg bg-surface p-3 shadow-md md:top-auto md:w-1/3 lg:w-2/5 md:bottom-11 md:left-1/20 md:p-4">
+                            <span class="type-t7 font-semibold text-accent">{{ badge.title }}</span>
+                            <span class="type-t6 font-medium text-fg">{{ badge.text }}</span>
+                        </p>
+                    {% endif %}
+                </div>
+                {# Метки: на мобильном -- пилюли, последняя на тёмном фоне; с md -- строка через «•». #}
+                <ul class="flex flex-wrap gap-2 border-t border-border-subtle p-4 type-t7 font-medium text-fg-secondary md:items-center md:gap-x-3 md:gap-y-1 md:px-8 lg:col-span-2" aria-label="Для кого">
                     {% for chip in chips %}
-                        <li class="rounded-full bg-surface-muted px-3 py-1 type-t7 font-semibold text-fg-secondary">{{ chip }}</li>
+                        {% if not loop.first %}<li class="hidden md:block" aria-hidden="true">•</li>{% endif %}
+                        <li class="{{ loop.last ? 'dark inline-flex min-h-control-sm items-center rounded-full border border-surface bg-surface px-3 font-semibold text-fg md:min-h-0 md:border-0 md:bg-transparent md:px-0 md:font-bold md:text-navy-900' : 'inline-flex min-h-control-sm items-center rounded-full border border-border-subtle bg-surface px-3 md:min-h-0 md:border-0 md:bg-transparent md:px-0' }}">{{ chip }}</li>
                     {% endfor %}
                 </ul>
-            {% endif %}
-            <h1 class="font-display text-balance type-t2 text-fg md:type-t1" id="home-hero-title"><span class="xl:whitespace-nowrap">Финансовый директор,</span> который помогает зарабатывать <span class="text-accent">больше</span></h1>
-            <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
-            <div class="flex flex-col gap-3 md:flex-row md:flex-wrap">
-                {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, variant: 'primary', full_mobile: true} only %}
-                {% if secondary|default(null) %}
-                    {% include 'website/components/_button.html.twig' with {label: secondary.label, href: secondary.href, variant: 'secondary', full_mobile: true} only %}
-                {% endif %}
             </div>
-            {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-muted">{{ note }}</p>{% endif %}
-        </div>
-
-        {# Фото на синей панели с наклонными полосами: полосы декоративные, aria-hidden. #}
-        <div class="relative isolate mx-auto aspect-square w-full max-w-lead overflow-hidden rounded-xl bg-cobalt-100 lg:max-w-none">
-            <div class="absolute inset-y-0 left-1/4 w-1/4 -skew-x-12 bg-cobalt-200" aria-hidden="true"></div>
-            <div class="absolute inset-y-0 left-1/2 w-1/6 -skew-x-12 bg-cobalt-50" aria-hidden="true"></div>
-            <picture>
-                <source srcset="/assets/people/pavel-novikov-800.avif" type="image/avif" width="800" height="1000">
-                <source srcset="/assets/people/pavel-novikov-800.webp" type="image/webp" width="800" height="1000">
-                <img class="absolute bottom-0 left-3/5 h-11/12 w-auto max-w-none -translate-x-1/2" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" fetchpriority="high">
-            </picture>
-            {% if badge|default(null) %}
-                <p class="absolute top-4 left-4 flex max-w-1/2 flex-col gap-1 rounded-lg bg-surface p-4 shadow-md md:top-6 md:left-6">
-                    <span class="type-t7 font-semibold text-accent">{{ badge.title }}</span>
-                    <span class="type-t6 font-semibold text-fg">{{ badge.text }}</span>
-                </p>
-            {% endif %}
         </div>
     </div>
 </section>
