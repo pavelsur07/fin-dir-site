@@ -22,6 +22,9 @@ final class LeadModalTest extends WebTestCase
         // Анонимный GET с окном не стартует сессию: CSRF формы stateless.
         self::assertSame([], $client->getResponse()->headers->getCookies());
         self::assertSelectorCount(1, self::MODAL);
+        // Цель фокуса при автопоказе на сенсорных экранах (клавиатура не поднимается).
+        self::assertSelectorExists(self::MODAL.'[tabindex="-1"]');
+        self::assertSelectorTextContains(self::MODAL.' [data-vf-lead-modal-response-time]', 'Перезвоним в течение 2 часов в рабочее время');
         self::assertSelectorNotExists('main '.self::MODAL);
         $form = self::MODAL.' form[data-vf-lead-form][method="post"][action="/lead"][data-vf-form-key="popup"]';
         self::assertSelectorExists($form.' input[name="form"][value="popup"]');

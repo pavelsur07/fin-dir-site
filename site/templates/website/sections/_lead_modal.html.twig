@@ -4,7 +4,9 @@
     Вход: facts [{short_value, short_text}] -- глобал vf_trust_facts (общий с полосой доверия главной).
     До lg -- нижняя панель на всю ширину; с lg -- карточка max-w-modal-xl в две колонки (синяя панель 4/7, форма 3/7).
 #}
-<dialog class="m-0 mt-auto w-full max-w-none max-h-11/12 overflow-y-auto overscroll-contain rounded-t-xl border-0 bg-surface p-0 text-fg shadow-lg backdrop:bg-overlay motion-safe:transition-all motion-safe:duration-base motion-safe:ease-out motion-safe:starting:open:translate-y-8 motion-safe:starting:open:opacity-0 lg:m-auto lg:max-w-modal-xl lg:rounded-xl" id="lead-modal" aria-labelledby="lead-modal-title" data-vf-section="lead-modal" data-vf-lead-modal>
+{# Обещанный срок ответа: один текст для строки под кнопкой и экрана успеха. #}
+{% set response_time = 'Перезвоним в течение 2 часов в рабочее время' %}
+<dialog tabindex="-1" class="m-0 mt-auto w-full max-w-none max-h-11/12 overflow-y-auto overscroll-contain rounded-t-xl border-0 bg-surface p-0 text-fg shadow-lg backdrop:bg-overlay motion-safe:transition-all motion-safe:duration-base motion-safe:ease-out motion-safe:starting:open:translate-y-8 motion-safe:starting:open:opacity-0 lg:m-auto lg:max-w-modal-xl lg:rounded-xl" id="lead-modal" aria-labelledby="lead-modal-title" data-vf-section="lead-modal" data-vf-lead-modal>
     <div class="relative lg:grid lg:grid-cols-7">
         <div class="dark relative isolate flex flex-col gap-4 overflow-hidden bg-accent-fill px-5 pt-3 pb-6 text-white lg:col-span-4 lg:gap-5 lg:p-10">
             <div class="absolute -top-1/10 -bottom-1/10 left-29/50 w-13/50 -skew-x-12 bg-white/5" aria-hidden="true"></div>
@@ -54,6 +56,7 @@
                         submit_arrow: true,
                         with_status: false,
                     } only %}
+                    <p class="type-t7 text-center text-fg-secondary" data-vf-lead-modal-response-time>{{ response_time }}</p>
                     <button class="min-h-control-md rounded-md type-t6 font-medium text-fg-secondary hover:text-fg focus-visible:shadow-focus" type="button" data-vf-lead-modal-close>Не сейчас</button>
                     <p class="rounded-md border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
                 </div>
@@ -62,7 +65,7 @@
                         {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'size-icon-md'} only %}
                     </span>
                     <span class="type-t3 font-bold text-fg">Заявка отправлена</span>
-                    <span class="type-t5 text-fg-secondary">Свяжемся в рабочее время и договоримся о времени разбора.</span>
+                    <span class="type-t5 text-fg-secondary">{{ response_time }} и договоримся о времени разбора.</span>
                     {% include 'website/components/_button.html.twig' with {label: 'Закрыть', variant: 'secondary', size: 'md', attrs: {'data-vf-lead-modal-close': ''}} only %}
                 </div>
             </form>

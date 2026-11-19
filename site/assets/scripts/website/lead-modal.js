@@ -9,7 +9,10 @@
     }
 
     const storageKey = 'vf-lead-modal';
-    const repeatAfterMs = 7 * 24 * 60 * 60 * 1000;
+    const dayMs = 24 * 60 * 60 * 1000;
+    // Пауза автопоказа: 7 дней после показа или первого отказа, 30 дней после двух и более отказов.
+    const repeatAfterMs = 7 * dayMs;
+    const repeatAfterDismissalsMs = 30 * dayMs;
     const scrollShare = 0.55;
     const fallbackSeconds = 45;
     // Класс из темы; строка есть в исходнике, который сканирует Tailwind.
@@ -19,17 +22,24 @@
     const fields = dialog.querySelector('[data-vf-lead-modal-fields]');
     const success = dialog.querySelector('[data-vf-lead-success]');
     const nameInput = dialog.querySelector('input[name="name"]');
+    // Мышь и точный указатель: на сенсорных экранах автопоказ не ставит фокус в поле, чтобы не поднимать клавиатуру.
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     let opener = null;
+    let submittedThisOpen = false;
 
-    const trackGoal = (goalName) => {
+    const trackGoal = (goalName, params) => {
         const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
 
         if (typeof window.ym === 'function' && ymId && ymId !== 'YM_COUNTER_ID') {
-            window.ym(ymId, 'reachGoal', goalName);
+            if (params) {
+                window.ym(ymId, 'reachGoal', goalName, params);
+            } else {
+                window.ym(ymId, 'reachGoal', goalName);
+            }
         }
     };
 
-    // {shownAt, submittedAt} в мс. null -- хранилище недоступно: автоматически окно не показываем.
+    // {shownAt, submittedAt, dismissedAt, dismissCount}, время в мс. null -- хранилище недоступно: автоматически окно не показываем.
     const readState = () => {
         try {
             const state = JSON.parse(window.localStorage.getItem(storageKey));
@@ -51,28 +61,46 @@
     const autoShowAllowed = () => {
         const state = readState();
 
-        return state !== null
-            && !state.submittedAt
-            && !(typeof state.shownAt === 'number' && Date.now() - state.shownAt < repeatAfterMs);
+        if (state === null || state.submittedAt) {
+            return false;
+        }
+
+        const dismissCount = typeof state.dismissCount === 'number' ? state.dismissCount : 0;
+        const since = dismissCount > 0 ? state.dismissedAt : state.shownAt;
+        const pause = dismissCount >= 2 ? repeatAfterDismissalsMs : repeatAfterMs;
+
+        return !(typeof since === 'number' && Date.now() - since < pause);
     };
 
-    const open = (source, trigger = null) => {
+    const open = (source, trigger = null, params = undefined) => {
         if (dialog.open) {
             return;
         }
 
         opener = trigger;
+        submittedThisOpen = false;
         fields.hidden = false;
         success.hidden = true;
         document.documentElement.classList.add(scrollLockClass);
         dialog.showModal();
-        nameInput.focus({ preventScroll: true });
+        if (source === 'auto' && !finePointer) {
+            dialog.focus({ preventScroll: true });
+        } else {
+            nameInput.focus({ preventScroll: true });
+        }
         writeState({ shownAt: Date.now() });
-        trackGoal(source === 'auto' ? 'lead_modal_open_auto' : 'lead_modal_open_button');
+        trackGoal(source === 'auto' ? 'lead_modal_open_auto' : 'lead_modal_open_button', params);
     };
 
     dialog.addEventListener('close', () => {
         document.documentElement.classList.remove(scrollLockClass);
+
+        // Закрыл без заявки -- отказ: удлиняет паузу автопоказа.
+        if (!submittedThisOpen) {
+            const state = readState() || {};
+            writeState({ dismissedAt: Date.now(), dismissCount: (typeof state.dismissCount === 'number' ? state.dismissCount : 0) + 1 });
+            trackGoal('lead_modal_close');
+        }
 
         if (opener && opener.isConnected) {
             opener.focus({ preventScroll: true });
@@ -91,6 +119,7 @@
         writeState({ submittedAt: Date.now() });
 
         if (event.target === form) {
+            submittedThisOpen = true;
             trackGoal('lead_modal_submit');
             fields.hidden = true;
             success.querySelector('[data-vf-lead-modal-close]').focus();
@@ -131,7 +160,6 @@
     };
 
     const cookieNotice = document.getElementById('cookieNotice');
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     let visibleSeconds = 0;
     let timer = 0;
 
@@ -141,7 +169,8 @@
         window.clearInterval(timer);
     };
 
-    const tryAutoShow = () => {
+    // trigger -- сработавшее правило ('scroll' | 'exit' | 'timer'), уходит параметром цели Метрики.
+    const tryAutoShow = (trigger) => {
         const busy = dialog.open
             || document.querySelector('dialog[open]') !== null
             || (cookieNotice && !cookieNotice.hidden)
@@ -159,21 +188,21 @@
         }
 
         disarm();
-        open('auto');
+        open('auto', null, { trigger });
     };
 
     const onScroll = () => {
         const scrollable = document.documentElement.scrollHeight - window.innerHeight;
 
         if (scrollable > 0 && window.scrollY / scrollable >= scrollShare) {
-            tryAutoShow();
+            tryAutoShow('scroll');
         }
     };
 
     // Уход курсора за верхний край окна браузера: только мышь.
     const onMouseOut = (event) => {
         if (event.relatedTarget === null && event.clientY <= 0) {
-            tryAutoShow();
+            tryAutoShow('exit');
         }
     };
 
@@ -187,7 +216,7 @@
             visibleSeconds += 1;
         }
         if (visibleSeconds >= fallbackSeconds) {
-            tryAutoShow();
+            tryAutoShow('timer');
         }
     }, 1000);
 })();
