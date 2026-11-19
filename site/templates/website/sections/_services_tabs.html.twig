@@ -38,7 +38,7 @@
                                 <span class="inline-flex min-h-control-sm items-center rounded-full px-4 type-t7 font-semibold text-fg md:min-h-control-md md:type-t6 md:font-semibold {{ chips[tone] }}">{{ item.product }}</span>
                             </p>
                             <div class="hidden md:block">
-                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', arrow: true} only %}
+                                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, attrs: cta.attrs|default({}), variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', arrow: true} only %}
                             </div>
                         </div>
                         <div class="relative mt-auto aspect-3/2 shrink-0 overflow-hidden md:aspect-auto lg:static">
@@ -58,7 +58,7 @@
                             {% endif %}
                         </div>
                         <div class="relative z-10 px-5 pt-4 pb-5 md:hidden">
-                            {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', class: 'w-full'} only %}
+                            {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, attrs: cta.attrs|default({}), variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', class: 'w-full'} only %}
                         </div>
                     </div>
                 {% endfor %}

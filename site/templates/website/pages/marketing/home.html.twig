@@ -2,6 +2,7 @@
 
 {% block title %}Финансовое управление бизнесом и финдир на аутсорсинге — Ваш Финдир{% endblock %}
 {% block description %}Управленческий учёт, ДДС, ОПиУ и финансовое планирование для бизнеса с оборотом от 2 млн ₽ в месяц.{% endblock %}
+{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts} only %}{% endblock %}
 
 {# Вопросы и порядок -- из макета; заглушки макета заменены подтверждёнными фактами. «2 млн ₽» разделены неразрывными пробелами (U+00A0). #}
 {% set vf_faq = [
@@ -53,15 +54,12 @@
         chips: ['Финансовый директор на аутсорсинге', 'Ozon и Wildberries', 'От 2 млн ₽ в месяц'],
         lead: 'Финдир на аутсорсинге + сервис учёта. Еженедельные точки роста для вашего бизнеса.',
         note: 'Прибыль по направлениям и платёжный календарь без сюрпризов. Не просто готовим отчёты — помогаем принимать решения.',
-        primary: {label: 'Обсудить ваши задачи', href: '#lead-form'},
+        primary: {label: 'Обсудить ваши задачи', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}},
         badge: {title: 'Что влияет на прибыль', text: 'Находим причины изменений прибыли'},
     } only %}
-    {# Дата актуальности «230+ компаний» перенесена из прежнего hero. Пробелы в числах и датах неразрывные (U+00A0). #}
+    {# Факты -- глобал vf_trust_facts (config/packages/twig.yaml), общий с окном sections/_lead_modal. #}
     {% include 'website/sections/_trust_strip.html.twig' with {
-        facts: [
-            {value: 'С 2015 года', text: 'в финансах малого и среднего бизнеса: от бухгалтерии до финансового директора'},
-            {value: '230+ компаний', text: 'доверили нам учёт и финансы', note: 'по данным на 1 октября 2026'},
-        ],
+        facts: vf_trust_facts,
         people: vf_team.people,
         team: {text: 'Финдир, налоговый консультант и аналитики.', link_label: 'Кто будет с вами работать →', href: '#home-team-title'},
     } only %}
@@ -70,7 +68,7 @@
     {% include 'website/sections/_services_tabs.html.twig' with {
         id: 'home-services',
         title: 'Что входит в управленческий учёт',
-        cta: {label: 'Получить консультацию', href: '#lead-form'},
+        cta: {label: 'Получить консультацию', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}},
         items: [
             {short: 'Аутсорсинг', kicker: 'Аутсорсинг', title: 'Финансовый директор на аутсорсинге', heading: 'Финдир на аутсорсинге', tone: 'accent',
                 bullets: ['Соберём управленческий учёт: выручка, расходы и прибыль по направлениям', 'Каждую неделю — точки роста и что с ними делать', 'Платёжный календарь: кассовые разрывы видны заранее'],
@@ -89,7 +87,7 @@
     {% include 'website/sections/_advantages.html.twig' with {
         id: 'home-advantages',
         title: 'Преимущества работы',
-        cta: {label: 'Обсудить ваши задачи', href: '#lead-form'},
+        cta: {label: 'Обсудить ваши задачи', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}},
         items: [
             {short: 'Контроль', kicker: 'Контроль', title: 'Контроль над учётом остаётся у вас', tone: 'ink',
                 text: 'Весь управленческий учёт ведём в онлайн-сервисе с доступом для вас. Данные, отчёты и история операций всегда под вашим контролем. Если вы решите сменить финансового директора, учёт останется у вас — изменится только специалист.',
@@ -148,7 +146,7 @@
         title: 'Автоматизация процессов',
         heading: 'Автоматизируем процессы',
         text: 'Подключим интеграции с банками, Ozon и Wildberries, загрузим безналичные и наличные платежи, создадим правила автоматического распределения операций.',
-        cta: {label: 'Обсудить ваши задачи', href: '#lead-form'},
+        cta: {label: 'Обсудить ваши задачи', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}},
         label: 'Интеграции',
         logos: [
             {name: '1С', src: '/assets/integrations/1c.svg', size: 'lg'},
@@ -172,7 +170,7 @@
         title: 'Вопросы и ответы',
         subtitle: 'Собрали то, о чём собственники спрашивают на первой встрече.',
         items: vf_faq,
-        aside: {title: 'Не нашли свой вопрос?', text: 'Ответим на встрече или в мессенджере.', cta: {label: 'Задать вопрос', href: '#lead-form'}},
+        aside: {title: 'Не нашли свой вопрос?', text: 'Ответим на встрече или в мессенджере.', cta: {label: 'Задать вопрос', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}}},
     } only %}
     {# Форма по макету: консультация (LeadFormCatalog 'consultation') -- имя и один контакт; поля и POST /lead прежние. #}
     {% include 'website/sections/_lead_form.html.twig' with {

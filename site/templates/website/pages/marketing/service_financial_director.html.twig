@@ -2,6 +2,7 @@
 
 {% block title %}Финансовый директор на аутсорсинге — Ваш Финдир{% endblock %}
 {% block description %}Финдир на аутсорсе для бизнеса с оборотом от 2 млн ₽ в месяц: управленческий учёт, платёжный календарь, ОПиУ и план роста{% endblock %}
+{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts} only %}{% endblock %}
 
 {% block active_navigation %}services{% endblock %}
 
@@ -101,7 +102,7 @@
         title: 'Видите реальную прибыль и знаете, как расти к дивидендам',
         lead: 'Берём на себя управленческий учёт, платёжный календарь и финансовые решения. Вы получаете понятные цифры и план, а не набор таблиц.',
         buttons: [
-            {label: 'Бесплатная консультация', href: '#lead-form'},
+            {label: 'Бесплатная консультация', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}},
             {label: 'Как мы работаем', href: '#service-process', variant: 'secondary'},
         ],
         trust: vf_company_facts.facts,

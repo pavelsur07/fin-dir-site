@@ -15,6 +15,7 @@
                         {% include 'website/components/_button.html.twig' with {
                             label: button.label,
                             href: button.href,
+                            attrs: button.attrs|default({}),
                             variant: button.variant|default('primary'),
                             full_mobile: true,
                         } only %}

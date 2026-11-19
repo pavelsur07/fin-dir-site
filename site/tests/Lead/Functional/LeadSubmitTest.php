@@ -27,20 +27,20 @@ final class LeadSubmitTest extends WebTestCase
         $crawler = $this->client->request('GET', '/');
 
         self::assertResponseIsSuccessful();
-        // Главная: консультация по макету -- имя, один контакт и согласие; контракт POST /lead прежний.
-        self::assertSelectorCount(1, 'form[data-vf-lead-form]');
+        // Форма внизу главной (окно записи вне main): консультация по макету -- имя, один контакт и согласие; контракт POST /lead прежний.
+        self::assertSelectorCount(1, 'main form[data-vf-lead-form]');
         self::assertSelectorExists('#lead-form form[data-vf-lead-form][method="post"][action="/lead"] button[type="submit"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="form"][value="consultation"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="_token"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="website"][tabindex="-1"]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="name"][required]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="contact"][required]');
-        self::assertSelectorExists('form[data-vf-lead-form] input[name="agreement"][required]');
-        self::assertSelectorNotExists('form[data-vf-lead-form] [name="task"]');
-        self::assertSelectorNotExists('form[data-vf-lead-form] input[name="contact_type"]');
+        self::assertSelectorExists('main form[data-vf-lead-form] input[name="form"][value="consultation"]');
+        self::assertSelectorExists('main form[data-vf-lead-form] input[name="_token"]');
+        self::assertSelectorExists('main form[data-vf-lead-form] input[name="website"][tabindex="-1"]');
+        self::assertSelectorExists('main form[data-vf-lead-form] input[name="name"][required]');
+        self::assertSelectorExists('main form[data-vf-lead-form] input[name="contact"][required]');
+        self::assertSelectorExists('main form[data-vf-lead-form] input[name="agreement"][required]');
+        self::assertSelectorNotExists('main form[data-vf-lead-form] [name="task"]');
+        self::assertSelectorNotExists('main form[data-vf-lead-form] input[name="contact_type"]');
         // Вебвизор Метрики не записывает ввод персональных данных.
         foreach (['input[name="name"]', 'input[name="contact"]'] as $field) {
-            self::assertSelectorExists('form[data-vf-lead-form] '.$field.'.ym-disable-keys');
+            self::assertSelectorExists('main form[data-vf-lead-form] '.$field.'.ym-disable-keys');
         }
         self::assertStringNotContainsString('демо-режиме', $crawler->filter('main')->text());
         self::assertSame([], $this->client->getResponse()->headers->getCookies());
@@ -166,6 +166,28 @@ final class LeadSubmitTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(422);
         self::assertArrayHasKey('contact_type', json_decode((string) $this->client->getResponse()->getContent(), true)['errors']);
+    }
+
+    public function testPopupFormAcceptsPhoneAndTelegram(): void
+    {
+        $this->post($this->popupFields());
+        self::assertResponseStatusCodeSame(201);
+        self::assertSame('popup', $this->onlyLead()->formKey());
+
+        $this->post($this->popupFields(['submission_id' => '22222222-2222-4222-8222-222222222222', 'contact_type' => 'telegram', 'contact' => '@anna_sokolova']));
+        self::assertResponseStatusCodeSame(201);
+        self::assertSame(2, $this->leadCount());
+    }
+
+    public function testPopupFormRejectsMissingConsentAndWrongContact(): void
+    {
+        $this->post($this->popupFields(['agreement' => '', 'contact' => 'anna sokolova']));
+
+        self::assertResponseStatusCodeSame(422);
+        $errors = json_decode((string) $this->client->getResponse()->getContent(), true)['errors'];
+        self::assertArrayHasKey('agreement', $errors);
+        self::assertSame('Укажите телефон в формате +7 900 000-00-00.', $errors['contact']);
+        self::assertSame(0, $this->leadCount());
     }
 
     public function testConsultationFormIsNotAffectedByExcursionRules(): void
@@ -316,6 +338,21 @@ final class LeadSubmitTest extends WebTestCase
             'contact_type' => 'phone',
             'answers' => ['role' => 'owner', 'turnover' => 'under_2m'],
         ]), $override);
+    }
+
+    /**
+     * Окно записи на разбор: без вопросов и задачи, контакт с переключателем.
+     *
+     * @param array<string, mixed> $override
+     *
+     * @return array<string, mixed>
+     */
+    private function popupFields(array $override = []): array
+    {
+        $fields = $this->fields(['form' => 'popup', 'contact_type' => 'phone']);
+        unset($fields['task']);
+
+        return array_replace($fields, $override);
     }
 
     /**

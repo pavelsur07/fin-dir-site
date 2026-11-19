@@ -32,7 +32,7 @@
                             <p class="type-t5 {{ texts[tone] }} md:type-t4">{{ item.text }}</p>
                         </div>
                         <div class="relative z-10 hidden md:block">
-                            {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', arrow: true} only %}
+                            {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, attrs: cta.attrs|default({}), variant: tone == 'light' ? 'primary' : 'inverse', size: 'xl', arrow: true} only %}
                         </div>
                         {% if item.screen|default(null) %}
                             <div class="relative -mr-5 -mb-5 mt-auto aspect-2/1 shrink-0 md:m-0 md:-mr-24 md:-mb-16 md:aspect-auto lg:absolute lg:inset-0 lg:m-0">

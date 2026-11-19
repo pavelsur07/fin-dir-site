@@ -4,6 +4,7 @@
 {% block description %}Финансовая модель бизнеса для планирования доходов, расходов и оценки сценариев развития.{% endblock %}
 {# Страница без контента: закрыта от индексации и не входит в sitemap, пока не наполнена. Убрать блок -- открыть. #}
 {% block robots %}noindex, follow{% endblock %}
+{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts} only %}{% endblock %}
 
 {% block active_navigation %}services{% endblock %}
 

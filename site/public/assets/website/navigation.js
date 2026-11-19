@@ -608,6 +608,8 @@
                         form.reset();
                         prepare();
                         success.hidden = false;
+                        // Окно записи (lead-modal.js) запоминает отправку и показывает свой экран успеха.
+                        form.dispatchEvent(new CustomEvent('vf:lead-submitted', { bubbles: true, detail: { formKey: form.dataset.vfFormKey } }));
                         return;
                     }
 
