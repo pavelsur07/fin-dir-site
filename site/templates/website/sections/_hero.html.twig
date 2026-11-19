@@ -9,7 +9,7 @@
             <div class="relative z-10 flex min-w-0 flex-col items-start gap-5 md:gap-6 md:px-8 md:pt-16 md:pb-12">
                 <h1 class="font-display type-t2-article text-balance text-fg md:type-t2 lg:type-t1" id="home-hero-title"><span class="md:block md:whitespace-nowrap">Финансовый директор,</span> <span class="md:block md:whitespace-nowrap">который помогает</span> <span class="md:block md:whitespace-nowrap">зарабатывать <span class="text-accent">больше</span></span></h1>
                 <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
-                {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, variant: 'primary', size: 'xl', full_mobile: true} only %}
+                {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, attrs: primary.attrs|default({}), variant: 'primary', size: 'xl', full_mobile: true} only %}
                 {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-secondary">{{ note }}</p>{% endif %}
             </div>
 

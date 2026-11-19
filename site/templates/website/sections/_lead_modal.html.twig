@@ -1,0 +1,78 @@
+{#
+    Всплывающее окно записи на разбор (docs/plan/Stage_Lead_Modal.md): нативный <dialog>, форма 'popup' -> POST /lead.
+    Открывает и закрывает assets/scripts/website/lead-modal.js; без JS окно не показывается, ссылки data-vf-lead-modal-open ведут к #lead-form.
+    Вход: facts [{short_value, short_text}] -- глобал vf_trust_facts (общий с полосой доверия главной).
+    До lg -- нижняя панель на всю ширину; с lg -- карточка max-w-modal-xl в две колонки (синяя панель 4/7, форма 3/7).
+#}
+{# Обещанный срок ответа: один текст для строки под кнопкой и экрана успеха. #}
+{% set response_time = 'Перезвоним в течение 2 часов в рабочее время' %}
+<dialog tabindex="-1" class="m-0 mt-auto w-full max-w-none max-h-11/12 overflow-y-auto overscroll-contain rounded-t-xl border-0 bg-surface p-0 text-fg shadow-lg backdrop:bg-overlay motion-safe:transition-all motion-safe:duration-base motion-safe:ease-out motion-safe:starting:open:translate-y-8 motion-safe:starting:open:opacity-0 lg:m-auto lg:max-w-modal-xl lg:rounded-xl" id="lead-modal" aria-labelledby="lead-modal-title" data-vf-section="lead-modal" data-vf-lead-modal>
+    <div class="relative lg:grid lg:grid-cols-7">
+        <div class="dark relative isolate flex flex-col gap-4 overflow-hidden bg-accent-fill px-5 pt-3 pb-6 text-white lg:col-span-4 lg:gap-5 lg:p-10">
+            <div class="absolute -top-1/10 -bottom-1/10 left-29/50 w-13/50 -skew-x-12 bg-white/5" aria-hidden="true"></div>
+            <div class="absolute -top-1/10 -bottom-1/10 left-39/50 w-2/5 -skew-x-12 bg-white/10" aria-hidden="true"></div>
+            <span class="mx-auto h-1 w-10 rounded-full bg-white/40 lg:hidden" aria-hidden="true"></span>
+            <div class="relative hidden lg:block">
+                {% include 'website/components/_logo.html.twig' with {dark: true, s: 28, lazy: true} only %}
+            </div>
+            <ul class="relative flex flex-wrap gap-2 pr-12 lg:pr-0" aria-label="Условия разбора">
+                {% for chip in ['Бесплатно', '45 минут', 'Онлайн'] %}
+                    <li class="inline-flex min-h-control-sm items-center rounded-full bg-white/15 px-3 type-t7 font-semibold text-white">{{ chip }}</li>
+                {% endfor %}
+            </ul>
+            <h2 class="relative max-w-4/5 font-display type-t2-article text-balance text-white lg:type-t2" id="lead-modal-title">Покажем, где ваш бизнес теряет прибыль</h2>
+            <ul class="relative flex max-w-3/5 flex-col gap-2 lg:gap-3">
+                {% for point in ['Разберём движение денег и прибыль по направлениям', 'Покажем кабинет на примере ваших цифр', 'Для селлеров — маржа до CM3 по товарам'] %}
+                    <li class="flex gap-2 type-t6 text-cobalt-100 lg:type-t5">
+                        {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'mt-1 size-icon-sm shrink-0 text-cobalt-300'} only %}
+                        <span>{{ point }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+            <p class="relative mt-auto hidden gap-6 pt-6 type-t6 text-cobalt-200 lg:flex">
+                {% for fact in facts %}
+                    <span><strong class="block type-t3 font-bold text-white">{{ fact.short_value }}</strong>{{ fact.short_text }}</span>
+                {% endfor %}
+            </p>
+            <picture>
+                <source srcset="/assets/people/pavel-novikov-800.avif" type="image/avif" width="800" height="1000">
+                <source srcset="/assets/people/pavel-novikov-800.webp" type="image/webp" width="800" height="1000">
+                <img class="absolute -right-8 bottom-0 h-auto w-2/5 max-w-none md:w-1/4 lg:-right-6 lg:h-2/3 lg:w-auto" src="/assets/people/pavel-novikov.png" alt="Павел Новиков, управляющий партнёр" width="1122" height="1402" loading="lazy" decoding="async">
+            </picture>
+        </div>
+
+        <div class="flex flex-col gap-4 px-5 pt-6 pb-6 lg:col-span-3 lg:px-8 lg:pt-11 lg:pb-6">
+            <p class="hidden pr-8 type-t3 font-bold text-fg lg:block">Запишитесь на бесплатный разбор ваших цифр</p>
+            <form class="flex flex-col gap-4" method="post" action="{{ path('lead_submit') }}" data-vf-lead-form data-vf-form-key="popup" aria-labelledby="lead-modal-title" novalidate>
+                <div class="flex flex-col gap-4" data-vf-lead-modal-fields>
+                    {% include 'website/components/_lead_form_body.html.twig' with {
+                        id: 'lead-modal',
+                        definition: lead_form('popup'),
+                        tone: 'muted',
+                        with_contact_type: true,
+                        link_class: 'rounded-xs text-accent underline focus-visible:shadow-focus',
+                        submit_label: 'Записаться на разбор',
+                        submit_size: 'xl',
+                        submit_arrow: true,
+                        with_status: false,
+                    } only %}
+                    <p class="type-t7 text-center text-fg-secondary" data-vf-lead-modal-response-time>{{ response_time }}</p>
+                    <button class="min-h-control-md rounded-md type-t6 font-medium text-fg-secondary hover:text-fg focus-visible:shadow-focus" type="button" data-vf-lead-modal-close>Не сейчас</button>
+                    <p class="rounded-md border border-error-border bg-error-bg p-4 type-t6 text-error" role="alert" data-vf-lead-error hidden></p>
+                </div>
+                <div class="flex flex-col items-start gap-3 py-6" role="status" data-vf-lead-success hidden>
+                    <span class="flex size-control-lg items-center justify-center rounded-full bg-success-bg text-success">
+                        {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'size-icon-md'} only %}
+                    </span>
+                    <span class="type-t3 font-bold text-fg">Заявка отправлена</span>
+                    <span class="type-t5 text-fg-secondary">{{ response_time }} и договоримся о времени разбора.</span>
+                    {% include 'website/components/_button.html.twig' with {label: 'Закрыть', variant: 'secondary', size: 'md', attrs: {'data-vf-lead-modal-close': ''}} only %}
+                </div>
+            </form>
+        </div>
+
+        <button class="absolute top-3 right-3 flex size-control-md items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 focus-visible:shadow-focus lg:bg-surface-muted lg:text-fg lg:hover:bg-border-subtle" type="button" aria-label="Закрыть" data-vf-lead-modal-close>
+            {% include 'website/components/_icon.html.twig' with {name: 'x', class: 'size-icon-md'} only %}
+        </button>
+    </div>
+</dialog>

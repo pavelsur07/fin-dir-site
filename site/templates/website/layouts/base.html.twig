@@ -1,4 +1,4 @@
-{% set vf_asset_version = 'db41041a9bfb' %}
+{% set vf_asset_version = '130692cb17bb' %}
 <!doctype html>
 {# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
 <html lang="ru">
@@ -136,6 +136,13 @@
             ],
         } only %}
     {% endblock %}
+
+    {# Окно записи на разбор: маркетинговые страницы включают sections/_lead_modal в этот блок; скрипт -- только вместе с окном. #}
+    {% set lead_modal_html %}{% block lead_modal %}{% endblock %}{% endset %}
+    {% if lead_modal_html|trim is not empty %}
+        {{ lead_modal_html }}
+        <script src="/assets/website/lead-modal.js?v={{ vf_asset_version }}" defer></script>
+    {% endif %}
 
     {% include 'website/components/_cookie.html.twig' with {privacy_href: path('privacy')} only %}
 

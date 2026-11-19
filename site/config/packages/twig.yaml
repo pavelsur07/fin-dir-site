@@ -11,6 +11,11 @@ twig:
         - { name: 'Наталья Новикова', role: 'Налоговый консультант', experience: '25 лет бухгалтер', photo: '/assets/people/nataliy-novikova-portrait.png', photo_webp: '/assets/people/nataliy-novikova-portrait' }
         - { name: 'Никита Ларионов', role: 'Финансовый директор', experience: '5 лет', photo: '/assets/people/nikita-larionov-portrait.png', photo_webp: '/assets/people/nikita-larionov-portrait' }
         - { name: 'Павел Аверьянов', role: 'Финансовый аналитик', experience: '3 года', photo: '/assets/people/pavel-averynov-portrait.png', photo_webp: '/assets/people/pavel-averynov-portrait' }
+    # Полоса доверия главной и факты окна записи на разбор: value/text -- полоса, short_value/short_text -- окно.
+    # Дата актуальности «230+ компаний» перенесена из прежнего hero. Пробелы в числах и датах неразрывные (U+00A0).
+    vf_trust_facts:
+        - { value: 'С 2015 года', text: 'в финансах малого и среднего бизнеса: от бухгалтерии до финансового директора', short_value: 'С 2015', short_text: 'в финансах бизнеса' }
+        - { value: '230+ компаний', text: 'доверили нам учёт и финансы', note: 'по данным на 1 октября 2026', short_value: '230+', short_text: 'компаний' }
     # Факты о компании: одни данные для главной и «О компании». icon задан -- иконка и value заголовком.
     vf_company_facts:
       title: 'Нам доверяют'

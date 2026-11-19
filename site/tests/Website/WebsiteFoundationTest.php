@@ -40,11 +40,14 @@ final class WebsiteFoundationTest extends WebTestCase
                     // Иконок на главной много (галочки, этапы маршрута, форма): все они декоративные.
                     self::assertSame($client->getCrawler()->filter('body svg[aria-hidden="true"]')->count(), $client->getCrawler()->filter('body svg')->count(), $path);
                 } else {
-                    self::assertSelectorCount(['/about' => 2, '/gazeta' => 2][$path] ?? 0, 'body svg', $path);
+                    // Иконки окна записи на разбор (маркетинговые страницы) не считаем.
+                    $modalSvg = $client->getCrawler()->filter('[data-vf-section="lead-modal"] svg')->count();
+                    self::assertSame(['/about' => 2, '/gazeta' => 2][$path] ?? 0, $client->getCrawler()->filter('body svg')->count() - $modalSvg, $path);
                 }
             }
-            // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем.
-            self::assertSelectorCount(4, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
+            // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем; окно записи -- ещё один (28, тёмный).
+            $modalLogos = $client->getCrawler()->filter('[data-vf-section="lead-modal"] img[data-vf-logo]')->count();
+            self::assertSelectorCount(4 + $modalLogos, 'img[data-vf-logo][alt=""][src$=".svg"]', $path);
             if ('/' === $path) {
                 // Состав главной (ноябрь 2026): секции из макета, прежние секции на главной не подключены.
                 foreach (['home-hero-title', 'home-services-title', 'home-advantages-title', 'home-route-title', 'home-reports-title', 'home-integrations-title', 'home-team-title', 'home-faq-title', 'lead-form-title'] as $titleId) {
@@ -100,7 +103,7 @@ final class WebsiteFoundationTest extends WebTestCase
         }
         $wrapper = (string) file_get_contents($wrapperPath);
         self::assertStringContainsString("TAILWIND_VERSION='4.3.3'", $wrapper);
-        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js', 'tabs.js'] as $script) {
+        foreach (['analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js', 'tabs.js', 'lead-modal.js'] as $script) {
             self::assertSame(file_get_contents($root.'/assets/scripts/website/'.$script), file_get_contents($root.'/public/assets/website/'.$script));
         }
     }
@@ -109,7 +112,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $root = dirname(__DIR__, 2);
         $contents = '';
-        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js', 'tabs.js'] as $asset) {
+        foreach (['app.css', 'analytics.js', 'navigation.js', 'metrika.js', 'article-toc.js', 'bitrix24.js', 'tabs.js', 'lead-modal.js'] as $asset) {
             $contents .= (string) file_get_contents($root.'/public/assets/website/'.$asset);
         }
         $version = substr(hash('sha256', $contents), 0, 12);

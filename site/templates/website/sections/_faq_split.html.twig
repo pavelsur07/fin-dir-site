@@ -17,7 +17,7 @@
                 <div class="dark order-3 flex flex-col items-start gap-3 rounded-xl bg-surface p-5 md:order-none md:p-6">
                     <p class="type-t4 font-semibold text-fg">{{ aside.title }}</p>
                     <p class="type-t6 text-fg-secondary">{{ aside.text }}</p>
-                    {% include 'website/components/_button.html.twig' with {label: aside.cta.label, href: aside.cta.href, variant: 'inverse', size: 'xl', arrow: true} only %}
+                    {% include 'website/components/_button.html.twig' with {label: aside.cta.label, href: aside.cta.href, attrs: aside.cta.attrs|default({}), variant: 'inverse', size: 'xl', arrow: true} only %}
                 </div>
             {% endif %}
         </div>

@@ -27,6 +27,8 @@ final class LeadFormCatalog
     {
         return [
             'consultation' => new LeadFormDefinition('consultation', 'Консультация'),
+            // Всплывающее окно маркетинговых страниц (sections/_lead_modal): без вопросов, контакт с переключателем Телефон/Telegram.
+            'popup' => new LeadFormDefinition('popup', 'Всплывающее окно — разбор'),
             'excursion' => new LeadFormDefinition('excursion', 'Экскурсия', [
                 new LeadQuestion('role', 'Роль в компании', [
                     'owner' => 'Собственник или владелец',
