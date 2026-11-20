@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Publication\Controller;
 
-use App\Publication\Adapter\MarkdownRenderer;
 use App\Publication\Query\PublicPost\PostStructuredData;
 use App\Publication\Query\PublicPost\PublicPostQuery;
 use App\Publication\Query\PublicPostList\PublicPostListQuery;
+use App\Shared\Adapter\MarkdownRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;

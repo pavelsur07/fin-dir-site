@@ -1,0 +1,9 @@
+{{ form_start(form, {attr: {class: 'max-w-container space-y-4 rounded-lg border bg-white p-4 md:p-6', novalidate: 'novalidate'}}) }}
+{{ form_errors(form) }}
+{% for field in form %}
+    {% if 'hidden' in field.vars.block_prefixes %}{{ form_widget(field) }}{% else %}
+    <div>{{ form_label(field) }}{{ form_widget(field, {attr: field.vars.attr|merge({class: 'w-full rounded-md border border-border-strong bg-white px-3 py-2 type-t5'})}) }}{{ form_help(field) }}{{ form_errors(field) }}</div>
+    {% endif %}
+{% endfor %}
+{% include 'admin/_button.html.twig' with {label: label} only %}
+{{ form_end(form) }}

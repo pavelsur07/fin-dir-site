@@ -1,4 +1,5 @@
 parameters:
+  vf.docs_url: 'https://docs.vashfindir.ru'
   vf.site_url: 'https://vashfindir.ru'
   # Форма вопроса в панели и под статьёй: общий текст. Свой заголовок задаётся у публикации (Post::formTitle).
   vf.article_form.title: 'Вопрос по вашей ситуации?'
@@ -18,6 +19,10 @@ services:
     resource: '../src/'
     exclude:
       - '../src/Kernel.php'
+
+  App\Documentation\ValueObject\DocUrl:
+    arguments:
+      $base: '%vf.docs_url%'
 
   App\Controller\:
     resource: '../src/Controller/'

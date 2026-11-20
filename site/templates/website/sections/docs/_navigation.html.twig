@@ -1,0 +1,14 @@
+<form class="mb-6 space-y-2" action="{{ doc_url('docs_search') }}" method="get" role="search">
+    <label class="block type-t6 font-semibold" for="docs-query">Поиск по документации</label>
+    <input class="w-full min-w-0 rounded-md border border-border-strong bg-white px-3 py-2 focus-visible:shadow-focus" type="search" id="docs-query" name="q" value="{{ q }}" maxlength="200">
+    {% include 'website/components/_button.html.twig' with {label: 'Найти', type: 'submit', variant: 'secondary', size: 'md'} only %}
+</form>
+<details class="rounded-md border border-border-subtle p-4" open>
+    <summary class="cursor-pointer type-t5 font-semibold focus-visible:shadow-focus">Разделы документации</summary>
+    <nav class="mt-4" aria-label="Разделы документации">
+        <ul class="space-y-3">
+            {% for section in navigation %}<li><a class="text-accent underline focus-visible:shadow-focus" href="{{ doc_url('docs_section', section.slug) }}">{{ section.title }}</a></li>{% endfor %}
+            <li><a class="text-accent underline focus-visible:shadow-focus" href="{{ doc_url('docs_home') }}">Все разделы</a></li>
+        </ul>
+    </nav>
+</details>

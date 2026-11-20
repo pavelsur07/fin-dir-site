@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Publication\Controller\Admin;
 
-use App\Publication\Adapter\MarkdownRenderer;
 use App\Publication\Query\PostEditData\PostEditDataQuery;
+use App\Shared\Adapter\MarkdownRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

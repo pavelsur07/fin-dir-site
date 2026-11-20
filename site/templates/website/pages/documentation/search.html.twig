@@ -1,0 +1,11 @@
+{% extends 'website/layouts/docs.html.twig' %}
+{% block title %}Поиск — База знаний «Ваш Финдир»{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+{% block docs_content %}
+<h1 class="type-t2 md:type-t1">Поиск по документации</h1>
+{% if q %}
+<p class="text-fg-secondary">По запросу «{{ q }}» найдено: {{ pager.nbResults }}.</p>
+{% include 'website/sections/docs/_page_list.html.twig' with {items: pager.currentPageResults} only %}
+{% include 'website/sections/docs/_pagination.html.twig' with {pager: pager} only %}
+{% else %}<p>Введите запрос в поле поиска.</p>{% endif %}
+{% endblock %}

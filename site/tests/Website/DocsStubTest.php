@@ -8,14 +8,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class DocsStubTest extends WebTestCase
 {
-    public function testDocsHostRootShowsStubWithoutSession(): void
+    public function testDocsHostRootShowsKnowledgeBaseWithoutSession(): void
     {
         $client = self::createClient([], ['HTTP_HOST' => 'docs.vashfindir.ru']);
         $client->request('GET', '/');
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorTextSame('h1', 'База знаний в разработке');
-        self::assertSelectorExists('meta[name="robots"][content="noindex, follow"]');
+        self::assertSelectorTextSame('h1', 'База знаний');
+        self::assertSelectorExists('meta[name="robots"][content="index, follow"]');
         self::assertSelectorExists('link[rel="canonical"][href="https://docs.vashfindir.ru/"]');
         self::assertSame([], $client->getResponse()->headers->getCookies());
     }

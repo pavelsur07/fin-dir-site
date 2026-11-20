@@ -28,6 +28,7 @@ final class AdminLayoutTest extends WebTestCase
     {
         yield 'панель' => ['/admin', 'Панель'];
         yield 'публикации' => ['/admin/posts', 'Публикации'];
+        yield 'документация' => ['/admin/docs/pages', 'Документация'];
         yield 'кейсы' => ['/admin/cases', 'Кейсы'];
         yield 'обращения' => ['/admin/leads', 'Обращения'];
     }
@@ -39,12 +40,12 @@ final class AdminLayoutTest extends WebTestCase
         $this->client->request('GET', $path);
 
         self::assertResponseIsSuccessful();
-        self::assertSelectorCount(4, '[data-admin-sidebar] nav[data-admin-menu] li');
+        self::assertSelectorCount(5, '[data-admin-sidebar] nav[data-admin-menu] li');
         self::assertSelectorCount(1, '[data-admin-sidebar] [aria-current="page"]');
         self::assertSelectorTextContains('[data-admin-sidebar] [aria-current="page"]', $current);
         self::assertSelectorExists('[data-admin-sidebar] form[data-admin-account] button[type="submit"]');
         // На узком экране то же меню раскрывается нативным details.
-        self::assertSelectorCount(4, 'details[data-admin-mobile-menu] nav[data-admin-menu] li');
+        self::assertSelectorCount(5, 'details[data-admin-mobile-menu] nav[data-admin-menu] li');
         self::assertSelectorTextContains('details[data-admin-mobile-menu] [aria-current="page"]', $current);
         self::assertSelectorExists('a[href="#main"]');
         self::assertSelectorExists('main#main');
@@ -122,7 +123,7 @@ final class AdminLayoutTest extends WebTestCase
     {
         $root = self::getContainer()->getParameter('kernel.project_dir');
         $contents = '';
-        foreach (['app.css', 'row-menus.js', 'tabs.js'] as $asset) {
+        foreach (['app.css', 'row-menus.js', 'tabs.js', 'docs-editor.js'] as $asset) {
             $contents .= (string) file_get_contents($root.'/public/assets/admin/'.$asset);
         }
         $version = substr(hash('sha256', $contents), 0, 12);

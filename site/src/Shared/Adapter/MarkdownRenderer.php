@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Publication\Adapter;
+namespace App\Shared\Adapter;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Event\DocumentParsedEvent;
@@ -68,6 +68,8 @@ final class MarkdownRenderer
     private const string TABLE_CLASS = 'w-full min-w-table border-collapse text-left tabular-nums type-t6';
 
     private readonly MarkdownConverter $converter;
+    /** @var array<string,string> */ private array $linkMap = [];
+    private bool $suppressDoc = false;
 
     public function __construct()
     {
@@ -124,12 +126,25 @@ final class MarkdownRenderer
             }
         }, 100);
 
+        $environment->addEventListener(DocumentParsedEvent::class, function (DocumentParsedEvent $event): void {
+            foreach ($event->getDocument()->iterator() as $node) {
+                if ($node instanceof \League\CommonMark\Extension\CommonMark\Node\Inline\Link) {
+                    $url = $node->getUrl();
+                    if (isset($this->linkMap[$url])) {
+                        $node->setUrl($this->linkMap[$url]);
+                    } elseif ($this->suppressDoc && str_starts_with(strtolower($url), 'doc:')) {
+                        $node->setUrl('');
+                    }
+                }
+            }
+        }, -100);
         $this->converter = new MarkdownConverter($environment);
     }
 
-    public function renderArticle(string $markdown): RenderedArticle
+    /** @param array<string,string> $linkMap */
+    public function renderArticle(string $markdown, array $linkMap = []): RenderedArticle
     {
-        $result = $this->converter->convert($markdown);
+        $result = $this->convert($markdown, $linkMap, true);
 
         $toc = [];
         foreach ($result->getDocument()->iterator(NodeIterator::FLAG_BLOCKS_ONLY) as $node) {
@@ -142,6 +157,19 @@ final class MarkdownRenderer
         }
 
         return new RenderedArticle($this->addTailwindClasses($result->getContent()), $toc);
+    }
+
+    /** @param array<string,string> $linkMap */
+    public function convert(string $markdown, array $linkMap = [], bool $suppressDoc = false): \League\CommonMark\Output\RenderedContentInterface
+    {
+        $this->linkMap = $linkMap;
+        $this->suppressDoc = $suppressDoc;
+        try {
+            return $this->converter->convert($markdown);
+        } finally {
+            $this->linkMap = [];
+            $this->suppressDoc = false;
+        }
     }
 
     private function addTailwindClasses(string $html): string

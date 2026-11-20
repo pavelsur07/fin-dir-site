@@ -27,7 +27,7 @@
     {% set items = [] %}
     {% for crumb in crumbs %}
         {% set item = {'@type': 'ListItem', position: loop.index, name: crumb.label} %}
-        {% if crumb.url|default %}{% set item = item|merge({item: vf_site_url ~ crumb.url}) %}{% endif %}
+        {% if crumb.url|default %}{% set item = item|merge({item: (crumb.url starts with 'https://' ? crumb.url : vf_site_url ~ crumb.url)}) %}{% endif %}
         {% set items = items|merge([item]) %}
     {% endfor %}
     {% include 'website/components/_json_ld.html.twig' with {schema: {'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items}} only %}

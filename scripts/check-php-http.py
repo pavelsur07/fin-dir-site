@@ -34,6 +34,20 @@ def request(path, fields=None):
 assert request('/health')[1].strip() == 'alive'
 assert request('/')[0] == origin + '/'
 assert not list(cookies), 'Public pages started a session'
+
+# Host routing and the new module are exercised in APP_ENV=prod with compiled images.
+for path, expected in [
+    ('/', 'База знаний'),
+    ('/search?q=test', 'Поиск по документации'),
+    ('/robots.txt', 'Sitemap: https://docs.vashfindir.ru/sitemap.xml'),
+    ('/sitemap.xml', 'https://docs.vashfindir.ru/'),
+]:
+    docs_request = urllib.request.Request(origin + path, headers={'Host': 'docs.vashfindir.ru'})
+    with urllib.request.urlopen(docs_request, timeout=20) as response:
+        assert response.status == 200, (path, response.status)
+        assert expected in response.read().decode(), path
+        assert not response.headers.get_all('Set-Cookie'), 'Documentation started a session'
+
 assert request('/admin')[0] == origin + '/admin/login'
 _, login = request('/admin/login')
 assert '_csrf_token' in Inputs(login).values
@@ -45,6 +59,16 @@ fields['_csrf_token'] = Inputs(login).values['_csrf_token']
 url, dashboard = request('/admin/login', fields)
 assert url.rstrip('/') == origin + '/admin', 'Valid login rejected'
 assert 'Панель контент-менеджера' in dashboard
+assert 'Документация' in request('/admin/docs/pages')[1]
+assert 'data-doc-body' in request('/admin/docs/pages/new')[1]
+assert 'Новый раздел' in request('/admin/docs/sections/new')[1]
+assert 'Выбор ссылки' in request('/admin/docs/link-picker')[1]
+try:
+    request('/admin/docs/pages/1/publish', {'_token': 'forged', 'version': 1})
+except urllib.error.HTTPError as error:
+    assert error.code == 403, error.code
+else:
+    raise AssertionError('Forged documentation CSRF accepted')
 try:
     request('/admin/logout', {'_csrf_token': 'forged'})
 except urllib.error.HTTPError as error:
@@ -58,4 +82,4 @@ for _ in range(6):
 logout = Inputs(dashboard).values['_csrf_token']
 assert request('/admin/logout', {'_csrf_token': logout})[0] == origin + '/admin/login'
 assert request('/admin')[0] == origin + '/admin/login', 'Logout left a session active'
-print('Production HTTP smoke passed: public pages, login, shared session, CSRF, logout')
+print('Production HTTP smoke passed: website, documentation, Admin UI, login, shared session, CSRF, logout')

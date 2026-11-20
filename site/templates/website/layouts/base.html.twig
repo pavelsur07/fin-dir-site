@@ -1,4 +1,4 @@
-{% set vf_asset_version = '130692cb17bb' %}
+{% set vf_asset_version = 'b9819b5fbe7b' %}
 <!doctype html>
 {# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
 <html lang="ru">
@@ -144,7 +144,7 @@
         <script src="/assets/website/lead-modal.js?v={{ vf_asset_version }}" defer></script>
     {% endif %}
 
-    {% include 'website/components/_cookie.html.twig' with {privacy_href: path('privacy')} only %}
+    {% include 'website/components/_cookie.html.twig' with {privacy_href: cookie_privacy_href|default(path('privacy'))} only %}
 
     {% block javascripts %}
         <script src="/assets/website/navigation.js?v={{ vf_asset_version }}" defer></script>

@@ -1,0 +1,1 @@
+{% if related %}<section aria-label="Читайте также"><h2 class="mb-4 type-t3">Читайте также</h2><ul class="space-y-3">{% for item in related %}<li><a class="text-accent underline focus-visible:shadow-focus" href="{{ doc_url('docs_page', item.slug) }}">{{ item.title }}</a></li>{% endfor %}</ul></section>{% endif %}

@@ -1,0 +1,3 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %}Изменение не выполнено{% endblock %}
+{% block body %}<h1 class="mb-4 type-t2-article">Изменение не выполнено</h1><p class="mb-6 rounded-md border border-error-border bg-error-bg p-4 text-error" role="alert">{{ reason }}</p><a class="text-accent underline focus-visible:shadow-focus" href="{{ path('admin_doc_page_edit', {id: id}) }}">Вернуться к странице</a>{% endblock %}

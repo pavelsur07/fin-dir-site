@@ -5,3 +5,5 @@
 @source "../../../templates/website";
 @source "../../../assets/scripts/website";
 @source "../../../src/Publication/Adapter";
+@source "../../../src/Shared/Adapter";
+@source "../../../src/Documentation/Adapter";

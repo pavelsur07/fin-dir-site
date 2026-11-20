@@ -1,0 +1,20 @@
+# Дополнительная проверка бизнес-границы: Documentation не зависит от Publication.
+deptrac:
+    paths: [./src]
+    layers:
+        - name: Documentation
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\Documentation\\#'
+        - name: Publication
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\Publication\\#'
+        - name: Shared
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\Shared\\#'
+    ruleset:
+        Documentation: [Shared]
+        Publication: [Shared]
+        Shared: []
