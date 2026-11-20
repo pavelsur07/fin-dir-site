@@ -284,15 +284,18 @@ documentation-http-check:
 	python3 scripts/check-documentation-http.py
 
 # Backup is mandatory before production migrations. The directory is outside the checkout.
-.PHONY: site-database-backup site-database-backup-check
+.PHONY: site-database-backup site-database-backup-check site-database-backup-script
 site-database-backup:
 	./scripts/backup-site-database.sh
+
+site-database-backup-script:
+	@cat scripts/backup-site-database.sh
 
 site-database-backup-check:
 	@set -eu; backup_check_dir=$$(mktemp -d); backup_check_container="vf-backup-smoke-$$$$"; \
 	trap 'docker rm -f "$$backup_check_container" >/dev/null 2>&1 || true; rm -rf -- "$$backup_check_dir"' EXIT HUP INT TERM; \
 	docker run -d --network none --name "$$backup_check_container" --label "com.docker.compose.project=$$backup_check_container" --label com.docker.compose.service=site-postgres --tmpfs /var/lib/postgresql/data -e POSTGRES_USER=smoke -e POSTGRES_PASSWORD=smoke -e POSTGRES_DB=smoke postgres:17-alpine >/dev/null; \
-	backup_wait=0; until docker exec "$$backup_check_container" pg_isready -U smoke -d smoke >/dev/null 2>&1; do backup_wait=$$((backup_wait+1)); test "$$backup_wait" -lt 30; sleep 1; done; \
+	backup_wait=0; until docker exec "$$backup_check_container" pg_isready -h 127.0.0.1 -U smoke -d smoke >/dev/null 2>&1; do backup_wait=$$((backup_wait+1)); test "$$backup_wait" -lt 30; sleep 1; done; \
 	docker exec "$$backup_check_container" psql -U smoke -d smoke -v ON_ERROR_STOP=1 -c "CREATE TABLE backup_probe (marker text NOT NULL); INSERT INTO backup_probe VALUES ('backup-roundtrip');" >/dev/null; \
 	VF_BACKUP_DIR="$$backup_check_dir" VF_BACKUP_PROJECT="$$backup_check_container" VF_BACKUP_RELEASE=smoke ./scripts/backup-site-database.sh; \
 	docker exec "$$backup_check_container" createdb -U smoke backup_restore; \
