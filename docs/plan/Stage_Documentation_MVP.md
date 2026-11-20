@@ -597,3 +597,8 @@ Docker networks не удаляются и production networking не меняе
   410tests3362assertions — успешно. Повторное независимое review изменения CI
   не выявило существенных замечаний. Production-images job первого PR CI уже
   прошёл, включая backup/restore и расширенный production HTTP smoke.
+
+- Второй upstream CI прошёл runtime guard и production-images; CS выявил две
+  пропущенные локальным кешем строки форматирования в новых тестах. Проверка
+  воспроизведена локально с отключённым кешем; для обязательных `make cs` и
+  `make cs-fix` добавлен `--using-cache=no`, правила стиля не ослаблены.

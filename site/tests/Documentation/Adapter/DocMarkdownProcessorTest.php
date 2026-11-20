@@ -61,6 +61,6 @@ final class DocMarkdownProcessorTest extends TestCase
         $body = $processor->link('Настройка', 12, 'section-настройка');
         $url = $processor->analyze($body)->links[0]['url'];
         $html = $processor->renderTargets($body, [['target_id' => 12, 'slug' => 'report', 'fragment' => 'section-настройка', 'source_urls' => json_encode([$url])]])->html;
-        self::assertStringContainsString('href="https://docs.vashfindir.ru/articles/report#section-настройка"',$html);
+        self::assertStringContainsString('href="https://docs.vashfindir.ru/articles/report#section-настройка"', $html);
     }
 }

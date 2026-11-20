@@ -49,7 +49,7 @@ final class DocumentationBrowserFixturesTest extends WebTestCase
         $client->submitForm('Войти', ['_username' => 'admin', '_password' => 'test-password']);
         self::assertResponseRedirects('/admin');
         foreach (['admin-pages' => '/admin/docs/pages', 'admin-form' => '/admin/docs/pages/'.$page->id().'/edit', 'admin-preview' => '/admin/docs/pages/'.$page->id().'/preview', 'picker' => '/admin/docs/link-picker?target='.$page->id()] as $name => $path) {
-            $capture($name,'https://vashfindir.ru'.$path);
+            $capture($name, 'https://vashfindir.ru'.$path);
         }
     }
 }

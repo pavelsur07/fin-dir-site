@@ -167,10 +167,10 @@ lint: assets-check
 
 # Проверить стиль. Починить: make cs-fix
 cs:
-	$(CLI) vendor/bin/php-cs-fixer check --diff
+	$(CLI) vendor/bin/php-cs-fixer check --diff --using-cache=no
 
 cs-fix:
-	$(CLI) vendor/bin/php-cs-fixer fix
+	$(CLI) vendor/bin/php-cs-fixer fix --using-cache=no
 
 # cache:warmup обязателен: phpstan-symfony читает контейнер из var/cache/dev
 phpstan:
