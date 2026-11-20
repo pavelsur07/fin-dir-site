@@ -154,8 +154,8 @@ Reverse-proxy хоста вынесен в `infra/traefik/` — см. README т�
 
 ### Резервная копия перед миграциями
 
-Каждый production deploy сначала создаёт PostgreSQL custom-format dump в
-`<DEPLOY_PATH>/../backups/vashfindir`, проверяет архив через `pg_restore --list`
+Каждый production deploy до обновления checkout и миграций создаёт PostgreSQL custom-format dump в
+`$HOME/backups/vashfindir`, проверяет архив через `pg_restore --list`
 и SHA-256, затем запускает миграции. Ошибка backup останавливает выкладку.
 Каталог имеет права `0700`, архив и checksum — `0600`; данные и credentials
 не публикуются в Actions artifacts или логах. Автоматического удаления копий нет.
