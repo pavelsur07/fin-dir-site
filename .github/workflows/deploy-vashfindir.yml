@@ -65,6 +65,8 @@ jobs:
               run: |
                   check_script=$(make --no-print-directory --dry-run php-deployed-check DC='$$PHP_CHECK_COMPOSE' | base64 -w0)
                   printf 'script=%s\n' "$check_script" >> "$GITHUB_OUTPUT"
+                  backup_script=$(make --no-print-directory --dry-run site-database-backup | base64 -w0)
+                  printf 'backup_script=%s\n' "$backup_script" >> "$GITHUB_OUTPUT"
 
             - name: Deploy Symfony over SSH
               uses: appleboy/ssh-action@v1.2.0
@@ -93,8 +95,12 @@ jobs:
                       git rev-parse HEAD
 
                       echo "==> git sync"
-                      git fetch --all --prune
-                      git reset --hard origin/${{ github.ref_name }}
+                      git fetch origin '${{ github.sha }}'
+                      # Refuse to overwrite local tracked changes; deploy exactly the built SHA.
+                      git diff --quiet
+                      git diff --cached --quiet
+                      git checkout --detach '${{ github.sha }}'
+                      test "$(git rev-parse HEAD)" = '${{ github.sha }}'
                       
                       echo "==> export env"
                       export VF_SITE_APP_SECRET='${{ secrets.VF_SITE_APP_SECRET }}'
@@ -140,6 +146,11 @@ jobs:
                       # set -e + этот порядок дают нужный режим отказа: упавшая
                       # миграция валит деплой, старые реплики продолжают обслуживать.
                       # --allow-no-migration: пустой каталог migrations/ это не ошибка.
+                      echo "==> verified database backup before migrations"
+                      export VF_BACKUP_DIR="${DEPLOY_PATH}/../backups/vashfindir"
+                      export VF_BACKUP_RELEASE='${{ github.sha }}'
+                      printf '%s' '${{ steps.deployed_check.outputs.backup_script }}' | base64 -d | bash -eu
+
                       echo "==> migrations"
                       "${COMPOSE[@]}" run --rm site-php-cli \
                           php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration

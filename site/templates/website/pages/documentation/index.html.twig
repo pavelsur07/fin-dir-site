@@ -1,0 +1,14 @@
+{% extends 'website/layouts/docs.html.twig' %}
+{% block docs_content %}
+<h1 class="type-t2 md:type-t1">База знаний</h1>
+<p class="text-fg-secondary">Инструкции, которые помогут начать работу и разобраться в сервисе.</p>
+<ul class="space-y-6">
+{% for section in pager.currentPageResults %}
+    <li class="rounded-md border border-border-subtle p-4">
+        <h2 class="type-t3"><a class="text-accent underline focus-visible:shadow-focus" href="{{ doc_url('docs_section', section.slug) }}">{{ section.title }}</a></h2>
+        <p class="mt-2 text-fg-secondary">{{ section.description }}</p>
+    </li>
+{% else %}<li>Инструкции готовятся к публикации.</li>{% endfor %}
+</ul>
+{% include 'website/sections/docs/_pagination.html.twig' with {pager: pager} only %}
+{% endblock %}

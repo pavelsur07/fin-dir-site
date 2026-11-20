@@ -76,8 +76,8 @@ jobs:
             - name: Check design system classes
               working-directory: .
               run: |
-                  node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter
-                  node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter
+                  node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter site/src/Shared/Adapter site/src/Documentation/Adapter
+                  node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter site/src/Shared/Adapter site/src/Documentation/Adapter
 
             - name: Lint YAML
               run: php bin/console lint:yaml config
@@ -97,7 +97,9 @@ jobs:
                   vendor/bin/phpstan analyse --no-progress
 
             - name: Check architecture layers
-              run: vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --report-uncovered
+              run: |
+                  vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --report-uncovered
+                  vendor/bin/deptrac analyse --config-file=deptrac.documentation.yaml --no-progress
 
             - name: Prepare test database
               env:
@@ -130,6 +132,8 @@ jobs:
         runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v5
+            - name: Check database backup and restore
+              run: make site-database-backup-check
             - name: Build production artifacts
               run: make php-production-build
             - name: Check production runtime and HTTP authentication

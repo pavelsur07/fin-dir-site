@@ -1,0 +1,10 @@
+{% extends 'website/layouts/docs.html.twig' %}
+{% block title %}{{ section.title }} — База знаний «Ваш Финдир»{% endblock %}
+{% block description %}{{ section.description }}{% endblock %}
+{% block docs_content %}
+{% include 'website/components/_breadcrumbs.html.twig' with {crumbs: [{label: 'База знаний', url: doc_url('docs_home')}, {label: section.title}]} only %}
+<h1 class="type-t2 md:type-t1">{{ section.title }}</h1>
+<p class="text-fg-secondary">{{ section.description }}</p>
+{% include 'website/sections/docs/_page_list.html.twig' with {items: pager.currentPageResults} only %}
+{% include 'website/sections/docs/_pagination.html.twig' with {pager: pager} only %}
+{% endblock %}

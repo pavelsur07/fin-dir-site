@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Publication\Adapter;
+namespace App\Tests\Shared\Adapter;
 
-use App\Publication\Adapter\MarkdownRenderer;
+use App\Shared\Adapter\MarkdownRenderer;
 use PHPUnit\Framework\TestCase;
 
 final class MarkdownRendererTest extends TestCase

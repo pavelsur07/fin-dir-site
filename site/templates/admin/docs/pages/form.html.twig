@@ -1,0 +1,17 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %}{{ page ? page.title : 'Новая страница документации' }}{% endblock %}
+{% block javascripts %}<script src="/assets/admin/docs-editor.js?v={{ admin_asset_version }}" defer></script>{% endblock %}
+{% block body %}
+<h1 class="mb-4 type-t2-article">{{ block('title') }}</h1>
+{% if page %}
+<p class="mb-4">{{ page.status == 'published' ? 'Опубликовано. Сохранённые изменения сразу появятся на сайте.' : 'Черновик — доступен только в админке.' }}</p>
+<div class="mb-6 flex flex-wrap gap-4">
+<form method="post" action="{{ path('admin_doc_status', {id: page.id, action: page.status == 'published' ? 'unpublish' : 'publish'}) }}"><input type="hidden" name="_token" value="{{ csrf_token('doc-status-' ~ page.id) }}"><input type="hidden" name="version" value="{{ page.version }}">{% include 'admin/_button.html.twig' with {label: page.status == 'published' ? 'Снять с публикации' : 'Опубликовать'} only %}</form>
+<a class="text-accent underline" href="{{ path('admin_doc_preview', {id: page.id}) }}">Предпросмотр сохранённого текста</a>
+{% if page.status == 'published' %}<a class="text-accent underline" href="{{ doc_url('docs_page', page.slug) }}">Открыть на сайте</a>{% endif %}
+</div>
+{% endif %}
+<div class="mb-6 flex flex-wrap gap-4"><a class="text-accent underline" href="{{ path('admin_doc_link_picker') }}" target="doc-link-picker" data-doc-picker="body">Выбрать ссылку в текст</a><a class="text-accent underline" href="{{ path('admin_doc_link_picker') }}" target="doc-link-picker" data-doc-picker="related">Выбрать страницу для «Читайте также»</a></div>
+{% include 'admin/docs/_fields.html.twig' with {form: form, label: page ? 'Сохранить страницу' : 'Создать черновик'} only %}
+{% if page and page.incoming %}<section class="mt-6"><h2 class="mb-4 type-t3">Входящие ссылки</h2><p class="mb-4">Перед снятием страницы с публикации уберите ссылки из опубликованных материалов.</p><ul class="space-y-2">{% for source in page.incoming %}<li><a class="text-accent underline" href="{{ path('admin_doc_page_edit', {id: source.id}) }}">{{ source.title }}</a> · {{ source.status == 'published' ? 'Опубликовано' : 'Черновик' }}</li>{% endfor %}</ul></section>{% endif %}
+{% endblock %}

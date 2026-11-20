@@ -1,0 +1,14 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %}Выбор ссылки{% endblock %}
+{% block javascripts %}<script src="/assets/admin/docs-editor.js?v={{ admin_asset_version }}" defer></script>{% endblock %}
+{% block body %}
+<h1 class="mb-4 type-t2-article">Выбор ссылки</h1>
+<form class="mb-6 flex flex-wrap gap-4" method="get"><div class="min-w-0 max-w-full"><label for="doc-picker-q">Название страницы</label><input class="rounded-md border p-2" type="search" name="q" id="doc-picker-q" value="{{ q }}" maxlength="200"></div>{% include 'admin/_button.html.twig' with {label: 'Найти'} only %}</form>
+{% if selected %}
+<h2 class="mb-4 type-t3">{{ selected.title }}</h2>
+<p class="mb-4">Выберите ссылку или скопируйте её в текст страницы. Черновик нужно опубликовать до публикации ссылающегося материала.</p>
+{% for link in links %}<div class="mb-4"><label for="doc-link-{{ loop.index }}">{{ link.title }}</label><textarea class="mb-2 w-full rounded-md border p-2" rows="2" readonly id="doc-link-{{ loop.index }}">{{ link.markdown }}</textarea><button class="rounded-md border px-3 py-2 focus-visible:shadow-focus" type="button" data-doc-insert="{{ link.markdown }}">Вставить ссылку</button></div>{% endfor %}
+{% endif %}
+<ul class="space-y-3">{% for page in pager.currentPageResults %}<li><a class="text-accent underline" href="{{ path('admin_doc_link_picker', {target: page.id, q: q, page: pager.currentPage}) }}">{{ page.title }}</a> · {{ page.status == 'published' ? 'Опубликовано' : 'Черновик' }}</li>{% else %}<li>Страницы не найдены.</li>{% endfor %}</ul>
+{{ pagerfanta(pager, {omitFirstPage: true}) }}
+{% endblock %}

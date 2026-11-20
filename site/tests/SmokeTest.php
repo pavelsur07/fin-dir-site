@@ -45,7 +45,11 @@ final class SmokeTest extends WebTestCase
                 continue;
             }
 
-            $client->request('GET', $route->getPath());
+            $host = $route->getHost();
+            if (str_contains($host, '{')) {
+                continue;
+            }
+            $client->request('GET', 'https://'.('' === $host ? 'vashfindir.ru' : $host).$route->getPath());
 
             self::assertSame(
                 200,

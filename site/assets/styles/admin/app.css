@@ -6,6 +6,8 @@
 @source "../../../templates/website/components/_logo.html.twig";
 @source "../../../assets/scripts/admin";
 @source "../../../src/Publication/Adapter";
+@source "../../../src/Shared/Adapter";
+@source "../../../src/Documentation/Adapter";
 
 /* Слои обычного документа; popover рисуется браузером в top layer. */
 @layer base {

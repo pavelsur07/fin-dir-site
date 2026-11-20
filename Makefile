@@ -83,6 +83,7 @@ cache-clear:
 # Границы слоёв из docs/architecture/PATTERNS.md. Конфиг: site/deptrac.yaml
 deptrac:
 	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress
+	$(CLI) vendor/bin/deptrac analyse --config-file=deptrac.documentation.yaml --no-progress
 
 # Изолированные bundles Public Website и временного Twig Admin.
 assets: website-assets admin-assets
@@ -115,7 +116,7 @@ asset-version:
 	@cat site/public/assets/website/app.css site/public/assets/website/analytics.js site/public/assets/website/navigation.js site/public/assets/website/metrika.js site/public/assets/website/article-toc.js site/public/assets/website/bitrix24.js site/public/assets/website/tabs.js site/public/assets/website/lead-modal.js | sha256sum | cut -c1-12
 
 admin-asset-version:
-	@cat site/public/assets/admin/app.css site/public/assets/admin/row-menus.js site/public/assets/admin/tabs.js | sha256sum | cut -c1-12
+	@cat site/public/assets/admin/app.css site/public/assets/admin/row-menus.js site/public/assets/admin/tabs.js site/public/assets/admin/docs-editor.js | sha256sum | cut -c1-12
 
 # Только тестовая БД: PHPUnit/DAMA откатывает синтетические записи.
 admin-browser-fixtures: test-db
@@ -152,8 +153,8 @@ website-assets-check admin-assets-check:
 	fi
 
 ds-check: assets-check
-	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter
-	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter
+	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter site/src/Shared/Adapter site/src/Documentation/Adapter
+	docker run --rm -v "$(CURDIR):/workspace:ro" -w /workspace node:24-alpine node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter site/src/Shared/Adapter site/src/Documentation/Adapter
 
 # --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
 
@@ -270,3 +271,33 @@ php-production-rollback:
 	$(ROLLBACK_DC) up -d --no-deps --wait --scale site-php-fpm=2 site-php-fpm
 	$(ROLLBACK_DC) exec -T site sh -ec 'nginx -t; nginx -s reload; wget -qO- http://127.0.0.1/health | grep -qx alive'
 	$(ROLLBACK_DC) run --rm site-php-cli php bin/console dbal:run-sql 'select 1'
+
+# Documentation: browser uses HTML from rolled-back test fixtures, never production.
+.PHONY: documentation-browser-fixtures documentation-browser-check documentation-http-check
+documentation-browser-fixtures: test-db
+	$(TEST_CLI) env DOCS_BROWSER_FIXTURES=/app/var/tests/docs-browser vendor/bin/phpunit tests/Documentation/Controller/DocumentationBrowserFixturesTest.php
+
+documentation-browser-check: assets-check documentation-browser-fixtures
+	docker run --rm --network host -v "$(CURDIR):/workspace:ro" -v "$(CURDIR)/site/var/tests/docs-browser:/artifacts" -w /workspace mcr.microsoft.com/playwright:v1.62.1-noble sh -c 'npm install --prefix /tmp/docs-browser --no-audit --no-fund playwright@1.62.1 >/dev/null && NODE_PATH=/tmp/docs-browser/node_modules node scripts/check-documentation-browser.cjs'
+
+documentation-http-check:
+	python3 scripts/check-documentation-http.py
+
+# Backup is mandatory before production migrations. The directory is outside the checkout.
+.PHONY: site-database-backup site-database-backup-check
+site-database-backup:
+	./scripts/backup-site-database.sh
+
+site-database-backup-check:
+	@set -eu; backup_check_dir=$$(mktemp -d); backup_check_container="vf-backup-smoke-$$$$"; \
+	trap 'docker rm -f "$$backup_check_container" >/dev/null 2>&1 || true; rm -rf -- "$$backup_check_dir"' EXIT HUP INT TERM; \
+	docker run -d --network none --name "$$backup_check_container" --label "com.docker.compose.project=$$backup_check_container" --label com.docker.compose.service=site-postgres --tmpfs /var/lib/postgresql/data -e POSTGRES_USER=smoke -e POSTGRES_PASSWORD=smoke -e POSTGRES_DB=smoke postgres:17-alpine >/dev/null; \
+	backup_wait=0; until docker exec "$$backup_check_container" pg_isready -U smoke -d smoke >/dev/null 2>&1; do backup_wait=$$((backup_wait+1)); test "$$backup_wait" -lt 30; sleep 1; done; \
+	docker exec "$$backup_check_container" psql -U smoke -d smoke -v ON_ERROR_STOP=1 -c "CREATE TABLE backup_probe (marker text NOT NULL); INSERT INTO backup_probe VALUES ('backup-roundtrip');" >/dev/null; \
+	VF_BACKUP_DIR="$$backup_check_dir" VF_BACKUP_PROJECT="$$backup_check_container" VF_BACKUP_RELEASE=smoke ./scripts/backup-site-database.sh; \
+	docker exec "$$backup_check_container" createdb -U smoke backup_restore; \
+	docker exec -i "$$backup_check_container" pg_restore --exit-on-error -U smoke -d backup_restore < "$$(find "$$backup_check_dir" -name '*.dump' -type f)"; \
+	test "$$(docker exec "$$backup_check_container" psql -U smoke -d backup_restore -Atc 'SELECT marker FROM backup_probe')" = backup-roundtrip; \
+	test "$$(stat -c '%a' "$$(find "$$backup_check_dir" -name '*.dump' -type f)")" = 600; \
+	if VF_BACKUP_DIR="$$backup_check_dir" VF_BACKUP_PROJECT=nonexistent-backup-project ./scripts/backup-site-database.sh; then echo 'Missing PostgreSQL must fail the backup' >&2; exit 1; fi; \
+	echo 'Database backup and real restore passed; missing database rejected.'

@@ -1,0 +1,8 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %}Разделы документации{% endblock %}
+{% block body %}
+<h1 class="mb-4 type-t2-article">Разделы документации</h1>
+<div class="mb-6 flex flex-wrap gap-4">{% include 'admin/_button.html.twig' with {label: 'Новый раздел', href: path('admin_doc_section_new')} only %}<a class="text-accent underline" href="{{ path('admin_doc_pages') }}">Страницы документации</a></div>
+<ul class="space-y-4">{% for section in pager.currentPageResults %}<li><a class="text-accent underline" href="{{ path('admin_doc_section_edit', {id: section.id}) }}">{{ section.title }}</a> · порядок {{ section.position }}</li>{% else %}<li>Создайте первый раздел.</li>{% endfor %}</ul>
+{{ pagerfanta(pager, {omitFirstPage: true}) }}
+{% endblock %}

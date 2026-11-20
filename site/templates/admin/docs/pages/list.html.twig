@@ -1,0 +1,16 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %}Документация{% endblock %}
+{% block body %}
+<h1 class="mb-4 type-t2-article">Документация</h1>
+<div class="mb-6 flex flex-wrap gap-4">{% include 'admin/_button.html.twig' with {label: 'Новая страница', href: path('admin_doc_page_new')} only %}<a class="text-accent underline" href="{{ path('admin_doc_sections') }}">Разделы документации</a></div>
+<form class="mb-6 flex flex-wrap items-end gap-4" method="get">
+<div class="min-w-0 max-w-full"><label for="doc-filter-q">Название</label><input class="rounded-md border p-2" id="doc-filter-q" type="search" name="q" value="{{ filters.q }}" maxlength="200"></div>
+<div class="min-w-0 max-w-full"><label for="doc-filter-status">Статус</label><select class="rounded-md border p-2" id="doc-filter-status" name="status"><option value="">Все</option><option value="draft" {{ filters.status == 'draft' ? 'selected' }}>Черновик</option><option value="published" {{ filters.status == 'published' ? 'selected' }}>Опубликовано</option></select></div>
+<div class="min-w-0 max-w-full"><label for="doc-filter-section">Раздел</label><select class="rounded-md border p-2" id="doc-filter-section" name="section"><option value="0">Все</option>{% for section in sections %}<option value="{{ section.id }}" {{ filters.section == section.id ? 'selected' }}>{{ section.title }}</option>{% endfor %}</select></div>
+{% include 'admin/_button.html.twig' with {label: 'Показать'} only %}
+</form>
+<div class="overflow-x-auto"><table class="w-full border-collapse border bg-white type-t6"><thead><tr><th class="p-3 text-left" scope="col">Страница</th><th class="p-3 text-left" scope="col">Раздел</th><th class="p-3 text-left" scope="col">Статус</th></tr></thead><tbody>
+{% for page in pager.currentPageResults %}<tr><td class="admin-cell-text border-t p-3"><a class="text-accent underline" href="{{ path('admin_doc_page_edit', {id: page.id}) }}">{{ page.title }}</a></td><td class="border-t p-3">{{ page.section_title }}</td><td class="border-t p-3">{{ page.status == 'published' ? 'Опубликовано' : 'Черновик' }}</td></tr>{% else %}<tr><td class="p-3" colspan="3">Страниц пока нет. Сначала создайте раздел.</td></tr>{% endfor %}
+</tbody></table></div>
+{{ pagerfanta(pager, {omitFirstPage: true}) }}
+{% endblock %}

@@ -44,3 +44,9 @@ lead_controllers:
     path: ../src/Lead/Controller/
     namespace: App\Lead\Controller
   type: attribute
+
+documentation_controllers:
+  resource:
+    path: ../src/Documentation/Controller/
+    namespace: App\Documentation\Controller
+  type: attribute

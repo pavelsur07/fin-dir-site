@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Publication\Adapter;
+namespace App\Shared\Adapter;
 
 /**
  * Результат рендера текста статьи: безопасный HTML и оглавление по h2.

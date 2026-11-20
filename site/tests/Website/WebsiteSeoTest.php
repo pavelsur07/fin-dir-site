@@ -99,7 +99,10 @@ final class WebsiteSeoTest extends WebTestCase
 
     public function testSeoStaticFilesExistAndAreConsistent(): void
     {
-        $robots = $this->read($this->projectPath('public/robots.txt'));
+        $client = self::createClient();
+        $client->request('GET', '/robots.txt');
+        self::assertResponseIsSuccessful();
+        $robots = (string) $client->getResponse()->getContent();
         self::assertStringContainsString('Sitemap: https://vashfindir.ru/sitemap.xml', $robots);
 
         // sitemap генерируется маршрутом (Stage 6): статический файл перекрыл бы его в nginx.

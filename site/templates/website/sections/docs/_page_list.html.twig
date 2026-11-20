@@ -1,0 +1,8 @@
+<ul class="space-y-6">
+{% for item in items %}
+    <li class="rounded-md border border-border-subtle p-4">
+        <h2 class="type-t3"><a class="text-accent underline focus-visible:shadow-focus" href="{{ doc_url('docs_page', item.slug) }}">{{ item.title }}</a></h2>
+        <p class="mt-2 text-fg-secondary">{{ item.description }}</p>
+    </li>
+{% else %}<li>Материалы не найдены.</li>{% endfor %}
+</ul>
