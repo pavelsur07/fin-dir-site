@@ -9,124 +9,52 @@ on:
 jobs:
     checks:
         runs-on: ubuntu-24.04
-
-        # Integration- и functional-тесты ходят в site_test. Пароль -- только для CI.
-        services:
-            postgres:
-                image: postgres:17-alpine
-                env:
-                    POSTGRES_DB: site
-                    POSTGRES_USER: site
-                    POSTGRES_PASSWORD: secret
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd "pg_isready -U site -d site"
-                    --health-interval 5s
-                    --health-timeout 3s
-                    --health-retries 10
-
-        defaults:
-            run:
-                working-directory: site
-
-        # dev, а не test: phpstan-symfony читает скомпилированный контейнер
-        # из var/cache/dev. Реальные значения секретов здесь не нужны: в базу
-        # ходят только тесты, и только в одноразовый postgres этого job.
+        # Use the same digest-pinned PHP as development and production. Runner
+        # package installers may silently select a newer patch than requested.
         env:
-            APP_ENV: dev
-            APP_DEBUG: "1"
-            APP_SECRET: ci-secret
-            DEFAULT_URI: https://example.test
-            DATABASE_URL: postgresql://site:secret@127.0.0.1:5432/site?serverVersion=17&charset=utf8
-            # Фиктивный bcrypt-хеш: контейнеру нужно значение, вход в CI не выполняется.
-            ADMIN_PASSWORD_HASH: $2y$04$FfV3wn2VKKju6pzPh32byeQGJpmCyArfOBkdE56c/p8zz0DB3pJ8.
+            PHP_CI_CLI: docker compose --profile cli run --rm --user 0:0 -e COMPOSER_ALLOW_SUPERUSER=1 site-php-cli
+            PHP_CI_TEST_CLI: docker compose --profile cli run --rm --user 0:0 -v ${{ github.workspace }}/SITE_RULES.md:/workspace/SITE_RULES.md:ro -v ${{ github.workspace }}/scripts:/workspace/scripts:ro site-php-cli
 
         steps:
             - name: Checkout
               uses: actions/checkout@v5
 
-            # Точная версия совпадает с Docker images development и production.
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: "8.4.27"
-                  tools: composer:v2
-                  extensions: pdo_pgsql, pgsql, zip, bcmath, xml
-                  coverage: none
+            - name: Build pinned PHP runtime
+              run: make build
+
+            - name: Install locked dependencies
+              run: make install CLI="$PHP_CI_CLI"
 
             - name: Check PHP runtime
-              run: php ../scripts/check-php-runtime.php
+              run: make php-runtime-check CLI="$PHP_CI_CLI"
 
-            # Без --no-check-lock: рассинхрон composer.json и composer.lock
-            # это как раз то, что здесь надо ловить.
-            - name: Composer validate
-              run: composer validate --strict
-
-            - name: Composer install
-              run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
-
-            - name: Composer audit
-              run: composer audit
-
-            - name: Build and check Tailwind CSS
-              working-directory: .
-              run: make assets-check
+            - name: Checks and tests
+              id: tests
+              run: make ci CLI="$PHP_CI_CLI" TEST_CLI="$PHP_CI_TEST_CLI" CMD="--log-junit phpunit-junit.xml"
 
             - name: Check design system classes
-              working-directory: .
-              run: |
-                  node scripts/check-templates.mjs site/public/assets/website/app.css site/templates/website site/assets/scripts/website site/src/Publication/Adapter site/src/Shared/Adapter site/src/Documentation/Adapter
-                  node scripts/check-templates.mjs site/public/assets/admin/app.css site/templates/admin site/assets/scripts/admin site/src/Publication/Adapter site/src/Shared/Adapter site/src/Documentation/Adapter
-
-            - name: Lint YAML
-              run: php bin/console lint:yaml config
-
-            - name: Lint Twig templates
-              run: php bin/console lint:twig templates
-
-            - name: Lint Symfony container
-              run: php bin/console lint:container
-
-            - name: Code style
-              run: vendor/bin/php-cs-fixer check --diff
-
-            - name: Static analysis
-              run: |
-                  php bin/console cache:warmup
-                  vendor/bin/phpstan analyse --no-progress
-
-            - name: Check architecture layers
-              run: |
-                  vendor/bin/deptrac analyse --config-file=deptrac.yaml --no-progress --report-uncovered
-                  vendor/bin/deptrac analyse --config-file=deptrac.documentation.yaml --no-progress
-
-            - name: Prepare test database
-              env:
-                  APP_ENV: test
-              run: |
-                  php bin/console doctrine:database:create --if-not-exists
-                  php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-
-            - name: Tests
-              id: tests
-              run: vendor/bin/phpunit --log-junit phpunit-junit.xml
+              run: make ds-check
 
             - name: Annotate test failures
               if: always() && steps.tests.outcome == 'failure'
               run: |
-                  python3 - <<'PY'
+                  python3 - <<'PYTEST'
+                  from pathlib import Path
                   import xml.etree.ElementTree as ET
 
-                  tree = ET.parse('phpunit-junit.xml')
-                  for tc in tree.iter('testcase'):
-                      for failure in list(tc.iter('failure')) + list(tc.iter('error')):
-                          name = f"{tc.get('classname')}::{tc.get('name')}"
-                          detail = (failure.get('message') or '').strip() or (failure.text or '').strip()
-                          detail = detail[:800].replace('%', '%25')
-                          detail = detail.replace('\r', '%0D').replace('\n', '%0A')
-                          print(f'::error title=Failed test::{name}: {detail}')
-                  PY
+                  report = Path('site/phpunit-junit.xml')
+                  if report.exists():
+                      for tc in ET.parse(report).iter('testcase'):
+                          for failure in list(tc.iter('failure')) + list(tc.iter('error')):
+                              name = f"{tc.get('classname')}::{tc.get('name')}"
+                              detail = (failure.get('message') or '').strip() or (failure.text or '').strip()
+                              detail = detail[:800].replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+                              print(f'::error title=Failed test::{name}: {detail}')
+                  PYTEST
+
+            - name: Stop test stack
+              if: always()
+              run: make down
 
     production-images:
         runs-on: ubuntu-24.04

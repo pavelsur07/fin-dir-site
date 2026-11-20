@@ -587,3 +587,13 @@ Docker networks не удаляются и production networking не меняе
   Временный стек и его сеть/данные после проверки удалены.
 - Независимое read-only release review завершено: blocker/high/medium нет;
   подтверждены backup fail-closed, права, порядок backup→migration и единый SHA.
+
+- PR#252 создан; первый GitHub CI остановился до тестов: setup-php запросил
+  8.4.27, но установил8.4.28. Проверка runtime сохранена без ослабления.
+  Job checks переведён на существующие digest-pinned Docker images и команды
+  Makefile, с отдельным синтетическим PostgreSQL через Compose, как локально.
+
+- Docker-based checks проверены локально с теми же root CLI/TEST_CLI overrides:
+  410tests3362assertions — успешно. Повторное независимое review изменения CI
+  не выявило существенных замечаний. Production-images job первого PR CI уже
+  прошёл, включая backup/restore и расширенный production HTTP smoke.
