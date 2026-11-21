@@ -43,6 +43,7 @@ final class PublicDocumentationTest extends WebTestCase
         self::assertStringContainsString('must-revalidate', (string) $this->client->getResponse()->headers->get('Cache-Control'));
         self::assertSelectorExists('a[href="https://vashfindir.ru/privacy"]');
         self::assertSelectorNotExists('a[href*="secret-draft"]');
+        self::assertSelectorNotExists('script[src^="/assets/website/doc-image-viewer.js"]');
     }
 
     public function testDraftAndMissingPageHave404(): void

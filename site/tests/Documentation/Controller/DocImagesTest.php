@@ -103,6 +103,9 @@ final class DocImagesTest extends WebTestCase
         self::assertResponseRedirects($editor);
         $client->request('GET', $article);
         self::assertSelectorExists('img[src="'.$image.'"][width="32"][height="16"]');
+        self::assertSelectorExists('a[data-doc-image-preview][href="'.$image.'"][target="_blank"] img');
+        self::assertSelectorCount(1, 'dialog[data-doc-image-dialog]');
+        self::assertSelectorExists('script[src^="/assets/website/doc-image-viewer.js?v="][defer]');
         $client->request('GET', $image);
         self::assertResponseHeaderSame('Content-Type', 'image/webp');
         self::assertSame($bytes, $client->getResponse()->getContent());

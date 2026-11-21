@@ -1,6 +1,10 @@
 {% extends 'website/layouts/docs.html.twig' %}
 {% block title %}{{ page.meta_title ?: page.title }} — Ваш Финдир{% endblock %}
 {% block description %}{{ page.meta_description ?: page.description }}{% endblock %}
+{% block head %}
+    {{ parent() }}
+    {% if image_viewer %}<script src="/assets/website/doc-image-viewer.js?v={{ vf_asset_version }}" defer></script>{% endif %}
+{% endblock %}
 {% block docs_content %}
 {% include 'website/components/_breadcrumbs.html.twig' with {crumbs: [{label: 'База знаний', url: doc_url('docs_home')}, {label: page.section_title, url: doc_url('docs_section', page.section_slug)}, {label: page.title}]} only %}
 <article>
@@ -8,8 +12,10 @@
     <p class="mt-4 text-fg-secondary">{{ page.description }}</p>
     <p class="my-4 type-t7 text-fg-muted">Обновлено <time datetime="{{ page.updated_at|date('c') }}">{{ page.updated_at|date('d.m.Y') }}</time></p>
     {% include 'website/sections/docs/_toc.html.twig' with {toc: article.toc} only %}
+    {% if image_viewer %}<noscript><p class="mt-4 text-fg-secondary">При нажатии снимок откроется в новой вкладке.</p></noscript>{% endif %}
     <div class="mt-6 min-w-0 break-words">{{ article.html|raw }}</div>
 </article>
+{% if image_viewer %}{% include 'website/sections/docs/_image_viewer.html.twig' only %}{% endif %}
 {% include 'website/sections/docs/_related.html.twig' with {related: related} only %}
 {% include 'website/sections/docs/_sequence.html.twig' with {previous: previous, next: next} only %}
 {% endblock %}

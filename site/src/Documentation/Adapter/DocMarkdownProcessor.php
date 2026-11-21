@@ -87,7 +87,7 @@ final class DocMarkdownProcessor
 
     /** @param list<array<string,mixed>> $targets
      * @param array<string,array{url:string,width:int,height:int}> $images */
-    public function renderTargets(string $body, array $targets, array $images = []): RenderedArticle
+    public function renderTargets(string $body, array $targets, array $images = [], bool $imageViewer = false): RenderedArticle
     {
         $map = [];
         foreach ($this->analyze($body)->links as $link) {
@@ -112,16 +112,16 @@ final class DocMarkdownProcessor
             }
         }
 
-        return $this->render($body, $map, $images);
+        return $this->render($body, $map, $images, $imageViewer);
     }
 
     /** @param array<string,string> $targets
      * @param array<string,array{url:string,width:int,height:int}> $images */
-    public function render(string $body, array $targets, array $images = []): RenderedArticle
+    public function render(string $body, array $targets, array $images = [], bool $imageViewer = false): RenderedArticle
     {
         $map = [];
         foreach ($images as $id => $image) {
-            $map['doc-image:'.$id] = $image;
+            $map['doc-image:'.$id] = $image + ['viewer' => $imageViewer];
         }
 
         return $this->markdown->renderArticle($body, $targets, $map);
