@@ -47,10 +47,10 @@ try {
     $em->persist($page);
     $em->persist($draft);
     $em->flush();
-    $setGrant = static function (bool $enabled) use ($kernel): void {
+    $setGrant = static function (bool $enabled) use ($kernel, $tokens): void {
         $app = new Application($kernel);
         $app->setAutoExit(false);
-        check(0 === $app->run(new ArrayInput(['command' => 'app:docs:mcp:client:'.($enabled ? 'allow' : 'disable'), 'client-id' => 'smoke-reader']), new BufferedOutput()), 'Grant CLI failed.');
+        check(0 === $app->run(new ArrayInput(['command' => 'app:docs:mcp:client:'.($enabled ? 'allow' : 'disable'), 'client-id' => $tokens['client_id'] ?? 'smoke-reader']), new BufferedOutput()), 'Grant CLI failed.');
     };
     $setGrant(true);
     $http = HttpClient::create(['timeout' => 5, 'max_duration' => 10, 'max_redirects' => 0]);
@@ -73,6 +73,11 @@ try {
     check(403 === $raw('POST', token: $tokens['valid'], extra: ['Origin' => 'https://evil.example'])[0], 'Hostile origin accepted.');
     check(413 === $raw('POST', token: $tokens['valid'], body: str_repeat('x', 1048577))[0], 'Oversized request accepted.');
     check(405 === $raw('GET', token: $tokens['valid'])[0], 'Long-lived GET enabled.');
+    $writeRequest = json_encode(['jsonrpc' => '2.0', 'id' => 8, 'method' => 'tools/call', 'params' => ['name' => 'docs_create_draft', 'arguments' => new stdClass()]], JSON_THROW_ON_ERROR);
+    [$writeStatus, , $writeBody] = $raw('POST', token: $tokens['valid'], body: $writeRequest);
+    $writeReply = json_decode($writeBody, true, 512, JSON_THROW_ON_ERROR);
+    check(in_array($writeStatus, [200, 400], true) && (isset($writeReply['error']) || true === ($writeReply['result']['isError'] ?? false)), 'Write tool was accepted.');
+    check(2 === $em->getRepository(DocPage::class)->count([]), 'Read-only HTTP call created documentation.');
     $recording = new class(new Psr18Client($http)) implements ClientInterface {
         public array $upstreams = [];
         public function __construct(private ClientInterface $inner) {}

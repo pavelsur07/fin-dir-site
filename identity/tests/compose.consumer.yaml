@@ -1,0 +1,23 @@
+# Test-only: production PHP artifacts on the disposable issuer's internal network.
+services:
+  site-php-cli:
+    environment: &real-issuer
+      DOCS_MCP_HTTP_ENABLED: '1'
+      DOCS_MCP_OAUTH_ISSUER: https://identity.test/realms/projects
+      DOCS_MCP_OAUTH_CA_FILE: /identity-ca.crt
+    volumes:
+      - ${IDENTITY_RUNTIME_DIR:?isolated runtime required}/ca.crt:/identity-ca.crt:ro
+      - ${IDENTITY_RUNTIME_DIR}/http-contract/tokens.json:/smoke-tokens.json:ro
+      - ./scripts/check-documentation-mcp-http.php:/check-mcp-http.php:ro
+  site-php-fpm:
+    environment: *real-issuer
+    volumes:
+      - ${IDENTITY_RUNTIME_DIR}/ca.crt:/identity-ca.crt:ro
+  site:
+    ports: !reset []
+    volumes:
+      - ${IDENTITY_RUNTIME_DIR}/http-contract/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+networks:
+  default:
+    external: true
+    name: identity-smoke_default

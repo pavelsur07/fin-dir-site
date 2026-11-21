@@ -332,3 +332,8 @@ documentation-mcp-http-check: php-production-check
 	$(MCP_HTTP_SMOKE) run --rm site-php-cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration; \
 	$(MCP_HTTP_SMOKE) up -d --wait --scale site-php-fpm=2 site; \
 	$(MCP_HTTP_SMOKE) run --rm site-php-cli php /check-mcp-http.php
+
+# Independent IAM component in this monorepo. Never part of site up/down/deploy.
+.PHONY: identity-init identity-build identity-up identity-down identity-validate identity-test identity-ci identity-contract-probe identity-project-plan identity-project-apply identity-smoke identity-bootstrap identity-backup identity-rotate-client identity-package identity-runtime-apply identity-restore-check identity-deploy identity-unit
+identity-init identity-build identity-up identity-down identity-validate identity-test identity-ci identity-contract-probe identity-project-plan identity-project-apply identity-smoke identity-bootstrap identity-backup identity-rotate-client identity-package identity-runtime-apply identity-restore-check identity-deploy identity-unit:
+	$(MAKE) -C identity $(patsubst identity-%,%,$@)
