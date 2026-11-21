@@ -90,7 +90,7 @@ class DocPage
 
     private function requireContent(): void
     {
-        if ('' === trim($this->body) || '' === trim($this->description)) {
+        if ([] !== DocFields::publicationContentIssues($this->description, $this->body)) {
             throw new DocConflict('Для публикации заполните текст и описание.');
         }
     }

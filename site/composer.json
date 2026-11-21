@@ -22,7 +22,8 @@
     "pagerfanta/twig": "^4.9",
     "league/commonmark": "^2.10",
     "symfony/http-client": "7.4.*",
-    "symfony/ux-twig-component": "^3.5"
+    "symfony/ux-twig-component": "^3.5",
+    "mcp/sdk": "0.10.0"
   },
   "autoload": {
     "psr-4": {

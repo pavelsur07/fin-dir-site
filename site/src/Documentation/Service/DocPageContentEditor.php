@@ -17,7 +17,7 @@ use Psr\Clock\ClockInterface;
 
 final class DocPageContentEditor
 {
-    public function __construct(private readonly DocPageRepository $pages, private readonly DocSectionRepository $sections, private readonly DocMarkdownProcessor $markdown, private readonly ClockInterface $clock)
+    public function __construct(private readonly DocPageRepository $pages, private readonly DocSectionRepository $sections, private readonly DocMarkdownProcessor $markdown, private readonly ClockInterface $clock, private readonly DocPublicationRules $rules)
     {
     }
 
@@ -90,7 +90,7 @@ final class DocPageContentEditor
     public function validatePublishedLinks(DocPage $page): void
     {
         foreach ($page->links() as $link) {
-            if (!$link->target()->isPublished() && $link->target() !== $page) {
+            if (!$this->rules->targetIsPublishable($page->id(), $link->target()->id(), $link->target()->isPublished() ? 'published' : 'draft')) {
                 throw new DocConflict('Сначала опубликуйте все страницы, на которые ссылается материал.');
             }
             $this->checkAnchor($link->target()->body(), $link->fragment());
@@ -99,7 +99,7 @@ final class DocPageContentEditor
 
     private function checkAnchor(string $body, string $fragment): void
     {
-        if ('' !== $fragment && !in_array($fragment, array_column($this->markdown->analyze($body)->headings, 'id'), true)) {
+        if (!$this->rules->hasAnchor($body, $fragment)) {
             throw new DocConflict('Заголовок, на который ведёт ссылка, отсутствует: '.$fragment);
         }
     }

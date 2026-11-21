@@ -8,6 +8,20 @@ final class DocFields
 {
     public const string SLUG_PATTERN = '/^[a-z0-9]+(?:-[a-z0-9]+)*$/D';
 
+    /** @return list<'EMPTY_DESCRIPTION'|'EMPTY_BODY'> */
+    public static function publicationContentIssues(string $description, string $body): array
+    {
+        $issues = [];
+        if ('' === trim($description)) {
+            $issues[] = 'EMPTY_DESCRIPTION';
+        }
+        if ('' === trim($body)) {
+            $issues[] = 'EMPTY_BODY';
+        }
+
+        return $issues;
+    }
+
     public static function text(string $text, int $max, bool $required = true): string
     {
         $text = trim($text);

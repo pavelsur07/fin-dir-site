@@ -9,6 +9,9 @@ parameters:
   # Пусто -- уведомления о заявках выключены, заявки всё равно сохраняются.
   env(LEAD_RELAY_URL): ''
   env(LEAD_RELAY_TOKEN): ''
+  env(DOCS_MCP_ENABLED): '0'
+  env(DOCS_MCP_ACTOR): ''
+  env(DOCS_MCP_PROFILE): 'published-reader'
 
 services:
   _defaults:
@@ -19,6 +22,8 @@ services:
     resource: '../src/'
     exclude:
       - '../src/Kernel.php'
+      - '../src/Documentation/Mcp/DocMcpAccess.php'
+      - '../src/Documentation/Mcp/DocMcpToolHandler.php'
 
   App\Documentation\ValueObject\DocUrl:
     arguments:

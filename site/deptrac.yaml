@@ -9,6 +9,14 @@ deptrac:
         - ./src
 
     layers:
+        - name: DocumentationMcp
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\Documentation\\Mcp\\#'
+        - name: McpSdk
+          collectors:
+              - type: classNameRegex
+                value: '#^Mcp\\#'
         - name: Controller
           collectors:
               - type: classNameRegex
@@ -125,6 +133,8 @@ deptrac:
                 value: '#^Symfony\\#'
 
     ruleset:
+        DocumentationMcp: [Service, Query, DTO, Adapter, Exception, ValueObject, Symfony, Pagerfanta, McpSdk]
+        McpSdk: []
         # Контроллер: один Query или один Application Service плюс HTTP-обвязка.
         # Нет Entity, Repository и Doctrine -- PATTERNS.md §6.
         # Ожидаемые ошибки ввода контроллер ловит, чтобы показать их в форме.
@@ -140,6 +150,7 @@ deptrac:
 
         # Query читает через Doctrine и знает Entity только как источник DQL.
         Query:
+            - DTO
             - Entity
             - DoctrineOrm
             - DoctrineMapping
@@ -190,6 +201,7 @@ deptrac:
 
         # Консольная команда -- как контроллер: вызывает сценарий.
         Command:
+            - DocumentationMcp
             - Service
             - Symfony
             - Clock
