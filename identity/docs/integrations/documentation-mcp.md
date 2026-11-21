@@ -22,3 +22,12 @@ resource-indicators/CIMD выключены, один client уже закреп
 
 Production issuer deployment сам по себе не означает включённый HTTP MCP.
 Фактические SHA, smoke и включение фиксируются в release report.
+
+Первый production выпуск проверен2026-11-21: public discovery/TLS, оба протокола,
+ровно шесть read tools, запрет draft search, отсутствие сессий, немедленный revoke
+на двух FPM. Рабочий client secret находится только на сервере в protected
+`/opt/identity/runtime/production/clients/docs-mcp-reader-prod`; передавать
+потребителю защищённым каналом. API требует local grant именно для этого issuer.
+Включение website deployment: repository variable VF_DOCS_MCP_HTTP_ENABLED=1.
+Глобальное выключение: значение0 и обычный redeploy; emergency per-client revoke
+в Symfony действует немедленно и сохраняется при последующих deploy.

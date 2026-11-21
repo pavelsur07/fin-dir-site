@@ -472,10 +472,12 @@ docs/integrations/documentation-mcp.md, docs/runbooks/onboarding.md.
 - [ ] Identity и MCP выпущены отдельными контролируемыми releases.
 - [ ] Подключение второго проекта доказано шаблоном без изменений IAM core.
 
-Текущий статус (2026-11-21): пользователь разрешил реализацию и deployment на
-текущий сервер сайта, добавил DNS auth/auth-admin. Admin IP не предоставлен:
-публичная админка закрыта, operator через SSH. Staging transient/изолированный,
-без постоянного второго JVM на shared host2GB; см. ADR0002. Реализованы component,
-profile, ingress, provisioning, rotation, encrypted backup/restore и CI/release
-scripts; local CI50tests + real HTTP SDK/twoFPM/outage/encrypted recovery passed (150.1с). Независимое ревью,
-GitHub CI, production release и отдельная интеграция MCP ещё выполняются.
+Текущий статус (2026-11-21): Identity и Documentation MCP развёрнуты на выбранном
+текущем сервере сайта. DNS/TLS auth/auth-admin проверены; public admin закрыт,
+operator через SSH, MFA/password change обязательны при первом входе. GitHub CI
+и независимое ревью пройдены, существенные findings исправлены. Реальные SDK/
+HTTP/двеFPM/отзыв подтверждены в production; encrypted production backup скопирован
+вне хоста и восстановлен на isolated стенде за38.1с. Подробные SHA/проверки/
+ограничения: [отчёт выпуска](Identity_Service_Release_2026-11-21.md).
+Новый реальный API, пользовательский SSO, HA и непрерывная off-host backup
+репликация остаются отдельными работами; synthetic second-API isolation доказана.
