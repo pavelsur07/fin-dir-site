@@ -248,6 +248,7 @@ php-production-smoke: php-production-check
 	$(PHP_SMOKE) up -d --wait site-postgres; \
 	$(PHP_SMOKE) run --rm site-php-cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration; \
 	$(PHP_SMOKE) run --rm site-php-cli php bin/console cache:warmup; \
+	$(PHP_SMOKE) run --rm -T site-php-cli php < scripts/check-documentation-mcp.php; \
 	$(PHP_SMOKE) up -d --wait --scale site-php-fpm=2 site; \
 	python3 scripts/check-php-http.py
 
@@ -259,6 +260,7 @@ php-deployed-check:
 		docker exec "$$container" sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'; \
 	done
 	$(PROD_DC) run --rm -T site-php-cli php < scripts/check-php-runtime.php
+	$(PROD_DC) run --rm -T site-php-cli php < scripts/check-documentation-mcp.php
 
 # Emergency use with compatible checkout and exported production environment.
 # Both recorded image digests required. May briefly interrupt PHP requests.
@@ -304,3 +306,14 @@ site-database-backup-check:
 	test "$$(stat -c '%a' "$$(find "$$backup_check_dir" -name '*.dump' -type f)")" = 600; \
 	if VF_BACKUP_DIR="$$backup_check_dir" VF_BACKUP_PROJECT=nonexistent-backup-project ./scripts/backup-site-database.sh; then echo 'Missing PostgreSQL must fail the backup' >&2; exit 1; fi; \
 	echo 'Database backup and real restore passed; missing database rejected.'
+
+# Trusted local stdio: stdout is reserved for MCP frames. No TTY, stdin stays open.
+.PHONY: documentation-mcp
+documentation-mcp:
+	@$(DC) --profile cli run --rm -T --interactive -e DOCS_MCP_ENABLED -e DOCS_MCP_ACTOR -e DOCS_MCP_PROFILE site-php-cli php bin/console app:docs:mcp --no-interaction --no-ansi --no-debug
+
+.PHONY: documentation-mcp-production
+documentation-mcp-production:
+	@printf '%s\n' "$(IMAGE_TAG)" | grep -Eq '^sha-[0-9a-f]{40}$$' || { echo 'IMAGE_TAG must be the deployed sha-<40-character commit SHA> tag.' >&2; exit 1; }
+	@ids=$$($(PROD_DC) ps -q site-php-fpm); test -n "$$ids" || { echo 'No running production PHP replicas.' >&2; exit 1; }; for container in $$ids; do docker inspect --format '{{.Config.Image}}' "$$container" | grep -Eq ':$(IMAGE_TAG)$$' || { echo 'IMAGE_TAG differs from a running production PHP replica.' >&2; exit 1; }; done
+	@$(PROD_DC) run --rm -T --interactive --no-deps --pull never -e DOCS_MCP_ENABLED -e DOCS_MCP_ACTOR -e DOCS_MCP_PROFILE site-php-cli php bin/console app:docs:mcp --no-interaction --no-ansi --no-debug
