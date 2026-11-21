@@ -28,6 +28,7 @@ final class DocPublicationRules
 
     public function inspect(DocPublicationCandidate $candidate): DocValidationReport
     {
+        $analysis = $this->markdown->analyze($candidate->body);
         $issues = [];
         foreach (DocFields::publicationContentIssues($candidate->description, $candidate->body) as $code) {
             $issues[] = ['code' => $code, 'message' => 'Для публикации заполните текст и описание.'];
@@ -42,7 +43,7 @@ final class DocPublicationRules
                 $byUrl[$url] = $target;
             }
         }
-        foreach ($this->markdown->analyze($candidate->body)->links as $link) {
+        foreach ($analysis->links as $link) {
             if (null === $link['id'] && null === $link['slug'] && !$this->hasAnchor($candidate->body, $link['fragment'])) {
                 $issues[] = ['code' => 'MISSING_ANCHOR', 'message' => 'Локальный заголовок отсутствует.'];
             }
@@ -69,6 +70,27 @@ final class DocPublicationRules
             }
         }
 
-        return new DocValidationReport($candidate->id, $candidate->version, $issues, $this->clock->now());
+        return new DocValidationReport($candidate->id, $candidate->version, array_merge($issues, $this->inspectImages($analysis->images, $candidate->imageIds)), $this->clock->now());
+    }
+
+    /**
+     * @param list<array{id:string,alt:string}> $references
+     * @param list<string>                      $imageIds
+     *
+     * @return list<array{code:string,message:string}>
+     */
+    public function inspectImages(array $references, array $imageIds): array
+    {
+        $available = array_fill_keys($imageIds, true);
+        $issues = [];
+        foreach ($references as $image) {
+            if (!isset($available[$image['id']])) {
+                $issues[] = ['code' => 'MISSING_IMAGE', 'message' => 'Снимок отсутствует среди вложений этой статьи. Загрузите его и вставьте заново.'];
+            } elseif ('' === $image['alt']) {
+                $issues[] = ['code' => 'MISSING_IMAGE_ALT', 'message' => 'Добавьте альтернативный текст для снимка.'];
+            }
+        }
+
+        return $issues;
     }
 }

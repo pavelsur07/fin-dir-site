@@ -9,6 +9,7 @@ use App\Documentation\DTO\DocListRequest;
 use App\Documentation\DTO\DocPageInput;
 use App\Documentation\Exception\DocConflict;
 use App\Documentation\Form\DocPageType;
+use App\Documentation\Query\AdminDocImageQuery;
 use App\Documentation\Query\AdminDocQuery;
 use App\Documentation\Service\DocPageCreator;
 use App\Documentation\Service\DocPageEditor;
@@ -55,7 +56,7 @@ final class DocPageController extends AbstractController
     }
 
     #[Route('/admin/docs/pages/{id}/edit', name: 'admin_doc_page_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function edit(int $id, Request $request, AdminDocQuery $query, DocPageEditor $editor, DocMarkdownProcessor $markdown): Response
+    public function edit(int $id, Request $request, AdminDocQuery $query, DocPageEditor $editor, DocMarkdownProcessor $markdown, AdminDocImageQuery $images): Response
     {
         $page = $query->page($id);
         $input = DocPageInput::fromData($page);
@@ -78,7 +79,7 @@ final class DocPageController extends AbstractController
             }
         }
 
-        return $this->render('admin/docs/pages/form.html.twig', ['form' => $form, 'page' => $page], $errorResponse ?? null);
+        return $this->render('admin/docs/pages/form.html.twig', ['form' => $form, 'page' => $page, 'images' => $images->forPage($id, 1)], $errorResponse ?? null);
     }
 
     #[Route('/admin/docs/pages/{id}/{action}', name: 'admin_doc_status', requirements: ['id' => '\d+', 'action' => 'publish|unpublish'], methods: ['POST'])]
@@ -102,10 +103,13 @@ final class DocPageController extends AbstractController
     }
 
     #[Route('/admin/docs/pages/{id}/preview', name: 'admin_doc_preview', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function preview(int $id, AdminDocQuery $query, DocMarkdownProcessor $markdown): Response
+    public function preview(int $id, AdminDocQuery $query, DocMarkdownProcessor $markdown, AdminDocImageQuery $images): Response
     {
         $page = $query->page($id);
 
-        return $this->render('admin/docs/pages/preview.html.twig', ['page' => $page, 'article' => $markdown->renderTargets((string) $page['body'], $query->targets($id))], new Response('', 200, ['Cache-Control' => 'private, no-store']));
+        return $this->render('admin/docs/pages/preview.html.twig', [
+            'page' => $page,
+            'article' => $markdown->renderTargets((string) $page['body'], $query->targets($id), $images->referencedByPage($id)),
+        ], new Response('', 200, ['Cache-Control' => 'private, no-store']));
     }
 }

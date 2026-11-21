@@ -47,6 +47,7 @@ services:
   App\Documentation\ValueObject\DocUrl:
     arguments:
       $base: '%vf.docs_url%'
+      $adminBase: '%vf.site_url%'
 
   App\Controller\:
     resource: '../src/Controller/'

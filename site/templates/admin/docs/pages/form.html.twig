@@ -13,5 +13,22 @@
 {% endif %}
 <div class="mb-6 flex flex-wrap gap-4"><a class="text-accent underline" href="{{ path('admin_doc_link_picker') }}" target="doc-link-picker" data-doc-picker="body">Выбрать ссылку в текст</a><a class="text-accent underline" href="{{ path('admin_doc_link_picker') }}" target="doc-link-picker" data-doc-picker="related">Выбрать страницу для «Читайте также»</a></div>
 {% include 'admin/docs/_fields.html.twig' with {form: form, label: page ? 'Сохранить страницу' : 'Создать черновик'} only %}
+{% if page %}
+<section class="mt-6 space-y-4" aria-labelledby="doc-images-heading">
+    <h2 id="doc-images-heading" class="type-t3">Скриншоты</h2>
+    <a class="text-accent underline" href="{{ path('admin_doc_images', {id: page.id}) }}" target="_blank" rel="noopener">Открыть список скриншотов</a>
+    <div data-doc-images="{{ path('admin_doc_images', {id: page.id}) }}" hidden>
+        {% include 'admin/docs/pages/_image_upload.html.twig' with {page_id: page.id} only %}
+        <ul class="mb-4 space-y-2" data-doc-image-status aria-live="polite"></ul>
+        <form class="mb-4 space-y-4" data-doc-image-alt hidden>
+            <label class="grid gap-2">Альтернативный текст для снимка
+                <input class="min-h-control-touch rounded-md border border-border-strong px-3" type="text" name="alt" required>
+            </label>
+            {% include 'admin/_button.html.twig' with {label: 'Вставить снимок'} only %}
+        </form>
+        {% include 'admin/docs/pages/_image_gallery.html.twig' with {page_id: page.id, images: images, editor: true} only %}
+    </div>
+</section>
+{% endif %}
 {% if page and page.incoming %}<section class="mt-6"><h2 class="mb-4 type-t3">Входящие ссылки</h2><p class="mb-4">Перед снятием страницы с публикации уберите ссылки из опубликованных материалов.</p><ul class="space-y-2">{% for source in page.incoming %}<li><a class="text-accent underline" href="{{ path('admin_doc_page_edit', {id: source.id}) }}">{{ source.title }}</a> · {{ source.status == 'published' ? 'Опубликовано' : 'Черновик' }}</li>{% endfor %}</ul></section>{% endif %}
 {% endblock %}

@@ -10,16 +10,22 @@ RUN set -eux; \
     apk add --no-cache \
         tzdata \
         libzip \
-        libpq; \
+        libpq \
+        libpng \
+        libwebp; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         libzip-dev \
-        libpq-dev; \
+        libpq-dev \
+        libpng-dev \
+        libwebp-dev; \
+    docker-php-ext-configure gd --with-webp; \
     docker-php-ext-install -j"$(nproc)" \
         pdo_pgsql \
         pgsql \
         zip \
-        bcmath; \
+        bcmath \
+        gd; \
     apk del --no-network .build-deps; \
     rm -rf /tmp/pear /tmp/pear-build-*; \
     addgroup -g 1000 -S app; \

@@ -1,0 +1,37 @@
+<div data-doc-image-gallery>
+    <ul class="grid gap-4 md:grid-cols-2">
+        {% for image in images.currentPageResults %}
+            <li class="space-y-3 rounded-md border border-border-subtle p-4">
+                <a class="block text-accent underline focus-visible:shadow-focus" href="{{ path('admin_doc_image', {uuid: image.id}) }}" target="_blank" rel="noopener">
+                    <img class="h-auto max-w-full rounded-sm" src="{{ path('admin_doc_image', {uuid: image.id}) }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" alt="">
+                    Открыть снимок {{ image.id|slice(0, 8) }}
+                </a>
+                <div class="text-fg-secondary">{{ image.width }} × {{ image.height }} px · {{ image.referenced ? 'В тексте' : 'Вне текста' }}</div>
+                {% if editor %}
+                    <button type="button" class="min-h-control-touch text-accent underline focus-visible:shadow-focus" data-doc-image-insert="{{ image.id }}">Вставить в текст</button>
+                {% else %}
+                    <label class="grid gap-2">
+                        Markdown для вставки
+                        <input class="w-full min-h-control-touch rounded-md border border-border-strong px-3" readonly value="![Описание снимка](doc-image:{{ image.id }})">
+                    </label>
+                {% endif %}
+                {% if not image.referenced %}
+                    <details>
+                        <summary class="min-h-control-touch cursor-pointer text-error">Удалить снимок</summary>
+                        <form method="post" action="{{ path('admin_doc_image_delete', {id: page_id, uuid: image.id}) }}" data-doc-image-delete>
+                            <input type="hidden" name="_token" value="{{ csrf_token('doc-image-delete-' ~ page_id ~ '-' ~ image.id) }}">
+                            {% include 'admin/_button.html.twig' with {label: 'Подтвердить удаление'} only %}
+                        </form>
+                    </details>
+                {% endif %}
+            </li>
+        {% else %}
+            <li>К этой статье пока не добавлены снимки.</li>
+        {% endfor %}
+    </ul>
+    {% if images.haveToPaginate %}
+        <div class="mt-4" data-doc-image-pages>
+            {{ pagerfanta(images, 'default', {routeName: 'admin_doc_images', routeParams: {id: page_id}}) }}
+        </div>
+    {% endif %}
+</div>

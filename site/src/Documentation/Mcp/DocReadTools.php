@@ -8,7 +8,9 @@ use App\Documentation\Adapter\DocMarkdownProcessor;
 use App\Documentation\DTO\DocMcpSearchInput;
 use App\Documentation\DTO\DocPublicationCandidate;
 use App\Documentation\Exception\DocToolFailure;
+use App\Documentation\Query\AdminDocImageQuery;
 use App\Documentation\Query\EditorialDocMcpQuery;
+use App\Documentation\Query\PublicDocImageQuery;
 use App\Documentation\Query\PublishedDocMcpQuery;
 use App\Documentation\Service\DocPublicationRules;
 use Pagerfanta\PagerfantaInterface;
@@ -16,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class DocReadTools
 {
-    public function __construct(private readonly PublishedDocMcpQuery $published, private readonly EditorialDocMcpQuery $editorial, private readonly DocMarkdownProcessor $markdown, private readonly DocPublicationRules $rules, private readonly ValidatorInterface $validator)
+    public function __construct(private readonly PublishedDocMcpQuery $published, private readonly EditorialDocMcpQuery $editorial, private readonly DocMarkdownProcessor $markdown, private readonly DocPublicationRules $rules, private readonly ValidatorInterface $validator, private readonly AdminDocImageQuery $adminImages, private readonly PublicDocImageQuery $publicImages)
     {
     }
 
@@ -51,15 +53,16 @@ final class DocReadTools
             return $this->urls($page, $access);
         }
         $targets = $query->targets($args['id']);
+        $images = ($access->canReadDrafts() ? $this->adminImages : $this->publicImages)->referencedByPage($page['id']);
         if ('docs_preview_page' === $tool) {
-            $rendered = $this->markdown->renderTargets($page['body'], $targets);
+            $rendered = $this->markdown->renderTargets($page['body'], $targets, $images);
 
             return ['pageId' => $page['id'], 'version' => $page['version'], 'html' => $rendered->html, 'toc' => $rendered->toc, 'adminPreviewUrl' => $access->canReadDrafts() ? 'https://vashfindir.ru/admin/docs/pages/'.$page['id'].'/preview' : null];
         }
         if ('docs_validate_page' !== $tool) {
             throw new DocToolFailure('FORBIDDEN', 'Неизвестный сценарий чтения.');
         }
-        $candidate = new DocPublicationCandidate($page['id'], $page['version'], $page['description'], $page['body'], array_map(static fn (array $target): array => ['id' => (int) $target['target_id'], 'status' => (string) $target['status'], 'body' => (string) $target['body'], 'fragment' => (string) $target['fragment'], 'slug' => (string) $target['slug'], 'urls' => is_string($target['source_urls']) ? json_decode($target['source_urls'], true, 512, JSON_THROW_ON_ERROR) : $target['source_urls']], $targets), $query->incomingAnchors($page['id']));
+        $candidate = new DocPublicationCandidate($page['id'], $page['version'], $page['description'], $page['body'], array_map(static fn (array $target): array => ['id' => (int) $target['target_id'], 'status' => (string) $target['status'], 'body' => (string) $target['body'], 'fragment' => (string) $target['fragment'], 'slug' => (string) $target['slug'], 'urls' => is_string($target['source_urls']) ? json_decode($target['source_urls'], true, 512, JSON_THROW_ON_ERROR) : $target['source_urls']], $targets), $query->incomingAnchors($page['id']), array_keys($images));
 
         return $this->rules->inspect($candidate)->toArray();
     }

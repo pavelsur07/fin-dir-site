@@ -22,6 +22,7 @@ final class DocPagePublisher
                 throw new DocConflict('Форма устарела. Обновите страницу.');
             }
             $this->content->validatePublishedLinks($page);
+            $this->content->validateImages($page);
             $page->publish($this->clock->now());
         });
     }

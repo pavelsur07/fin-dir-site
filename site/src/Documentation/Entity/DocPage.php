@@ -140,6 +140,11 @@ class DocPage
         return $this->id ?? throw new \LogicException('Page not persisted.');
     }
 
+    public function isPersisted(): bool
+    {
+        return null !== $this->id;
+    }
+
     public function slug(): string
     {
         return $this->slug;

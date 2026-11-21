@@ -1,0 +1,11 @@
+{% extends 'admin/layout.html.twig' %}
+{% block title %}Скриншоты{% endblock %}
+{% block body %}
+    <h1 class="mb-4 type-t2-article">{{ block('title') }}</h1>
+    <p class="mb-4"><a class="text-accent underline" href="{{ path('admin_doc_page_edit', {id: page.id}) }}">{{ page.title }}</a></p>
+    {% for message in app.flashes('doc_image_error') %}
+        <p class="mb-4 rounded-md border border-error-border bg-error-bg p-4 text-error" role="alert">{{ message }}</p>
+    {% endfor %}
+    {% include 'admin/docs/pages/_image_upload.html.twig' with {page_id: page.id} only %}
+    {% include 'admin/docs/pages/_image_gallery.html.twig' with {page_id: page.id, images: images, editor: app.request.query.get('embed') == '1'} only %}
+{% endblock %}

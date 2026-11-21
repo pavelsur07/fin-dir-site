@@ -10,6 +10,7 @@ use App\Documentation\Entity\DocPage;
 use App\Documentation\Entity\DocPageLink;
 use App\Documentation\Exception\DocConflict;
 use App\Documentation\Exception\DocNotFound;
+use App\Documentation\Repository\DocImageRepository;
 use App\Documentation\Repository\DocPageRepository;
 use App\Documentation\Repository\DocSectionRepository;
 use App\Documentation\ValueObject\DocLinkType;
@@ -17,13 +18,14 @@ use Psr\Clock\ClockInterface;
 
 final class DocPageContentEditor
 {
-    public function __construct(private readonly DocPageRepository $pages, private readonly DocSectionRepository $sections, private readonly DocMarkdownProcessor $markdown, private readonly ClockInterface $clock, private readonly DocPublicationRules $rules)
+    public function __construct(private readonly DocPageRepository $pages, private readonly DocSectionRepository $sections, private readonly DocMarkdownProcessor $markdown, private readonly ClockInterface $clock, private readonly DocPublicationRules $rules, private readonly DocImageRepository $images)
     {
     }
 
     public function apply(DocPage $page, DocPageInput $input): void
     {
         $analysis = $this->markdown->analyze($input->body);
+        $this->checkImages($page, $analysis->images);
         $desired = [];
         $existingTargets = [];
         foreach ($page->links() as $existing) {
@@ -72,6 +74,9 @@ final class DocPageContentEditor
         }
         $page->edit($this->sections->get($input->sectionId), $input->title, $input->slug, $input->description, $body, $analysis->plainText, $input->position, $input->metaTitle, $input->metaDescription, $this->clock->now());
         $page->replaceLinks($desired);
+        if ($page->isPersisted()) {
+            $this->images->replaceReferences($page->id(), array_values(array_unique(array_column($analysis->images, 'id'))));
+        }
         if ($page->isPublished()) {
             $this->validatePublishedLinks($page);
         }
@@ -94,6 +99,23 @@ final class DocPageContentEditor
                 throw new DocConflict('Сначала опубликуйте все страницы, на которые ссылается материал.');
             }
             $this->checkAnchor($link->target()->body(), $link->fragment());
+        }
+    }
+
+    public function validateImages(DocPage $page): void
+    {
+        $this->checkImages($page, $this->markdown->analyze($page->body())->images);
+    }
+
+    /** @param list<array{id:string,alt:string}> $references */
+    private function checkImages(DocPage $page, array $references): void
+    {
+        if ([] === $references) {
+            return;
+        }
+        $issues = $this->rules->inspectImages($references, $page->isPersisted() ? $this->images->idsForPage($page->id()) : []);
+        if ([] !== $issues) {
+            throw new DocConflict($issues[0]['message']);
         }
     }
 
