@@ -13,6 +13,7 @@ use League\CommonMark\Extension\CommonMark\Node\Block\ListBlock;
 use League\CommonMark\Extension\CommonMark\Node\Block\ListData;
 use League\CommonMark\Extension\CommonMark\Node\Block\ListItem;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Image;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Strong;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
@@ -27,8 +28,7 @@ use League\CommonMark\Node\StringContainerHelper;
 /**
  * Adapter над league/commonmark. HTML из текста статьи вырезается, небезопасные
  * ссылки (javascript:, data:) отбрасываются -- результат можно выводить через |raw.
- * Картинки не выводятся (загрузки ещё нет, внешние CDN запрещены SITE_RULES §7.4):
- * вместо ![alt](url) остаётся текст alt.
+ * Изображение выводится только по явно разрешённой сервером проекции.
  */
 final class MarkdownRenderer
 {
@@ -69,6 +69,7 @@ final class MarkdownRenderer
 
     private readonly MarkdownConverter $converter;
     /** @var array<string,string> */ private array $linkMap = [];
+    /** @var array<string,array{url:string,width:int,height:int}> */ private array $imageMap = [];
     private bool $suppressDoc = false;
 
     public function __construct()
@@ -114,21 +115,47 @@ final class MarkdownRenderer
             $images = [];
             foreach ($event->getDocument()->iterator() as $node) {
                 if ($node instanceof Image) {
-                    $images[] = $node;
+                    $images[] = [$node, null !== $this->ancestor($node, Image::class), $this->ancestor($node, Link::class)];
                 }
             }
-            foreach ($images as $image) {
-                // Текст alt остаётся в строке, сама картинка -- нет.
+            $alternatives = [];
+            foreach (array_reverse($images) as [$image, $nested, $parentLink]) {
+                $url = $image->getUrl();
+                $alt = StringContainerHelper::getChildText($image);
+                if (!$nested) {
+                    $alternatives[] = ['url' => $url, 'alt' => $alt];
+                }
+                $projection = $nested ? null : ($this->imageMap[$url] ?? null);
+                if (null !== $projection) {
+                    $image->setUrl($projection['url']);
+                    $image->data->set('attributes', [
+                        'width' => (string) $projection['width'],
+                        'height' => (string) $projection['height'],
+                        'loading' => 'lazy',
+                        'class' => 'max-w-full h-auto',
+                    ]);
+                    if (null === $parentLink) {
+                        $link = new Link($projection['url']);
+                        $image->insertBefore($link);
+                        $link->appendChild($image);
+                    } else {
+                        $parentLink->insertAfter(new Link($projection['url'], 'Открыть снимок в полном размере'));
+                        $parentLink->insertAfter(new Text(' '));
+                    }
+
+                    continue;
+                }
                 foreach ($image->children() as $child) {
                     $image->insertBefore($child);
                 }
                 $image->detach();
             }
+            $event->getDocument()->data->set('image_references', array_reverse($alternatives));
         }, 100);
 
         $environment->addEventListener(DocumentParsedEvent::class, function (DocumentParsedEvent $event): void {
             foreach ($event->getDocument()->iterator() as $node) {
-                if ($node instanceof \League\CommonMark\Extension\CommonMark\Node\Inline\Link) {
+                if ($node instanceof Link) {
                     $url = $node->getUrl();
                     if (isset($this->linkMap[$url])) {
                         $node->setUrl($this->linkMap[$url]);
@@ -141,10 +168,29 @@ final class MarkdownRenderer
         $this->converter = new MarkdownConverter($environment);
     }
 
-    /** @param array<string,string> $linkMap */
-    public function renderArticle(string $markdown, array $linkMap = []): RenderedArticle
+    /**
+     * @template T of Node
+     *
+     * @param class-string<T> $type
+     *
+     * @return T|null
+     */
+    private function ancestor(Node $node, string $type): ?Node
     {
-        $result = $this->convert($markdown, $linkMap, true);
+        for ($parent = $node->parent(); null !== $parent; $parent = $parent->parent()) {
+            if ($parent instanceof $type) {
+                return $parent;
+            }
+        }
+
+        return null;
+    }
+
+    /** @param array<string,string> $linkMap
+     * @param array<string,array{url:string,width:int,height:int}> $imageMap */
+    public function renderArticle(string $markdown, array $linkMap = [], array $imageMap = []): RenderedArticle
+    {
+        $result = $this->convert($markdown, $linkMap, true, $imageMap);
 
         $toc = [];
         foreach ($result->getDocument()->iterator(NodeIterator::FLAG_BLOCKS_ONLY) as $node) {
@@ -159,15 +205,18 @@ final class MarkdownRenderer
         return new RenderedArticle($this->addTailwindClasses($result->getContent()), $toc);
     }
 
-    /** @param array<string,string> $linkMap */
-    public function convert(string $markdown, array $linkMap = [], bool $suppressDoc = false): \League\CommonMark\Output\RenderedContentInterface
+    /** @param array<string,string> $linkMap
+     * @param array<string,array{url:string,width:int,height:int}> $imageMap */
+    public function convert(string $markdown, array $linkMap = [], bool $suppressDoc = false, array $imageMap = []): \League\CommonMark\Output\RenderedContentInterface
     {
         $this->linkMap = $linkMap;
+        $this->imageMap = $imageMap;
         $this->suppressDoc = $suppressDoc;
         try {
             return $this->converter->convert($markdown);
         } finally {
             $this->linkMap = [];
+            $this->imageMap = [];
             $this->suppressDoc = false;
         }
     }

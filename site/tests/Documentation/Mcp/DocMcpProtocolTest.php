@@ -15,6 +15,7 @@ use Mcp\Client\Exception\RequestException;
 use Mcp\Client\Transport\StdioTransport;
 use Mcp\Schema\Enum\ProtocolVersion;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Process\Process;
 
 final class DocMcpProtocolTest extends KernelTestCase
 {
@@ -51,6 +52,15 @@ final class DocMcpProtocolTest extends KernelTestCase
                 $em->persist($entity);
             }
             $em->flush();
+            ob_start();
+            try {
+                $pixel = imagecreatetruecolor(8, 8);
+                self::assertInstanceOf(\GdImage::class, $pixel);
+                self::assertTrue(imagepng($pixel));
+                $png = (string) ob_get_contents();
+            } finally {
+                ob_end_clean();
+            }
             foreach ([ProtocolVersion::V2025_11_25, ProtocolVersion::V2026_07_28] as $revision) {
                 $env['DOCS_MCP_PROFILE'] = 'draft-editor';
                 $client = $this->client($env, $revision);
@@ -78,9 +88,17 @@ final class DocMcpProtocolTest extends KernelTestCase
                 self::assertStringNotContainsString('<script', $preview->structuredContent['html']);
                 self::assertStringContainsString('/articles/published', $preview->structuredContent['html']);
                 self::assertSame(2, $client->callTool('docs_get_links', ['id' => $id])->structuredContent['total']);
-                $update = ['id' => $id, 'expectedVersion' => $loaded->structuredContent['version'], 'requestKey' => '22222222-2222-4222-8222-'.('legacy' === $suffix ? '111111111111' : '222222222222'), 'page' => array_replace($page, ['title' => 'Изменённый календарь'])];
+                $import = $this->process(['app:docs:image:import', '--page='.$id, '--no-debug'], $env, $png);
+                self::assertSame(0, $import['exit'], $import['stderr']);
+                $snapshot = json_decode($import['stdout'], true, flags: JSON_THROW_ON_ERROR);
+                $updatedBody = $body."\n\n![Поля настройки](".$snapshot['markdownDestination'].')';
+                $update = ['id' => $id, 'expectedVersion' => $loaded->structuredContent['version'], 'requestKey' => '22222222-2222-4222-8222-'.('legacy' === $suffix ? '111111111111' : '222222222222'), 'page' => array_replace($page, ['title' => 'Изменённый календарь', 'body' => $updatedBody])];
                 self::assertFalse($client->callTool('docs_update_draft', $update)->isError);
                 self::assertTrue($client->callTool('docs_update_draft', $update)->structuredContent['replayed']);
+                self::assertSame($updatedBody, $client->callTool('docs_get_page', ['id' => $id])->structuredContent['body']);
+                self::assertTrue($client->callTool('docs_validate_page', ['id' => $id])->structuredContent['readyToPublish']);
+                $html = $client->callTool('docs_preview_page', ['id' => $id])->structuredContent['html'];
+                self::assertStringContainsString('src="https://vashfindir.ru/admin/docs/images/'.$snapshot['id'].'"', $html);
                 $stale = $update;
                 $stale['requestKey'] = '33333333-3333-4333-8333-'.('legacy' === $suffix ? '111111111111' : '222222222222');
                 self::assertSame('VERSION_CONFLICT', $client->callTool('docs_update_draft', $stale)->structuredContent['code']);
@@ -109,6 +127,20 @@ final class DocMcpProtocolTest extends KernelTestCase
                 $client->disconnect();
             }
             $env['DOCS_MCP_PROFILE'] = 'draft-editor';
+            $image = $this->concurrentImports($private->id(), $png, $env, $sandbox);
+            self::assertEquals(1, $sandbox->fetchOne('SELECT COUNT(*) FROM documentation_image WHERE page_id = ?', [$private->id()]));
+            $attach = [
+                'id' => $private->id(),
+                'expectedVersion' => $private->version(),
+                'requestKey' => 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+                'page' => array_replace($page, ['slug' => 'private', 'body' => '![Снимок]('.$image['markdownDestination'].')']),
+            ];
+            $afterDeletion = $this->concurrentCalls('docs_update_draft', [$attach], $env, $sandbox, static function () use ($sandbox, $image): void {
+                self::assertSame(1, $sandbox->executeStatement('DELETE FROM documentation_image WHERE id = ? AND NOT referenced', [$image['id']]));
+            });
+            self::assertSame('CONTENT_CONFLICT', $afterDeletion[0]['structuredContent']['code']);
+            self::assertSame($private->body(), $sandbox->fetchOne('SELECT body FROM documentation_page WHERE id = ?', [$private->id()]));
+
             $parallelCreate = ['requestKey' => '55555555-5555-4555-8555-555555555555', 'page' => array_replace($page, ['slug' => 'concurrent-draft'])];
             $race = $this->concurrentCalls('docs_create_draft', [$parallelCreate, $parallelCreate], $env, $sandbox);
             self::assertFalse($race[0]['isError']);
@@ -217,15 +249,7 @@ final class DocMcpProtocolTest extends KernelTestCase
                 fwrite($pipes[0], json_encode($initialize, JSON_THROW_ON_ERROR)."\n".json_encode(['jsonrpc' => '2.0', 'method' => 'notifications/initialized'], JSON_THROW_ON_ERROR)."\n".json_encode($call, JSON_THROW_ON_ERROR)."\n");
                 fclose($pipes[0]);
             }
-            $deadline = microtime(true) + 10;
-            do {
-                $waiting = (int) $db->fetchOne("SELECT COUNT(*) FROM pg_locks WHERE locktype='advisory' AND classid=1146045267 AND objid=1 AND NOT granted");
-                if ($waiting >= count($calls)) {
-                    break;
-                }
-                usleep(20000);
-            } while (microtime(true) < $deadline);
-            self::assertSame(count($calls), $waiting, 'Both workers must actually wait for the shared write lock.');
+            $this->awaitWaitingWriters($db, count($calls));
             $beforeRelease?->__invoke();
             $db->commit();
             $results = [];
@@ -258,5 +282,46 @@ final class DocMcpProtocolTest extends KernelTestCase
                 }
             }
         }
+    }
+
+    /** @param array<string,string> $env
+     * @return array{id:string,markdownDestination:string} */
+    private function concurrentImports(int $pageId, string $png, array $env, Connection $db): array
+    {
+        $start = static fn (): Process => new Process([PHP_BINARY, 'bin/console', 'app:docs:image:import', '--page='.$pageId, '--no-debug'], dirname(__DIR__, 3), $env, $png, 15);
+        $first = $start();
+        $second = $start();
+        $db->beginTransaction();
+        $db->executeQuery('SELECT pg_advisory_xact_lock(1146045267,1)');
+        try {
+            $first->start();
+            $second->start();
+            $this->awaitWaitingWriters($db, 2);
+            $db->commit();
+            self::assertSame(0, $first->wait(), $first->getErrorOutput());
+            self::assertSame(0, $second->wait(), $second->getErrorOutput());
+            self::assertSame($first->getOutput(), $second->getOutput());
+
+            return json_decode($first->getOutput(), true, flags: JSON_THROW_ON_ERROR);
+        } finally {
+            if ($db->isTransactionActive()) {
+                $db->rollBack();
+            }
+            $first->stop();
+            $second->stop();
+        }
+    }
+
+    private function awaitWaitingWriters(Connection $db, int $expected): void
+    {
+        $deadline = microtime(true) + 10;
+        do {
+            $waiting = (int) $db->fetchOne("SELECT COUNT(*) FROM pg_locks WHERE locktype='advisory' AND classid=1146045267 AND objid=1 AND NOT granted AND database=(SELECT oid FROM pg_database WHERE datname=current_database())");
+            if ($waiting >= $expected) {
+                break;
+            }
+            usleep(20000);
+        } while (microtime(true) < $deadline);
+        self::assertSame($expected, $waiting, 'Workers must actually wait for the shared write lock.');
     }
 }

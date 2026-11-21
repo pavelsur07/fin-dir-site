@@ -21,9 +21,12 @@ final class DocsFallbackController extends AbstractController
     #[Route('/{path}', name: 'docs_fallback', host: 'docs.vashfindir.ru', requirements: ['path' => '.*'], defaults: ['path' => ''], priority: 100)]
     public function __invoke(Request $request, string $path): Response
     {
-        if ('' === $path || preg_match('~^(?:articles|sections|search)(?:/|$)|^(?:robots\.txt|sitemap\.xml)$~D', $path)) {
+        if ('' === $path || preg_match('~^(?:articles|sections|search|media/documentation)(?:/|$)|^(?:robots\.txt|sitemap\.xml)$~D', $path)) {
             if (!in_array($request->getMethod(), ['GET', 'HEAD'], true)) {
                 throw new MethodNotAllowedHttpException(['GET', 'HEAD']);
+            }
+            if ('media/documentation' === $path || str_starts_with($path, 'media/documentation/')) {
+                return new Response('', Response::HTTP_NOT_FOUND, ['Cache-Control' => 'no-store']);
             }
             throw $this->createNotFoundException();
         }

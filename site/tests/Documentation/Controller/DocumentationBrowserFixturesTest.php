@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Documentation\Controller;
 
 use App\Documentation\Entity\DocPage;
+use App\Documentation\Repository\DocImageRepository;
+use App\Documentation\Service\DocImageUploader;
 use App\Documentation\ValueObject\DocLinkType;
 use App\Tests\Documentation\Builder\DocPageBuilder;
 use App\Tests\Documentation\Builder\DocSectionBuilder;
@@ -30,6 +32,19 @@ final class DocumentationBrowserFixturesTest extends WebTestCase
         $page->publish($now);
         $em->persist($page);
         $em->flush();
+        ob_start();
+        try {
+            $source = imagecreatetruecolor(1280, 720);
+            self::assertInstanceOf(\GdImage::class, $source);
+            self::assertTrue(imagepng($source));
+            $png = (string) ob_get_contents();
+        } finally {
+            ob_end_clean();
+        }
+        $image = self::getContainer()->get(DocImageUploader::class)->upload($page->id(), $png);
+        $page->edit($section, str_repeat('ДлинныйЗаголовок', 12), 'browser-long', 'Инструкция с таблицей, ссылками и оглавлением.', $body."\n\n![Снимок настроек](doc-image:".$image->id.')', 'Настройка отчёта', 0, null, null, $now);
+        self::getContainer()->get(DocImageRepository::class)->replaceReferences($page->id(), [$image->id]);
+        $em->flush();
         $paths = ['home' => 'https://docs.vashfindir.ru/', 'section' => 'https://docs.vashfindir.ru/sections/browser-docs', 'article' => 'https://docs.vashfindir.ru/articles/browser-long', 'next' => 'https://docs.vashfindir.ru/articles/browser-next', 'search' => 'https://docs.vashfindir.ru/search?q=операции'];
         $dir = getenv('DOCS_BROWSER_FIXTURES');
         $capture = function (string $name, string $url) use ($client, $dir): void {
@@ -45,10 +60,15 @@ final class DocumentationBrowserFixturesTest extends WebTestCase
         foreach ($paths as $name => $url) {
             $capture($name, $url);
         }
+        $client->request('GET', 'https://docs.vashfindir.ru/media/documentation/'.$image->id);
+        self::assertResponseHeaderSame('Content-Type', 'image/webp');
+        if (false !== $dir && '' !== $dir) {
+            file_put_contents($dir.'/image.webp', $client->getResponse()->getContent());
+        }
         $client->request('GET', 'https://vashfindir.ru/admin/login');
         $client->submitForm('Войти', ['_username' => 'admin', '_password' => 'test-password']);
         self::assertResponseRedirects('/admin');
-        foreach (['admin-pages' => '/admin/docs/pages', 'admin-form' => '/admin/docs/pages/'.$page->id().'/edit', 'admin-preview' => '/admin/docs/pages/'.$page->id().'/preview', 'picker' => '/admin/docs/link-picker?target='.$page->id()] as $name => $path) {
+        foreach (['admin-pages' => '/admin/docs/pages', 'admin-form' => '/admin/docs/pages/'.$page->id().'/edit', 'admin-preview' => '/admin/docs/pages/'.$page->id().'/preview', 'admin-images' => '/admin/docs/pages/'.$page->id().'/images', 'admin-image-embed' => '/admin/docs/pages/'.$page->id().'/images?embed=1', 'picker' => '/admin/docs/link-picker?target='.$page->id()] as $name => $path) {
             $capture($name, 'https://vashfindir.ru'.$path);
         }
     }

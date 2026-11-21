@@ -223,13 +223,15 @@ export PHP_FPM_IMAGE PHP_CLI_IMAGE
 PHP_SMOKE = $(DC) -p vf-php-upgrade-smoke -f docker-compose.php-smoke.yml
 PROD_DC = $(DC) -p vashfindir -f docker-compose.prod.yml
 PHP_RUNTIME = -v "$(CURDIR)/scripts/check-php-runtime.php:/check-php-runtime.php:ro"
+PHP_DEV_CLI_IMAGE ?= vashfindir-site-php-cli:dev
+PHP_DEV_FPM_IMAGE ?= vashfindir-site-php-fpm:dev
 
 .PHONY: php-runtime-check php-production-build php-production-check php-production-smoke php-deployed-check php-production-rollback
 
 php-runtime-check:
-	docker run --rm $(PHP_RUNTIME) vashfindir-site-php-cli:dev php /check-php-runtime.php
-	docker run --rm $(PHP_RUNTIME) vashfindir-site-php-fpm:dev php /check-php-runtime.php
-	docker run --rm vashfindir-site-php-fpm:dev sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'
+	docker run --rm $(PHP_RUNTIME) $(PHP_DEV_CLI_IMAGE) php /check-php-runtime.php
+	docker run --rm $(PHP_RUNTIME) $(PHP_DEV_FPM_IMAGE) php /check-php-runtime.php
+	docker run --rm $(PHP_DEV_FPM_IMAGE) sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'
 	$(CLI) composer check-platform-reqs
 
 php-production-build:
@@ -298,11 +300,19 @@ site-database-backup-check:
 	trap 'docker rm -f "$$backup_check_container" >/dev/null 2>&1 || true; rm -rf -- "$$backup_check_dir"' EXIT HUP INT TERM; \
 	docker run -d --network none --name "$$backup_check_container" --label "com.docker.compose.project=$$backup_check_container" --label com.docker.compose.service=site-postgres --tmpfs /var/lib/postgresql/data -e POSTGRES_USER=smoke -e POSTGRES_PASSWORD=smoke -e POSTGRES_DB=smoke postgres:17-alpine >/dev/null; \
 	backup_wait=0; until docker exec "$$backup_check_container" pg_isready -h 127.0.0.1 -U smoke -d smoke >/dev/null 2>&1; do backup_wait=$$((backup_wait+1)); test "$$backup_wait" -lt 30; sleep 1; done; \
-	docker exec "$$backup_check_container" psql -U smoke -d smoke -v ON_ERROR_STOP=1 -c "CREATE TABLE backup_probe (marker text NOT NULL); INSERT INTO backup_probe VALUES ('backup-roundtrip');" >/dev/null; \
+	docker exec "$$backup_check_container" psql -U smoke -d smoke -v ON_ERROR_STOP=1 -c "CREATE TABLE backup_probe (marker text NOT NULL, contents bytea NOT NULL); INSERT INTO backup_probe VALUES ('backup-roundtrip', decode('52494646ff00', 'hex'));" >/dev/null; \
+	if test "$(DOC_BACKUP_WITH_APPLICATION)" = 1; then \
+		docker run --rm --network "container:$$backup_check_container" -e APP_ENV=dev -e APP_SECRET=backup-fixture -e ADMIN_PASSWORD_HASH=unused -e 'DATABASE_URL=postgresql://smoke:smoke@127.0.0.1:5432/smoke?serverVersion=17' -v "$(CURDIR)/site:/app:ro" --tmpfs /app/var:mode=1777 $(PHP_DEV_CLI_IMAGE) php bin/console doctrine:migrations:migrate --no-interaction --no-debug; \
+		docker exec -i "$$backup_check_container" psql -U smoke -d smoke -v ON_ERROR_STOP=1 < scripts/check-documentation-backup.sql; \
+	fi; \
 	VF_BACKUP_DIR="$$backup_check_dir" VF_BACKUP_PROJECT="$$backup_check_container" VF_BACKUP_RELEASE=smoke ./scripts/backup-site-database.sh; \
 	docker exec "$$backup_check_container" createdb -U smoke backup_restore; \
 	docker exec -i "$$backup_check_container" pg_restore --exit-on-error -U smoke -d backup_restore < "$$(find "$$backup_check_dir" -name '*.dump' -type f)"; \
 	test "$$(docker exec "$$backup_check_container" psql -U smoke -d backup_restore -Atc 'SELECT marker FROM backup_probe')" = backup-roundtrip; \
+	test "$$(docker exec "$$backup_check_container" psql -U smoke -d backup_restore -Atc "SELECT encode(contents, 'hex') FROM backup_probe")" = 52494646ff00; \
+	if test "$(DOC_BACKUP_WITH_APPLICATION)" = 1; then \
+		test "$$(docker exec "$$backup_check_container" psql -U smoke -d backup_restore -Atc "SELECT count(*) FROM documentation_page p JOIN documentation_image i ON i.page_id = p.id WHERE p.slug = 'backup-image' AND p.status = 'draft' AND p.body = '![Form](doc-image:9bcb5e71-70aa-4ce5-8c88-1bf827128b4a)' AND i.referenced AND i.width = 8 AND i.height = 8 AND i.byte_size = octet_length(i.contents) AND encode(sha256(i.contents), 'hex') = i.sha256")" = 1; \
+	fi; \
 	test "$$(stat -c '%a' "$$(find "$$backup_check_dir" -name '*.dump' -type f)")" = 600; \
 	if VF_BACKUP_DIR="$$backup_check_dir" VF_BACKUP_PROJECT=nonexistent-backup-project ./scripts/backup-site-database.sh; then echo 'Missing PostgreSQL must fail the backup' >&2; exit 1; fi; \
 	echo 'Database backup and real restore passed; missing database rejected.'
@@ -312,11 +322,22 @@ site-database-backup-check:
 documentation-mcp:
 	@$(DC) --profile cli run --rm -T --interactive -e DOCS_MCP_ENABLED -e DOCS_MCP_ACTOR -e DOCS_MCP_PROFILE site-php-cli php bin/console app:docs:mcp --no-interaction --no-ansi --no-debug
 
-.PHONY: documentation-mcp-production
-documentation-mcp-production:
+.PHONY: documentation-production-release-check documentation-mcp-production
+documentation-production-release-check:
 	@printf '%s\n' "$(IMAGE_TAG)" | grep -Eq '^sha-[0-9a-f]{40}$$' || { echo 'IMAGE_TAG must be the deployed sha-<40-character commit SHA> tag.' >&2; exit 1; }
 	@ids=$$($(PROD_DC) ps -q site-php-fpm); test -n "$$ids" || { echo 'No running production PHP replicas.' >&2; exit 1; }; for container in $$ids; do docker inspect --format '{{.Config.Image}}' "$$container" | grep -Eq ':$(IMAGE_TAG)$$' || { echo 'IMAGE_TAG differs from a running production PHP replica.' >&2; exit 1; }; done
+
+documentation-mcp-production: documentation-production-release-check
 	@$(PROD_DC) run --rm -T --interactive --no-deps --pull never -e DOCS_MCP_ENABLED -e DOCS_MCP_ACTOR -e DOCS_MCP_PROFILE site-php-cli php bin/console app:docs:mcp --no-interaction --no-ansi --no-debug
+
+.PHONY: documentation-image-import documentation-image-import-production
+export DOC_PAGE_ID
+
+documentation-image-import:
+	@$(DC) --profile cli run --rm -T --interactive -e DOC_PAGE_ID site-php-cli sh -ec 'exec php bin/console app:docs:image:import --no-interaction --no-ansi --page="$${DOC_PAGE_ID:-}"'
+
+documentation-image-import-production: documentation-production-release-check
+	@$(PROD_DC) run --rm -T --interactive --no-deps --pull never -e DOC_PAGE_ID site-php-cli sh -ec 'exec php bin/console app:docs:image:import --no-interaction --no-ansi --no-debug --page="$${DOC_PAGE_ID:-}"'
 
 # Isolated, no-dev HTTP SDK check with ephemeral OAuth issuer and two FPM replicas.
 MCP_HTTP_SMOKE_EXTRA ?=

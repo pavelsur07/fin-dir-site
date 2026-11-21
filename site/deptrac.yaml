@@ -215,6 +215,7 @@ deptrac:
         Command:
             - DTO
             - DocumentationMcp
+            - Exception
             - Service
             - Symfony
             - Clock

@@ -8,11 +8,16 @@ if (PHP_VERSION !== '8.4.27') {
     exit(1);
 }
 
-foreach (['pdo_pgsql', 'pgsql', 'zip', 'bcmath', 'dom', 'xml', 'mbstring', 'session', 'Zend OPcache'] as $extension) {
+foreach (['pdo_pgsql', 'pgsql', 'zip', 'bcmath', 'gd', 'dom', 'xml', 'mbstring', 'session', 'Zend OPcache'] as $extension) {
     if (!extension_loaded($extension)) {
         fwrite(STDERR, 'Missing extension: '.$extension.PHP_EOL);
         exit(1);
     }
+}
+
+if ((imagetypes() & (IMG_PNG | IMG_WEBP)) !== (IMG_PNG | IMG_WEBP) || !defined('IMG_WEBP_LOSSLESS')) {
+    fwrite(STDERR, 'Required PNG and lossless WebP support is missing'.PHP_EOL);
+    exit(1);
 }
 
 if (($argv[1] ?? '') === 'production-fpm') {

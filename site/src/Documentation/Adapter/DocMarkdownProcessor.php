@@ -70,11 +70,24 @@ final class DocMarkdownProcessor
             }
         }
 
-        return new DocMarkdownAnalysis($links, $headings, implode(' ', $text));
+        $images = [];
+        /** @var list<array{url:string,alt:string}> $references */
+        $references = $document->data->get('image_references', []);
+        foreach ($references as $image) {
+            if (str_starts_with($image['url'], 'doc-image:')) {
+                $images[] = [
+                    'id' => substr($image['url'], strlen('doc-image:')),
+                    'alt' => preg_replace('/\A[\p{Z}\s]+|[\p{Z}\s]+\z/u', '', $image['alt']) ?? '',
+                ];
+            }
+        }
+
+        return new DocMarkdownAnalysis($links, $headings, implode(' ', $text), $images);
     }
 
-    /** @param list<array<string,mixed>> $targets */
-    public function renderTargets(string $body, array $targets): RenderedArticle
+    /** @param list<array<string,mixed>> $targets
+     * @param array<string,array{url:string,width:int,height:int}> $images */
+    public function renderTargets(string $body, array $targets, array $images = []): RenderedArticle
     {
         $map = [];
         foreach ($this->analyze($body)->links as $link) {
@@ -99,12 +112,18 @@ final class DocMarkdownProcessor
             }
         }
 
-        return $this->render($body, $map);
+        return $this->render($body, $map, $images);
     }
 
-    /** @param array<string,string> $targets */
-    public function render(string $body, array $targets): RenderedArticle
+    /** @param array<string,string> $targets
+     * @param array<string,array{url:string,width:int,height:int}> $images */
+    public function render(string $body, array $targets, array $images = []): RenderedArticle
     {
-        return $this->markdown->renderArticle($body, $targets);
+        $map = [];
+        foreach ($images as $id => $image) {
+            $map['doc-image:'.$id] = $image;
+        }
+
+        return $this->markdown->renderArticle($body, $targets, $map);
     }
 }

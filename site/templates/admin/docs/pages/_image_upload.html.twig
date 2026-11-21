@@ -1,0 +1,9 @@
+<form class="mb-4 space-y-4" method="post" enctype="multipart/form-data"
+      action="{{ path('admin_doc_image_upload', {id: page_id}) }}" data-doc-image-upload>
+    <input type="hidden" name="_token" value="{{ csrf_token('doc-image-upload-' ~ page_id) }}">
+    <label class="grid gap-2 font-medium" for="doc-image-files">
+        Файлы PNG или WebP
+        <input class="min-h-control-touch" id="doc-image-files" type="file" name="image" accept=".png,.webp,image/png,image/webp" required>
+    </label>
+    {% include 'admin/_button.html.twig' with {label: 'Загрузить снимки'} only %}
+</form>
