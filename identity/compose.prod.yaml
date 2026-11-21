@@ -1,0 +1,59 @@
+# Independent shared-host service. Never publishes ports or changes site state.
+services:
+  db:
+    restart: unless-stopped
+    networks:
+      default: {ipv4_address: 10.254.235.2}
+  keycloak:
+    image: ${IDENTITY_KEYCLOAK_IMAGE:?immutable release image required}
+    restart: unless-stopped
+    environment:
+      KC_HOSTNAME: https://auth.vashfindir.ru
+      KC_HOSTNAME_ADMIN: https://auth-admin.vashfindir.ru
+      KC_PROXY_TRUSTED_ADDRESSES: 10.254.235.4/32
+    networks:
+      default: {ipv4_address: 10.254.235.3}
+  ingress:
+    restart: unless-stopped
+    networks:
+      default:
+        ipv4_address: 10.254.235.4
+        aliases: [auth.vashfindir.ru, auth-admin.vashfindir.ru]
+      web:
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_web
+      - traefik.http.services.identity-production.loadbalancer.server.port=8081
+      - traefik.http.routers.identity-production.rule=Host(`auth.vashfindir.ru`) || Host(`auth-admin.vashfindir.ru`)
+      - traefik.http.routers.identity-production.entrypoints=websecure
+      - traefik.http.routers.identity-production.tls.certresolver=le
+      - traefik.http.routers.identity-production.service=identity-production
+  tools:
+    image: ${IDENTITY_TOOLING_IMAGE:?immutable tooling image required}
+    volumes: !override
+      - ${IDENTITY_RUNTIME_DIR:?protected runtime required}:/runtime
+    environment:
+      IDENTITY_PUBLIC_URL: https://auth.vashfindir.ru
+      IDENTITY_ADMIN_URL: https://auth-admin.vashfindir.ru
+    networks:
+      default: {ipv4_address: 10.254.235.5}
+  operator:
+    extends: {file: compose.yaml, service: tools}
+    image: ${IDENTITY_TOOLING_IMAGE:?immutable tooling image required}
+    profiles: [tools]
+    volumes: !override
+      - ${IDENTITY_RUNTIME_DIR:?protected runtime required}:/runtime
+    environment:
+      IDENTITY_PUBLIC_URL: https://auth.vashfindir.ru
+      IDENTITY_ADMIN_URL: https://auth-admin.vashfindir.ru
+    networks:
+      default: {ipv4_address: 10.254.235.6}
+networks:
+  default:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.254.235.0/28
+  web:
+    external: true
+    name: traefik_web

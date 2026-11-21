@@ -1,0 +1,30 @@
+# Disposable, isolated fixed subnet; never combine with production.
+services:
+  db:
+    volumes: !override
+      - ./docker/postgres/10-identity-role.sh:/docker-entrypoint-initdb.d/10-identity-role.sh:ro
+    tmpfs: [/var/lib/postgresql/data]
+    networks:
+      default: {ipv4_address: 10.254.236.2}
+  keycloak:
+    networks:
+      default: {ipv4_address: 10.254.236.3}
+  ingress:
+    networks:
+      default:
+        ipv4_address: 10.254.236.4
+        aliases: ["${IDENTITY_PRIVATE_PUBLIC_HOST:-identity.test}", "${IDENTITY_PRIVATE_ADMIN_HOST:-identity-admin.test}"]
+  tools:
+    networks:
+      default: {ipv4_address: 10.254.236.5}
+  operator:
+    extends: {file: compose.yaml, service: tools}
+    profiles: [tools]
+    networks:
+      default: {ipv4_address: 10.254.236.6}
+networks:
+  default:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.254.236.0/28

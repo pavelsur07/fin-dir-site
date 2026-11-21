@@ -1,0 +1,88 @@
+name: Deploy Identity
+on:
+  workflow_dispatch:
+    inputs:
+      revision:
+        description: Exact current master commit SHA
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: identity-production
+  cancel-in-progress: false
+jobs:
+  resolve:
+    runs-on: ubuntu-24.04
+    outputs:
+      revision: ${{ steps.resolve.outputs.revision }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: master
+          persist-credentials: false
+      - id: resolve
+        env:
+          REQUESTED: ${{ inputs.revision }}
+          WORKFLOW_REF: ${{ github.ref }}
+          PROTECTED_REF: ${{ github.ref_protected }}
+        run: |
+          test "$WORKFLOW_REF" = refs/heads/master
+          printf '%s' "$REQUESTED" | grep -Eq '^[0-9a-f]{40}$'
+          test "$(git rev-parse HEAD)" = "$REQUESTED"
+          test "$PROTECTED_REF" = true
+          echo "revision=$REQUESTED" >> "$GITHUB_OUTPUT"
+  verification:
+    needs: resolve
+    uses: ./.github/workflows/identity-ci.yml
+    with:
+      revision: ${{ needs.resolve.outputs.revision }}
+  deploy:
+    needs: [resolve, verification]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: identity-production
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ needs.resolve.outputs.revision }}
+          persist-credentials: false
+      - name: Publish immutable checked source images
+        id: images
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REVISION: ${{ needs.resolve.outputs.revision }}
+        run: |
+          printf '%s' "$GH_TOKEN" | docker login ghcr.io --username "${{ github.actor }}" --password-stdin
+          kc="ghcr.io/pavelsur07/identity-keycloak:sha-$REVISION"
+          tooling="ghcr.io/pavelsur07/identity-tools:sha-$REVISION"
+          make identity-build IDENTITY_RELEASE="$REVISION" IDENTITY_KEYCLOAK_IMAGE="$kc" IDENTITY_TOOLING_IMAGE="$tooling"
+          docker push "$kc"
+          docker push "$tooling"
+          echo "keycloak=$(docker inspect --format '{{index .RepoDigests 0}}' "$kc")" >> "$GITHUB_OUTPUT"
+          echo "tools=$(docker inspect --format '{{index .RepoDigests 0}}' "$tooling")" >> "$GITHUB_OUTPUT"
+      - name: Transfer verified Identity-only artifact through restricted receiver
+        env:
+          REVISION: ${{ needs.resolve.outputs.revision }}
+          KC_IMAGE: ${{ steps.images.outputs.keycloak }}
+          TOOLS_IMAGE: ${{ steps.images.outputs.tools }}
+          IDENTITY_HOST: ${{ secrets.IDENTITY_SSH_HOST }}
+          SSH_KEY: ${{ secrets.IDENTITY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.IDENTITY_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          make identity-package IDENTITY_RELEASE="$REVISION" IDENTITY_PACKAGE=/tmp/identity-release.tar.gz
+          python3 identity/scripts/package_release.py --verify /tmp/identity-release.tar.gz --revision "$REVISION"
+          install -d -m 700 "$RUNNER_TEMP/identity-ssh"
+          printf '%s\n' "$SSH_KEY" > "$RUNNER_TEMP/identity-ssh/key"
+          printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/identity-ssh/known_hosts"
+          chmod 600 "$RUNNER_TEMP/identity-ssh/key" "$RUNNER_TEMP/identity-ssh/known_hosts"
+          checksum=$(sha256sum /tmp/identity-release.tar.gz | cut -d' ' -f1)
+          ssh -F /dev/null -i "$RUNNER_TEMP/identity-ssh/key" -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$RUNNER_TEMP/identity-ssh/known_hosts" -o BatchMode=yes -o ConnectTimeout=10 "root@$IDENTITY_HOST" "release $REVISION $KC_IMAGE $TOOLS_IMAGE $checksum" < /tmp/identity-release.tar.gz
+          rm "$RUNNER_TEMP/identity-ssh/key"
+      - name: Remove deployment credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/identity-ssh/key"

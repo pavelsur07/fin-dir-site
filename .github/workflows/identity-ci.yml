@@ -1,0 +1,73 @@
+name: Identity CI
+on:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      revision:
+        type: string
+        required: false
+        default: ''
+permissions:
+  contents: read
+jobs:
+  impact:
+    runs-on: ubuntu-24.04
+    outputs:
+      required: ${{ steps.paths.outputs.required }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ inputs.revision || github.sha }}
+      - id: paths
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            required=$(git diff --name-only -z "$BASE" HEAD | python3 identity/scripts/ci_impact.py)
+          else
+            required=true
+          fi
+          echo "required=$required" >> "$GITHUB_OUTPUT"
+  contract:
+    needs: impact
+    if: needs.impact.outputs.required == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.revision || github.sha }}
+      - name: Build real production consumer and locked Identity images
+        run: |
+          make php-production-build
+          make identity-build
+      - name: Real issuer, isolation, rotation, outage and encrypted recovery
+        run: make identity-ci IDENTITY_CONSUMER_IMAGE=vf-check/php-cli:8.4.27
+      - name: Package only the exact Identity tree
+        run: |
+          revision=$(git rev-parse HEAD)
+          make identity-package IDENTITY_RELEASE="$revision" IDENTITY_PACKAGE=/tmp/identity-release.tar.gz
+          python3 identity/scripts/package_release.py --verify /tmp/identity-release.tar.gz --revision "$revision" --destination /tmp/identity-release
+          make -C /tmp/identity-release validate
+  identity-gate:
+    if: always()
+    needs: [impact, contract]
+    runs-on: ubuntu-24.04
+    steps:
+      - env:
+          IMPACT: ${{ needs.impact.result }}
+          REQUIRED: ${{ needs.impact.outputs.required }}
+          CONTRACT: ${{ needs.contract.result }}
+        run: |
+          test "$IMPACT" = success
+          if [ "$REQUIRED" = true ]; then
+            test "$CONTRACT" = success
+          else
+            test "$REQUIRED" = false
+            test "$CONTRACT" = skipped
+          fi

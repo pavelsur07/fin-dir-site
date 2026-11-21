@@ -1,0 +1,98 @@
+services:
+  db:
+    image: ${IDENTITY_POSTGRES_IMAGE:?locked image required}
+    environment:
+      POSTGRES_DB: identity
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [db_password, postgres_password]
+    command: [postgres, -c, shared_buffers=64MB, -c, max_connections=40]
+    mem_limit: 192m
+    cpus: 0.5
+    volumes:
+      - identity_db:/var/lib/postgresql/data
+      - ./docker/postgres/10-identity-role.sh:/docker-entrypoint-initdb.d/10-identity-role.sh:ro
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U postgres -d identity]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  keycloak:
+    image: ${IDENTITY_KEYCLOAK_IMAGE:-vf-check/identity-keycloak:local}
+    entrypoint: [/identity-entrypoint.sh]
+    command: [start, --optimized]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/${IDENTITY_DATABASE:-identity}
+      KC_DB_USERNAME: identity
+      KC_HOSTNAME: ${IDENTITY_PUBLIC_URL:-https://identity.test}
+      KC_HOSTNAME_ADMIN: ${IDENTITY_ADMIN_URL:-https://identity-admin.test}
+      KC_HTTP_ENABLED: 'true'
+      KC_PROXY_HEADERS: xforwarded
+      KC_PROXY_TRUSTED_ADDRESSES: ${IDENTITY_PROXY_ADDRESSES:-10.254.236.4/32}
+      KC_CACHE: local
+      KC_DB_POOL_INITIAL_SIZE: '1'
+      KC_DB_POOL_MIN_SIZE: '1'
+      KC_DB_POOL_MAX_SIZE: '10'
+      KC_HTTP_MAX_QUEUED_REQUESTS: '50'
+      JAVA_OPTS_KC_HEAP: '-Xms128m -Xmx384m'
+    secrets: [db_password, bootstrap_secret]
+    mem_limit: 640m
+    cpus: 1
+    healthcheck:
+      test: [CMD, bash, -c, "exec 3<>/dev/tcp/127.0.0.1/9000; printf 'GET /health/ready HTTP/1.0\r\n\r\n' >&3; grep -q '200 OK' <&3"]
+      interval: 15s
+      timeout: 5s
+      start_period: 90s
+      retries: 4
+    depends_on:
+      db: {condition: service_healthy}
+  ingress:
+    image: ${IDENTITY_TRAEFIK_IMAGE:?locked image required}
+    entrypoint: [traefik]
+    environment:
+      GOMAXPROCS: '1'
+      GOMEMLIMIT: 64MiB
+    command:
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.public.address=:8081
+      - --entrypoints.ping.address=:8082
+      - --ping=true
+      - --ping.entrypoint=ping
+      - --providers.file.filename=/tls/ingress.json
+      - --api.dashboard=false
+      - --log.level=WARN
+    volumes:
+      - ${IDENTITY_RUNTIME_DIR:-./.runtime}/tls:/tls:ro
+    mem_limit: 192m
+    cpus: 0.25
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, 'http://127.0.0.1:8082/ping']
+      interval: 15s
+      timeout: 3s
+      retries: 4
+    depends_on: [keycloak]
+  tools:
+    image: ${IDENTITY_TOOLING_IMAGE:-vf-check/identity-tools:local}
+    profiles: [tools]
+    working_dir: /identity
+    volumes:
+      - .:/identity:ro
+      - ${IDENTITY_RUNTIME_DIR:-./.runtime}:/runtime
+    environment:
+      IDENTITY_PUBLIC_URL: ${IDENTITY_PUBLIC_URL:-https://identity.test}
+      IDENTITY_ADMIN_URL: ${IDENTITY_ADMIN_URL:-https://identity-admin.test}
+      IDENTITY_CA: /runtime/ca.crt
+      IDENTITY_ADMIN_CLIENT: identity-provisioner
+      IDENTITY_ADMIN_REALM: projects
+      IDENTITY_ADMIN_SECRET_FILE: /runtime/provisioner_secret
+    mem_limit: 192m
+volumes:
+  identity_db:
+secrets:
+  postgres_password:
+    file: ${IDENTITY_RUNTIME_DIR:-./.runtime}/postgres_password
+  db_password:
+    file: ${IDENTITY_RUNTIME_DIR:-./.runtime}/db_password
+  bootstrap_secret:
+    file: ${IDENTITY_RUNTIME_DIR:-./.runtime}/bootstrap_secret

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "projectId": "documentation",
+  "environment": "production",
+  "resourceAudience": "https://vashfindir.ru/mcp/docs",
+  "clients": [
+    {
+      "clientId": "docs-mcp-reader-prod",
+      "type": "m2m",
+      "allowedScopes": [
+        "docs:read"
+      ],
+      "secretRef": "docs-mcp-reader-prod"
+    },
+    {
+      "clientId": "docs-mcp-smoke-prod",
+      "type": "m2m",
+      "allowedScopes": [
+        "docs:read"
+      ],
+      "secretRef": "docs-mcp-smoke-prod"
+    }
+  ]
+}

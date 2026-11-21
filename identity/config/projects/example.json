@@ -1,0 +1,1 @@
+{"schemaVersion":1,"projectId":"example","environment":"dev","resourceAudience":"urn:identity:contract:second-api","clients":[{"clientId":"isolation-proof-worker","type":"m2m","allowedScopes":["proof:read"],"secretRef":"isolation-proof-worker"}]}

@@ -398,3 +398,10 @@ HTTP-проверка также входит в `php-production-smoke`, исп�
 
 Рекомендации по выбору issuer/клиента и оставшийся release scope:
 [отчёт внедрения](docs/plan/Stage_Documentation_MCP_HTTP_Implementation.md).
+
+### Identity / OAuth
+
+Самостоятельный vendor IAM в `identity/` имеет отдельные БД, Compose project,
+секреты и release. Начало работы и эксплуатация: [identity/README.md](identity/README.md).
+`make identity-ci` проверяет настоящий Keycloak, HTTP MCP на двух FPM, ротацию
+и encrypted backup/restore. Команды запуска и деплоя сайта не меняют Identity.
