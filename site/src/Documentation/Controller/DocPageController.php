@@ -18,13 +18,15 @@ final class DocPageController extends AbstractController
     public function __invoke(DocUrl $urls, string $slug, PublicDocPageQuery $query, DocMarkdownProcessor $markdown, PublicDocImageQuery $images): Response
     {
         $view = $query->getBySlug($slug);
+        $articleImages = $images->referencedByPage((int) $view['page']['id']);
         $response = new Response();
         $response->setPublic();
         $response->setMaxAge(0);
         $response->headers->addCacheControlDirective('must-revalidate');
 
         return $this->render('website/pages/documentation/page.html.twig', $view + [
-            'article' => $markdown->renderTargets((string) $view['page']['body'], $view['targets'], $images->referencedByPage((int) $view['page']['id'])),
+            'article' => $markdown->renderTargets((string) $view['page']['body'], $view['targets'], $articleImages, imageViewer: true),
+            'image_viewer' => [] !== $articleImages,
             'canonical_url' => $urls->route('docs_page', $slug),
         ], $response);
     }

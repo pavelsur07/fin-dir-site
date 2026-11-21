@@ -69,7 +69,7 @@ final class MarkdownRenderer
 
     private readonly MarkdownConverter $converter;
     /** @var array<string,string> */ private array $linkMap = [];
-    /** @var array<string,array{url:string,width:int,height:int}> */ private array $imageMap = [];
+    /** @var array<string,array{url:string,width:int,height:int,viewer?:bool}> */ private array $imageMap = [];
     private bool $suppressDoc = false;
 
     public function __construct()
@@ -134,12 +134,22 @@ final class MarkdownRenderer
                         'loading' => 'lazy',
                         'class' => 'max-w-full h-auto',
                     ]);
+                    $viewer = $projection['viewer'] ?? false;
+                    $label = $viewer ? 'Увеличить снимок' : 'Открыть снимок в полном размере';
+                    $link = new Link($projection['url'], null === $parentLink ? null : $label);
+                    if ($viewer) {
+                        $link->data->set('attributes', [
+                            'data-doc-image-preview' => $alt,
+                            'target' => '_blank',
+                            'rel' => 'noopener',
+                            'aria-label' => 'Открыть снимок в новой вкладке. '.$alt,
+                        ]);
+                    }
                     if (null === $parentLink) {
-                        $link = new Link($projection['url']);
                         $image->insertBefore($link);
                         $link->appendChild($image);
                     } else {
-                        $parentLink->insertAfter(new Link($projection['url'], 'Открыть снимок в полном размере'));
+                        $parentLink->insertAfter($link);
                         $parentLink->insertAfter(new Text(' '));
                     }
 
@@ -187,7 +197,7 @@ final class MarkdownRenderer
     }
 
     /** @param array<string,string> $linkMap
-     * @param array<string,array{url:string,width:int,height:int}> $imageMap */
+     * @param array<string,array{url:string,width:int,height:int,viewer?:bool}> $imageMap */
     public function renderArticle(string $markdown, array $linkMap = [], array $imageMap = []): RenderedArticle
     {
         $result = $this->convert($markdown, $linkMap, true, $imageMap);
@@ -206,7 +216,7 @@ final class MarkdownRenderer
     }
 
     /** @param array<string,string> $linkMap
-     * @param array<string,array{url:string,width:int,height:int}> $imageMap */
+     * @param array<string,array{url:string,width:int,height:int,viewer?:bool}> $imageMap */
     public function convert(string $markdown, array $linkMap = [], bool $suppressDoc = false, array $imageMap = []): \League\CommonMark\Output\RenderedContentInterface
     {
         $this->linkMap = $linkMap;

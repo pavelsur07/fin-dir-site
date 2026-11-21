@@ -1,0 +1,23 @@
+<dialog id="doc-image-viewer"
+        class="m-auto h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-surface p-0 text-fg backdrop:bg-overlay md:max-h-11/12 md:max-w-modal-xl md:rounded-xl"
+        aria-labelledby="doc-image-viewer-title" data-doc-image-dialog>
+    <div class="flex h-full min-h-0 flex-col">
+        <header class="flex items-center justify-between gap-3 border-b border-border-subtle px-4 py-2">
+            <h2 id="doc-image-viewer-title" class="type-t4 font-semibold">Скриншот</h2>
+            <form method="dialog">
+                <button class="min-h-control-touch rounded-md border border-border-strong px-3 font-semibold focus-visible:shadow-focus"
+                        type="submit" autofocus data-doc-image-close>Закрыть</button>
+            </form>
+        </header>
+        <div class="flex flex-wrap items-center gap-3 px-4 py-2">
+            <button class="min-h-control-touch rounded-md border border-border-strong px-3 focus-visible:shadow-focus"
+                    type="button" aria-pressed="false" data-doc-image-size>Исходный размер</button>
+            <a class="text-accent underline focus-visible:shadow-focus" target="_blank" rel="noopener"
+               data-doc-image-original>Открыть оригинал в новой вкладке</a>
+        </div>
+        <div class="min-h-0 flex-1 overflow-auto overscroll-contain bg-surface-muted focus-visible:shadow-focus"
+             role="region" aria-label="Изображение" data-doc-image-scroll>
+            <img class="mx-auto block size-full object-scale-down" alt="" data-doc-image-display>
+        </div>
+    </div>
+</dialog>
