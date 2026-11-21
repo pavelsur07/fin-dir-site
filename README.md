@@ -226,7 +226,8 @@ Nginx и проверяет health/DB. Она может кратко прерв
 
 ## MCP документации
 
-MCP работает внутри Symfony через stdio. После получения кода установите
+MCP работает внутри Symfony: stdio для доверенных локальных интеграций и
+отдельный HTTP transport для внешних клиентов. После получения кода установите
 зависимости и обновите dev-БД/контейнерный кеш:
 
 ```bash
@@ -246,8 +247,8 @@ DOCS_MCP_ENABLED=1 DOCS_MCP_ACTOR=local-editor DOCS_MCP_PROFILE=draft-editor mak
 
 В конфигурации MCP-клиента укажите `command: make`, `args: [documentation-mcp]`,
 абсолютный рабочий каталог этого репозитория и эти переменные окружения.
-Клиенту необходим доступ к запуску Docker Compose рядом с приложением;
-публичного HTTP MCP endpoint в этом выпуске нет.
+Локальному stdio-клиенту необходим доступ к запуску Docker Compose рядом с приложением.
+HTTP-подключение описано ниже и включается отдельно.
 
 По умолчанию MCP выключен. При включении обязательный `DOCS_MCP_ACTOR`
 идентифицирует доверенную интеграцию. `DOCS_MCP_PROFILE` принимает:
@@ -310,3 +311,90 @@ production CLI-образ текущего релиза, не bind mount исх�
 launch-конфигурации. Изменение окружения не отключает уже работающий процесс.
 При откате кода таблицу квитанций оставляют; восстановление всей БД для обычного
 отключения MCP не требуется. План и критерии: [Documentation MCP](docs/plan/Stage_Documentation_MCP.md).
+
+### Внешний MCP по HTTPS
+
+HTTP endpoint: `https://vashfindir.ru/mcp/docs`. По умолчанию он **выключен**
+(`404`), независимо от локального stdio. Для включения нужны согласованные
+OAuth issuer, клиент и production wiring; эта реализация сама не создаёт
+OAuth-сервер, `/oauth/token` или credentials. Admin продолжает использовать
+Symfony session cookie и CSRF. HTTP Bearer не даёт доступ в Admin.
+
+Конфигурация Symfony (переменные должны быть переданы именно FPM-контейнерам):
+
+| Переменная | Значение |
+|---|---|
+| `DOCS_MCP_HTTP_ENABLED` | `0` по умолчанию; `1` после настройки issuer/клиента |
+| `DOCS_MCP_OAUTH_ISSUER` | Точный HTTPS issuer, без query/fragment/userinfo |
+| `DOCS_MCP_HTTP_ORIGINS` | Дополнительные точные Origin через запятую; пусто по умолчанию, `*` запрещён |
+| `DOCS_MCP_JWKS_HOSTS` | Дополнительные доверенные хосты JWKS; issuer host разрешён автоматически |
+| `DOCS_MCP_OAUTH_CA_FILE` | Необязательный путь к CA bundle; TLS-проверки всегда включены |
+
+Issuer публикует OAuth/OIDC discovery и JWKS. Принимаются подписанные `RS256`
+JWT access tokens с `typ=at+jwt`, точным `iss`, audience
+`https://vashfindir.ru/mcp/docs`, непустым `client_id`, строковым `scope`,
+целочисленными `iat`/`exp` и временем жизни не более 300 секунд (clock skew 30с).
+При наличии `azp` он должен совпадать с `client_id`. Нужен `scope=docs:read`.
+ID token и токены другого resource не подходят.
+
+Дополнительно оператор разрешает конкретный `client_id` для настроенного issuer:
+
+```bash
+make console CMD="app:docs:mcp:client:allow external-reader"
+make console CMD="app:docs:mcp:client:disable external-reader"
+```
+
+Команды выполняются в нужном окружении Symfony с тем же issuer и БД, что у FPM.
+`make console` использует dev-окружение; production-команду запускать через
+штатный production CLI после согласованного выпуска. Миграция grants аддитивна.
+Отзыв действует со следующего запроса любой реплики: положительного кеша grant нет.
+Actor вычисляется из issuer/client_id и сохраняется при обновлении access token.
+
+Внешний клиент получает access token у issuer и передаёт только заголовок
+`Authorization: Bearer <access_token>`. Токены/credentials не передавать в URL,
+репозиторий, команды с буквальным секретом или журналы. Token endpoint определяется
+issuer; на сайте нет собственной выдачи токенов. Для M2M нужен согласованный
+`client_credentials`; интерактивному клиенту может потребоваться Authorization Code
++ PKCE. Выбор зависит от фактического клиента и его версии.
+
+Discovery ресурса:
+`https://vashfindir.ru/.well-known/oauth-protected-resource/mcp/docs`.
+Запрос без токена получает `401` и `WWW-Authenticate` со ссылкой на эту metadata.
+Неверный токен — `401`, недостаточный scope/отозванный клиент — `403`, отказ issuer
+без пригодного кеша — `503`. Metadata публикуется только при включённом HTTP.
+
+HTTP всегда имеет профиль `published-reader`: шесть read tools, только
+опубликованные страницы и связи. Draft/write tools отсутствуют даже у токена
+с дополнительными scope. Поддерживаются проверенные SDK 0.10.0 ревизии
+`2025-11-25` и `2026-07-28`; protocol headers/metadata формирует клиентский SDK.
+Сессий MCP, sticky routing, подписок и долгих GET-stream нет. GET/DELETE дают `405`,
+OPTIONS — `204`; POST возвращает конечный JSON. CORS по умолчанию выключен;
+список разрешённых Origin сам по себе не включает browser CORS.
+
+Лимиты: IP — 60/мин, actor — 120/мин, metadata — 30/мин; общий PostgreSQL cache
+и advisory locks. Запрос/ответ до 1 MiB; issuer JSON до 256 KiB, outbound запросы
+до 10/мин на URI, timeout 2с / max duration 3с, без redirects. `429` содержит
+`Retry-After`. MCP-ответы `private, no-store`, без session cookie.
+Отдельный HTTP audit пишет actor, известный tool, статус, duration и correlation
+ID (строковый ID хешируется); body, Authorization и JWT в audit не передаются.
+
+Проверки:
+
+```bash
+make ci
+make php-production-build
+make documentation-mcp-http-check
+make php-production-smoke
+```
+
+`documentation-mcp-http-check` поднимает одноразовую БД, две production FPM-реплики
+и тестовый HTTPS issuer; RSA/TLS keys и tokens генерируются во временный каталог,
+удаляемый при завершении. Production issuer, credentials и данные не используются.
+HTTP-проверка также входит в `php-production-smoke`, используемый CI.
+
+Отключение — штатное обновление FPM с `DOCS_MCP_HTTP_ENABLED=0`; для одного клиента
+достаточно `client:disable`. Grants при откате кода оставляются в БД.
+План: [Documentation MCP HTTP](docs/plan/Stage_Documentation_MCP_HTTP.md).
+
+Рекомендации по выбору issuer/клиента и оставшийся release scope:
+[отчёт внедрения](docs/plan/Stage_Documentation_MCP_HTTP_Implementation.md).

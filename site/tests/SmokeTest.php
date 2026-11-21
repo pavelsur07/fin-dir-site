@@ -45,6 +45,11 @@ final class SmokeTest extends WebTestCase
                 continue;
             }
 
+            // MCP HTTP defaults to 404; its auth/method/metadata contracts have dedicated tests.
+            if (str_starts_with($name, 'docs_mcp_')) {
+                continue;
+            }
+
             $host = $route->getHost();
             if (str_contains($host, '{')) {
                 continue;

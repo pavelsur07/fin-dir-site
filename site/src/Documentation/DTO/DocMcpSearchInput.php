@@ -12,7 +12,7 @@ final readonly class DocMcpSearchInput
         #[Assert\Length(max: 200)] public string $q = '',
         #[Assert\Positive] public int $page = 1,
         #[Assert\Positive] public ?int $sectionId = null,
-        #[Assert\Choice(['draft', 'published'])] public ?string $status = null,
+        #[Assert\Choice(choices: ['draft', 'published'])] public ?string $status = null,
     ) {
     }
 }

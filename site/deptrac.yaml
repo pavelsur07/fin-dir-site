@@ -9,6 +9,14 @@ deptrac:
         - ./src
 
     layers:
+        - name: DocumentationSecurity
+          collectors:
+              - type: classNameRegex
+                value: '#^App\\Documentation\\Security\\#'
+        - name: PsrHttp
+          collectors:
+              - type: classNameRegex
+                value: '#^(Psr\\Http\\|Nyholm\\Psr7\\)#'
         - name: DocumentationMcp
           collectors:
               - type: classNameRegex
@@ -133,12 +141,16 @@ deptrac:
                 value: '#^Symfony\\#'
 
     ruleset:
-        DocumentationMcp: [Service, Query, DTO, Adapter, Exception, ValueObject, Symfony, Pagerfanta, McpSdk]
+        DocumentationMcp: [Service, Query, DTO, Adapter, Exception, ValueObject, Symfony, Pagerfanta, McpSdk, PsrHttp]
+        DocumentationSecurity: [Symfony, DTO, Adapter, Query, Exception]
+        PsrHttp: []
         McpSdk: []
         # Контроллер: один Query или один Application Service плюс HTTP-обвязка.
         # Нет Entity, Repository и Doctrine -- PATTERNS.md §6.
         # Ожидаемые ошибки ввода контроллер ловит, чтобы показать их в форме.
         Controller:
+            - DocumentationMcp
+            - DocumentationSecurity
             - Service
             - Query
             - Symfony
@@ -201,6 +213,7 @@ deptrac:
 
         # Консольная команда -- как контроллер: вызывает сценарий.
         Command:
+            - DTO
             - DocumentationMcp
             - Service
             - Symfony
@@ -221,6 +234,11 @@ deptrac:
         ValueObject: []
         # Адаптер -- инфраструктура: HTTP-клиент, роутер, внешние библиотеки.
         Adapter:
+            - Exception
+            - DTO
+            - McpSdk
+            - PsrHttp
+            - Clock
             - CommonMark
             - Symfony
             - ValueObject

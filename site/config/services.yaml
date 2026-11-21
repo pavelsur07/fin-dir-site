@@ -12,6 +12,11 @@ parameters:
   env(DOCS_MCP_ENABLED): '0'
   env(DOCS_MCP_ACTOR): ''
   env(DOCS_MCP_PROFILE): 'published-reader'
+  env(DOCS_MCP_HTTP_ENABLED): '0'
+  env(DOCS_MCP_OAUTH_ISSUER): ''
+  env(DOCS_MCP_HTTP_ORIGINS): ''
+  env(DOCS_MCP_JWKS_HOSTS): ''
+  env(DOCS_MCP_OAUTH_CA_FILE): ''
 
 services:
   _defaults:
@@ -24,6 +29,20 @@ services:
       - '../src/Kernel.php'
       - '../src/Documentation/Mcp/DocMcpAccess.php'
       - '../src/Documentation/Mcp/DocMcpToolHandler.php'
+
+  documentation_mcp.http_logger:
+    class: Symfony\Component\HttpKernel\Log\Logger
+    arguments:
+      $minLevel: info
+      $output: 'php://stderr'
+
+  documentation_mcp.lock_factory:
+    class: Symfony\Component\Lock\LockFactory
+    arguments: ['@documentation_mcp.lock_store']
+
+  documentation_mcp.lock_store:
+    class: Symfony\Component\Lock\Store\DoctrineDbalPostgreSqlStore
+    arguments: ['@doctrine.dbal.default_connection']
 
   App\Documentation\ValueObject\DocUrl:
     arguments:

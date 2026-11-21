@@ -1,0 +1,4 @@
+framework:
+  # Factories are explicit services; no default lock changes Admin or Lead.
+  lock:
+    documentation_mcp: []

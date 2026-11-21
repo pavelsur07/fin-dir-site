@@ -20,6 +20,16 @@ security:
         docs:
             host: ^docs\.vashfindir\.ru$
             security: false
+        documentation_mcp:
+            pattern: ^/mcp/docs$
+            host: ^vashfindir\.ru$
+            stateless: true
+            access_token:
+                token_handler: App\Documentation\Security\DocMcpAccessTokenHandler
+                token_extractors: [App\Documentation\Security\DocMcpTokenExtractor]
+                failure_handler: App\Documentation\Security\DocMcpSecurityResponses
+            entry_point: App\Documentation\Security\DocMcpSecurityResponses
+            access_denied_handler: App\Documentation\Security\DocMcpSecurityResponses
         # Только /admin: публичный сайт в firewall не попадает и сессию не стартует.
         admin:
             pattern: ^/admin
@@ -38,6 +48,7 @@ security:
                 interval: '1 minute'
 
     access_control:
+        - { path: ^/mcp/docs$, roles: ROLE_DOCS_MCP }
         - { path: ^/admin/login$, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
 
