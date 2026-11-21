@@ -49,7 +49,7 @@ backup:
 test ci:
 	python3 scripts/run_checks.py --consumer-image $(IDENTITY_CONSUMER_IMAGE)
 unit:
-	docker run --rm --network none -v "$(CURDIR):/identity:ro" $(IDENTITY_TOOLING_IMAGE) -m pytest -p no:cacheprovider tests/test_release_package.py tests/test_deployment_boundary.py tests/test_backup_archive.py tests/test_ci_impact.py -q --tb=short --show-capture=no
+	docker run --rm --network none -v "$(CURDIR):/identity:ro" $(IDENTITY_TOOLING_IMAGE) -m pytest -p no:cacheprovider tests/test_registry_and_retry.py tests/test_release_package.py tests/test_deployment_boundary.py tests/test_backup_archive.py tests/test_ci_impact.py -q --tb=short --show-capture=no
 contract-probe:
 	docker run --rm --user "$$(id -u):$$(id -g)" --network identity-$(IDENTITY_ENV)_default -v "$(IDENTITY_RUNTIME_DIR):/runtime:ro" -v "$(CURDIR)/tests/consumers/symfony-mcp-verifier.php:/probe.php:ro" $(IDENTITY_CONSUMER_IMAGE) php /probe.php
 runtime-apply:

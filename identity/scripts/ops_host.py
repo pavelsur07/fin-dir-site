@@ -79,6 +79,8 @@ def main():
     if args.client and not re.fullmatch("[a-z][a-z0-9-]{1,100}", args.client):
         raise RuntimeError("Invalid client identifier.")
     env = {**os.environ, "IDENTITY_RUNTIME_DIR": str(args.runtime)}
+    if args.environment == "production":
+        env["DOCKER_CONFIG"] = "/opt/identity/docker"
     dc = compose(args.environment, args.runtime)
     if args.operation == "backup":
         backup(ROOT, args.runtime, dc, env)
