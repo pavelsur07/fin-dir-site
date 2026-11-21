@@ -158,7 +158,7 @@ ds-check: assets-check
 
 # --- Проверки. Порядок тот же, что в .github/workflows/ci.yml: от дешёвых к дорогим ---
 
-lint: assets-check
+lint: assets-check documentation-mcp-production-config-check
 	$(CLI) composer validate --strict
 	$(CLI) composer audit
 	$(CLI) php bin/console lint:yaml config
@@ -337,3 +337,12 @@ documentation-mcp-http-check: php-production-check
 .PHONY: identity-init identity-build identity-up identity-down identity-validate identity-test identity-ci identity-contract-probe identity-project-plan identity-project-apply identity-smoke identity-bootstrap identity-backup identity-rotate-client identity-package identity-runtime-apply identity-restore-check identity-deploy identity-unit
 identity-init identity-build identity-up identity-down identity-validate identity-test identity-ci identity-contract-probe identity-project-plan identity-project-apply identity-smoke identity-bootstrap identity-backup identity-rotate-client identity-package identity-runtime-apply identity-restore-check identity-deploy identity-unit:
 	$(MAKE) -C identity $(patsubst identity-%,%,$@)
+
+.PHONY: documentation-mcp-production-config-check
+documentation-mcp-production-config-check:
+	python3 scripts/check-documentation-mcp-production-config.py
+	docker run --rm --network none -v "$(CURDIR)/scripts/check-documentation-mcp-live.php:/check-mcp-live.php:ro" vashfindir-site-php-cli:dev php -l /check-mcp-live.php
+
+.PHONY: documentation-mcp-live-check
+documentation-mcp-live-check:
+	docker run --rm --user 0:0 --network "$(MCP_LIVE_NETWORK)" -e MCP_LIVE_MODE -e MCP_LIVE_EXPECTED_STATUS -v "$(MCP_LIVE_SECRET_FILE):/run/secrets/client:ro" -v "$(CURDIR)/scripts/check-documentation-mcp-live.php:/check-mcp-live.php:ro" $(PHP_CLI_IMAGE) php /check-mcp-live.php
