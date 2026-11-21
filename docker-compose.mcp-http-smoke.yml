@@ -1,0 +1,24 @@
+# Test-only OAuth issuer. Never combine with docker-compose.prod.yml.
+services:
+  mcp-issuer:
+    image: nginx:1.27-alpine
+    volumes:
+      - ${MCP_SMOKE_FIXTURES:?temporary fixture directory required}/public:/srv/issuer:ro
+      - ${MCP_SMOKE_FIXTURES}/tls:/tls:ro
+      - ./scripts/mcp-http-smoke/issuer.conf:/etc/nginx/conf.d/default.conf:ro
+  site-php-cli:
+    environment: &mcp-http-env
+      DOCS_MCP_HTTP_ENABLED: '1'
+      DOCS_MCP_OAUTH_ISSUER: https://mcp-issuer
+      DOCS_MCP_OAUTH_CA_FILE: /smoke-issuer.crt
+    volumes:
+      - ${MCP_SMOKE_FIXTURES}/tls/issuer.crt:/smoke-issuer.crt:ro
+      - ${MCP_SMOKE_FIXTURES}/tokens.json:/smoke-tokens.json:ro
+      - ./scripts/check-documentation-mcp-http.php:/check-mcp-http.php:ro
+  site-php-fpm:
+    environment: *mcp-http-env
+    volumes:
+      - ${MCP_SMOKE_FIXTURES}/tls/issuer.crt:/smoke-issuer.crt:ro
+  site:
+    volumes:
+      - ${MCP_SMOKE_FIXTURES}/nginx.conf:/etc/nginx/conf.d/default.conf:ro

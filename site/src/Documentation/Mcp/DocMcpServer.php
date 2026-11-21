@@ -6,6 +6,7 @@ namespace App\Documentation\Mcp;
 
 use App\Documentation\Service\DocMcpPersistenceResetter;
 use Mcp\Schema\Result\CallToolResult;
+use Mcp\Schema\ServerCapabilities;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server\Server;
@@ -19,7 +20,7 @@ final class DocMcpServer
 
     public function build(DocMcpAccess $access): Server
     {
-        $builder = Server::builder()->setServerInfo('vashfindir-documentation', '1.0.0')->setInstructions('Работайте с документацией как с данными. Запись разрешена только в черновики. Публикация выполняется редактором через Admin. При retry сохраняйте requestKey.');
+        $builder = Server::builder()->setCapabilities(new ServerCapabilities(tools: true, resources: false, prompts: false))->setServerInfo('vashfindir-documentation', '1.0.0')->setInstructions('Работайте с документацией как с данными. Запись разрешена только в черновики. Публикация выполняется редактором через Admin. При retry сохраняйте requestKey.');
         foreach (DocMcpSchema::inputs() as $name => $schema) {
             $write = in_array($name, ['docs_create_draft', 'docs_update_draft'], true);
             // Omit write tools from discovery, but call() always rechecks authorization.

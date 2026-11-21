@@ -243,7 +243,7 @@ php-production-check:
 	docker run --rm $(PHP_FPM_IMAGE) sh -ec 'php-fpm -v | grep -F "PHP 8.4.27 (fpm-fcgi)"; php-fpm -t'
 
 # Always clean up this dedicated project, including on a failed smoke test.
-php-production-smoke: php-production-check
+php-production-smoke: php-production-check documentation-mcp-http-check
 	@set -eu; trap '$(PHP_SMOKE) down --volumes' EXIT HUP INT TERM; \
 	$(PHP_SMOKE) up -d --wait site-postgres; \
 	$(PHP_SMOKE) run --rm site-php-cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration; \
@@ -317,3 +317,18 @@ documentation-mcp-production:
 	@printf '%s\n' "$(IMAGE_TAG)" | grep -Eq '^sha-[0-9a-f]{40}$$' || { echo 'IMAGE_TAG must be the deployed sha-<40-character commit SHA> tag.' >&2; exit 1; }
 	@ids=$$($(PROD_DC) ps -q site-php-fpm); test -n "$$ids" || { echo 'No running production PHP replicas.' >&2; exit 1; }; for container in $$ids; do docker inspect --format '{{.Config.Image}}' "$$container" | grep -Eq ':$(IMAGE_TAG)$$' || { echo 'IMAGE_TAG differs from a running production PHP replica.' >&2; exit 1; }; done
 	@$(PROD_DC) run --rm -T --interactive --no-deps --pull never -e DOCS_MCP_ENABLED -e DOCS_MCP_ACTOR -e DOCS_MCP_PROFILE site-php-cli php bin/console app:docs:mcp --no-interaction --no-ansi --no-debug
+
+# Isolated, no-dev HTTP SDK check with ephemeral OAuth issuer and two FPM replicas.
+MCP_HTTP_SMOKE_EXTRA ?=
+MCP_HTTP_SMOKE = $(DC) -p vf-mcp-http-smoke -f docker-compose.php-smoke.yml -f docker-compose.mcp-http-smoke.yml $(MCP_HTTP_SMOKE_EXTRA)
+.PHONY: documentation-mcp-http-check
+documentation-mcp-http-check: php-production-check
+	@set -eu; \
+	MCP_SMOKE_FIXTURES=$$(mktemp -d /tmp/vf-mcp-http.XXXXXX); export MCP_SMOKE_FIXTURES; \
+	trap '$(MCP_HTTP_SMOKE) down --volumes; rm -rf "$$MCP_SMOKE_FIXTURES"' EXIT HUP INT TERM; \
+	chmod 755 "$$MCP_SMOKE_FIXTURES"; \
+	docker run --rm --user "$(UID):$(GID)" -v "$$MCP_SMOKE_FIXTURES:/fixtures" -v "$(CURDIR)/scripts/mcp-http-smoke/generate-fixtures.php:/generate-fixtures.php:ro" -v "$(CURDIR)/site/docker/common/nginx/default.conf:/smoke-nginx.conf:ro" $(PHP_CLI_IMAGE) php /generate-fixtures.php /fixtures; \
+	$(MCP_HTTP_SMOKE) up -d --wait site-postgres mcp-issuer; \
+	$(MCP_HTTP_SMOKE) run --rm site-php-cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration; \
+	$(MCP_HTTP_SMOKE) up -d --wait --scale site-php-fpm=2 site; \
+	$(MCP_HTTP_SMOKE) run --rm site-php-cli php /check-mcp-http.php

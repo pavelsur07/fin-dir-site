@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Documentation\Mcp;
 
+use App\Documentation\Adapter\DocMcpEventLogger;
 use App\Documentation\Exception\DocConflict;
 use App\Documentation\Exception\DocNotFound;
 use App\Documentation\Exception\DocToolFailure;
@@ -13,6 +14,10 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
 final class DocMcpResultMapper
 {
+    public function __construct(private readonly ?DocMcpEventLogger $events = null)
+    {
+    }
+
     /** @param array<string,mixed> $data */
     public function success(array $data): CallToolResult
     {
@@ -47,6 +52,6 @@ final class DocMcpResultMapper
     /** @param array<string,mixed> $event */
     public function log(array $event): void
     {
-        fwrite(STDERR, json_encode($event, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE)."\n");
+        $this->events?->record($event);
     }
 }

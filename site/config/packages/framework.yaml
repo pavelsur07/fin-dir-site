@@ -16,10 +16,32 @@ framework:
   # php-fpm и переживают деплой. Файловый кеш считал бы на каждой реплике отдельно.
   cache:
     pools:
+      cache.documentation_mcp_jwks:
+        adapter: cache.adapter.doctrine_dbal
       cache.rate_limiter:
         adapter: cache.adapter.doctrine_dbal
 
   rate_limiter:
+    documentation_mcp_issuer:
+      policy: fixed_window
+      limit: 10
+      interval: '1 minute'
+      lock_factory: documentation_mcp.lock_factory
+    documentation_mcp_ip:
+      lock_factory: documentation_mcp.lock_factory
+      policy: sliding_window
+      limit: 60
+      interval: '1 minute'
+    documentation_mcp_client:
+      lock_factory: documentation_mcp.lock_factory
+      policy: sliding_window
+      limit: 120
+      interval: '1 minute'
+    documentation_mcp_metadata:
+      lock_factory: documentation_mcp.lock_factory
+      policy: sliding_window
+      limit: 30
+      interval: '1 minute'
     lead_submit:
       policy: sliding_window
       limit: 5
@@ -44,5 +66,7 @@ when@test:
     # Счётчик login_throttling иначе живёт в var/cache между запусками phpunit.
     cache:
       pools:
+        cache.documentation_mcp_jwks:
+          adapter: cache.adapter.array
         cache.rate_limiter:
           adapter: cache.adapter.array
