@@ -34,3 +34,10 @@ Make на production не нужен; host operations используют stdli
 Локальное создание пакета: `make identity-package IDENTITY_RELEASE=<sha>
 IDENTITY_PACKAGE=/tmp/identity-<sha>.tar.gz`. После распаковки работает собственный
 Makefile/scripts без монорепо. Consumer source требуется только для CI.
+
+Identity использует собственный `/opt/identity/docker/config.json` (0700 parent,
+0600 file). Первичная настройка переносит только GHCR auth/helper из root config;
+Docker Hub по умолчанию анонимный. Сохранённые credentials других registry не
+используются и не удаляются. После ротации registry credential обновить отдельный
+component config. Повтор первого pull без созданной БД безопасен; существующая
+БД требует backup, а пропавший контейнер при оставшемся volume — отдельного recovery.

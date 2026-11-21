@@ -19,6 +19,51 @@ def validate_image(inspection, supplied, revision):
         raise RuntimeError("Image digest/provenance differs from trusted revision tag.")
 
 
+def scoped_registry_config(global_config):
+    result = {
+        "auths": {
+            key: value
+            for key, value in global_config.get("auths", {}).items()
+            if key in {"ghcr.io", "https://ghcr.io"}
+        }
+    }
+    helper = global_config.get("credHelpers", {}).get("ghcr.io") or global_config.get(
+        "credsStore"
+    )
+    if helper:
+        result["credHelpers"] = {"ghcr.io": helper}
+    return result
+
+
+def prepare_registry_config(directory, global_path):
+    if directory.is_symlink():
+        raise RuntimeError("Registry config directory symlink refused.")
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    directory.chmod(0o700)
+    target = directory / "config.json"
+    if target.is_symlink():
+        raise RuntimeError("Registry config symlink refused.")
+    if not target.exists():
+        global_config = (
+            json.loads(global_path.read_text()) if global_path.is_file() else {}
+        )
+        fd = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        with os.fdopen(fd, "w") as output:
+            json.dump(scoped_registry_config(global_config), output)
+    target.chmod(0o600)
+
+
+def needs_database_backup(previous, current_exists, container_exists, volume_exists):
+    if previous is None and (container_exists or volume_exists):
+        raise RuntimeError("Existing database has no owned release configuration.")
+    if container_exists:
+        return True
+    if current_exists or volume_exists:
+        raise RuntimeError("Existing database requires recovery before deployment.")
+    # A failed first pull can leave only protected config/secrets, without data.
+    return False
+
+
 def deploy(revision, keycloak, tools, archive, checksum, expected_tree):
     if not re.fullmatch("[0-9a-f]{40}", revision) or not re.fullmatch(
         "[0-9a-f]{64}", checksum
@@ -50,7 +95,10 @@ def deploy(revision, keycloak, tools, archive, checksum, expected_tree):
             **os.environ,
             "IDENTITY_RUNTIME_DIR": str(RUNTIME),
             "IDENTITY_RELEASE": revision,
+            "DOCKER_CONFIG": str(BASE / "docker"),
         }
+
+        prepare_registry_config(BASE / "docker", Path("/root/.docker/config.json"))
 
         def run(args, **kw):
             return subprocess.run(args, cwd=destination, env=env, check=True, **kw)
@@ -63,7 +111,7 @@ def deploy(revision, keycloak, tools, archive, checksum, expected_tree):
                 if line.startswith("MemAvailable:")
             )
         )
-        if not (RUNTIME / "release.env").exists() and available < 1000 * 1024:
+        if not (BASE / "current").exists() and available < 1000 * 1024:
             raise RuntimeError("Insufficient shared-host available memory.")
         RUNTIME.mkdir(mode=0o700, parents=True, exist_ok=True)
         RUNTIME.chmod(0o700)
@@ -81,7 +129,39 @@ def deploy(revision, keycloak, tools, archive, checksum, expected_tree):
             if (RUNTIME / "release.env").exists()
             else None
         )
-        if previous:
+        db_containers = run(
+            [
+                "docker",
+                "ps",
+                "-aq",
+                "--filter",
+                "label=com.docker.compose.project=identity-production",
+                "--filter",
+                "label=com.docker.compose.service=db",
+            ],
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        if len(db_containers) > 1:
+            raise RuntimeError("Multiple Identity databases require operator recovery.")
+        db_volumes = run(
+            [
+                "docker",
+                "volume",
+                "ls",
+                "-q",
+                "--filter",
+                "name=identity-production_identity_db",
+            ],
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        if needs_database_backup(
+            previous,
+            (BASE / "current").exists(),
+            bool(db_containers),
+            "identity-production_identity_db" in db_volumes,
+        ):
             run(
                 [
                     "python3",
