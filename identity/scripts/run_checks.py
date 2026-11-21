@@ -20,6 +20,8 @@ def consumer(env, runtime, image, unavailable=False):
             "docker",
             "run",
             "--rm",
+            "--user",
+            str(os.getuid())+":"+str(os.getgid()),
             "--network",
             "identity-smoke_default",
             "-v",
@@ -218,7 +220,7 @@ def checks(image):
                     cwd=ROOT.parent,
                 )
                 run(
-                    web + ["run", "--rm", "site-php-cli", "php", "/check-mcp-http.php"],
+                    web + ["run", "--rm", "--user", "0:0", "site-php-cli", "php", "/check-mcp-http.php"],
                     http_env,
                     cwd=ROOT.parent,
                 )

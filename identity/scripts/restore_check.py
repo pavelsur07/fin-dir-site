@@ -178,6 +178,8 @@ def restore_check(manifest, key, consumer_image):
                     "docker",
                     "run",
                     "--rm",
+                    "--user",
+                    uid,
                     "--network",
                     "identity-restore_default",
                     "-v",
