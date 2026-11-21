@@ -113,6 +113,10 @@ jobs:
                       export VF_ADMIN_PASSWORD_HASH='${{ secrets.VF_ADMIN_PASSWORD_HASH }}'
                       export VF_LEAD_RELAY_URL='${{ secrets.VF_LEAD_RELAY_URL }}'
                       export VF_LEAD_RELAY_TOKEN='${{ secrets.VF_LEAD_RELAY_TOKEN }}'
+                      # IAM and the local client grant are provisioned before this integration release.
+                      # Normalize the optional repository switch to a literal boolean, without shell input.
+                      export VF_DOCS_MCP_HTTP_ENABLED='${{ vars.VF_DOCS_MCP_HTTP_ENABLED == '0' && '0' || '1' }}'
+                      export VF_DOCS_MCP_OAUTH_ISSUER='https://auth.vashfindir.ru/realms/projects'
                       export GHCR_OWNER='${{ github.repository_owner }}'
                       export IMAGE_TAG='${{ env.IMAGE_TAG }}'
                       

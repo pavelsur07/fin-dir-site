@@ -74,6 +74,8 @@ services:
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
       DEFAULT_URI: https://vashfindir.ru
+      DOCS_MCP_HTTP_ENABLED: ${VF_DOCS_MCP_HTTP_ENABLED:-0}
+      DOCS_MCP_OAUTH_ISSUER: ${VF_DOCS_MCP_OAUTH_ISSUER:-}
       DATABASE_URL: "postgresql://site:${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}@site-postgres:5432/site?serverVersion=17&charset=utf8"
       ADMIN_PASSWORD_HASH: ${VF_ADMIN_PASSWORD_HASH:?VF_ADMIN_PASSWORD_HASH is required}
       # Необязательны: без них заявки сохраняются, но уведомления в Telegram не уходят.
@@ -109,6 +111,8 @@ services:
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
       DEFAULT_URI: https://vashfindir.ru
+      DOCS_MCP_HTTP_ENABLED: ${VF_DOCS_MCP_HTTP_ENABLED:-0}
+      DOCS_MCP_OAUTH_ISSUER: ${VF_DOCS_MCP_OAUTH_ISSUER:-}
       DATABASE_URL: "postgresql://site:${VF_SITE_DB_PASSWORD:?VF_SITE_DB_PASSWORD is required}@site-postgres:5432/site?serverVersion=17&charset=utf8"
       ADMIN_PASSWORD_HASH: ${VF_ADMIN_PASSWORD_HASH:?VF_ADMIN_PASSWORD_HASH is required}
       # Необязательны: без них заявки сохраняются, но уведомления в Telegram не уходят.
