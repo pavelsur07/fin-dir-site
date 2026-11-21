@@ -405,3 +405,11 @@ HTTP-проверка также входит в `php-production-smoke`, исп�
 секреты и release. Начало работы и эксплуатация: [identity/README.md](identity/README.md).
 `make identity-ci` проверяет настоящий Keycloak, HTTP MCP на двух FPM, ротацию
 и encrypted backup/restore. Команды запуска и деплоя сайта не меняют Identity.
+
+Production issuer: `https://auth.vashfindir.ru/realms/projects`; MCP resource:
+`https://vashfindir.ru/mcp/docs`. Оба PHP runtime получают одинаковые issuer/flag.
+HTTP включается только при repository variable `VF_DOCS_MCP_HTTP_ENABLED=1`;
+незаданное значение и `0` оставляют его выключенным при следующем deploy.
+Начальный local client grant создаётся отдельно; deploy не возвращает отозванные
+разрешения. Проверенный внешний клиент: PHP `mcp/sdk`0.10.0, M2M bearer tokens,
+protocol2025-11-25/2026-07-28. Подключение и ограничения: [инструкция](identity/docs/integrations/documentation-mcp.md).
