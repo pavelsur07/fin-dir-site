@@ -23,7 +23,7 @@ def validate():
         )
         (runtime / "release.env").write_text(release)
         result = subprocess.run(
-            compose("production", runtime) + ["config", "--format", "json"],
+            compose("production", runtime) + ["--profile", "tools", "config", "--format", "json"],
             cwd=ROOT,
             env={**os.environ, "IDENTITY_RUNTIME_DIR": str(runtime)},
             capture_output=True,
