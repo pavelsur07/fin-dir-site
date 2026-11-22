@@ -7,7 +7,8 @@
     <div class="mx-auto w-full max-w-container px-4 pt-6 md:px-8 md:pt-8">
         <div class="md:overflow-hidden md:rounded-xl md:border md:border-border-subtle md:bg-surface-muted lg:grid lg:grid-cols-2">
             <div class="relative z-10 flex min-w-0 flex-col items-start gap-5 md:gap-6 md:px-8 md:pt-16 md:pb-12">
-                <h1 class="font-display type-t2-article text-balance text-fg md:type-t2 lg:type-t1" id="home-hero-title"><span class="md:block md:whitespace-nowrap">Финансовый директор,</span> <span class="md:block md:whitespace-nowrap">который помогает</span> <span class="md:block md:whitespace-nowrap">зарабатывать <span class="text-accent">больше</span></span></h1>
+                {# Исключение из SITE_RULES (согласовано): на мобильном размер H1 от ширины экрана, чтобы заголовок держал 3 строки. #}
+                <h1 class="font-display text-[length:min(7vw,28px)] leading-[1.2] font-extrabold tracking-tight text-fg md:type-t2 lg:type-t1" id="home-hero-title"><span class="block md:whitespace-nowrap">Финдир на&nbsp;аутсорсинге:</span> <span class="text-accent"><span class="block md:whitespace-nowrap">предсказуемые финансы</span> <span class="block md:whitespace-nowrap">и&nbsp;рост прибыли</span></span></h1>
                 <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
                 {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, attrs: primary.attrs|default({}), variant: 'primary', size: 'xl', full_mobile: true} only %}
                 {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-secondary">{{ note }}</p>{% endif %}
