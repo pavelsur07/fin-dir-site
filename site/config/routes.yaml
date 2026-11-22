@@ -50,3 +50,9 @@ documentation_controllers:
     path: ../src/Documentation/Controller/
     namespace: App\Documentation\Controller
   type: attribute
+
+bitrix24_controllers:
+  resource:
+    path: ../src/Bitrix24/Controller/
+    namespace: App\Bitrix24\Controller
+  type: attribute

@@ -18,6 +18,7 @@ final class LeadBuilder
     private \DateTimeImmutable $createdAt;
     private ?LeadAttribution $attribution = null;
     private ?string $ymClientId = null;
+    private string $consentVersion = LeadConsent::VERSION;
 
     private function __construct()
     {
@@ -46,6 +47,13 @@ final class LeadBuilder
     public function withContact(string $contact): self
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function withConsentVersion(string $version): self
+    {
+        $this->consentVersion = $version;
 
         return $this;
     }
@@ -87,7 +95,7 @@ final class LeadBuilder
             '/',
             null,
             [],
-            LeadConsent::VERSION,
+            $this->consentVersion,
             $this->spamReason,
             $this->createdAt,
             $this->attribution,

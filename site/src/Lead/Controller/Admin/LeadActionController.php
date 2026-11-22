@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lead\Controller\Admin;
 
 use App\Lead\Exception\LeadWasModified;
+use App\Lead\Service\LeadCrmExporter;
 use App\Lead\Service\LeadEraser;
 use App\Lead\Service\LeadNoteAdder;
 use App\Lead\Service\LeadNotificationSender;
@@ -70,6 +71,18 @@ final class LeadActionController extends AbstractController
         $sender->resend($id)
             ? $this->addFlash('success', 'Уведомление отправлено в Telegram.')
             : $this->addFlash('error', 'Уведомление не отправлено. Причина -- в карточке обращения.');
+
+        return $this->back($request, $id);
+    }
+
+    #[Route('/admin/leads/{id}/crm-export', name: 'admin_lead_crm_export', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function crmExport(int $id, Request $request, LeadCrmExporter $exporter): Response
+    {
+        $this->guard($request);
+
+        $exporter->resend($id)
+            ? $this->addFlash('success', 'Обращение передано в Битрикс24.')
+            : $this->addFlash('error', 'Обращение не передано в Битрикс24. Причина -- в карточке обращения.');
 
         return $this->back($request, $id);
     }

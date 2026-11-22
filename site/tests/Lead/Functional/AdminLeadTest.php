@@ -35,6 +35,7 @@ final class AdminLeadTest extends WebTestCase
         yield 'статус' => ['POST', '/admin/leads/1/update'];
         yield 'заметка' => ['POST', '/admin/leads/1/notes'];
         yield 'уведомление' => ['POST', '/admin/leads/1/notify'];
+        yield 'передача в CRM' => ['POST', '/admin/leads/1/crm-export'];
         yield 'удаление' => ['POST', '/admin/leads/1/delete'];
     }
 

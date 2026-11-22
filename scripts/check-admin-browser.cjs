@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const {chromium} = require('playwright');
 
 const root = '/workspace/site/var/tests/admin-browser';
-const names = ['login', 'dashboard', 'posts', 'cases', 'leads', 'post-form', 'case-form', 'lead-card'];
+const names = ['login', 'dashboard', 'posts', 'cases', 'leads', 'post-form', 'case-form', 'lead-card', 'settings-bitrix24'];
 const origin = 'http://127.0.0.1:8001';
 
 async function load(page, name) {
