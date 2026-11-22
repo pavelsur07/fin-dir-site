@@ -1,0 +1,66 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Настройки · Битрикс24{% endblock %}
+
+{# Вход: settings (Bitrix24SettingsView). Полный адрес вебхука сюда не передаётся -- только маска. #}
+{% block body %}
+    {% set token = csrf_token('bitrix24-settings') %}
+    <h1 class="mb-2 type-t2-article">Настройки</h1>
+    <nav class="mb-6" aria-label="Разделы настроек">
+        <a class="inline-flex min-h-control-touch items-center rounded-md bg-navy-900 px-3 py-2 type-t6 font-semibold text-white no-underline focus-visible:shadow-focus" href="{{ path('admin_settings_bitrix24') }}" aria-current="page">Битрикс24</a>
+    </nav>
+
+    {% for message in app.flashes('error') %}<p class="mb-4 rounded-lg border border-error-border bg-error-bg p-4 text-error" role="alert">{{ message }}</p>{% endfor %}
+
+    <section class="max-w-container rounded-lg border bg-white p-4 md:p-6" aria-labelledby="bitrix24-title">
+        <div class="mb-4 flex flex-wrap items-center gap-2">
+            <h2 class="type-t3" id="bitrix24-title">Подключение к Битрикс24</h2>
+            {% if not settings.connected %}
+                <span class="inline-block rounded-full bg-surface-muted px-2 py-1 type-t7 font-semibold text-fg-secondary">Не подключено</span>
+            {% elseif settings.lastError %}
+                <span class="inline-block rounded-full bg-error-bg px-2 py-1 type-t7 font-semibold text-error">Ошибка</span>
+            {% elseif settings.enabled %}
+                <span class="inline-block rounded-full bg-success-bg px-2 py-1 type-t7 font-semibold text-success">Работает</span>
+            {% else %}
+                <span class="inline-block rounded-full bg-surface-muted px-2 py-1 type-t7 font-semibold text-fg-secondary">Отправка выключена</span>
+            {% endif %}
+        </div>
+        <p class="mb-4 max-w-measure text-fg-secondary">Новые обращения с сайта создаются лидами в CRM: имя, контакт, задача, ответы формы и UTM. Спам не отправляется. В CRM уходят только обращения, согласие которых разрешает передачу данных CRM-сервису.</p>
+
+        {% if settings.connected %}
+            <dl class="mb-6 grid gap-2 md:grid-cols-2">
+                <dt>Портал</dt><dd class="break-all">{{ settings.portal }}</dd>
+                <dt>Вебхук</dt><dd class="break-all">{{ settings.mask }}</dd>
+                <dt>Отправка обращений</dt><dd>{{ settings.enabled ? 'включена' : 'выключена' }}</dd>
+                <dt>Последняя проверка</dt>
+                <dd>
+                    {{ settings.checkedAt ? settings.checkedAt|date('d.m.Y H:i') : '—' }}
+                    {%- if settings.lastError %}<span class="text-error">: {{ settings.lastErrorLabel }}</span>{% endif %}
+                </dd>
+            </dl>
+            <div class="mb-6 flex flex-wrap gap-2">
+                <form method="post" action="{{ path('admin_settings_bitrix24_check') }}">
+                    <input type="hidden" name="_token" value="{{ token }}">
+                    {% include 'admin/_button.html.twig' with {label: 'Проверить подключение'} only %}
+                </form>
+                <form method="post" action="{{ path('admin_settings_bitrix24_enabled') }}">
+                    <input type="hidden" name="_token" value="{{ token }}">
+                    <input type="hidden" name="enabled" value="{{ settings.enabled ? '0' : '1' }}">
+                    {% include 'admin/_button.html.twig' with {label: settings.enabled ? 'Выключить отправку' : 'Включить отправку'} only %}
+                </form>
+                <form method="post" action="{{ path('admin_settings_bitrix24_disconnect') }}" onsubmit="return confirm('Удалить подключение к Битрикс24? Новые обращения перестанут уходить в CRM.')">
+                    <input type="hidden" name="_token" value="{{ token }}">
+                    <button type="submit" class="inline-flex min-h-control-touch items-center justify-center rounded-md border border-error-border bg-surface px-5 py-2 type-t6 font-semibold text-error transition-colors hover:bg-error-bg focus-visible:shadow-focus">Отключить</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <form class="grid max-w-measure gap-2" method="post" action="{{ path('admin_settings_bitrix24_connect') }}">
+            <input type="hidden" name="_token" value="{{ token }}">
+            <label class="font-medium" for="bitrix24-webhook">{{ settings.connected ? 'Заменить вебхук' : 'Адрес входящего вебхука' }}</label>
+            <p class="type-t6 text-fg-secondary" id="bitrix24-webhook-hint">В Битрикс24: Разработчикам → Другое → Входящий вебхук, право «CRM (crm)». Адрес вида https://портал.bitrix24.ru/rest/1/код/. Перед сохранением сайт проверит его, после сохранения адрес хранится зашифрованным и больше не показывается.</p>
+            <input class="w-full min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" id="bitrix24-webhook" type="password" name="webhook" required autocomplete="off" spellcheck="false" inputmode="url" aria-describedby="bitrix24-webhook-hint">
+            <div class="mt-2">{% include 'admin/_button.html.twig' with {label: settings.connected ? 'Проверить и заменить' : 'Проверить и подключить', variant: 'primary'} only %}</div>
+        </form>
+    </section>
+{% endblock %}

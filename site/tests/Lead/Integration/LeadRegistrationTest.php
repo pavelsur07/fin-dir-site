@@ -8,6 +8,7 @@ use App\Lead\Adapter\TelegramLeadNotifier;
 use App\Lead\DTO\LeadSubmission;
 use App\Lead\Entity\Lead;
 use App\Lead\Repository\LeadRepository;
+use App\Lead\Service\LeadCrmExporter;
 use App\Lead\Service\LeadNotificationSender;
 use App\Lead\Service\LeadRegistrar;
 use App\Lead\ValueObject\LeadStatus;
@@ -210,6 +211,7 @@ final class LeadRegistrationTest extends KernelTestCase
             self::getContainer()->get(LeadRepository::class),
             $this->entityManager,
             $sender ?? $this->sender(new MockHttpClient()),
+            self::getContainer()->get(LeadCrmExporter::class),
             $this->clock,
         );
     }

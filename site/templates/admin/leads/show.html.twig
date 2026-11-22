@@ -48,6 +48,22 @@
                     </form>
                 {% endif %}
             </dd>
+            <dt>Битрикс24</dt>
+            <dd>
+                {% if lead.crmExportedAt %}
+                    передано {{ lead.crmExportedAt|date('d.m.Y H:i') }}, лид №{{ lead.crmLeadId }}
+                {% elseif not lead.crmAllowed %}
+                    не передаётся: {{ lead.status.value == 'spam' ? 'спам' : 'согласие этой версии не разрешает передачу в CRM' }}
+                {% elseif not crm_enabled %}
+                    передача выключена (<a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ path('admin_settings_bitrix24') }}">настройки</a>)
+                {% else %}
+                    не передано{% if lead.crmExportErrorLabel %}: {{ lead.crmExportErrorLabel }}{% endif %}
+                    <form method="post" action="{{ path('admin_lead_crm_export', {id: lead.id}) }}" class="inline ml-2">
+                        <input type="hidden" name="_token" value="{{ token }}">
+                        {% include 'admin/_button.html.twig' with {label: 'Передать в Битрикс24'} only %}
+                    </form>
+                {% endif %}
+            </dd>
         </dl>
     </div>
 

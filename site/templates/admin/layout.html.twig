@@ -1,4 +1,4 @@
-{% set admin_asset_version = '64ab2fd3e45f' %}
+{% set admin_asset_version = '7325979e5c7c' %}
 <!doctype html>
 <html lang="ru">
 <head>
@@ -21,6 +21,7 @@
         {label: 'Документация', route: 'admin_doc_pages', active_prefix: 'admin_doc'},
         {label: 'Кейсы', route: 'admin_case_list', active_prefix: 'admin_case'},
         {label: 'Обращения', route: 'admin_lead_list', active_prefix: 'admin_lead', counter: true},
+        {label: 'Настройки', route: 'admin_settings_bitrix24', active_prefix: 'admin_settings'},
     ] %}
     {# Счётчик считается один раз (фрагмент-контроллер) и выводится в обоих местах меню. #}
     {% set counter %}{{ render(controller('App\\Lead\\Controller\\Admin\\LeadCounterController')) }}{% endset %}

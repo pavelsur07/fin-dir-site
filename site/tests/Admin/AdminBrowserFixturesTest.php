@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Admin;
 
+use App\Bitrix24\Entity\Bitrix24Connection;
 use App\Tests\ClientCase\Builder\ClientCaseBuilder;
 use App\Tests\Lead\Builder\LeadBuilder;
 use App\Tests\Publication\Builder\PostBuilder;
@@ -28,6 +29,10 @@ final class AdminBrowserFixturesTest extends WebTestCase
         ] as $entity) {
             $entityManager->persist($entity);
         }
+        // Подключённый Битрикс24 с ошибкой проверки: на экране все блоки сразу.
+        $connection = new Bitrix24Connection('stored-ciphertext', 'company-with-a-very-long-portal-name.bitrix24.ru', 'company-with-a-very-long-portal-name.bitrix24.ru/rest/1/…abcd/', new \DateTimeImmutable('2026-11-22 10:00'));
+        $connection->recordCheck('insufficient_scope', new \DateTimeImmutable('2026-11-22 10:05'));
+        $entityManager->persist($connection);
         $entityManager->flush();
 
         $pages = ['login' => '/admin/login'];
@@ -42,6 +47,7 @@ final class AdminBrowserFixturesTest extends WebTestCase
             'post-form' => '/admin/posts/'.$post->id().'/edit',
             'case-form' => '/admin/cases/'.$case->id().'/edit',
             'lead-card' => '/admin/leads/'.$lead->id(),
+            'settings-bitrix24' => '/admin/settings/bitrix24',
         ]);
     }
 

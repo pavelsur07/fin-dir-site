@@ -28,6 +28,7 @@ final class LeadRegistrar
         private readonly LeadRepository $leads,
         private readonly EntityManagerInterface $entityManager,
         private readonly LeadNotificationSender $notificationSender,
+        private readonly LeadCrmExporter $crmExporter,
         private readonly ClockInterface $clock,
     ) {
     }
@@ -74,8 +75,9 @@ final class LeadRegistrar
             return (int) $this->leads->findBySubmissionId($submission->submissionId)?->id();
         }
 
-        // После коммита: сбой Telegram не отменяет сохранённое обращение.
+        // После коммита: сбой Telegram или CRM не отменяет сохранённое обращение.
         $this->notificationSender->send($lead);
+        $this->crmExporter->export($lead, mayExist: false);
 
         return (int) $lead->id();
     }

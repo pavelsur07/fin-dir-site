@@ -25,7 +25,7 @@ final class LeadCardQuery
         /** @var array<string, mixed>|null $row */
         $row = $this->entityManager->createQueryBuilder()
             ->select('l.id, l.formKey, l.name, l.contact, l.contactNormalized, l.contactType, l.task, l.answers, l.pageUrl, l.referrer, l.utm, l.attribution, l.ymClientId')
-            ->addSelect('l.consentAt, l.consentVersion, l.status, l.spamReason, l.nextContactAt, l.notifiedAt, l.notificationError, l.createdAt, l.version')
+            ->addSelect('l.consentAt, l.consentVersion, l.status, l.spamReason, l.nextContactAt, l.notifiedAt, l.notificationError, l.createdAt, l.version, l.crmLeadId, l.crmExportedAt, l.crmExportError')
             ->from(Lead::class, 'l')
             ->where('l.id = :id')
             ->setParameter('id', $id)
@@ -92,6 +92,9 @@ final class LeadCardQuery
             (int) $row['version'],
             $notes,
             $sameContact,
+            $row['crmLeadId'] ?? null,
+            $row['crmExportedAt'] ?? null,
+            $row['crmExportError'] ?? null,
         );
     }
 

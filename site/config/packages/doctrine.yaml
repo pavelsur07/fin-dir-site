@@ -40,6 +40,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/ClientCase/Entity'
                 prefix: 'App\ClientCase\Entity'
                 alias: ClientCase
+            Bitrix24:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Bitrix24/Entity'
+                prefix: 'App\Bitrix24\Entity'
+                alias: Bitrix24
 
 when@test:
     doctrine:

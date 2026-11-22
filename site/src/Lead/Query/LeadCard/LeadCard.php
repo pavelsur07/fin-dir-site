@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Lead\Query\LeadCard;
 
+use App\Bitrix24\ValueObject\Bitrix24FailureReason;
 use App\Lead\ValueObject\ContactType;
+use App\Lead\ValueObject\LeadConsent;
 use App\Lead\ValueObject\LeadStatus;
 
 /**
@@ -15,6 +17,9 @@ final readonly class LeadCard
 {
     public bool $needsNotification;
     public ?string $spamReasonLabel;
+    /** Неспам с согласием, разрешающим передачу в CRM. */
+    public bool $crmAllowed;
+    public ?string $crmExportErrorLabel;
 
     /**
      * @param list<array{question: string, questionLabel: string, answer: string, answerLabel: string}> $answers
@@ -52,8 +57,13 @@ final readonly class LeadCard
         public int $version,
         public array $notes,
         public array $sameContact,
+        public ?int $crmLeadId = null,
+        public ?\DateTimeImmutable $crmExportedAt = null,
+        public ?string $crmExportError = null,
     ) {
         $this->needsNotification = $status->needsNotification($notifiedAt);
+        $this->crmAllowed = LeadStatus::SPAM !== $status && LeadConsent::allowsCrmTransfer($consentVersion);
+        $this->crmExportErrorLabel = null === $crmExportError ? null : Bitrix24FailureReason::label($crmExportError);
         $this->spamReasonLabel = match ($spamReason) {
             null => null,
             'honeypot' => 'заполнено скрытое поле',

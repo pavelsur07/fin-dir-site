@@ -98,6 +98,17 @@ class Lead
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $notificationError = null;
 
+    /** ID лида в Битрикс24 после успешной передачи. */
+    #[ORM\Column(nullable: true)]
+    private ?int $crmLeadId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $crmExportedAt = null;
+
+    /** Категория последнего сбоя передачи в CRM, без ПД и секретов. */
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $crmExportError = null;
+
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
@@ -195,6 +206,66 @@ class Lead
     public function markNotificationFailed(string $error): void
     {
         $this->notificationError = mb_substr($error, 0, 255);
+    }
+
+    /**
+     * В CRM уходит только неспам, ещё не переданный и с согласием, разрешающим передачу.
+     *
+     * @param list<string> $allowedConsentVersions LeadConsent::crmTransferVersions()
+     */
+    public function needsCrmExport(array $allowedConsentVersions): bool
+    {
+        return LeadStatus::SPAM !== $this->status
+            && null === $this->crmExportedAt
+            && \in_array($this->consentVersion, $allowedConsentVersions, true);
+    }
+
+    public function markCrmExported(int $crmLeadId, \DateTimeImmutable $now): void
+    {
+        $this->crmLeadId = $crmLeadId;
+        $this->crmExportedAt = $now;
+        $this->crmExportError = null;
+    }
+
+    public function markCrmExportFailed(string $reason): void
+    {
+        $this->crmExportError = mb_substr($reason, 0, 100);
+    }
+
+    /** Прошлая попытка завершилась сбоем: лид мог успеть создаться, повтор сначала ищет его. */
+    public function hadCrmExportAttempt(): bool
+    {
+        return null !== $this->crmExportError;
+    }
+
+    public function crmLeadId(): ?int
+    {
+        return $this->crmLeadId;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function contact(): string
+    {
+        return $this->contact;
+    }
+
+    public function contactNormalized(): string
+    {
+        return $this->contactNormalized;
+    }
+
+    public function contactType(): ContactType
+    {
+        return $this->contactType;
+    }
+
+    public function task(): ?string
+    {
+        return $this->task;
     }
 
     public function id(): ?int

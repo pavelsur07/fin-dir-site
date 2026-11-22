@@ -59,6 +59,14 @@ services:
     arguments:
       - '%env(DATABASE_URL)%'
 
+  # HTTP-клиент Битрикс24: без логгера (в URL вебхука токен) и без доступа во внутреннюю сеть.
+  bitrix24.http_client.inner:
+    class: Symfony\Contracts\HttpClient\HttpClientInterface
+    factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+  bitrix24.http_client:
+    class: Symfony\Component\HttpClient\NoPrivateNetworkHttpClient
+    arguments: ['@bitrix24.http_client.inner']
+
 when@test:
   parameters:
     # Тесты не пишут в public: файлы обложек уходят во временный каталог var.
