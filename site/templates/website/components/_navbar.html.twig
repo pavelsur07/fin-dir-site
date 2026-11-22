@@ -1,11 +1,24 @@
+{#
+    Шапка сайта: логотип, пункты меню, кнопка «Личный кабинет»; на мобильном -- боковая панель в <dialog> (scripts/website/navigation.js).
+    Аргументы: brand, brand_href, items [{key, label, href, children (необязательно) [{key, label, text, icon, href, badge}], all {label, href}}],
+    active_key, cta {label, href}, current_path (путь страницы -- aria-current у вложенного пункта),
+    consult {title, text, label, mobile_label, href} (необязательно) -- карточка разбора в меню «Услуги» и кнопка внизу панели (окно записи),
+    phone {value, href, hours} (необязательно) -- телефон внизу мобильной панели.
+    Пункт с children: на десктопе -- disclosure-кнопка и панель под ней, на мобильном -- аккордеон (раскрыт в активном разделе).
+    Пункт без children -- обычная ссылка (так шапку использует layouts/docs.html.twig).
+#}
 {% set navigation_id = navigation_id|default('vf-main-navigation') %}
 {% set drawer_id = navigation_id ~ '-drawer' %}
 {% set navigation_label = navigation_label|default('Основная навигация') %}
 {% set mobile_navigation_label = mobile_navigation_label|default('Мобильная навигация') %}
 {% set dialog_label = dialog_label|default('Меню') %}
 {% set brand_aria_label = brand_aria_label|default(brand ~ ' — на главную') %}
+{% set consult = consult|default(null) %}
+{% set current_path = current_path|default(null) %}
+{% set lead_modal_attrs = {'data-vf-lead-modal-open': ''} %}
 {# Липкая шапка по дизайн-системе (16.1): высота h-header-compact (64), с lg h-header (72), после прокрутки на 72px и с lg снова 64 (data-compact), тень sm после начала прокрутки (data-scrolled): оба атрибута ставит navigation.js.
-   Активный раздел: aria-current, text-fg, font-semibold и полоса 2px accent-fill на нижней кромке пункта; пункт во всю высоту шапки, hover-плашка только h-control-md. #}
+   Активный раздел: aria-current, text-fg, font-semibold и полоса 2px accent-fill на нижней кромке пункта; пункт во всю высоту шапки, hover-плашка только h-control-md.
+   У кнопки раздела с children aria-current нет: его получает ссылка текущей страницы в панели. #}
 <header class="group/header sticky top-0 z-40 border-b border-border-subtle bg-white transition-shadow duration-base data-scrolled:shadow-sm print:static" data-vf-component="navbar">
     <nav class="mx-auto w-full max-w-container px-4 md:px-8 flex h-header-compact flex-nowrap items-center justify-between gap-4 transition-all duration-fast ease-out motion-reduce:transition-none lg:h-header lg:group-data-compact/header:h-header-compact" aria-label="{{ navigation_label }}">
         <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}">
@@ -13,29 +26,66 @@
             {% include 'website/components/_logo.html.twig' with {s: 32, class: 'hidden md:block'} only %}
         </a>
         <button class="flex size-control-touch shrink-0 items-center justify-center rounded-md border border-border-strong bg-surface p-0 text-fg focus-visible:shadow-focus lg:hidden" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="{{ drawer_id }}" aria-expanded="false" data-vf-menu-open>
-            <span class="grid gap-1" aria-hidden="true"><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span><span class="w-6 border-t-2 border-current"></span></span>
+            {% include 'website/components/_icon.html.twig' with {name: 'menu', class: 'size-icon-lg'} only %}
         </button>
-        <div class="ml-auto hidden lg:flex lg:items-center lg:gap-6 lg:self-stretch" data-vf-desktop-navigation>
+        <div class="relative ml-auto hidden lg:flex lg:items-center lg:gap-6 lg:self-stretch" data-vf-desktop-navigation>
             <ul class="flex items-stretch gap-1 self-stretch">
                 {% for item in items %}
                     {# Одно условие задаёт всё: aria-current, font-semibold и полосу -- полосы без атрибута и наоборот не бывает. #}
                     {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
-                    <li class="flex">
-                        <a class="group relative flex items-center self-stretch type-t6 no-underline focus-visible:shadow-focus text-fg {% if is_active %}font-semibold{% else %}font-medium{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
-                            <span class="flex h-control-md items-center rounded-sm px-3 group-hover:bg-surface-muted">{{ item.label }}</span>
-                            {% if is_active %}<span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
-                        </a>
+                    <li class="flex"{% if item.children|default([]) is not empty %} data-vf-dropdown-root{% endif %}>
+                        {% if item.children|default([]) is not empty %}
+                            <button class="group relative flex items-center self-stretch type-t6 text-fg focus-visible:shadow-focus aria-expanded:text-accent {% if is_active %}font-semibold{% else %}font-medium{% endif %}" type="button" aria-expanded="false" aria-controls="{{ navigation_id }}-{{ item.key }}" data-vf-disclosure data-vf-dropdown>
+                                <span class="flex h-control-md items-center gap-1 rounded-sm px-3 group-hover:bg-surface-muted">
+                                    {{ item.label }}
+                                    {% include 'website/components/_icon.html.twig' with {name: 'chevron-down', class: 'size-icon-sm shrink-0 transition-transform duration-fast group-aria-expanded:rotate-180 motion-reduce:transition-none'} only %}
+                                </span>
+                                {% if is_active %}<span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
+                            </button>
+                            {# Панель -- сразу за кнопкой (порядок Tab); позиционируется от [data-vf-desktop-navigation] (relative): правый край по кнопке «Личный кабинет», за контейнер не выходит. #}
+                            <div class="absolute top-full right-0 z-50 mt-1 grid gap-4 rounded-xl border border-border-subtle bg-white p-4 shadow-lg {{ consult ? 'w-title grid-cols-3' : 'w-modal-md grid-cols-1' }}" id="{{ navigation_id }}-{{ item.key }}" hidden>
+                                <div class="flex flex-col gap-2 {{ consult ? 'col-span-2' : '' }}">
+                                    <ul class="grid grid-cols-2 gap-1">
+                                        {% for child in item.children %}
+                                            <li>{% include 'website/components/_nav_service.html.twig' with {item: child, current: child.href == current_path} only %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if item.all|default(null) %}
+                                        <a class="inline-flex w-fit items-center gap-2 rounded-xs px-3 py-2 type-t6 font-semibold text-accent no-underline hover:underline focus-visible:shadow-focus" href="{{ item.all.href }}"{% if item.all.href == current_path %} aria-current="page"{% endif %}>
+                                            {{ item.all.label }}
+                                            {% include 'website/components/_icon.html.twig' with {name: 'arrow-right', class: 'size-icon-sm shrink-0'} only %}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                {% if consult %}
+                                    <div class="dark relative isolate flex flex-col items-start justify-between gap-6 overflow-hidden rounded-lg bg-accent-fill p-5 text-fg">
+                                        <div class="absolute -top-1/10 -bottom-1/10 left-3/5 w-full -skew-x-12 bg-white/10" aria-hidden="true"></div>
+                                        <div class="flex flex-col gap-2">
+                                            <p class="type-t7 font-medium text-cobalt-100">{{ consult.title }}</p>
+                                            <p class="type-t4 font-semibold text-white">{{ consult.text }}</p>
+                                        </div>
+                                        {% include 'website/components/_button.html.twig' with {label: consult.label, href: consult.href, attrs: lead_modal_attrs, variant: 'inverse', size: 'md', arrow: true} only %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <a class="group relative flex items-center self-stretch type-t6 no-underline focus-visible:shadow-focus text-fg {% if is_active %}font-semibold{% else %}font-medium{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
+                                <span class="flex h-control-md items-center rounded-sm px-3 group-hover:bg-surface-muted">{{ item.label }}</span>
+                                {% if is_active %}<span class="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
+                            </a>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
             {% if cta|default(null) %}
-                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', size: 'md'} only %}
+                {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', size: 'md', icon: 'user'} only %}
             {% endif %}
         </div>
     </nav>
 
     <dialog class="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden border-0 bg-transparent p-0 text-fg backdrop:bg-overlay lg:hidden" id="{{ drawer_id }}" aria-label="{{ dialog_label }}" data-state="closed" data-vf-menu-dialog>
-        <div class="absolute inset-y-0 right-0 flex h-dvh w-full translate-x-full flex-col overflow-y-auto overscroll-contain bg-white shadow-md transition-transform duration-base motion-reduce:transition-none" data-vf-menu-panel>
+        {# Панель ~86% ширины (6/7), не шире max-w-modal-sm; слева видно затемнение -- клик по нему закрывает меню. Список прокручивается, низ закреплён. #}
+        <div class="absolute inset-y-0 right-0 flex h-dvh w-6/7 max-w-modal-sm translate-x-full flex-col bg-white shadow-md transition-transform duration-base motion-reduce:transition-none" data-vf-menu-panel>
             <div class="flex h-header-compact shrink-0 items-center justify-between gap-4 border-b border-border-subtle px-4">
                 <a class="inline-flex items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}">
                     {% include 'website/components/_logo.html.twig' with {s: 32} only %}
@@ -44,21 +94,58 @@
                     <span class="type-t3" aria-hidden="true">×</span>
                 </button>
             </div>
-            <nav class="px-4 py-4" aria-label="{{ mobile_navigation_label }}" data-vf-mobile-navigation>
-                <ul class="flex flex-col gap-2">
+            <nav class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-2" aria-label="{{ mobile_navigation_label }}" data-vf-mobile-navigation data-vf-menu-scroll>
+                <ul class="flex flex-col">
                     {% for item in items %}
                         {% set is_active = item.key|default(null) == active_key and active_key is not empty %}
-                        <li>
-                            <a class="flex min-h-control-touch items-center py-2 text-left type-t5 no-underline focus-visible:shadow-focus text-fg {% if is_active %}font-semibold{% else %}font-medium{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>{{ item.label }}</a>
-                        </li>
+                        {% if item.children|default([]) is not empty %}
+                            <li class="border-b border-border-subtle">
+                                <button class="group flex min-h-control-touch w-full items-center justify-between gap-4 py-2 text-left type-t5 text-fg focus-visible:shadow-focus {% if is_active %}font-semibold{% else %}font-medium{% endif %}" type="button" aria-expanded="{{ is_active ? 'true' : 'false' }}" aria-controls="{{ drawer_id }}-{{ item.key }}" data-vf-disclosure>
+                                    {{ item.label }}
+                                    {% include 'website/components/_icon.html.twig' with {name: 'chevron-down', class: 'size-icon-md shrink-0 text-accent transition-transform duration-fast group-aria-expanded:rotate-180 motion-reduce:transition-none'} only %}
+                                </button>
+                                <div class="mb-3 rounded-lg bg-surface-muted p-2" id="{{ drawer_id }}-{{ item.key }}"{% if not is_active %} hidden{% endif %}>
+                                    <ul class="flex flex-col">
+                                        {% for child in item.children %}
+                                            <li>{% include 'website/components/_nav_service.html.twig' with {item: child, current: child.href == current_path, compact: true} only %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if item.all|default(null) %}
+                                        <a class="flex min-h-control-touch w-fit items-center gap-2 rounded-xs px-3 type-t6 font-semibold text-accent no-underline focus-visible:shadow-focus" href="{{ item.all.href }}"{% if item.all.href == current_path %} aria-current="page"{% endif %}>
+                                            {{ item.all.label }}
+                                            {% include 'website/components/_icon.html.twig' with {name: 'arrow-right', class: 'size-icon-sm shrink-0'} only %}
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="border-b border-border-subtle">
+                                <a class="flex min-h-control-touch items-center gap-2 py-2 text-left type-t5 no-underline focus-visible:shadow-focus text-fg {% if is_active %}font-semibold{% else %}font-medium{% endif %}" href="{{ item.href }}"{% if is_active %} aria-current="page"{% endif %}>
+                                    {{ item.label }}
+                                    {% if is_active %}<span class="size-2 rounded-full bg-accent-fill" aria-hidden="true"></span>{% endif %}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
-                {% if cta|default(null) %}
-                    <div class="mt-6">
-                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', size: 'md', full_mobile: true} only %}
-                    </div>
-                {% endif %}
             </nav>
+            {% if consult or cta|default(null) or phone|default(null) %}
+                <div class="flex shrink-0 flex-col gap-3 border-t border-border-subtle p-4">
+                    {% if consult %}
+                        {% include 'website/components/_button.html.twig' with {label: consult.mobile_label|default(consult.label), href: consult.href, attrs: lead_modal_attrs, variant: 'primary', size: 'md', arrow: true, class: 'w-full'} only %}
+                    {% endif %}
+                    {% if cta|default(null) %}
+                        {% include 'website/components/_button.html.twig' with {label: cta.label, href: cta.href, variant: 'secondary', size: 'md', icon: 'user', class: 'w-full'} only %}
+                    {% endif %}
+                    {% if phone|default(null) %}
+                        <a class="flex min-h-control-touch items-center justify-center gap-2 rounded-xs type-t6 font-semibold text-fg no-underline focus-visible:shadow-focus" href="{{ phone.href }}">
+                            {% include 'website/components/_icon.html.twig' with {name: 'phone', class: 'size-icon-sm shrink-0'} only %}
+                            {{ phone.value }}
+                            {% if phone.hours|default(null) %}<span class="font-normal text-fg-secondary">· {{ phone.hours }}</span>{% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </dialog>
 </header>
