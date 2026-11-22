@@ -1,19 +1,167 @@
 {% extends 'website/layouts/page.html.twig' %}
 
 {% block title %}Разработка финансовой модели бизнеса — Ваш Финдир{% endblock %}
-{% block description %}Финансовая модель бизнеса для планирования доходов, расходов и оценки сценариев развития.{% endblock %}
-{# Страница без контента: закрыта от индексации и не входит в sitemap, пока не наполнена. Убрать блок -- открыть. #}
-{% block robots %}noindex, follow{% endblock %}
+{% block description %}Финансовая модель бизнеса под ключ: прогноз прибыли и денег на 12 месяцев, ОПиУ, ДДС, баланс и сценарии. Разработка с финансовым директором.{% endblock %}
 {% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts} only %}{% endblock %}
 
 {% block active_navigation %}services{% endblock %}
 
-{# Базовая страница услуги: хлебные крошки и текстовый Hero. #}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/assets/website/tabs.js?v={{ vf_asset_version }}" defer></script>
+{% endblock %}
+
+{# Вопросы -- глобал vf_finmodel_faq (config/packages/twig.yaml): те же тексты уходят в разметку FAQPage. #}
+{% block json_ld %}
+    {{ parent() }}
+    {% include 'website/components/_json_ld.html.twig' with {
+        schema: [
+            {
+                '@context': 'https://schema.org',
+                '@type': 'Service',
+                name: 'Разработка финансовой модели бизнеса',
+                serviceType: 'Разработка финансовой модели',
+                provider: {'@id': vf_site_url ~ '/#organization'},
+                areaServed: 'RU',
+                url: vf_site_url ~ path('service_financial_model'),
+                description: 'Финансовая модель бизнеса под ключ: прогноз прибыли и денег на 12 месяцев, ОПиУ, ДДС, баланс и сценарии.',
+            },
+            {
+                '@context': 'https://schema.org',
+                '@type': 'FAQPage',
+                mainEntity: vf_finmodel_faq|map(item => {
+                    '@type': 'Question',
+                    name: item.question,
+                    acceptedAnswer: {'@type': 'Answer', text: item.answer},
+                }),
+            },
+        ],
+    } only %}
+{% endblock %}
+
+{# Тексты -- из макета docs/plan/pages-mockup/FinModel.dc.html; заглушки макета ([N]+ моделей, сроки этапов, кейсы) не выводятся. #}
 {% block body %}
-    {% include 'website/components/page-header.html.twig' with {
-        crumbs: [{label: 'Главная', url: '/'}, {label: 'Услуги', url: '/services'}, {label: 'Разработка финансовой модели бизнеса'}],
-        title: 'Разработка финансовой модели бизнеса',
-        lead: 'Планируйте доходы и расходы, оценивайте прибыль и сравнивайте сценарии развития бизнеса с помощью финансовой модели.',
+    {% set lead_modal = {'data-vf-lead-modal-open': ''} %}
+    {% include 'website/sections/_hero.html.twig' with {
+        id: 'finmodel-hero',
+        crumbs: [{label: 'Главная', url: '/'}, {label: 'Услуги', url: '/services'}, {label: 'Финансовая модель'}],
+        label: 'Финансовый директор на аутсорсинге',
+        title_lines: [{text: 'Разработка'}, {text: 'финансовой модели бизнеса', accent: true}],
+        lead: 'Прогноз прибыли и денег на 12 месяцев вперёд. Видно, что будет с бизнесом при росте продаж, цен или расходов — до того, как вы потратите деньги.',
+        primary: {label: 'Обсудить модель', href: '#lead-form', attrs: lead_modal, arrow: true},
+        note: 'Первая встреча — разбор задачи и данных, бесплатно',
+        person: {image: '/assets/people/nikita-larionov-portrait.png', webp_base: '/assets/people/nikita-larionov-portrait', alt: 'Никита Ларионов, финансовый директор'},
+        badge: {text: 'Прогноз денег: кассовый разрыв виден за недели', screen: 'forecast-balance-v1'},
+    } only %}
+    {# Третий факт «[N]+ моделей» -- после того как владелец даст число (только для этой страницы). #}
+    {% include 'website/sections/_trust_strip.html.twig' with {
+        facts: vf_trust_facts,
+        people: vf_team.people,
+        team: {text: 'Финдир, налоговый консультант и аналитики.', link_label: 'Кто будет с вами работать →', href: path('app_about_index')},
+    } only %}
+    <div class="dark">
+        {% include 'website/sections/_service_cards.html.twig' with {
+            id: 'finmodel-benefits',
+            title: 'Как финансовая модель помогает бизнесу',
+            subtitle: 'Финансовая модель — не таблица ради таблицы, а инструмент планирования. Она связывает продажи, цены, расходы и деньги в одну систему и показывает, к чему приведут решения, которые вы принимаете сегодня.',
+            columns: 3,
+            cards: [
+                {title: 'Увидеть кассовый разрыв заранее', text: 'Модель показывает остаток денег по неделям и месяцам: где не хватит на налоги, зарплату или закупку — и сколько.'},
+                {title: 'Проверить решение до вложений', text: 'Новый склад, запуск товара, найм, кредит: модель считает, как решение отразится на прибыли и деньгах, ещё до того как вы его примете.'},
+                {title: 'Говорить с банком и инвестором на языке цифр', text: 'Понятный план выручки, расходов и денег с допущениями, которые можно проверить.'},
+            ],
+        } only %}
+    </div>
+    {% include 'website/sections/_finmodel_structure.html.twig' with {
+        id: 'finmodel-structure',
+        title: 'Из чего состоит финансовая модель',
+        subtitle: 'Три отчёта связаны между собой: изменили цену или срок оплаты поставщику — сразу видно, как поменяются прибыль, деньги и баланс.',
+        reports: [
+            {abbr: 'ОПиУ', title: 'Прибыли и убытки', question: 'Сколько бизнес заработает', items: ['Выручка по направлениям и товарам', 'Себестоимость, маржа, расходы', 'Чистая прибыль по месяцам']},
+            {abbr: 'ДДС', title: 'Движение денег', question: 'Хватит ли денег и когда', items: ['Поступления и платежи по месяцам', 'Кассовые разрывы и потребность в финансировании', 'Налоги, кредиты, дивиденды']},
+            {abbr: 'Баланс', title: 'Активы и обязательства', question: 'Что есть у бизнеса и сколько он должен', items: ['Запасы, дебиторка, деньги', 'Кредиты и кредиторка', 'Проверка, что модель сходится']},
+        ],
+        scenarios: {
+            label: 'Сценарии',
+            title: 'Базовый, оптимистичный и стресс-сценарий',
+            text: 'Меняете ключевые допущения — продажи, цены, рекламу, сроки оплаты — и видите, при каком варианте бизнес остаётся в плюсе.',
+            image: 'finmodel-scenarios-v1',
+            alt: 'Пример расчёта: прогноз денег в базовом, оптимистичном и стресс-сценарии',
+        },
+    } only %}
+    {# Экраны кабинета -- непрозрачные скриншоты 1440×900 без PNG: fallback на WebP 720, рамка через class. #}
+    {% set screen_frame = 'rounded-lg shadow-lg' %}
+    {% include 'website/sections/_advantages.html.twig' with {
+        id: 'finmodel-included',
+        title: 'Что входит в услугу',
+        cta: {label: 'Обсудить модель', href: '#lead-form', attrs: lead_modal},
+        items: [
+            {short: 'Модель', kicker: '01 · Модель', title: 'Модель под ваш бизнес', tone: 'ink',
+                text: 'Не шаблон: строим от ваших данных и драйверов — продаж, среднего чека, конверсии, сезонности.',
+                screen: {image: 'profit-by-segment-v1-1440', fallback: '/assets/screens/profit-by-segment-v1-720.webp', width: 1440, height: 900, class: screen_frame, alt: 'Отчёт о прибылях и убытках в сервисе «Ваш Финдир»'}},
+            {short: 'Прогноз', kicker: '02 · Прогноз', title: 'Прогноз денег на 12 месяцев', tone: 'light',
+                text: 'Помесячно и по неделям на ближайший квартал: где разрыв, сколько нужно и когда.',
+                screen: {image: 'forecast-balance-v1-1440', fallback: '/assets/screens/forecast-balance-v1-720.webp', width: 1440, height: 900, class: screen_frame, alt: 'Прогноз остатка денег в сервисе «Ваш Финдир»'}},
+            {short: 'Разбор', kicker: '03 · Разбор', title: 'Разбор с финансовым директором', tone: 'light',
+                text: 'Проходим модель вместе: какие допущения заложены, что на них влияет и какие решения из этого следуют.',
+                person: {photo: '/assets/people/pavel-novikov-portrait.png', photo_webp: '/assets/people/pavel-novikov-portrait', alt: 'Павел Новиков, управляющий партнёр', caption: 'Павел Новиков, управляющий партнёр'}},
+            {short: 'Сопровождение', kicker: '04 · Сопровождение', title: 'Сопровождение', tone: 'ink',
+                text: 'Сверяем план с фактом и обновляем модель, когда меняется бизнес. Можно подключить финдира на аутсорсинге.',
+                person: {photo: '/assets/people/nataliy-novikova-portrait.png', photo_webp: '/assets/people/nataliy-novikova-portrait', alt: 'Наталья Новикова, налоговый консультант', caption: 'Наталья Новикова, налоговый консультант'}},
+        ],
+    } only %}
+    {# Сроки этапов не выводятся, пока их нет: появятся -- добавить шагу duration, строка «Срок: …» выведется сама. #}
+    {% include 'website/sections/_process.html.twig' with {
+        id: 'finmodel-process',
+        title: 'Этапы работы',
+        columns: 3,
+        steps: [
+            {number: '01', title: 'Сбор данных и анализ', text: 'Встреча, выгрузки из учёта и банка, текущие показатели. Фиксируем цель модели: план, проверка решения или разговор с инвестором.'},
+            {number: '02', title: 'Разработка модели', text: 'Определяем драйверы, строим ОПиУ, ДДС и баланс, считаем сценарии. Промежуточные версии согласуем с вами.'},
+            {number: '03', title: 'Передача и сопровождение', text: 'Передаём модель, показываем, как ею пользоваться, и сверяем план с фактом в первые месяцы.'},
+        ],
+    } only %}
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'finmodel-services',
+        title: 'Другие услуги',
+        columns: 2,
         tone: 'muted',
+        cards: [
+            {title: 'Финансовый директор на аутсорсинге', text: 'Управленческий учёт, еженедельные точки роста и платёжный календарь.', link: {label: 'Подробнее', href: path('service_financial_director')}},
+            {title: 'Онлайн-сервис управленческого учёта', text: 'Банки, маркетплейсы и 1С в одном кабинете. Прибыль и деньги — каждый день.', link: {label: 'Подробнее', href: path('service_financial_accounting')}},
+        ],
+    } only %}
+    {% include 'website/sections/_service_cards.html.twig' with {
+        id: 'finmodel-why',
+        title: 'Почему с нами',
+        columns: 4,
+        cards: [
+            {title: 'С 2015 года в финансах', text: 'От бухгалтерии до финансового директора: знаем учёт изнутри, поэтому цифры модели сходятся с бухгалтерией.'},
+            {title: 'Фокус на прибыли', text: 'Модель нужна не для отчёта, а для решений: где заработать больше и где не потерять деньги.'},
+            {title: 'Рабочая группа', text: 'Финдир, налоговый консультант и аналитики. Сложные вопросы не упираются в одного человека.'},
+            {title: 'Учёт остаётся у вас', text: 'Модель и данные — ваши. Сменится специалист — останется система.'},
+        ],
+    } only %}
+    {# Свежие опубликованные кейсы из модуля ClientCase; нет кейсов -- секции нет. Фильтр по услуге -- отдельная задача. #}
+    <twig:ClientCase:LatestResults id="finmodel-cases" title="Результаты клиентов" tone="muted" />
+    {% include 'website/sections/_faq_split.html.twig' with {
+        id: 'finmodel-faq',
+        title: 'Вопросы и ответы',
+        items: vf_finmodel_faq,
+        aside: {title: 'Не нашли свой вопрос?', text: 'Ответим на встрече или в мессенджере.', cta: {label: 'Задать вопрос', href: '#lead-form', attrs: lead_modal}},
+    } only %}
+    {% include 'website/sections/_lead_form.html.twig' with {
+        id: 'lead-form',
+        form: 'consultation',
+        variant: 'brand',
+        with_task: false,
+        title: 'Обсудим вашу финансовую модель',
+        text: 'Разберём ваши цифры и задачу: для чего нужна модель, какие сценарии посчитать и какие данные понадобятся.',
+        subtext: 'Оставьте контакты — свяжемся и договоримся о встрече.',
+        person: {
+            image: '/assets/people/pavel-novikov.png',
+            photo_800: '/assets/people/pavel-novikov',
+            alt: 'Павел Новиков, управляющий партнёр',
+        },
     } only %}
 {% endblock %}
