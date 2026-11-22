@@ -2,7 +2,7 @@
     «Преимущества работы»: вкладки, зеркально к «Что входит» -- список справа (components/_tab_list + scripts/website/tabs.js).
     Аргументы: id, title, cta {label, href},
     items [{short, kicker, title, lead (необязательно), text, tone ('ink' | 'accent' | 'light'),
-            screen {image, width, height, alt} -- PNG/WebP с прозрачным фоном в /assets/screens/ |
+            screen {image, width, height, alt, fallback (необязательно) -- src вместо <image>.png, class (необязательно) -- рамка непрозрачного скриншота} -- PNG/WebP с прозрачным фоном в /assets/screens/ |
             person {photo, photo_webp | photo_800, alt, caption} -- photo_800: база файлов -800.avif/-800.webp для фото в полный рост}].
     Раскладка: до md -- карточка без кнопки, экран или строка с аватаром внизу; md -- картинка под текстом и кнопкой;
     с lg -- текст слева, кнопка внизу, картинка у правого края.
@@ -38,7 +38,7 @@
                             <div class="relative -mr-5 -mb-5 mt-auto aspect-2/1 shrink-0 md:m-0 md:-mr-24 md:-mb-16 md:aspect-auto lg:absolute lg:inset-0 lg:m-0">
                                 <picture class="contents">
                                     <source srcset="/assets/screens/{{ item.screen.image }}.webp" type="image/webp">
-                                    <img class="absolute -right-6 -bottom-8 block h-auto w-5/7 max-w-none md:static md:ml-auto md:w-2/3 lg:absolute lg:-right-3/16 lg:bottom-8 lg:w-3/5" src="/assets/screens/{{ item.screen.image }}.png" alt="{{ item.screen.alt }}" width="{{ item.screen.width }}" height="{{ item.screen.height }}" loading="lazy" decoding="async">
+                                    <img class="absolute -right-6 -bottom-8 block h-auto w-5/7 max-w-none md:static md:ml-auto md:w-2/3 lg:absolute lg:-right-3/16 lg:bottom-8 lg:w-3/5 {{ item.screen.class|default('') }}" src="{{ item.screen.fallback|default('/assets/screens/' ~ item.screen.image ~ '.png') }}" alt="{{ item.screen.alt }}" width="{{ item.screen.width }}" height="{{ item.screen.height }}" loading="lazy" decoding="async">
                                 </picture>
                             </div>
                         {% elseif item.person|default(null) %}

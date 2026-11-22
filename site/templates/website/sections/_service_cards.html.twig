@@ -1,6 +1,6 @@
 {#
     Секция с карточками для страниц услуг.
-    Аргументы: id, title, subtitle (необязательно), cards [{title, text, icon (необязательно), label (необязательно)}],
+    Аргументы: id, title, subtitle (необязательно), cards [{title, text, icon (необязательно), label (необязательно), link {label, href} (необязательно) -- кнопка внизу карточки}],
     columns (2 | 3 | 4; по умолчанию 3), tone ('surface' | 'muted'; по умолчанию surface), note (необязательно).
     Карточка контрастна фону секции: на surface -- bg-surface-muted, на muted -- bg-surface.
 #}
@@ -19,6 +19,11 @@
                     {% if card.label|default(null) %}<p class="type-t-mono-sm text-fg-muted">{{ card.label }}</p>{% endif %}
                     <h3 class="type-h4 text-fg">{{ card.title }}</h3>
                     <p class="type-t6 text-fg-secondary">{{ card.text }}</p>
+                    {% if card.link|default(null) %}
+                        <div class="mt-auto pt-3">
+                            {% include 'website/components/_button.html.twig' with {label: card.link.label, href: card.link.href, variant: 'primary', arrow: true} only %}
+                        </div>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

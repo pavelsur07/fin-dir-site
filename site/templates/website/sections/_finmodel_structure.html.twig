@@ -1,0 +1,42 @@
+{#
+    «Из чего состоит финансовая модель»: три карточки отчётов и широкая карточка сценариев с картинкой.
+    Аргументы: id (заголовок -- id ~ '-title'), title, subtitle, reports [{abbr, title, question, items []}],
+    scenarios {label, title, text, image -- база файлов /assets/screens/<image>-600|1200.webp и <image>.png (1200×800), alt}.
+    Раскладка: до lg карточки отчётов друг под другом (md -- три в ряд), сценарии -- текст над картинкой; с lg -- текст слева, картинка справа.
+#}
+<section class="bg-surface pt-16 pb-10 lg:pt-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="finmodel-structure">
+    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+        <h2 class="font-display type-t2-article text-balance text-fg md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
+        <p class="mt-4 max-w-lead type-t4 text-fg-secondary">{{ subtitle }}</p>
+        <ul class="mt-8 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-3 lg:gap-5">
+            {% for report in reports %}
+                <li class="flex flex-col gap-2 rounded-xl bg-surface-muted p-6 md:p-7">
+                    <h3 class="flex flex-col gap-2">
+                        <span class="font-display type-t3 font-bold text-accent">{{ report.abbr }}</span>
+                        <span class="type-t5 font-semibold text-fg">{{ report.title }}</span>
+                    </h3>
+                    <p class="border-b border-border-subtle pb-4 type-t6 text-fg-secondary">{{ report.question }}</p>
+                    <ul class="mt-2 flex flex-col gap-3 type-t6 text-fg">
+                        {% for item in report.items %}
+                            <li class="flex gap-3">
+                                {% include 'website/components/_icon.html.twig' with {name: 'check', class: 'mt-1 size-icon-sm shrink-0 text-accent'} only %}
+                                {{ item }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="mt-4 grid grid-cols-1 items-center gap-6 rounded-xl bg-cobalt-100 p-6 md:p-8 lg:mt-5 lg:grid-cols-2 lg:gap-10">
+            <div class="flex flex-col items-start gap-4">
+                <span class="rounded-full bg-accent-fill px-3 py-1 type-t7 font-semibold text-on-accent">{{ scenarios.label }}</span>
+                <h3 class="font-display type-t3 text-balance text-fg">{{ scenarios.title }}</h3>
+                <p class="max-w-lead type-t5 text-fg-secondary">{{ scenarios.text }}</p>
+            </div>
+            <picture class="block">
+                <source type="image/webp" srcset="/assets/screens/{{ scenarios.image }}-600.webp 600w, /assets/screens/{{ scenarios.image }}-1200.webp 1200w" sizes="(min-width: 1024px) 600px, 90vw">
+                <img class="block h-auto w-full rounded-lg bg-white shadow-sm" src="/assets/screens/{{ scenarios.image }}.png" alt="{{ scenarios.alt }}" width="1200" height="800" loading="lazy" decoding="async">
+            </picture>
+        </div>
+    </div>
+</section>
