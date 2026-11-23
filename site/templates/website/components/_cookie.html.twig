@@ -1,10 +1,11 @@
 {# Уведомление о cookie по разделу 15 дизайн-системы: карточка fixed слева снизу (16), ниже md -- на всю ширину минус 16,
    max-w-modal-sm, без затемнения и крестика, не блокирует страницу. Немодальный landmark region: фокус не перехватывает.
-   z-50: над липкой шапкой (z-40), ниже модалок (dialog в top layer). Выбор хранит navigation.js (12 месяцев).
+   z-50: над липкой шапкой (z-40), ниже модалок (dialog в top layer). Выбор хранит navigation.js (12 месяцев), читают analytics.js (VF_CONSENT), metrika.js и bitrix24.js:
+   без выбора «Принять» Метрика, чат и источник перехода не работают (LEGAL_RULES.md, раздел 7).
    Баннер -- последний элемент body; перекрытие сфокусированного элемента снимает keepFocusAboveNotice (WCAG 2.4.11). #}
 <div id="cookieNotice" class="pointer-events-none fixed inset-x-4 bottom-4 z-50 opacity-0 transition-opacity duration-base motion-reduce:transition-none data-visible:opacity-100 md:right-auto md:w-full md:max-w-modal-sm" role="region" aria-label="Уведомление о cookie" hidden data-vf-component="cookie">
     <div class="pointer-events-auto flex flex-col gap-4 rounded-lg border border-border-subtle bg-surface-raised p-5 text-fg shadow-md">
-        <p id="cookieText" class="type-t6 text-fg-secondary">Мы используем cookie и Яндекс Метрику, включая Вебвизор, чтобы сайт работал корректно, для аналитики и оценки рекламы. Подробнее — в <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ privacy_href }}">политике конфиденциальности</a> и <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ privacy_href }}#privacy-cookies">разделе о cookie</a>.</p>
+        <p id="cookieText" class="type-t6 text-fg-secondary">Необходимые cookie нужны для работы сайта. Яндекс Метрику с Вебвизором и чат Битрикс24 мы подключаем, только если вы нажмёте «Принять». Подробнее — в <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ privacy_href }}">политике обработки персональных данных</a> и <a class="text-accent underline hover:text-accent-fill-hover focus-visible:shadow-focus" href="{{ privacy_href }}#privacy-cookies">разделе о cookie</a>.</p>
         <div class="flex flex-col gap-2 md:flex-row">
             {% include 'website/components/_button.html.twig' with {label: 'Только необходимые', variant: 'secondary', size: 'md_tight', id: 'cookieNecessary', class: 'flex-1'} only %}
             {% include 'website/components/_button.html.twig' with {label: 'Принять', variant: 'secondary', size: 'md_tight', id: 'cookieAccept', class: 'flex-1'} only %}

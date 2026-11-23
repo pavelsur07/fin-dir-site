@@ -46,7 +46,8 @@ final class CookieNoticeTest extends WebTestCase
     }
 
     /**
-     * Выбор хранится 12 месяцев, со сроком; старый ключ «принято» не заставляет показывать баннер заново.
+     * Выбор хранится 12 месяцев, со сроком. Ключ прежнего баннера (без возможности отказа)
+     * согласием не считается: он удаляется, и уведомление показывается заново.
      */
     public function testChoiceIsStoredForTwelveMonthsWithLegacyMigration(): void
     {
@@ -57,7 +58,12 @@ final class CookieNoticeTest extends WebTestCase
         self::assertStringContainsString('stored.expires > Date.now()', $script);
         self::assertStringContainsString("chooseCookies('necessary')", $script);
         self::assertStringContainsString("chooseCookies('all')", $script);
-        self::assertStringContainsString("localStorage.getItem(legacyStorageKey) === '1'", $script);
+        self::assertStringContainsString('window.localStorage.removeItem(legacyStorageKey)', $script);
+        self::assertStringNotContainsString("saveCookieChoice('all')", $script);
+
+        $consent = (string) file_get_contents(self::getContainer()->getParameter('kernel.project_dir').'/assets/scripts/website/analytics.js');
+        self::assertStringNotContainsString("getItem('vf_cookie_notice_accepted')", $consent);
+        self::assertStringNotContainsString('getItem(legacyStorageKey)', $consent);
     }
 
     /**
@@ -116,5 +122,35 @@ final class CookieNoticeTest extends WebTestCase
             strpos($script, 'main.focus({ preventScroll: true })'),
             strpos($script, "document.removeEventListener('focusin', keepFocusAboveNotice)"),
         );
+    }
+
+    /**
+     * Метрика и чат ждут выбора «Принять» (LEGAL_RULES.md, раздел 7): общий модуль согласия
+     * analytics.js должен выполниться раньше metrika.js, bitrix24.js и navigation.js.
+     */
+    public function testConsentModuleLoadsBeforeAnalyticsAndChat(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+
+        $scripts = $crawler->filter('script[src]')->each(static fn ($node): string => (string) parse_url((string) $node->attr('src'), \PHP_URL_PATH));
+        $position = static fn (string $file): int|false => array_search('/assets/website/'.$file, $scripts, true);
+        self::assertNotFalse($position('analytics.js'));
+        foreach (['metrika.js', 'bitrix24.js', 'navigation.js'] as $file) {
+            self::assertNotFalse($position($file), $file);
+            self::assertLessThan($position($file), $position('analytics.js'), $file);
+        }
+        // Внешние сервисы не подключаются тегом напрямую -- только из скриптов после согласия.
+        self::assertSelectorNotExists('script[src*="mc.yandex.ru"], script[src*="bitrix24.ru"]');
+    }
+
+    /** Выбор можно изменить в любой момент: ссылка в футере снова открывает уведомление. */
+    public function testFooterOffersCookieSettings(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/about');
+
+        self::assertSelectorExists('footer button[type="button"][data-vf-cookie-settings][aria-controls="cookieNotice"]');
+        self::assertSelectorTextContains('footer button[data-vf-cookie-settings]', 'Настройки cookie');
     }
 }

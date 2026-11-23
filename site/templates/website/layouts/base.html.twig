@@ -1,4 +1,4 @@
-{% set vf_asset_version = '7c23c83933fb' %}
+{% set vf_asset_version = '9dbb3aa17322' %}
 <!doctype html>
 {# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
 <html lang="ru">
@@ -69,7 +69,7 @@
     {% set active_key %}{% block active_navigation %}{% endblock %}{% endset %}
     {% block navigation %}
         {# consult -- карточка разбора в меню «Услуги» и кнопка внизу мобильной панели: окно записи, без окна -- форма на главной.
-           phone не передаётся: в футере телефон -- демо-заглушка, часов работы в конфигурации нет. #}
+           phone не передаётся: телефона для связи нет, часов работы в конфигурации нет. #}
         {% include 'website/components/_navbar.html.twig' with {
             brand: 'Ваш Финдир',
             brand_href: path('home'),
@@ -98,6 +98,7 @@
     </main>
 
     {% block footer %}
+        {# Только действующие контакты и страницы: вымышленные пункты и «демо» не выводятся (LEGAL_RULES.md, раздел 9). #}
         {% include 'website/components/_footer.html.twig' with {
             brand: 'Ваш Финдир',
             brand_href: path('home'),
@@ -106,42 +107,28 @@
                 {label: 'Telegram', href: 'https://t.me/vashfindir'},
             ],
             contacts: [
-                {label: 'Телефон', value: '+7 (800) 555-12-34'},
                 {label: 'Email', href: 'mailto:hello@vashfindir.ru', value: 'hello@vashfindir.ru'},
                 {label: 'Telegram', href: 'https://t.me/vashfindir', value: 'Написать в Telegram', external: true},
             ],
             menu: [
-                {title: 'Продукт', items: [
-                    {label: 'Бухгалтерия'},
-                    {label: 'Платежи'},
-                    {label: 'Зарплата и кадры'},
-                ]},
-                {title: 'Тарифы', items: [
-                    {label: 'Клиентам'},
-                    {label: 'ИП'},
-                    {label: 'ООО'},
-                    {label: 'Бухгалтерам'},
-                    {label: 'Холдингам'},
+                {title: 'Услуги', items: [
+                    {label: 'Финдир на аутсорсинге', href: path('service_financial_director')},
+                    {label: 'Финансовая модель', href: path('service_financial_model')},
+                    {label: 'Бухгалтерские услуги', href: path('service_accounting')},
+                    {label: 'Сервис ВФ', href: path('service_financial_accounting')},
+                    {label: 'Все услуги и цены', href: path('app_services_index')},
                 ]},
                 {title: 'Компания', items: [
-                    {label: 'О нас', href: '/about'},
-                    {label: 'Команда'},
-                    {label: 'Вакансии'},
-                    {label: 'Блог', href: path('gazeta_index')},
-                ]},
-                {title: 'Поддержка', items: [
-                    {label: 'Центр помощи'},
-                    {label: 'Статус сервиса'},
-                    {label: 'Безопасность'},
-                    {label: 'Контакты', href: 'mailto:hello@vashfindir.ru'},
+                    {label: 'О компании', href: '/about'},
+                    {label: 'Кейсы', href: '/cases'},
+                    {label: 'Газета', href: path('gazeta_index')},
+                    {label: 'Партнёрам', href: '/partners'},
                 ]},
             ],
             documents: [
-                {label: 'Оферта', href: path('offer')},
                 {label: 'Политика обработки персональных данных', href: path('privacy')},
-                {label: 'Cookies', href: path('privacy') ~ '#privacy-cookies'},
-                {label: 'Тарифы (PDF)'},
-                {label: 'Раскрытие информации'},
+                {label: 'Согласие на обработку персональных данных', href: path('consent')},
+                {label: 'Настройки cookie', action: 'cookie-settings'},
             ],
         } only %}
     {% endblock %}

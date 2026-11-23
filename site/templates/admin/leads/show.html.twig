@@ -111,7 +111,14 @@
     <h2 class="mb-3 mt-8 type-t3">Удаление</h2>
     <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" class="max-w-container rounded-lg border bg-white p-4 md:p-6" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
         <input type="hidden" name="_token" value="{{ token }}">
-        <p class="type-t6 text-fg-secondary">Удаляет обращение и заметки без возможности восстановления — например, по запросу человека на удаление персональных данных.</p>
+        <p class="mb-4 type-t6 text-fg-secondary">Удаляет обращение и заметки без возможности восстановления. В журнал уничтожения записываются номер, дата и основание — без имени и контакта.</p>
+        <div class="mb-4">
+            <label class="grid gap-1 font-medium" for="lead-erasure-reason">Основание</label>
+            <select class="min-h-control-touch rounded-md border border-border-strong bg-white px-3 py-2 type-t5" id="lead-erasure-reason" name="reason" required>
+                <option value="" disabled selected>Выберите основание</option>
+                {% for reason in erasure_reasons %}<option value="{{ reason.value }}">{{ reason.label }}</option>{% endfor %}
+            </select>
+        </div>
         {% include 'admin/_button.html.twig' with {label: 'Удалить обращение'} only %}
     </form>
 {% endblock %}

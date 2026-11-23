@@ -7,6 +7,7 @@ namespace App\Lead\Controller\Admin;
 use App\Lead\Query\LeadCard\LeadCardQuery;
 use App\Lead\Service\LeadCrmExporter;
 use App\Lead\Service\LeadNotificationSender;
+use App\Lead\ValueObject\LeadErasureReason;
 use App\Lead\ValueObject\LeadFormCatalog;
 use App\Lead\ValueObject\LeadStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,7 @@ final class LeadShowController extends AbstractController
         return $this->render('admin/leads/show.html.twig', [
             'lead' => $query->get($id),
             'statuses' => LeadStatus::cases(),
+            'erasure_reasons' => LeadErasureReason::manual(),
             'forms' => LeadFormCatalog::all(),
             'notifications_enabled' => $notifications->isEnabled(),
             'crm_enabled' => $crm->isEnabled(),
