@@ -25,6 +25,26 @@
   --shadow-card: 0 1px 2px rgb(11 16 32 / .06), 0 4px 12px rgb(11 16 32 / .06);
   --shadow-pop: 0 8px 32px rgb(11 16 32 / .16);
 
+  /* Claude Design, доски 1440/768/375: максимальная ширина контента Public Website. */
+  --container-website: 1280px;
+  /* Claude Design, доски 1440/768/375: внешние поля с каждой стороны. */
+  --spacing-gutter: max(16px, 5.5vw);
+  /* Claude Design, главная и страницы услуг: верхний отступ секции. */
+  --spacing-section-start: 56px;
+  /* Claude Design, десктоп и мобильные макеты страниц услуг: нижний отступ секции. */
+  --spacing-section-end: 40px;
+  /* Claude Design, home-mockup/Mobile.dc.html: нижний отступ обычных секций главной. */
+  --spacing-section-end-home: 8px;
+  /* Claude Design, pages-mockup/CFOMobile.dc.html и FinModelMobile.dc.html: отступ после формы. */
+  --spacing-section-end-service-contact: 64px;
+  /* Claude Design, первый экран: отступ от шапки на десктопе и планшете. */
+  --spacing-hero-start: 24px;
+  /* Claude Design, первый экран: отступ от шапки на доске 375. */
+  --spacing-hero-start-mobile: 16px;
+
+  /* Stage_Hero_Offer §4: ширина самой длинной строки H1 при 28 px (округлена вверх). */
+  --container-hero-title: 345px;
+
   /* Карточка всплывающего окна записи на разбор (sections/_lead_modal) на десктопе. */
   --container-modal-xl: 960px;
 

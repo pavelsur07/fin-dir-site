@@ -4,7 +4,7 @@
    Ниже md вместо цепочки только ссылка на родителя (предпоследний пункт). #}
 {% set tone = tone|default('default') %}
 <section class="{{ tone == 'muted' ? 'bg-surface-muted' : 'bg-surface' }}" data-vf-component="page-header">
-    <div class="mx-auto flex w-full max-w-container flex-col gap-6 px-4 pb-10 pt-6 md:px-8">
+    <div class="website-container website-hero flex flex-col gap-6 pb-section-end">
         {% include 'website/components/_breadcrumbs.html.twig' with {crumbs: crumbs} only %}
         <div>
             <h1 class="type-t2 md:type-t1 max-w-title text-balance text-fg">{{ title }}</h1>

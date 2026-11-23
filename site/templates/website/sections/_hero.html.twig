@@ -18,7 +18,7 @@
     <div class="absolute -top-1/10 -bottom-1/10 left-14/25 w-7/10 -skew-x-12 bg-cobalt-200 {{ offer_layout ? 'md:left-4/5' : '' }}" aria-hidden="true"></div>
 {% endset %}
 <section class="bg-surface text-fg" aria-labelledby="{{ hero_id }}-title" data-vf-section="hero">
-    <div class="mx-auto w-full max-w-container px-4 pt-6 md:px-8 md:pt-8">
+    <div class="website-container website-hero">
         {% if crumbs|default(null) %}<div class="mb-4">{% include 'website/components/_breadcrumbs.html.twig' with {crumbs: crumbs} only %}</div>{% endif %}
         <div class="{{ offer_layout ? 'relative isolate grid grid-cols-1 rounded-xl border border-border-subtle bg-surface-muted md:grid-cols-5 xl:grid-cols-11' : 'md:overflow-hidden md:rounded-xl md:border md:border-border-subtle md:bg-surface-muted lg:grid lg:grid-cols-2' }}">
             {% if offer_layout %}
@@ -31,9 +31,9 @@
                 {% if label|default(null) %}
                     <span class="{{ offer_layout ? 'type-t6' : 'rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7' }} font-semibold text-accent">{{ label }}</span>
                 {% endif %}
-                {# На узких карточках оставляем место для непрерывной строки H1. #}
-                <div class="{{ offer_layout ? '@container w-full pr-8' : 'contents' }}">
-                    <h1 class="font-display text-hero-fluid font-extrabold tracking-tight text-fg {{ offer_layout ? '@max-sidebar:type-t3 lg:type-t2 xl:type-t1' : 'md:type-t2 lg:type-t1' }}" id="{{ hero_id }}-title">
+                {# Когда длинная строка H1 не помещается, используется существующий компактный размер. #}
+                <div class="{{ offer_layout ? '@container w-full' : 'contents' }}">
+                    <h1 class="font-display text-hero-fluid font-extrabold tracking-tight text-fg {{ offer_layout ? '@max-hero-title:type-t3 lg:type-t2 xl:type-t1' : 'md:type-t2 lg:type-t1' }}" id="{{ hero_id }}-title">
                         {%- for line in title_lines -%}
                             {% if not loop.first %} {% endif %}<span class="block{{ title_nowrap|default(false) ? (offer_layout ? ' whitespace-nowrap' : ' md:whitespace-nowrap') : '' }}{{ line.accent|default(false) ? ' text-accent' : '' }}">{{ line.text }}</span>
                         {%- endfor -%}

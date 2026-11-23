@@ -20,7 +20,7 @@
    Активный раздел: aria-current, text-fg, font-semibold и полоса 2px accent-fill на нижней кромке пункта; пункт во всю высоту шапки, hover-плашка только h-control-md.
    У кнопки раздела с children aria-current нет: его получает ссылка текущей страницы в панели. #}
 <header class="group/header sticky top-0 z-40 border-b border-border-subtle bg-white transition-shadow duration-base data-scrolled:shadow-sm print:static" data-vf-component="navbar">
-    <nav class="mx-auto w-full max-w-container px-4 md:px-8 flex h-header-compact flex-nowrap items-center justify-between gap-4 transition-all duration-fast ease-out motion-reduce:transition-none lg:h-header lg:group-data-compact/header:h-header-compact" aria-label="{{ navigation_label }}">
+    <nav class="website-container flex h-header-compact flex-nowrap items-center justify-between gap-4 transition-all duration-fast ease-out motion-reduce:transition-none lg:h-header lg:group-data-compact/header:h-header-compact" aria-label="{{ navigation_label }}">
         <a class="inline-flex shrink-0 items-center no-underline" href="{{ brand_href }}" aria-label="{{ brand_aria_label }}">
             {% include 'website/components/_logo.html.twig' with {s: 24, class: 'md:hidden'} only %}
             {% include 'website/components/_logo.html.twig' with {s: 32, class: 'hidden md:block'} only %}

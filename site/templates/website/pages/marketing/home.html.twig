@@ -49,6 +49,8 @@
     } only %}
 {% endblock %}
 
+{% block main_class %}website-home{% endblock %}
+
 {% block body %}
     {% include 'website/sections/_hero.html.twig' with {
         offer_layout: true,
@@ -182,6 +184,7 @@
     {% include 'website/sections/_lead_form.html.twig' with {
         id: 'lead-form',
         form: 'consultation',
+        mobile_spacing: 'max-md:pb-section-start',
         variant: 'brand',
         with_task: false,
         title: 'Обсудим ваши задачи',

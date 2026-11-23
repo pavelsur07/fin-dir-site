@@ -4,7 +4,7 @@
     team {text, link_label, href}. Пробелы внутри чисел и единиц -- неразрывные (U+00A0).
 #}
 <section class="bg-surface" aria-label="Почему нам можно доверять" data-vf-section="trust-strip">
-    <div class="mx-auto w-full max-w-container px-4 pt-8 md:px-8 md:pt-10">
+    <div class="website-container pt-8 md:pt-10">
         <ul class="grid grid-cols-1{{ facts is not empty ? ' md:grid-cols-3' : '' }}">
             {% for fact in facts %}
                 <li class="flex flex-col items-start gap-2 border-border-subtle pb-4 not-first:border-t not-first:pt-4 md:px-5 md:py-1 md:not-first:border-t-0 md:not-first:border-l md:not-first:pt-1 md:first:pl-0 lg:px-8">

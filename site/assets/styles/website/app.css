@@ -7,3 +7,23 @@
 @source "../../../src/Publication/Adapter";
 @source "../../../src/Shared/Adapter";
 @source "../../../src/Documentation/Adapter";
+
+@utility website-container {
+  width: min(var(--container-website), calc(100% - 2 * var(--spacing-gutter)));
+  margin-inline: auto;
+}
+
+@utility website-section {
+  padding-top: var(--spacing-section-start);
+  padding-bottom: var(--website-section-end, var(--spacing-section-end));
+}
+
+@utility website-home {
+  @variant max-md {
+    --website-section-end: var(--spacing-section-end-home);
+  }
+}
+
+@utility website-hero {
+  @apply pt-hero-start-mobile md:pt-hero-start;
+}

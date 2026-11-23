@@ -72,8 +72,8 @@ final class WebsiteFoundationTest extends WebTestCase
             // /cases: тёмный hero -- Page Header внутри обёртки .dark.
             $headingSelector = match (true) {
                 '/cases' === $path => 'main > div.dark > section[data-vf-component="page-header"] h1',
-                in_array($path, ['/', '/about', '/gazeta'], true) => 'main > section > div.max-w-container h1',
-                default => 'main > div.max-w-container > div:not([class*="max-w-"]) h1',
+                in_array($path, ['/', '/about', '/gazeta'], true) => 'main > section > div.website-container h1',
+                default => 'main > div.website-container > div:not([class*="max-w-"]) h1',
             };
             self::assertSelectorExists($headingSelector, $path);
         }

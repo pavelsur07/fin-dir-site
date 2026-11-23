@@ -14,8 +14,8 @@
     accent: 'bg-white/20',
     light: 'bg-navy-900/10',
 } %}
-<section class="bg-surface pt-16 pb-10 lg:pt-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="services-tabs">
-    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+<section class="bg-surface website-section" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="services-tabs">
+    <div class="website-container">
         <h2 class="mb-4 font-display type-t2-article text-balance text-fg md:mb-12 md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
         <div class="grid gap-4 lg:grid-cols-3 lg:gap-5" data-vf-tabs>
             {% include 'website/components/_tab_list.html.twig' with {id: id, label: title, tabs: items} only %}
