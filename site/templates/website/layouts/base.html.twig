@@ -1,4 +1,4 @@
-{% set vf_asset_version = '794226d8a2c4' %}
+{% set vf_asset_version = '7c23c83933fb' %}
 <!doctype html>
 {# Отступ якорей под липкой шапкой задаёт scroll-mt-sticky на самих целях (H2 статьи, разделы политики): 88 < 1024, 96 с lg. #}
 <html lang="ru">
@@ -68,18 +68,27 @@
 
     {% set active_key %}{% block active_navigation %}{% endblock %}{% endset %}
     {% block navigation %}
+        {# consult -- карточка разбора в меню «Услуги» и кнопка внизу мобильной панели: окно записи, без окна -- форма на главной.
+           phone не передаётся: в футере телефон -- демо-заглушка, часов работы в конфигурации нет. #}
         {% include 'website/components/_navbar.html.twig' with {
             brand: 'Ваш Финдир',
             brand_href: path('home'),
             items: [
-                {key: 'services', label: 'Услуги', href: path('service_financial_director')},
+                {key: 'services', label: 'Услуги', href: path('service_financial_director'), children: [
+                    {key: 'financial_director', label: 'Финдир на аутсорсинге', text: 'Управленческий учёт, платёжный календарь и точки роста каждую неделю', icon: 'briefcase', href: path('service_financial_director')},
+                    {key: 'financial_model', label: 'Финансовая модель', text: 'Прогноз прибыли и денег на 12 месяцев, сценарии решений', icon: 'chart-line', href: path('service_financial_model')},
+                    {key: 'accounting', label: 'Бухгалтерские услуги', text: 'Бухгалтерия, налоги и отчётность без штрафов и сюрпризов', icon: 'calculator', href: path('service_accounting')},
+                    {key: 'financial_accounting', label: 'Сервис ВФ', text: 'Онлайн-кабинет: банки, маркетплейсы и 1С в одном месте', icon: 'layout-dashboard', href: path('service_financial_accounting'), badge: 'Онлайн'},
+                ], all: {label: 'Все услуги и цены', href: path('app_services_index')}},
                 {key: 'cases', label: 'Кейсы', href: '/cases'},
                 {key: 'gazeta', label: 'Газета', href: path('gazeta_index')},
                 {key: 'partners', label: 'Партнёрам', href: '/partners'},
                 {key: 'about', label: 'О Компании', href: '/about'},
             ],
             cta: {label: 'Личный кабинет', href: 'https://app.vashfindir.ru/'},
+            consult: {title: 'Не знаете, что выбрать?', text: 'Бесплатный разбор ваших цифр за 45 минут', label: 'Записаться', mobile_label: 'Записаться на разбор', href: path('home') ~ '#lead-form'},
             active_key: active_key|trim,
+            current_path: app.request.pathinfo,
         } only %}
     {% endblock %}
 

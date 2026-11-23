@@ -1,4 +1,12 @@
 (() => {
+    const trackGoal = (goalName) => {
+        const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
+
+        if (typeof window.ym === 'function' && ymId && ymId !== 'YM_COUNTER_ID') {
+            window.ym(ymId, 'reachGoal', goalName);
+        }
+    };
+
     const initializeMenu = () => {
         document.querySelectorAll('[data-vf-menu-open]').forEach((openButton) => {
             const dialog = document.getElementById(openButton.getAttribute('aria-controls'));
@@ -8,6 +16,7 @@
             }
 
             const panel = dialog.querySelector('[data-vf-menu-panel]');
+            const scroller = dialog.querySelector('[data-vf-menu-scroll]') || panel;
             const closeButton = dialog.querySelector('[data-vf-menu-close]');
 
             if (!(panel instanceof HTMLElement) || !(closeButton instanceof HTMLButtonElement)) {
@@ -122,11 +131,21 @@
             dialog.addEventListener('click', (event) => {
                 if (event.target === dialog) {
                     requestClose();
+
+                    return;
+                }
+
+                // «Записаться на разбор»: панель закрывается без анимации до открытия окна записи,
+                // фокус после окна lead-modal.js вернёт на кнопку меню.
+                if (event.target instanceof Element && event.target.closest('[data-vf-lead-modal-open]') && document.querySelector('[data-vf-lead-modal]')) {
+                    restoreFocus = false;
+                    dialog.dataset.state = 'closing';
+                    finishClose();
                 }
             });
             dialog.addEventListener('keydown', (event) => {
                 if (event.key !== 'Tab') {
-                    const maxScroll = panel.scrollHeight - panel.clientHeight;
+                    const maxScroll = scroller.scrollHeight - scroller.clientHeight;
                     const upward = ['ArrowUp', 'PageUp', 'Home'].includes(event.key);
                     const downward = ['ArrowDown', 'PageDown', 'End', ' '].includes(event.key);
 
@@ -134,7 +153,7 @@
                         return;
                     }
 
-                    if ((upward && panel.scrollTop <= 0) || (downward && panel.scrollTop >= maxScroll)) {
+                    if ((upward && scroller.scrollTop <= 0) || (downward && scroller.scrollTop >= maxScroll)) {
                         event.preventDefault();
                     }
 
@@ -157,6 +176,63 @@
                 if (dialog.open && getComputedStyle(openButton).display === 'none') {
                     restoreFocus = false;
                     finishClose();
+                }
+            });
+        });
+    };
+
+    // Раскрывающиеся блоки шапки: кнопка [data-vf-disclosure] + блок по aria-controls (атрибут hidden).
+    // Вид кнопки -- варианты aria-expanded:* в разметке, JS меняет только атрибуты.
+    // [data-vf-dropdown] (меню «Услуги» на десктопе) дополнительно закрывается по Esc (фокус -- на кнопку),
+    // клику вне пункта [data-vf-dropdown-root] (li кнопки и панели), уходу фокуса из него и переходу по ссылке.
+    const initializeDisclosures = () => {
+        document.querySelectorAll('[data-vf-disclosure]').forEach((button) => {
+            const target = document.getElementById(button.getAttribute('aria-controls'));
+
+            if (!(target instanceof HTMLElement)) {
+                return;
+            }
+
+            const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+            const setOpen = (open) => {
+                button.setAttribute('aria-expanded', open ? 'true' : 'false');
+                target.hidden = !open;
+            };
+
+            setOpen(isOpen());
+            button.addEventListener('click', () => {
+                setOpen(!isOpen());
+
+                if (isOpen() && button.hasAttribute('data-vf-dropdown')) {
+                    trackGoal('nav_services_open');
+                }
+            });
+
+            const root = button.closest('[data-vf-dropdown-root]');
+
+            if (!button.hasAttribute('data-vf-dropdown') || !(root instanceof HTMLElement)) {
+                return;
+            }
+
+            document.addEventListener('click', (event) => {
+                if (isOpen() && event.target instanceof Node && !root.contains(event.target)) {
+                    setOpen(false);
+                }
+            });
+            root.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && isOpen()) {
+                    setOpen(false);
+                    button.focus();
+                }
+            });
+            root.addEventListener('focusout', (event) => {
+                if (isOpen() && event.relatedTarget instanceof Node && !root.contains(event.relatedTarget)) {
+                    setOpen(false);
+                }
+            });
+            target.addEventListener('click', (event) => {
+                if (event.target instanceof Element && event.target.closest('a')) {
+                    setOpen(false);
                 }
             });
         });
@@ -427,14 +503,6 @@
     };
 
     const initializeLeadForms = () => {
-        const trackGoal = (goalName) => {
-            const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
-
-            if (typeof window.ym === 'function' && ymId && ymId !== 'YM_COUNTER_ID') {
-                window.ym(ymId, 'reachGoal', goalName);
-            }
-        };
-
         document.querySelectorAll('.js-cta-click').forEach((element) => {
             element.addEventListener('click', () => {
                 trackGoal('cta_click');
@@ -641,6 +709,7 @@
 
     const initialize = () => {
         initializeMenu();
+        initializeDisclosures();
         initializeStickyHeader();
         initializeCookieNotice();
         initializeAttribution();

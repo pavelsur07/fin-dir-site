@@ -40,9 +40,12 @@ final class WebsiteFoundationTest extends WebTestCase
                     // Иконок на главной много (галочки, этапы маршрута, форма): все они декоративные.
                     self::assertSame($client->getCrawler()->filter('body svg[aria-hidden="true"]')->count(), $client->getCrawler()->filter('body svg')->count(), $path);
                 } else {
-                    // Иконки окна записи на разбор (маркетинговые страницы) не считаем.
+                    // Иконки окна записи на разбор (маркетинговые страницы) и шапки (меню «Услуги», кнопки) не считаем;
+                    // иконки шапки -- только декоративные.
                     $modalSvg = $client->getCrawler()->filter('[data-vf-section="lead-modal"] svg')->count();
-                    self::assertSame(['/about' => 2, '/gazeta' => 2][$path] ?? 0, $client->getCrawler()->filter('body svg')->count() - $modalSvg, $path);
+                    $headerSvg = $client->getCrawler()->filter('header svg')->count();
+                    self::assertSame($headerSvg, $client->getCrawler()->filter('header svg[aria-hidden="true"]')->count(), $path);
+                    self::assertSame(['/about' => 2, '/gazeta' => 2][$path] ?? 0, $client->getCrawler()->filter('body svg')->count() - $modalSvg - $headerSvg, $path);
                 }
             }
             // Шапка (24 и 32), мобильное меню (32) и подвал (28) -- картинки внутри ссылок с доступным именем; окно записи -- ещё один (28, тёмный).
@@ -129,13 +132,16 @@ final class WebsiteFoundationTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
+            // Верхний уровень: «Услуги» -- кнопка раскрытия, остальные -- ссылки.
             self::assertSame(
                 ['Услуги', 'Кейсы', 'Газета', 'Партнёрам', 'О Компании'],
-                $crawler->filter($menu.' ul a')->each(static fn ($link): string => trim($link->text())),
+                $crawler->filter($menu.' > ul > li > a, '.$menu.' > ul > li > button')->each(static fn ($link): string => trim($link->text())),
             );
-            self::assertSelectorExists($menu.' a[href="https://app.vashfindir.ru/"]');
-            self::assertSelectorTextContains($menu.' a[href="https://app.vashfindir.ru/"]', 'Личный кабинет');
-            self::assertSelectorCount(1, $menu.' [data-vf-component="button"]');
+        }
+        // «Личный кабинет»: в десктопной шапке и в закреплённом низу мобильной панели.
+        foreach (['[data-vf-desktop-navigation]', '[data-vf-menu-panel]'] as $area) {
+            self::assertSelectorTextContains($area.' a[href="https://app.vashfindir.ru/"]', 'Личный кабинет');
+            self::assertSelectorCount(1, $area.' a[href="https://app.vashfindir.ru/"][data-vf-component="button"]');
         }
         self::assertStringNotContainsString('Записаться на встречу', $crawler->filter('header')->text());
     }
@@ -143,7 +149,8 @@ final class WebsiteFoundationTest extends WebTestCase
     public function testNavigationHighlightsTheSameItemInBothMenus(): void
     {
         $client = static::createClient();
-        foreach (['/' => null, '/services' => null, '/services/finansovyy-direktor-na-autsorsinge' => '/services/finansovyy-direktor-na-autsorsinge', '/cases' => '/cases', '/about' => '/about', '/gazeta' => '/gazeta', '/partners' => '/partners', '/privacy' => null] as $path => $activeHref) {
+        // «Услуги»: aria-current получает пункт текущей страницы в панели (/services -- «Все услуги и цены»).
+        foreach (['/' => null, '/services' => '/services', '/services/finansovyy-direktor-na-autsorsinge' => '/services/finansovyy-direktor-na-autsorsinge', '/cases' => '/cases', '/about' => '/about', '/gazeta' => '/gazeta', '/partners' => '/partners', '/privacy' => null] as $path => $activeHref) {
             $client->request('GET', $path);
             self::assertResponseIsSuccessful($path);
             foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
@@ -171,8 +178,9 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorCount(1, '[data-vf-desktop-navigation] a[aria-current="page"] > span.absolute.inset-x-3.bottom-0.h-0\\.5.rounded-full.bg-accent-fill');
         self::assertSelectorExists('[data-vf-desktop-navigation] a[href="/gazeta"] > span.h-control-md.rounded-sm');
         // Crimson-текст и акцентный hover в меню убраны (мобильное меню тоже).
-        self::assertSelectorNotExists('[data-vf-desktop-navigation] a.text-accent, [data-vf-mobile-navigation] a.text-accent');
-        self::assertSelectorNotExists('[data-vf-desktop-navigation] a[class*="hover:text-accent"], [data-vf-mobile-navigation] a[class*="hover:text-accent"]');
+        // Пункты верхнего уровня; ссылка «Все услуги и цены» в панели «Услуги» -- синяя по макету.
+        self::assertSelectorNotExists('[data-vf-desktop-navigation] > ul > li > a.text-accent, [data-vf-mobile-navigation] > ul > li > a.text-accent');
+        self::assertSelectorNotExists('[data-vf-desktop-navigation] > ul > li > a[class*="hover:text-accent"], [data-vf-mobile-navigation] > ul > li > a[class*="hover:text-accent"]');
         // Кнопка шапки использует общую высоту 44px и радиус 10px.
         self::assertSelectorExists('[data-vf-desktop-navigation] [data-vf-component="button"].min-h-11.rounded-md[data-vf-variant="secondary"]');
         self::assertSelectorNotExists('header [data-vf-component="button"].bg-red-600');
@@ -188,7 +196,8 @@ final class WebsiteFoundationTest extends WebTestCase
     public function testActiveItemHasExactlyOneAriaCurrentAndMatchingStyling(): void
     {
         $client = static::createClient();
-        foreach (['/services/finansovyy-direktor-na-autsorsinge' => 'Услуги', '/cases' => 'Кейсы', '/about' => 'О Компании', '/gazeta' => 'Газета', '/partners' => 'Партнёрам'] as $path => $label) {
+        // Разделы-ссылки; «Услуги» (кнопка с панелью) -- HeaderServicesMenuTest.
+        foreach (['/cases' => 'Кейсы', '/about' => 'О Компании', '/gazeta' => 'Газета', '/partners' => 'Партнёрам'] as $path => $label) {
             $crawler = $client->request('GET', $path);
             self::assertResponseIsSuccessful($path);
             foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
@@ -198,7 +207,7 @@ final class WebsiteFoundationTest extends WebTestCase
             self::assertSelectorCount(1, '[data-vf-desktop-navigation] ul span.absolute.bg-accent-fill', $path);
             self::assertSelectorCount(1, '[data-vf-desktop-navigation] ul a[aria-current="page"] > span.absolute.bg-accent-fill', $path);
             self::assertSelectorNotExists('[data-vf-desktop-navigation] ul a:not([aria-current]) > span.absolute', $path);
-            foreach (['[data-vf-desktop-navigation] ul', '[data-vf-mobile-navigation] ul'] as $list) {
+            foreach (['[data-vf-desktop-navigation] > ul > li >', '[data-vf-mobile-navigation] > ul > li >'] as $list) {
                 self::assertSelectorCount(1, $list.' a.font-semibold', $path);
                 self::assertSelectorNotExists($list.' a.font-semibold:not([aria-current])', $path);
                 self::assertSelectorNotExists($list.' a[aria-current]:not(.font-semibold)', $path);

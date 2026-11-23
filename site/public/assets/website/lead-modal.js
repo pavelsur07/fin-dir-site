@@ -102,8 +102,16 @@
             trackGoal('lead_modal_close');
         }
 
-        if (opener && opener.isConnected) {
-            opener.focus({ preventScroll: true });
+        // Кнопка могла остаться в закрытом меню шапки (панель «Услуги», мобильная панель):
+        // тогда фокус -- на кнопку, которая это меню открывает.
+        let focusTarget = opener && opener.isConnected ? opener : null;
+        const hiddenHost = focusTarget && focusTarget.getClientRects().length === 0 ? focusTarget.closest('[hidden], dialog:not([open])') : null;
+
+        if (hiddenHost) {
+            focusTarget = hiddenHost.id ? document.querySelector(`[aria-controls="${hiddenHost.id}"]`) : null;
+        }
+        if (focusTarget) {
+            focusTarget.focus({ preventScroll: true });
         }
         opener = null;
     });

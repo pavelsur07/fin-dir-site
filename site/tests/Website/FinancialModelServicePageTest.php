@@ -110,14 +110,15 @@ final class FinancialModelServicePageTest extends WebTestCase
         self::assertSelectorCount(3, '#finmodel-cases [data-vf-component="case-card"]');
     }
 
-    public function testPageIsInSitemapButNotInHeaderMenu(): void
+    public function testPageIsInSitemapAndInServicesMenuOnly(): void
     {
         $client = static::createClient();
 
         $client->request('GET', '/');
+        // Не пункт верхнего уровня шапки, а пункт меню «Услуги».
         foreach (['[data-vf-desktop-navigation]', '[data-vf-mobile-navigation]'] as $menu) {
-            self::assertSelectorNotExists($menu.' a[href="'.self::PATH.'"]');
-            self::assertSelectorCount(1, $menu.' a[href="/services/finansovyy-direktor-na-autsorsinge"]');
+            self::assertSelectorNotExists($menu.' > ul > li > a[href="'.self::PATH.'"]');
+            self::assertSelectorCount(1, $menu.' [data-vf-disclosure] + * a[href="'.self::PATH.'"]');
         }
 
         $client->request('GET', '/sitemap.xml');

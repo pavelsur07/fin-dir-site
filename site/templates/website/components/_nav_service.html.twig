@@ -1,0 +1,18 @@
+{#
+    Пункт меню «Услуги» в шапке (components/_navbar): иконка в квадрате, название, метка, пояснение.
+    Аргументы: item {label, text, icon, href, badge (необязательно)}, current (true -- aria-current="page"),
+    compact (true -- мобильная панель: без пояснения, иконка в белом квадрате на bg-surface-muted).
+#}
+{% set compact = compact|default(false) %}
+<a class="flex gap-3 rounded-md p-3 no-underline focus-visible:shadow-focus {{ compact ? 'min-h-control-touch items-center hover:bg-surface' : 'items-start hover:bg-surface-muted' }}" href="{{ item.href }}"{% if current|default(false) %} aria-current="page"{% endif %}>
+    <span class="flex size-control-touch shrink-0 items-center justify-center rounded-md text-accent {{ compact ? 'bg-surface' : 'bg-cobalt-50' }}" aria-hidden="true">
+        {% include 'website/components/_icon.html.twig' with {name: item.icon, class: 'size-icon-md'} only %}
+    </span>
+    <span class="flex min-w-0 flex-col gap-1">
+        <span class="flex flex-wrap items-center gap-2 type-t5 font-semibold text-fg">
+            {{ item.label }}
+            {% if item.badge|default(null) %}<span class="rounded-full bg-success-bg px-2 py-px type-t7 font-semibold text-success">{{ item.badge }}</span>{% endif %}
+        </span>
+        {% if not compact and item.text|default(null) %}<span class="type-t6 text-fg-secondary">{{ item.text }}</span>{% endif %}
+    </span>
+</a>
