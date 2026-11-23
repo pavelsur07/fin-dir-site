@@ -1,2 +1,3 @@
 @AGENTS.md
 @SITE_RULES.md
+@LEGAL_RULES.md
