@@ -4,8 +4,8 @@
     scenarios {label, title, text, image -- база файлов /assets/screens/<image>-600|1200.webp и <image>.png (1200×800), alt}.
     Раскладка: до lg карточки отчётов друг под другом (md -- три в ряд), сценарии -- текст над картинкой; с lg -- текст слева, картинка справа.
 #}
-<section class="bg-surface pt-16 pb-10 lg:pt-24" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="finmodel-structure">
-    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+<section class="bg-surface website-section" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="finmodel-structure">
+    <div class="website-container">
         <h2 class="font-display type-t2-article text-balance text-fg md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>
         <p class="mt-4 max-w-lead type-t4 text-fg-secondary">{{ subtitle }}</p>
         <ul class="mt-8 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-3 lg:gap-5">

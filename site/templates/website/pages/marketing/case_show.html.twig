@@ -16,8 +16,8 @@
     </div>
     {% include 'website/sections/_case_detail.html.twig' with {case: case} only %}
     {% if related is not empty %}
-        <section class="bg-surface-muted py-16 md:py-24" aria-labelledby="case-related-title">
-            <div class="mx-auto max-w-container px-4 md:px-8">
+        <section class="bg-surface-muted website-section" aria-labelledby="case-related-title">
+            <div class="website-container">
                 <h2 class="font-display font-extrabold mb-12 type-t2-article text-fg md:type-t2" id="case-related-title">Другие кейсы</h2>
                 <ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {% for item in related %}

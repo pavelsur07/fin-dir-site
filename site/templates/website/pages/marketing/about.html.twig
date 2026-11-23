@@ -18,7 +18,7 @@
 {# Как на главной: секции сами задают фон и контейнер, поэтому body без контейнера layout. #}
 {% block body %}
     {{ block('page_header') }}
-    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+    <div class="website-container">
         {% include 'website/components/mission-block.html.twig' with {
             text: 'Создать <span class="text-accent">культуру эффективного использования</span> инструментов управленческого учёта в&nbsp;малом и среднем бизнесе',
         } only %}

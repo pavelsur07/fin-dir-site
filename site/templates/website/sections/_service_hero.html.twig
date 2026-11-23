@@ -3,7 +3,7 @@
     Аргументы: crumbs, badge, title, lead, buttons [{label, href, variant}], trust [{value, text}], aside_html (необязательно, готовая разметка).
 #}
 <section class="overflow-hidden border-b border-border-subtle bg-surface-muted text-fg" aria-labelledby="service-hero-title">
-    <div class="mx-auto flex w-full max-w-page flex-col gap-8 px-4 pt-6 pb-12 md:px-8 md:pb-16">
+    <div class="website-container website-hero flex flex-col gap-8 pb-section-end">
         {% include 'website/components/_breadcrumbs.html.twig' with {crumbs: crumbs} only %}
         <div class="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <div class="flex flex-col items-start gap-6">

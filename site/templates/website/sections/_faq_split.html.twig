@@ -6,8 +6,8 @@
     До md: заголовок, список, карточка (side -- contents, порядок через order); md -- side над списком; с lg -- две колонки, side прилипает.
     Общий sections/_faq.html.twig (страница «Финансовый директор») не меняется.
 #}
-<section class="bg-surface pt-16 pb-10" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="faq-split">
-    <div class="mx-auto grid w-full max-w-container gap-5 px-4 md:gap-10 md:px-8 lg:grid-cols-3 lg:gap-16">
+<section class="bg-surface website-section" id="{{ id }}" aria-labelledby="{{ id }}-title" data-vf-section="faq-split">
+    <div class="website-container grid gap-5 md:gap-10 lg:grid-cols-3 lg:gap-16">
         <div class="contents md:flex md:flex-col md:gap-5 lg:sticky lg:top-sticky lg:self-start">
             <div class="order-1 flex flex-col gap-5 md:order-none">
                 <h2 class="font-display type-t2-article text-balance text-fg md:type-t2 lg:type-t1" id="{{ id }}-title">{{ title }}</h2>

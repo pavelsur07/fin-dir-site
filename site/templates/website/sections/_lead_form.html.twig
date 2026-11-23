@@ -35,10 +35,10 @@
         </form>
 {% endset %}
 
-<section class="{{ panel or brand ? 'scroll-mt-16 bg-surface' : 'scroll-mt-16 bg-surface-muted' }}" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
+<section class="website-section {{ mobile_spacing|default('') }} {{ panel or brand ? 'scroll-mt-16 bg-surface' : 'scroll-mt-16 bg-surface-muted' }}" id="{{ section_id }}" aria-labelledby="{{ labelled_by }}" data-vf-section="lead-form">
     {% if brand %}
     {# brand: до md -- текст, фото, форма друг под другом; md -- текст и фото в ряд, форма ниже; с lg -- три колонки 3/3/4. #}
-    <div class="mx-auto w-full max-w-container px-4 pt-16 pb-16 md:px-8">
+    <div class="website-container">
         <div class="grid overflow-hidden rounded-xl bg-accent-fill text-white md:grid-cols-2 lg:grid-cols-10">
             <div class="flex flex-col justify-center gap-5 px-5 pt-8 md:px-10 md:py-12 lg:col-span-3 lg:py-16 lg:pr-8 lg:pl-12">
                 <h2 class="font-display type-t2-article text-balance text-white md:type-t2" id="{{ labelled_by }}">{{ title }}</h2>
@@ -63,8 +63,8 @@
         </div>
     </div>
     {% else %}
-    {% if panel %}<div class="mx-auto w-full max-w-page px-4 py-16 md:px-8 md:py-24"><div class="rounded-xl border border-border-subtle bg-surface-muted p-6 md:p-12">{% endif %}
-    <div class="{{ panel ? 'grid w-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12' : 'mx-auto grid w-full max-w-container items-start gap-8 px-4 py-16 md:grid-cols-2 md:gap-x-12 md:px-8 md:py-24' }}">
+    {% if panel %}<div class="website-container"><div class="rounded-xl border border-border-subtle bg-surface-muted p-6 md:p-12">{% endif %}
+    <div class="{{ panel ? 'grid w-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-12' : 'website-container grid items-start gap-8 md:grid-cols-2 md:gap-x-12' }}">
         {# Левая колонка: на мобильном «contents» -- блоки встают в общую сетку (описание → форма → сотрудник), с md -- одна колонка. #}
         <div class="contents md:flex md:flex-col md:gap-8">
             <div class="order-1 flex flex-col gap-4">

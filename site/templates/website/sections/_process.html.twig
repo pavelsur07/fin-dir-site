@@ -3,8 +3,8 @@
     id (необязательно): заголовок и якорь секции (по умолчанию home-process-title, якоря нет), columns (3 | 4; по умолчанию 4) -- колонок с lg.
 #}
 {% set title_id = id|default(null) ? id ~ '-title' : 'home-process-title' %}
-<section class="bg-surface py-16 md:py-24"{% if id|default(null) %} id="{{ id }}"{% endif %} aria-labelledby="{{ title_id }}">
-    <div class="mx-auto w-full max-w-container px-4 md:px-8">
+<section class="bg-surface website-section"{% if id|default(null) %} id="{{ id }}"{% endif %} aria-labelledby="{{ title_id }}">
+    <div class="website-container">
         <h2 id="{{ title_id }}" class="font-display font-extrabold mb-12 type-t2-article text-fg md:type-t2">{{ title }}</h2>
         <ol class="grid w-full grid-cols-1 gap-6 {{ columns|default(4) == 3 ? 'lg:grid-cols-3' : 'md:grid-cols-2 lg:grid-cols-4' }} xl:gap-8">
             {% for step in steps %}
