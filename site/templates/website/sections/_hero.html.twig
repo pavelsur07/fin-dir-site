@@ -1,34 +1,51 @@
 {#
-    Первый экран с фото на наклонных полосах: главная и страницы услуг. Показатели доверия вынесены в sections/_trust_strip.
+    Первый экран с фото на наклонных полосах: главная и страницы услуг.
     Аргументы: id (заголовок -- id ~ '-title'; по умолчанию home-hero), crumbs (необязательно, components/_breadcrumbs над карточкой),
     label (необязательно, метка над H1), title_lines [{text, accent}] -- строки H1, accent -- синим; title_nowrap (с md строки не переносятся),
     lead, primary {label, href, attrs}, note, person {image, alt, photo_800 -- база файлов -800.avif/-800.webp | webp_base -- база -320/-640/-960.webp},
     badge {title (необязательно), text, screen (необязательно) -- скриншот /assets/screens/<screen>-720|1440.webp, с md}, chips [строки] (необязательно) -- метки внизу карточки, последняя выделена.
+    offer_layout (необязательно) -- надзаголовок без пилюли и фото рядом с текстом с md.
+    guarantee (необязательно), service_card (необязательно), facts [{value, text, note?, requires_source?, source?}] (необязательно).
     Пробелы, которые нельзя переносить, -- неразрывные (U+00A0).
     С md весь экран -- одна карточка; на мобильном текст над карточкой, в карточке фото и метки-пилюли.
 #}
 {% set hero_id = id|default('home-hero') %}
+{% set offer_layout = offer_layout|default(false) %}
+{% set facts = facts|default([])|filter(fact => not (fact.requires_source|default(false))
+    or (fact.source|default('')|trim is not empty and '[' not in fact.source and ']' not in fact.source)) %}
 <section class="bg-surface text-fg" aria-labelledby="{{ hero_id }}-title" data-vf-section="hero">
     <div class="mx-auto w-full max-w-container px-4 pt-6 md:px-8 md:pt-8">
         {% if crumbs|default(null) %}<div class="mb-4">{% include 'website/components/_breadcrumbs.html.twig' with {crumbs: crumbs} only %}</div>{% endif %}
-        <div class="md:overflow-hidden md:rounded-xl md:border md:border-border-subtle md:bg-surface-muted lg:grid lg:grid-cols-2">
-            <div class="relative z-10 flex min-w-0 flex-col items-start gap-5 md:gap-6 md:px-8 md:pt-16 md:pb-12">
-                {% if label|default(null) %}<span class="rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7 font-semibold text-accent">{{ label }}</span>{% endif %}
-                {# На мобильном размер H1 от ширины экрана (токен text-hero-fluid, согласованное исключение): заголовок держит 3 строки. #}
-                <h1 class="font-display text-hero-fluid font-extrabold tracking-tight text-fg md:type-t2 lg:type-t1" id="{{ hero_id }}-title">
-                    {%- for line in title_lines -%}
-                        {% if not loop.first %} {% endif %}<span class="block{{ title_nowrap|default(false) ? ' md:whitespace-nowrap' : '' }}{{ line.accent|default(false) ? ' text-accent' : '' }}">{{ line.text }}</span>
-                    {%- endfor -%}
-                </h1>
-                <p class="max-w-lead type-t4 text-fg-secondary">{{ lead }}</p>
-                {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, attrs: primary.attrs|default({}), variant: 'primary', size: 'xl', arrow: primary.arrow|default(false), full_mobile: true} only %}
-                {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-secondary">{{ note }}</p>{% endif %}
+        <div class="{{ offer_layout ? 'isolate grid grid-cols-1 rounded-xl border border-border-subtle bg-surface-muted md:grid-cols-5 xl:grid-cols-11' : 'md:overflow-hidden md:rounded-xl md:border md:border-border-subtle md:bg-surface-muted lg:grid lg:grid-cols-2' }}">
+            <div class="relative z-10 flex min-w-0 flex-col items-start {{ offer_layout ? 'gap-4 px-4 py-6 md:col-span-3 md:row-start-1 md:gap-5 md:px-6 md:pt-10 md:pb-0 xl:col-span-6 xl:px-8 xl:pt-12' : 'gap-5 md:gap-6 md:px-8 md:pt-16 md:pb-12' }}">
+                {% if label|default(null) %}
+                    <span class="{{ offer_layout ? 'type-t6' : 'rounded-full border border-border-subtle bg-surface px-3 py-1 type-t7' }} font-semibold text-accent">{{ label }}</span>
+                {% endif %}
+                {# На узких карточках оставляем место для непрерывной строки H1. #}
+                <div class="{{ offer_layout ? '@container w-full pr-8' : 'contents' }}">
+                    <h1 class="font-display text-hero-fluid font-extrabold tracking-tight text-fg {{ offer_layout ? '@max-sidebar:type-t3 lg:type-t2 xl:type-t1' : 'md:type-t2 lg:type-t1' }}" id="{{ hero_id }}-title">
+                        {%- for line in title_lines -%}
+                            {% if not loop.first %} {% endif %}<span class="block{{ title_nowrap|default(false) ? (offer_layout ? ' whitespace-nowrap' : ' md:whitespace-nowrap') : '' }}{{ line.accent|default(false) ? ' text-accent' : '' }}">{{ line.text }}</span>
+                        {%- endfor -%}
+                    </h1>
+                </div>
+                <p class="max-w-lead text-fg-secondary {{ offer_layout ? 'type-t5 md:type-t4' : 'type-t4' }}">{{ lead }}</p>
+                <div class="{{ offer_layout ? 'flex w-full flex-col items-start gap-2 md:mt-2' : 'contents' }}">
+                    {% include 'website/components/_button.html.twig' with {label: primary.label, href: primary.href, attrs: primary.attrs|default({}), variant: 'primary', size: 'xl', arrow: primary.arrow|default(false), full_mobile: true} only %}
+                    {% if note|default(null) %}<p class="max-w-lead type-t6 text-fg-secondary">{{ note }}</p>{% endif %}
+                </div>
+                {% if guarantee|default(null) %}
+                    <p class="flex items-start gap-2 type-t6 font-medium text-fg">
+                        {% include 'website/components/_icon.html.twig' with {name: 'shield-check', class: 'size-icon-md shrink-0 text-accent'} only %}
+                        {{ guarantee }}
+                    </p>
+                {% endif %}
             </div>
 
             {# На мобильном -- отдельная карточка с фото и метками; с md обёртка исчезает (contents), её блоки встают в общую карточку. #}
-            <div class="mt-6 overflow-hidden rounded-xl border border-border-subtle bg-surface-muted md:contents">
+            <div class="{{ offer_layout ? 'relative md:col-span-2 md:col-start-4 md:row-span-2 md:row-start-1 xl:col-span-5 xl:col-start-7' : 'mt-6 overflow-hidden rounded-xl border border-border-subtle bg-surface-muted md:contents' }}">
                 {# Фото на наклонных полосах: полосы декоративные, aria-hidden. #}
-                <div class="relative isolate aspect-square overflow-hidden md:aspect-4/3 lg:aspect-auto">
+                <div class="relative isolate aspect-square overflow-hidden {{ offer_layout ? 'md:absolute md:inset-0 md:aspect-auto md:rounded-r-xl' : 'md:aspect-4/3 lg:aspect-auto' }}">
                     <div class="absolute -top-1/10 -bottom-1/10 left-3/50 w-11/25 -skew-x-12 bg-cobalt-100" aria-hidden="true"></div>
                     <div class="absolute -top-1/10 -bottom-1/10 left-14/25 w-7/10 -skew-x-12 bg-cobalt-200" aria-hidden="true"></div>
                     <picture>
@@ -38,21 +55,24 @@
                         {% elseif person.webp_base|default(null) %}
                             <source srcset="{{ person.webp_base }}-320.webp 320w, {{ person.webp_base }}-640.webp 640w, {{ person.webp_base }}-960.webp 960w" sizes="(min-width: 1024px) 640px, 90vw" type="image/webp">
                         {% endif %}
-                        <img class="absolute top-0 left-13/20 h-11/8 w-auto max-w-none -translate-x-1/2 md:top-auto md:bottom-0 md:left-1/2 md:h-11/12 md:-translate-x-2/5" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" fetchpriority="high">
+                        <img class="absolute w-auto max-w-none {{ offer_layout ? 'bottom-0 left-7/10 h-11/12 -translate-x-1/2 md:left-3/5 md:h-4/5 lg:h-11/12' : 'top-0 left-13/20 h-11/8 -translate-x-1/2 md:top-auto md:bottom-0 md:left-1/2 md:h-11/12 md:-translate-x-2/5' }}" src="{{ person.image }}" alt="{{ person.alt }}" width="1122" height="1402" fetchpriority="high">
                     </picture>
                     {% if badge|default(null) %}
-                        <p class="absolute top-3 left-3 flex w-2/5 flex-col gap-1 rounded-lg bg-surface p-3 shadow-md md:top-auto md:w-1/3 lg:w-2/5 md:bottom-11 md:left-1/20 md:p-4">
+                        <p class="absolute flex flex-col rounded-lg bg-surface p-3 shadow-md {{ offer_layout ? 'bottom-4 left-4 md:bottom-6 md:left-0 lg:p-4' : 'top-3 left-3 w-2/5 gap-1 md:top-auto md:w-1/3 lg:w-2/5 md:bottom-11 md:left-1/20 md:p-4' }}">
                             {% if badge.screen|default(null) %}
                                 <picture class="contents">
                                     <source type="image/webp" srcset="/assets/screens/{{ badge.screen }}-720.webp 720w, /assets/screens/{{ badge.screen }}-1440.webp 1440w" sizes="(min-width: 1024px) 300px, 40vw">
                                     <img class="mb-1 hidden aspect-screenshot w-full rounded-md md:block border border-border-subtle bg-white" src="/assets/screens/{{ badge.screen }}-720.webp" width="720" height="450" alt="" decoding="async">
                                 </picture>
                             {% endif %}
-                            {% if badge.title|default(null) %}<span class="type-t7 font-semibold text-accent">{{ badge.title }}</span>{% endif %}
-                            <span class="type-t6 font-medium text-fg">{{ badge.text }}</span>
+                            {% if badge.title|default(null) %}<span class="{{ offer_layout ? 'type-h4 text-fg' : 'type-t7 font-semibold text-accent' }}">{{ badge.title }}</span>{% endif %}
+                            <span class="type-t6 {{ offer_layout ? 'text-fg-secondary' : 'font-medium text-fg' }}">{{ badge.text }}</span>
                         </p>
                     {% endif %}
                 </div>
+                {% if service_card|default(false) %}
+                    {% include 'website/components/_service_glance.html.twig' with {class: 'mx-4 mt-4 md:hidden lg:absolute lg:top-8 lg:left-0 lg:mx-0 lg:mt-0 lg:block lg:w-1/2 lg:max-w-crumb xl:left-4 xl:w-11/25'} only %}
+                {% endif %}
                 {% if chips|default([]) is not empty %}
                     {# Метки: на мобильном -- пилюли, последняя на тёмном фоне; с md -- строка через «•». #}
                     <ul class="flex flex-wrap gap-2 border-t border-border-subtle p-4 type-t7 font-medium text-fg-secondary md:items-center md:gap-x-3 md:gap-y-1 md:px-8 lg:col-span-2" aria-label="Для кого">
@@ -63,6 +83,25 @@
                     </ul>
                 {% endif %}
             </div>
+            {% if facts is not empty %}
+                <ul class="relative z-10 grid {{ facts|length > 2 ? 'grid-cols-3' : 'grid-cols-2' }} divide-x divide-border-subtle px-4 py-6 md:col-span-3 md:col-start-1 md:row-start-2 md:w-fit md:px-6 md:py-8 xl:col-span-6 xl:px-8" aria-label="Опыт в цифрах">
+                    {% for fact in facts %}
+                        {% set tooltip_id = hero_id ~ '-fact-source-' ~ loop.index %}
+                        <li class="flex min-w-0 flex-col items-start gap-0.5 px-3 first:pl-0 last:pr-0 md:px-5">
+                            <strong class="whitespace-nowrap type-t3-num text-accent md:type-t8">{{ fact.value }}</strong>
+                            {% if fact.requires_source|default(false) %}
+                                <div class="group relative type-t7 text-fg-secondary md:type-t6">
+                                    <button type="button" aria-describedby="{{ tooltip_id }}" class="cursor-help rounded-xs text-left underline decoration-dotted underline-offset-4 focus-visible:shadow-focus">{{ fact.text }}</button>
+                                    <span id="{{ tooltip_id }}" role="tooltip" class="invisible absolute right-0 top-full z-20 w-max max-w-crumb rounded-md border border-border-subtle bg-surface-raised p-3 text-fg shadow-md group-hover:visible group-focus-within:visible">{{ fact.source }}</span>
+                                </div>
+                            {% else %}
+                                <span class="type-t7 text-fg-secondary md:type-t6">{{ fact.text }}</span>
+                            {% endif %}
+                            {% if fact.note|default(null) %}<span class="type-t7 text-fg-muted">{{ fact.note }}</span>{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
 </section>

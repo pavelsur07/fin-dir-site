@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Website;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
@@ -76,6 +77,51 @@ final class WebsiteFoundationTest extends WebTestCase
             };
             self::assertSelectorExists($headingSelector, $path);
         }
+    }
+
+    public function testHomeHeroShowsTheOfferAndOnlyConfirmedFacts(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/');
+
+        self::assertResponseIsSuccessful();
+        $hero = 'main [data-vf-section="hero"]';
+        $heroFacts = self::getContainer()->get(Environment::class)->getGlobals()['vf_trust_facts']['hero'];
+        $clientCount = $heroFacts[0]['value'];
+        self::assertSelectorTextSame($hero.' a[href="#lead-form"][data-vf-lead-modal-open]', 'Записаться на диагностику');
+        self::assertSelectorTextContains($hero, 'Не найдём точки роста, вернём оплату первого месяца');
+        self::assertSelectorTextContains($hero, $clientCount);
+        self::assertSelectorTextContains($hero, $heroFacts[0]['note']);
+        self::assertSelectorTextContains($hero, '11 лет');
+        self::assertSelectorExists($hero.' [role="img"][aria-label="Пример экрана онлайн сервиса, демонстрационные данные"]');
+        self::assertSelectorTextNotContains('main [data-vf-section="trust-strip"]', $clientCount);
+        foreach (['23,5%', '[N]', '[период]'] as $unpublishedText) {
+            self::assertStringNotContainsString($unpublishedText, $crawler->filter('main')->text());
+        }
+    }
+
+    public function testHeroUsesOnlyACompleteSourceForAConditionalFact(): void
+    {
+        self::bootKernel();
+        $twig = self::getContainer()->get(Environment::class);
+        $hero = [
+            'title_lines' => [['text' => 'Заголовок']],
+            'lead' => 'Подзаголовок',
+            'primary' => ['label' => 'Записаться', 'href' => '#lead-form'],
+            'person' => ['image' => '/assets/people/pavel-novikov.png', 'alt' => 'Павел Новиков'],
+            'facts' => [
+                ['value' => '23,5%', 'text' => 'Доля прибыли', 'requires_source' => true, 'source' => 'Описание источника'],
+                ['value' => '42%', 'text' => 'Доля расходов', 'requires_source' => true, 'source' => 'По [N] проектам'],
+            ],
+        ];
+        $crawler = new Crawler($twig->render('website/sections/_hero.html.twig', $hero));
+        $trigger = $crawler->filter('button[aria-describedby]');
+
+        self::assertCount(1, $trigger);
+        self::assertSame('Доля прибыли', $trigger->text());
+        self::assertSame('Описание источника', $crawler->filter('[role="tooltip"]#'.$trigger->attr('aria-describedby'))->text());
+        self::assertStringNotContainsString('42%', $crawler->text());
+        self::assertStringNotContainsString('[N]', $crawler->text());
     }
 
     public function testServicesPageLinksToFinancialDirectorService(): void

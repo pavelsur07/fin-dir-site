@@ -2,7 +2,7 @@
 
 {% block title %}{{ case.title }} — Кейсы — Ваш Финдир{% endblock %}
 {% block description %}{{ case.problem }} {{ case.resultValue starts with '-' ? '−' ~ case.resultValue|slice(1) : case.resultValue }} — {{ case.resultLabel }}.{% endblock %}
-{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts} only %}{% endblock %}
+{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts.overview} only %}{% endblock %}
 
 {% block active_navigation %}cases{% endblock %}
 
