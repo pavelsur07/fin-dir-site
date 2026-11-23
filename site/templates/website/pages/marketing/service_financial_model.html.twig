@@ -2,7 +2,7 @@
 
 {% block title %}Разработка финансовой модели бизнеса — Ваш Финдир{% endblock %}
 {% block description %}Финансовая модель бизнеса под ключ: прогноз прибыли и денег на 12 месяцев, ОПиУ, ДДС, баланс и сценарии. Разработка с финансовым директором.{% endblock %}
-{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts} only %}{% endblock %}
+{% block lead_modal %}{% include 'website/sections/_lead_modal.html.twig' with {facts: vf_trust_facts.overview} only %}{% endblock %}
 
 {% block active_navigation %}services{% endblock %}
 
@@ -55,7 +55,7 @@
     } only %}
     {# Третий факт «[N]+ моделей» -- после того как владелец даст число (только для этой страницы). #}
     {% include 'website/sections/_trust_strip.html.twig' with {
-        facts: vf_trust_facts,
+        facts: vf_trust_facts.overview,
         people: vf_team.people,
         team: {text: 'Финдир, налоговый консультант и аналитики.', link_label: 'Кто будет с вами работать →', href: path('app_about_index')},
     } only %}
