@@ -104,8 +104,9 @@ final class LeadCrmExportTest extends KernelTestCase
 
         self::assertFalse($this->exporter([])->export($spam));
         self::assertFalse($this->exporter([])->export($oldConsent));
-        // Боевой список версий пуст: действующее согласие не разрешает передачу.
-        self::assertFalse(LeadConsent::allowsCrmTransfer(LeadConsent::VERSION));
+        // Действующее согласие называет Битрикс24 и разрешает передачу; редакция 2026-11-10 -- нет.
+        self::assertTrue(LeadConsent::allowsCrmTransfer(LeadConsent::VERSION));
+        self::assertFalse(LeadConsent::allowsCrmTransfer('2026-11-10'));
 
         $allowed = $this->persist(LeadBuilder::aLead()->withSubmissionId('00000000-0000-4000-8000-000000000004')->withConsentVersion(self::CRM_CONSENT)->build());
         $connection = self::getContainer()->get(Bitrix24ConnectionRepository::class)->find();

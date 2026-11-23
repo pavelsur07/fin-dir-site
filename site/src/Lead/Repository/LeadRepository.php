@@ -17,6 +17,9 @@ final class LeadRepository
     {
     }
 
+    /**
+     * @throws LeadNotFound
+     */
     public function get(int $id): Lead
     {
         return $this->entityManager->find(Lead::class, $id) ?? throw new LeadNotFound($id);
@@ -82,6 +85,27 @@ final class LeadRepository
             ->getResult();
 
         return $leads;
+    }
+
+    /**
+     * Обращения, согласие по которым дано раньше $consentBefore, -- срок хранения истёк.
+     *
+     * @return list<int>
+     */
+    public function findIdsWithConsentBefore(\DateTimeImmutable $consentBefore, int $limit): array
+    {
+        /** @var list<int> $ids */
+        $ids = $this->entityManager->createQueryBuilder()
+            ->select('l.id')
+            ->from(Lead::class, 'l')
+            ->where('l.consentAt < :before')
+            ->setParameter('before', $consentBefore)
+            ->orderBy('l.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        return array_map('intval', $ids);
     }
 
     /**

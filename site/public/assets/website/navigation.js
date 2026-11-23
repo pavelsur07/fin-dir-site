@@ -276,7 +276,10 @@
         const cookieNotice = document.getElementById('cookieNotice');
         const cookieAccept = document.getElementById('cookieAccept');
         const cookieNecessary = document.getElementById('cookieNecessary');
-        // Выбор хранится 12 месяцев: {choice: 'all' | 'necessary', expires: мс}. Старый ключ '1' -- «принять» без срока.
+        // Выбор хранится 12 месяцев: {choice: 'all' | 'necessary', expires: мс}. Ключ прежнего баннера ('1')
+        // согласием не считается: его удаляем и показываем уведомление заново (см. analytics.js).
+        // Чтение выбора и событие о нём -- в analytics.js (VF_CONSENT): их используют Метрика и чат.
+        const consent = window.VF_CONSENT;
         const cookieStorageKey = 'vf_cookie_choice';
         const legacyStorageKey = 'vf_cookie_notice_accepted';
         const choiceLifetime = 365 * 24 * 60 * 60 * 1000;
@@ -296,16 +299,45 @@
                 if (stored && typeof stored.expires === 'number' && stored.expires > Date.now()) {
                     return true;
                 }
-                if (window.localStorage.getItem(legacyStorageKey) === '1') {
-                    saveCookieChoice('all');
-
-                    return true;
-                }
+                window.localStorage.removeItem(legacyStorageKey);
 
                 return false;
             } catch (error) {
                 return false;
             }
+        };
+
+        // Отказ от необязательных cookie: удаляем то, что сайт уже успел записать. Cookie Метрики
+        // ставятся на домен сайта и его родительский домен -- стираем во всех вариантах.
+        const removeOptionalData = () => {
+            try {
+                window.localStorage.removeItem(attributionKey);
+            } catch (error) {
+                // Хранилище недоступно -- записи в нём тоже нет.
+            }
+
+            // Метрика дублирует идентификатор посетителя в хранилищах браузера (_ym_uid и др.).
+            [window.localStorage, window.sessionStorage].forEach((store) => {
+                try {
+                    Object.keys(store).filter((key) => key.startsWith('_ym')).forEach((key) => store.removeItem(key));
+                } catch (error) {
+                    // Хранилище недоступно -- записей в нём нет.
+                }
+            });
+
+            const host = window.location.hostname;
+            const domains = ['', host, `.${host}`];
+            const parts = host.split('.');
+            if (parts.length > 2) {
+                domains.push(`.${parts.slice(-2).join('.')}`);
+            }
+            document.cookie.split(';').map((pair) => pair.split('=')[0].trim())
+                .filter((name) => name.startsWith('_ym'))
+                .forEach((name) => {
+                    domains.forEach((domain) => {
+                        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain ? `; domain=${domain}` : ''}`;
+                    });
+                });
         };
 
         // Браузер не прокручивает к элементу, который уже в пределах экрана, даже если его
@@ -333,8 +365,9 @@
             });
         };
 
-        const showCookieNotice = () => {
-            if (!cookieNotice || hasCookieChoice()) {
+        // force -- повторный показ по ссылке «Настройки cookie», когда выбор уже сделан.
+        const showCookieNotice = (force = false) => {
+            if (!cookieNotice || (!force && hasCookieChoice())) {
                 return;
             }
             cookieNotice.hidden = false;
@@ -363,8 +396,22 @@
         };
 
         const chooseCookies = (choice) => () => {
+            const previous = consent ? consent.choice() : null;
             saveCookieChoice(choice);
             hideCookieNotice();
+
+            if (choice === 'necessary') {
+                removeOptionalData();
+                // Метрика и чат уже загружены на этой странице: без перезагрузки они продолжили бы работу.
+                if (previous === 'all') {
+                    window.location.reload();
+
+                    return;
+                }
+            }
+
+            // Метрика, чат и запись источника перехода ждут это событие (VF_CONSENT.whenAccepted).
+            document.dispatchEvent(new CustomEvent(consent ? consent.eventName : 'vf:cookie-choice', { detail: { choice } }));
         };
 
         if (cookieAccept) {
@@ -373,6 +420,21 @@
 
         if (cookieNecessary) {
             cookieNecessary.addEventListener('click', chooseCookies('necessary'));
+        }
+
+        // Ссылка «Настройки cookie» в футере: выбор можно изменить в любой момент.
+        document.querySelectorAll('[data-vf-cookie-settings]').forEach((button) => {
+            button.addEventListener('click', () => {
+                showCookieNotice(true);
+                if (cookieAccept) {
+                    cookieAccept.focus({ preventScroll: true });
+                }
+            });
+        });
+
+        // Отказ, сделанный раньше, остаётся в силе: данные, записанные до него, не возвращаются.
+        if (consent && consent.choice() === 'necessary') {
+            removeOptionalData();
         }
 
         showCookieNotice();
@@ -463,9 +525,19 @@
         .every((key) => (a[key] || '') === (b[key] || ''))
         && JSON.stringify(a.click || {}) === JSON.stringify(b.click || {});
 
+    // Источник перехода -- необязательные данные: ведётся только после выбора «Принять».
+    // Касание страницы входа запоминается в памяти и записывается, если посетитель
+    // примет cookie на этой же странице; при «Только необходимые» не записывается.
     const initializeAttribution = () => {
-        const now = Date.now();
         const touch = currentTouch();
+
+        if (window.VF_CONSENT) {
+            window.VF_CONSENT.whenAccepted(() => recordAttribution(touch));
+        }
+    };
+
+    const recordAttribution = (touch) => {
+        const now = Date.now();
         let data = readAttribution();
 
         if (!data) {
@@ -497,6 +569,10 @@
     };
 
     const attributionForForm = () => {
+        if (!window.VF_CONSENT || !window.VF_CONSENT.accepted()) {
+            return '';
+        }
+
         const data = readAttribution();
 
         return data ? JSON.stringify({ v: 1, first: data.first, last: data.last, visits: data.visits }) : '';
@@ -581,17 +657,24 @@
             return true;
         };
 
-        // ClientID Метрики связывает заявку с визитами в Метрике. Метрика заблокирована --
-        // колбэк не придёт, поле останется пустым, отправка его не ждёт.
+        // ClientID Метрики связывает заявку с визитами в Метрике. Метрика загружается только после
+        // «Принять» (metrika.js подписан на выбор раньше этого скрипта и успевает создать window.ym).
+        // Метрика заблокирована -- колбэк не придёт, поле останется пустым, отправка его не ждёт.
         let ymClientId = '';
         const ymId = window.VF_ANALYTICS && window.VF_ANALYTICS.ymCounterId;
-        if (typeof window.ym === 'function' && ymId) {
+        const requestYmClientId = () => {
+            if (typeof window.ym !== 'function' || !ymId) {
+                return;
+            }
             window.ym(ymId, 'getClientID', (clientId) => {
                 ymClientId = /^\d{1,32}$/.test(String(clientId)) ? String(clientId) : '';
                 document.querySelectorAll('[data-vf-lead-form]').forEach((form) => {
                     setHidden(form, 'ym_client_id', ymClientId);
                 });
             });
+        };
+        if (window.VF_CONSENT) {
+            window.VF_CONSENT.whenAccepted(requestYmClientId);
         }
 
         // Поле «Другое» и подсказка контакта зависят от выбранных radio. Без JS поле «Другое»
@@ -654,6 +737,11 @@
 
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
+                // Источник и ClientID -- по выбору в момент отправки: «Принять» могли нажать уже
+                // после открытия страницы, а «Только необходимые» -- в соседней вкладке.
+                const accepted = Boolean(window.VF_CONSENT && window.VF_CONSENT.accepted());
+                setHidden(form, 'attribution', attributionForForm());
+                setHidden(form, 'ym_client_id', accepted ? ymClientId : '');
                 clearErrors(form);
                 success.hidden = true;
                 failure.hidden = true;

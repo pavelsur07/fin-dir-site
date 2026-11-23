@@ -89,10 +89,12 @@
                                         {% include 'admin/_menu_item.html.twig' with {label: 'Отправить уведомление'} only %}
                                     </form>
                                 {% endif %}
-                                <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" onsubmit="return confirm('Удалить обращение №{{ lead.id }} без возможности восстановления?');">
+                                {# Из списка удаляют спам и тесты; удаление по запросу человека -- в карточке, с выбором основания. #}
+                                <form method="post" action="{{ path('admin_lead_delete', {id: lead.id}) }}" onsubmit="return confirm('Удалить обращение №{{ lead.id }} как спам или тест без возможности восстановления?');">
                                     <input type="hidden" name="_token" value="{{ token }}">
+                                    <input type="hidden" name="reason" value="spam_or_test">
                                     <input type="hidden" name="back" value="{{ list_url_first_page }}">
-                                    {% include 'admin/_menu_item.html.twig' with {label: 'Удалить', destructive: true} only %}
+                                    {% include 'admin/_menu_item.html.twig' with {label: 'Удалить как спам или тест', destructive: true} only %}
                                 </form>
                                 {% endblock %}
                             {% endembed %}

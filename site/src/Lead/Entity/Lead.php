@@ -243,6 +243,11 @@ class Lead
         return $this->crmLeadId;
     }
 
+    public function createdAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
     public function name(): string
     {
         return $this->name;

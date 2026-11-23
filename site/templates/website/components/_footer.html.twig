@@ -15,11 +15,7 @@
             <div class="flex flex-col items-start gap-3">
                 <h2 class="font-display font-extrabold type-t6 text-fg">Связаться</h2>
                 {% for contact in contacts %}
-                    {% if contact.href is defined %}
-                        <a class="type-t6 text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ contact.href }}"{% if contact.external|default(false) %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ contact.value }}</a>
-                    {% else %}
-                        <span class="type-t6 text-fg-muted">{{ contact.value }} (демо)</span>
-                    {% endif %}
+                    <a class="type-t6 text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ contact.href }}"{% if contact.external|default(false) %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ contact.value }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -29,11 +25,7 @@
                 <div class="hidden flex-col gap-2 md:flex">
                     <h2 class="mb-2 font-display font-extrabold type-t6 text-fg">{{ column.title }}</h2>
                     {% for item in column.items %}
-                        {% if item.href is defined %}
-                            <a class="type-t6 font-medium text-fg-muted no-underline hover:text-fg focus-visible:shadow-focus" href="{{ item.href }}"{% if item.href == app.request.pathInfo %} aria-current="page"{% endif %}>{{ item.label }}</a>
-                        {% else %}
-                            <span class="type-t6 font-medium text-fg-muted" title="Демо: страница пока не создана">{{ item.label }} <small class="type-t7">(демо)</small></span>
-                        {% endif %}
+                        <a class="type-t6 font-medium text-fg-muted no-underline hover:text-fg focus-visible:shadow-focus" href="{{ item.href }}"{% if item.href == app.request.pathInfo %} aria-current="page"{% endif %}>{{ item.label }}</a>
                     {% endfor %}
                 </div>
                 <details class="border-b border-border-subtle md:hidden">
@@ -42,11 +34,7 @@
                     </summary>
                     <div class="flex flex-col gap-3 pb-6">
                         {% for item in column.items %}
-                            {% if item.href is defined %}
-                                <a class="type-t6 font-medium text-fg-muted no-underline hover:text-fg focus-visible:shadow-focus" href="{{ item.href }}"{% if item.href == app.request.pathInfo %} aria-current="page"{% endif %}>{{ item.label }}</a>
-                            {% else %}
-                                <span class="type-t6 font-medium text-fg-muted" title="Демо: страница пока не создана">{{ item.label }} <small class="type-t7">(демо)</small></span>
-                            {% endif %}
+                            <a class="type-t6 font-medium text-fg-muted no-underline hover:text-fg focus-visible:shadow-focus" href="{{ item.href }}"{% if item.href == app.request.pathInfo %} aria-current="page"{% endif %}>{{ item.label }}</a>
                         {% endfor %}
                     </div>
                 </details>
@@ -56,10 +44,11 @@
         <div class="flex flex-col gap-4 border-t border-border-subtle pt-8 type-t7 font-medium text-fg-muted">
             <nav class="flex flex-wrap gap-x-4 gap-y-3" aria-label="Документы и информация">
                 {% for document in documents %}
-                    {% if document.href is defined %}
-                        <a class="text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ document.href }}">{{ document.label }}</a>
+                    {% if document.action|default(null) == 'cookie-settings' %}
+                        {# Снова открывает уведомление о cookie: выбор можно изменить в любой момент (navigation.js). #}
+                        <button class="cursor-pointer text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" type="button" data-vf-cookie-settings aria-controls="cookieNotice">{{ document.label }}</button>
                     {% else %}
-                        <span title="Демо: документ пока не опубликован">{{ document.label }} (демо)</span>
+                        <a class="text-fg-secondary underline-offset-4 hover:text-fg hover:underline focus-visible:shadow-focus" href="{{ document.href }}">{{ document.label }}</a>
                     {% endif %}
                 {% endfor %}
             </nav>

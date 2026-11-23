@@ -89,12 +89,17 @@ final class WebsiteSeoTest extends WebTestCase
             $urls[] = (string) $url->loc;
         }
         self::assertContains('https://vashfindir.ru/', $urls);
-        foreach (['/privacy', '/offer', '/consent'] as $path) {
+        foreach (['/privacy', '/consent'] as $path) {
             $client->request('GET', $path);
             self::assertResponseIsSuccessful();
             self::assertSelectorExists('meta[name="robots"][content="noindex, follow"]');
             self::assertNotContains('https://vashfindir.ru'.$path, $urls);
         }
+
+        // Заглушки оферты нет: старый адрес временно ведёт на услуги и не попадает в sitemap.
+        $client->request('GET', '/offer');
+        self::assertResponseRedirects('/services', 302);
+        self::assertNotContains('https://vashfindir.ru/offer', $urls);
     }
 
     public function testSeoStaticFilesExistAndAreConsistent(): void
