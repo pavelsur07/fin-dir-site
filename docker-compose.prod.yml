@@ -104,9 +104,9 @@ services:
     profiles:
       - cli
     container_name: vashfindir_site_php_cli
-    image: ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site-php-cli:${IMAGE_TAG:-latest}
+    image: &site_php_cli_image ghcr.io/${GHCR_OWNER:-pavelsur07}/vashfindir-site-php-cli:${IMAGE_TAG:-latest}
     working_dir: /app
-    environment:
+    environment: &site_php_cli_env
       APP_ENV: prod
       APP_DEBUG: "0"
       APP_SECRET: ${VF_SITE_APP_SECRET:?VF_SITE_APP_SECRET is required}
@@ -121,6 +121,48 @@ services:
     networks:
       - internal
     command: ["sh"]
+
+  site-scheduler:
+    profiles:
+      - scheduler
+    container_name: vashfindir_site_scheduler
+    image: *site_php_cli_image
+    pull_policy: never
+    restart: unless-stopped
+    # crond требуется root внутри контейнера. Symfony запускается от app.
+    user: root
+    environment:
+      <<: *site_php_cli_env
+      TZ: Europe/Moscow
+      SITE_RELEASE_TAG: ${IMAGE_TAG:-}
+    networks:
+      - internal
+    tmpfs:
+      - /run/vashfindir-lead-purge
+    configs:
+      - source: lead_purge_crontab
+        target: /etc/crontabs/root
+      - source: lead_purge_script
+        target: /etc/vashfindir/lead-purge.sh
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        if ! printf '%s\n' "$$SITE_RELEASE_TAG" | grep -Eq '^sha-[0-9a-f]{40}$$'; then
+          echo 'site-scheduler requires IMAGE_TAG=sha-<commit>' >&2
+          exit 1
+        fi
+        su -s /bin/sh -c 'php bin/console help app:lead:purge-expired --no-interaction --no-ansi' app >/dev/null
+        echo "site-scheduler release=$$SITE_RELEASE_TAG schedule=03:00 Europe/Moscow"
+        exec crond -f -d 8 -c /etc/crontabs
+    logging:
+      driver: journald
+    healthcheck:
+      test: ["CMD-SHELL", "test \"$$(cat /proc/1/comm)\" = crond"]
+      interval: 5s
+      timeout: 3s
+      retries: 6
+      start_period: 15s
 
   site-postgres:
     container_name: vashfindir_site_postgres
@@ -149,6 +191,37 @@ volumes:
   postgres_data:
   # Загруженные обложки статей. Бэкапить вместе с базой: в базе только имена файлов.
   site_uploads:
+
+configs:
+  lead_purge_crontab:
+    content: |
+      0 3 * * * /bin/sh /etc/vashfindir/lead-purge.sh
+  lead_purge_script:
+    content: |
+      set -eu
+      state=/run/vashfindir-lead-purge
+      exec 9>"$$state/lock"
+
+      if [ "$${1:-}" = --pause ]; then
+        # Сначала дождаться текущей очистки, затем запретить новые запуски до остановки.
+        flock 9
+        touch "$$state/paused"
+        exit 0
+      fi
+
+      # Вывод docker exec тоже должен остаться в журнале контейнера.
+      exec >/proc/1/fd/1 2>/proc/1/fd/2
+      if ! flock -n 9 || [ -e "$$state/paused" ]; then
+        echo 'app:lead:purge-expired skipped: busy or paused (exit=75)' >&2
+        exit 75
+      fi
+
+      cd /app
+      echo "app:lead:purge-expired start release=$$SITE_RELEASE_TAG"
+      status=0
+      su -s /bin/sh -c 'exec php bin/console app:lead:purge-expired --no-interaction --no-ansi' app || status=$$?
+      printf 'app:lead:purge-expired exit=%s\n' "$$status"
+      exit "$$status"
 
 networks:
   web:

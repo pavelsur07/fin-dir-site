@@ -264,11 +264,18 @@ php-deployed-check:
 	$(PROD_DC) run --rm -T site-php-cli php < scripts/check-php-runtime.php
 	$(PROD_DC) run --rm -T site-php-cli php < scripts/check-documentation-mcp.php
 
+# Reuse the deployed scheduler and its lock, environment and journal.
+.PHONY: site-lead-purge-production
+site-lead-purge-production:
+	docker exec vashfindir_site_scheduler /bin/sh /etc/vashfindir/lead-purge.sh
+
 # Emergency use with compatible checkout and exported production environment.
 # Both recorded image digests required. May briefly interrupt PHP requests.
 export PHP_ROLLBACK_FPM_IMAGE PHP_ROLLBACK_CLI_IMAGE
 ROLLBACK_DC = $(PROD_DC) -f docker-compose.php-rollback.yml
 php-production-rollback:
+	@set -eu; scheduler=$$(docker ps -q --filter 'name=^/vashfindir_site_scheduler$$'); \
+	if [ -n "$$scheduler" ]; then echo 'Pause and stop the lead purge scheduler before rollback (see README).' >&2; exit 1; fi
 	@printf '%s\n' "$(PHP_ROLLBACK_FPM_IMAGE)" | grep -Eq '^ghcr[.]io/[^/]+/vashfindir-site-php-fpm@sha256:[0-9a-f]{64}$$' || { echo 'Recorded FPM image@sha256 digest is required' >&2; exit 1; }
 	@printf '%s\n' "$(PHP_ROLLBACK_CLI_IMAGE)" | grep -Eq '^ghcr[.]io/[^/]+/vashfindir-site-php-cli@sha256:[0-9a-f]{64}$$' || { echo 'Recorded CLI image@sha256 digest is required' >&2; exit 1; }
 	$(ROLLBACK_DC) pull site-php-fpm site-php-cli

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Lead\Controller\Admin;
 
+use App\Lead\Exception\LeadExportInProgress;
 use App\Lead\Exception\LeadWasModified;
 use App\Lead\Service\LeadCrmExporter;
 use App\Lead\Service\LeadEraser;
 use App\Lead\Service\LeadNoteAdder;
 use App\Lead\Service\LeadNotificationSender;
 use App\Lead\Service\LeadStatusUpdater;
+use App\Lead\ValueObject\LeadErasureReason;
 use App\Lead\ValueObject\LeadStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,8 +93,25 @@ final class LeadActionController extends AbstractController
     public function delete(int $id, Request $request, LeadEraser $eraser): Response
     {
         $this->guard($request);
-        $eraser->erase($id);
+        // Основание пишется в журнал уничтожения; истечение срока ставит только команда.
+        $reason = LeadErasureReason::tryFrom($request->getPayload()->getString('reason'));
+        if (null === $reason || !\in_array($reason, LeadErasureReason::manual(), true)) {
+            throw new BadRequestHttpException('Unknown erasure reason.');
+        }
+
+        try {
+            $erasure = $eraser->erase($id, $reason);
+        } catch (LeadExportInProgress) {
+            // Ожидаемая ситуация: обращение в эту секунду уходит в Битрикс24.
+            $this->addFlash('error', 'Обращение сейчас передаётся в Битрикс24. Удалите его через минуту.');
+
+            return $this->redirectToRoute('admin_lead_show', ['id' => $id]);
+        }
+
         $this->addFlash('success', \sprintf('Обращение №%d удалено вместе с заметками.', $id));
+        if (null !== $erasure->crmLeadId()) {
+            $this->addFlash('error', \sprintf('Удалите копию в Битрикс24 вручную: лид №%d.', $erasure->crmLeadId()));
+        }
 
         return $this->back($request, null);
     }

@@ -135,7 +135,7 @@ jobs:
                       # Имя проекта закреплено явно. compose v1 и v2 по-разному
                       # выводят его из имени каталога, и расхождение развело бы
                       # деплой с уже работающими контейнерами (project=vashfindir).
-                      COMPOSE=("${COMPOSE_CMD[@]}" -p vashfindir -f "${COMPOSE_FILE}")
+                      COMPOSE=("${COMPOSE_CMD[@]}" -p vashfindir -f "${COMPOSE_FILE}" --profile scheduler)
                       
                       export PHP_CHECK_COMPOSE="${COMPOSE_CMD[*]}"
 
@@ -144,6 +144,23 @@ jobs:
                       
                       echo "==> pull Symfony images"
                       "${COMPOSE[@]}" pull site-php-fpm site-php-cli
+
+                      echo "==> pause lead purge before migrations"
+                      scheduler="$("${COMPOSE[@]}" ps -q site-scheduler)"
+                      if [ -n "$scheduler" ]; then
+                          if ! docker exec "$scheduler" /bin/sh /etc/vashfindir/lead-purge.sh --pause; then
+                              case "$(docker inspect --format '{{.State.Status}}' "$scheduler")" in
+                                  restarting|exited|dead)
+                                      echo "Stopping a failed lead purge scheduler"
+                                      ;;
+                                  *)
+                                      echo "Cannot pause the running lead purge scheduler" >&2
+                                      exit 1
+                                      ;;
+                              esac
+                          fi
+                          "${COMPOSE[@]}" stop site-scheduler
+                      fi
 
                       # Ниже php-fpm поднимается с --no-deps, а он игнорирует
                       # depends_on -- поэтому базу поднимаем явно и ждём healthcheck.
@@ -227,3 +244,18 @@ jobs:
 
                       echo "==> public HTTP check"
                       curl --fail --silent --show-error --retry 10 --retry-all-errors --retry-delay 3 --head https://vashfindir.ru/
+
+                      echo "==> start lead purge scheduler for ${IMAGE_TAG}"
+                      expected_fpm="ghcr.io/${GHCR_OWNER}/vashfindir-site-php-fpm:${IMAGE_TAG}"
+                      active_fpm_ids="$(docker ps -q "${FPM_FILTER[@]}")"
+                      if [ "$(wc -w <<< "$active_fpm_ids")" -ne "$FPM_REPLICAS" ]; then
+                          echo "Cannot start lead purge scheduler: expected ${FPM_REPLICAS} running FPM replicas" >&2
+                          exit 1
+                      fi
+                      for active_fpm in $active_fpm_ids; do
+                          if [ "$(docker inspect --format '{{.Config.Image}}' "$active_fpm")" != "$expected_fpm" ]; then
+                              echo "Cannot start lead purge scheduler: FPM release differs from ${IMAGE_TAG}" >&2
+                              exit 1
+                          fi
+                      done
+                      "${COMPOSE[@]}" up -d --no-deps --wait --wait-timeout 90 site-scheduler

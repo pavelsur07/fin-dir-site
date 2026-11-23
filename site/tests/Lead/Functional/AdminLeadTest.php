@@ -10,6 +10,7 @@ use App\Lead\ValueObject\LeadStatus;
 use App\Tests\Lead\Builder\LeadBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
@@ -179,11 +180,49 @@ final class AdminLeadTest extends WebTestCase
         $this->logIn();
 
         $this->client->request('GET', '/admin/leads/'.$id);
-        $this->client->submitForm('Удалить обращение');
+        $this->client->submitForm('Удалить обращение', ['reason' => 'subject_request']);
 
         self::assertResponseRedirects('/admin/leads');
         self::assertNull($this->find($id));
         self::assertSame(0, (int) self::getContainer()->get(EntityManagerInterface::class)->getConnection()->fetchOne('SELECT COUNT(*) FROM lead_note'));
+        // Журнал уничтожения: номер, основание и даты -- без имени, контакта и текста заявки.
+        self::assertSame(['subject_request'], $this->erasureReasons($id));
+        $columns = array_map(static fn ($column): string => $column->getName(), self::getContainer()->get(EntityManagerInterface::class)->getConnection()->createSchemaManager()->listTableColumns('lead_erasure'));
+        sort($columns);
+        self::assertSame(['crm_lead_id', 'erased_at', 'id', 'lead_created_at', 'lead_id', 'reason'], $columns);
+    }
+
+    /** Основание обязательно; «истёк срок» ставит только команда, а не администратор. */
+    #[TestWith([''])]
+    #[TestWith(['retention_expired'])]
+    #[TestWith(['unknown'])]
+    public function testDeleteRequiresManualErasureReason(string $reason): void
+    {
+        [$id] = $this->persist(LeadBuilder::aLead()->build());
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/admin/leads/'.$id);
+        $token = $crawler->filter('input[name="_token"]')->attr('value');
+
+        $this->client->request('POST', '/admin/leads/'.$id.'/delete', ['_token' => $token, 'reason' => $reason]);
+
+        self::assertResponseStatusCodeSame(400);
+        self::assertNotNull($this->find($id));
+        self::assertSame([], $this->erasureReasons($id));
+    }
+
+    public function testDeleteOfLeadSentToCrmAsksToDeleteCrmCopy(): void
+    {
+        $lead = LeadBuilder::aLead()->build();
+        $lead->markCrmExported(4217, new \DateTimeImmutable('2026-09-01 10:05'));
+        [$id] = $this->persist($lead);
+        $this->logIn();
+
+        $this->client->request('GET', '/admin/leads/'.$id);
+        $this->client->submitForm('Удалить обращение', ['reason' => 'consent_withdrawn']);
+        $this->client->followRedirect();
+
+        self::assertSelectorTextContains('[role="alert"]', 'лид №4217');
+        self::assertSame(['consent_withdrawn'], $this->erasureReasons($id));
     }
 
     public function testResendWithDisabledTelegramExplainsWhy(): void
@@ -215,7 +254,7 @@ final class AdminLeadTest extends WebTestCase
         $menu = $cell->filter('details > #lead-actions-'.$id);
         // Текущий статус «Новое» не предлагается; уведомление скрыто -- Telegram в тестах выключен.
         self::assertSame(
-            ['Открыть', 'Статус: В работе', 'Статус: Квалифицировано', 'Статус: Спам', 'Статус: Закрыто', 'Удалить'],
+            ['Открыть', 'Статус: В работе', 'Статус: Квалифицировано', 'Статус: Спам', 'Статус: Закрыто', 'Удалить как спам или тест'],
             $menu->filter('a, button')->each(static fn ($node) => trim($node->text())),
         );
         self::assertSame('/admin/leads/'.$id, $menu->filter('a')->attr('href'));
@@ -323,10 +362,11 @@ final class AdminLeadTest extends WebTestCase
         $this->logIn();
 
         $this->client->request('GET', '/admin/leads?q=%D0%98%D0%B2%D0%B0%D0%BD');
-        $this->client->submitForm('Удалить');
+        $this->client->submitForm('Удалить как спам или тест');
 
         self::assertResponseRedirects('/admin/leads?q=%D0%98%D0%B2%D0%B0%D0%BD');
         self::assertNull($this->find($id));
+        self::assertSame(['spam_or_test'], $this->erasureReasons($id));
     }
 
     public function testResendFromListReturnsToSamePageWithReason(): void
@@ -374,7 +414,7 @@ final class AdminLeadTest extends WebTestCase
         $crawler = $this->client->request('GET', '/admin/leads/'.$id);
         $token = $crawler->filter('input[name="_token"]')->attr('value');
 
-        $this->client->request('POST', '/admin/leads/'.$id.'/delete', ['_token' => $token, 'back' => '//evil.example/admin/leads']);
+        $this->client->request('POST', '/admin/leads/'.$id.'/delete', ['_token' => $token, 'reason' => 'spam_or_test', 'back' => '//evil.example/admin/leads']);
 
         self::assertResponseRedirects('/admin/leads');
     }
@@ -385,6 +425,17 @@ final class AdminLeadTest extends WebTestCase
         $this->client->request('GET', '/admin/leads/999999');
 
         self::assertResponseStatusCodeSame(404);
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function erasureReasons(int $leadId): array
+    {
+        /** @var list<string> $reasons */
+        $reasons = self::getContainer()->get(EntityManagerInterface::class)->getConnection()->fetchFirstColumn('SELECT reason FROM lead_erasure WHERE lead_id = ?', [$leadId]);
+
+        return $reasons;
     }
 
     private function logIn(): void

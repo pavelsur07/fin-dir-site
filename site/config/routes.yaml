@@ -9,6 +9,17 @@ gazeta_post_1_legacy:
     permanent: true
   methods: [GET, HEAD]
 
+# Текста оферты нет: услуги оказываются по двустороннему договору, заглушку не публикуем
+# (LEGAL_RULES.md, раздел 9). Адрес мог попасть в закладки -- временно ведёт на услуги,
+# пока не появится оферта сервиса.
+offer:
+  path: /offer
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    route: app_services_index
+    permanent: false
+  methods: [GET, HEAD]
+
 controllers:
   resource:
     path: ../src/Controller/

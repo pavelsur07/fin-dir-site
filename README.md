@@ -165,6 +165,59 @@ Reverse-proxy хоста вынесен в `infra/traefik/` — см. README т�
 `make site-database-backup-check` проверяет dump и настоящее восстановление
 на синтетической БД в одноразовом контейнере без сети, не обращаясь к production.
 
+### Ежедневная очистка просроченных заявок
+
+`site-scheduler` в `docker-compose.prod.yml` запускает
+`app:lead:purge-expired` каждый день в 03:00 по Москве. Деплой ждёт завершения
+текущей очистки перед миграциями и запускает планировщик из CLI-образа нового
+релиза после проверок сайта. Профиль Compose `scheduler` активируется при
+выкладке. Docker возобновляет расписание после перезагрузки.
+Установка таймера на хосте не требуется. Если хост недоступен в 03:00,
+следующий автоматический запуск произойдёт в 03:00 следующего дня.
+
+На сервере проверьте состояние и журнал планировщика.
+
+```bash
+docker inspect --format '{{.State.Status}} {{.State.Health.Status}} {{.Config.Image}}' vashfindir_site_scheduler
+docker logs --tail 50 vashfindir_site_scheduler
+sudo journalctl CONTAINER_NAME=vashfindir_site_scheduler --since '2 days ago' --no-pager
+```
+
+Для просмотра истории после пересоздания контейнера используйте системный журнал.
+[Документация Docker о journald](https://docs.docker.com/engine/logging/drivers/journald/)
+
+В журнале ищите последний `app:lead:purge-expired start`, строку с количеством
+удалённых заявок и `app:lead:purge-expired exit=0`. Ненулевой код или отсутствие
+записи о завершении требуют проверки журнала. Если команда вывела номера лидов
+Битрикс24, удалите их в CRM вручную. Журнал использует действующую политику
+хранения journald на хосте.
+
+Ручной запуск удаляет просроченные заявки. Выполняйте его на сервере из актуального
+checkout с доступом к Docker. Он использует тот же контейнер и ту же блокировку,
+что и cron. Вывод остаётся в журнале.
+
+```bash
+make site-lead-purge-production
+```
+
+Если Make отсутствует на сервере, получите команду через
+`make --no-print-directory --dry-run site-lead-purge-production` на машине с Make
+и выполните её на сервере. При активной очистке или паузе перед деплоем новый
+запуск завершится с кодом 75, который будет виден в журнале.
+
+Если деплой остановился после паузы планировщика, проверьте причину и повторите
+выкладку. Перед ручным откатом, если планировщик работает, дождитесь текущего
+запуска и остановите контейнер этими командами.
+
+```bash
+docker exec vashfindir_site_scheduler /bin/sh /etc/vashfindir/lead-purge.sh --pause &&
+  docker stop vashfindir_site_scheduler
+```
+
+Если `--pause` завершился ошибкой и `docker inspect` показывает состояние
+`restarting`, остановите перезапускающийся контейнер через `docker stop`.
+Штатный деплой снова включит расписание после проверок совместимого релиза.
+
 ### Выкатка без простоя
 
 Замеряно на проде: 264 запроса подряд во время деплоя, все 200.
@@ -209,6 +262,7 @@ project `vf-php-upgrade-smoke`, временный PostgreSQL и порт `127.0
 установка Make на production-сервер не требуется.
 Команда требует обычные production environment variables и IMAGE_TAG релиза.
 Workflow сохраняет предыдущие image references/digests в логе перед обновлением.
+Перед ручным откатом [приостановите и остановите планировщик](#ежедневная-очистка-просроченных-заявок).
 Перед аварийным откатом проверить наличие обоих images в GHCR и совместимость
 checkout (включая public assets/config). Экспортировать production variables и
 `PHP_ROLLBACK_FPM_IMAGE=ghcr.io/<owner>/vashfindir-site-php-fpm@sha256:<digest>`,

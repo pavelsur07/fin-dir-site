@@ -25,7 +25,7 @@ final class WebsiteFoundationTest extends WebTestCase
     {
         $client = static::createClient();
 
-        foreach (['/', '/about', '/services', '/cases', '/partners', '/offer', '/privacy', '/consent', '/gazeta'] as $path) {
+        foreach (['/', '/about', '/services', '/cases', '/partners', '/privacy', '/consent', '/gazeta'] as $path) {
             $client->request('GET', $path);
 
             self::assertResponseIsSuccessful($path);
