@@ -89,7 +89,10 @@ final class WebsiteFoundationTest extends WebTestCase
         $heroFacts = self::getContainer()->get(Environment::class)->getGlobals()['vf_trust_facts']['hero'];
         $clientCount = $heroFacts[0]['value'];
         self::assertSelectorTextSame($hero.' a[href="#lead-form"][data-vf-lead-modal-open]', 'Записаться на диагностику');
-        self::assertSelectorTextContains($hero, 'Не найдём точки роста, вернём оплату первого месяца');
+        // Вариант A (docs/plan/Stage_Hero_Variant_A.md): без надзаголовка и строки гарантии, подзаголовок с «cashflow».
+        self::assertSelectorTextNotContains($hero, 'Не найдём точки роста, вернём оплату первого месяца');
+        self::assertSelectorTextNotContains($hero, 'Для бизнеса с оборотом');
+        self::assertSelectorTextContains($hero.' p', 'Финдир и аналитик планируют ваш cashflow, считают маржу и ищут точки роста. Все цифры в онлайн сервисе.');
         self::assertSelectorTextContains($hero, $clientCount);
         self::assertSelectorTextContains($hero, $heroFacts[0]['note']);
         self::assertSelectorTextContains($hero, '11 лет');
@@ -98,6 +101,27 @@ final class WebsiteFoundationTest extends WebTestCase
         foreach (['23,5%', '[N]', '[период]'] as $unpublishedText) {
             self::assertStringNotContainsString($unpublishedText, $crawler->filter('main')->text());
         }
+    }
+
+    public function testHomeTrustStripHasThreeCards(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/');
+
+        self::assertFalse($client->getResponse()->headers->has('Set-Cookie'));
+        $strip = 'main [data-vf-section="trust-strip"]';
+        self::assertSelectorCount(3, $strip.' [data-vf-trust-card]');
+        self::assertSelectorTextSame($strip.' [data-vf-trust-card="industries"] h2', 'С кем работаем');
+        self::assertSelectorCount(9, $strip.' ul[aria-label="Отрасли"] > li');
+        self::assertSelectorTextSame($strip.' ul[aria-label="Отрасли"] > li:last-child', 'Строительство');
+        // «AI‑» -- только для скринридера, визуально заголовок начинается с «Решения».
+        self::assertSelectorTextSame($strip.' [data-vf-trust-card="ai"] h2', 'AI‑Решения для финансового управления');
+        self::assertSelectorTextSame($strip.' [data-vf-trust-card="ai"] h2 .sr-only', 'AI‑');
+        self::assertSelectorTextSame($strip.' [data-vf-trust-card="ai"] p', 'Быстрее собираем данные, находим отклонения');
+        self::assertSelectorTextSame($strip.' [data-vf-trust-card="team"] h2', 'Ваша команда');
+        self::assertSelectorCount(4, $strip.' [data-vf-trust-card="team"] img[alt=""]');
+        self::assertSelectorTextSame($strip.' [data-vf-trust-card="team"] a[href="#home-team-title"]', 'Кто будет с вами работать →');
+        self::assertSelectorExists('#home-team-title');
     }
 
     public function testHeroUsesOnlyACompleteSourceForAConditionalFact(): void
