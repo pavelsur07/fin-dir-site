@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Hero — финдир и сервис</title><script src="./support.js"></script></head>
+<body><x-dc><helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0B1020}a:hover{color:{{accent}}}
+.vf-hdr-compact,.vf-seg{display:none}
+@media (max-width:1023px){
+.vf-hdr-full{display:none!important}
+.vf-hdr-compact{display:flex!important}
+.vf-tabcol{display:none!important}
+.vf-seg{display:grid!important}
+.vf-svc-card{height:auto!important;min-height:860px}
+.vf-svc-text{max-width:560px!important}
+.vf-svc-person{position:static!important;display:block;margin:-8px 32px 0 auto;height:340px!important;width:auto!important}
+.vf-svc-dash{position:static!important;display:block;margin:-24px -48px -16px auto;width:440px!important;height:auto!important}
+.vf-adv-card{min-height:812px!important}
+.vf-adv-text{max-width:none!important}
+.vf-adv-screen{position:static!important;display:block;margin:0 -96px -60px auto;width:480px!important;height:auto!important}
+.vf-adv-person{position:static!important;display:block;margin:0 -8px -44px auto;height:320px!important;width:auto!important}
+.vf-trust-item{padding:4px 20px!important}
+.vf-trust-item:first-child{padding-left:0!important}
+.vf-trust-item strong{font-size:22px!important}
+}
+
+.rt-step:last-child .rt-sign{background:transparent!important}
+@media (max-width:1023px){
+.rt{grid-template-columns:1fr!important;gap:28px!important}
+.rt-road{top:36px!important;bottom:150px!important;left:31px!important;right:auto!important;width:2px!important;height:auto!important}
+.rt-road2{top:auto!important;bottom:60px!important;height:90px!important;left:31px!important;right:auto!important;border-top:none!important;border-left:2px dashed #D4D5DA}
+.rt-step{display:grid!important;grid-template-columns:64px 1fr!important;grid-template-rows:auto auto!important;column-gap:16px!important;row-gap:6px!important;text-align:left!important;align-items:start!important;padding:0!important}
+.rt-sign{grid-column:1;grid-row:1/span 2}
+.rt-top{grid-column:2;grid-row:1;height:auto!important;padding-top:4px}
+.rt-text{grid-column:2;grid-row:2;align-items:flex-start!important}
+}
+@media (max-width:1023px){.vf-faq-side{position:static!important}}
+@media (max-width:1023px){.vf-rep{grid-template-columns:1fr!important}}
+@media (max-width:640px){.vf-rep-left{grid-template-columns:1fr!important}}
+</style><style>
+.ho-tipbox{display:none}
+.vf-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ho-tip:hover .ho-tipbox,.ho-tip:focus .ho-tipbox,.ho-tip:focus-within .ho-tipbox{display:block}
+.ho-tip:focus-visible{outline:2px solid #1A337F;outline-offset:3px;border-radius:4px}
+@media (max-width:1023px){
+.ho-card{grid-template-columns:minmax(0,1fr) 280px!important}
+.ho-text{padding:44px 24px 36px 32px!important}
+.ho-h1{font-size:27px!important;line-height:1.18!important}
+.ho-sub{font-size:17px!important}
+.ho-stats{margin-top:32px!important}
+.ho-stat{padding:0 12px!important}
+.ho-stat:first-child{padding-left:0!important}
+.ho-stat strong{font-size:24px!important}
+.ho-stat span{font-size:12px!important}
+.ho-bands>div:first-child{right:230px!important;width:150px!important}
+.ho-bands>div:last-child{right:-160px!important;width:300px!important}
+.ho-visual{overflow:hidden}
+.ho-photo{height:460px!important}
+.ho-badge{left:12px!important;bottom:16px!important;padding:12px 14px!important}
+.ho-badge strong{font-size:15px!important}
+.ho-badge span{font-size:13px!important}
+.ho-svc{display:none!important}
+.tr-grid{grid-template-columns:1fr 1fr!important}
+.tr-ind{grid-column:1/-1}
+}
+@media (max-width:640px){
+.ho-brand img{height:28px!important}
+header>div{flex-wrap:nowrap!important;padding:12px 16px!important;gap:12px!important}
+.vf-hdr-compact a[href^="tel:"]{display:none!important}
+main#top{padding:16px 16px 32px!important}
+.tr-grid{grid-template-columns:1fr!important;gap:12px!important}
+.tr-card{padding:20px!important}
+.ho-card{display:flex!important;flex-direction:column;border-radius:20px!important}
+.ho-bands{display:none}
+.ho-text{display:contents!important}
+.ho-text>*{margin-left:18px!important;margin-right:18px!important}
+.ho-eyebrow{margin-top:24px!important;margin-bottom:10px!important;font-size:13px!important}
+.ho-h1{font-size:24px!important;line-height:1.2!important;max-width:none!important;margin-top:24px!important}
+.ho-sub{font-size:16px!important;margin-top:12px!important}
+.ho-cta{margin-top:20px!important;align-self:stretch}
+.ho-cta a{width:100%;min-height:52px!important;font-size:16px!important;padding:0 16px!important}
+.ho-cta p{font-size:13px!important}
+.ho-guarantee{margin-top:14px!important;font-size:14px!important}
+.ho-visual{order:2;margin-top:24px;min-height:320px!important;height:320px;overflow:hidden}
+.ho-vband{display:block!important}
+.ho-photo{height:310px!important;transform:translateX(-18%)!important}
+.ho-badge{bottom:16px!important;left:16px!important;padding:10px 12px!important}
+.ho-svc{order:3;display:flex!important;position:static!important;width:auto!important;margin:16px 18px 0!important}
+.ho-stats{order:4;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));align-self:stretch;margin:20px 18px 24px!important}
+.ho-stat{padding:0 10px!important;border-left:1px solid #E3E4E8!important}
+.ho-stat:first-child{padding-left:0!important;border-left:0!important}
+.ho-stat strong{font-size:20px!important}
+.ho-stat span{font-size:12px!important}
+.ho-tipbox{max-width:200px!important;left:auto!important;right:0!important}
+}
+</style><style>
+.b2-btn{transition:background-color .15s,box-shadow .15s,transform .15s}
+.b2-btn:hover{background:#14275F!important;box-shadow:0 6px 16px rgba(20,39,95,0.28);transform:translateY(-1px)}
+.b2-btn:active{transform:none;box-shadow:none}
+.b2-btn:focus-visible{outline:2px solid #1A337F;outline-offset:3px}
+.b2-link:hover{text-decoration:underline;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){.b2-btn{transition:none!important;transform:none!important}}
+</style></helmet>
+<div style="width: 1440px; min-height: 1050px; background: #FFFFFF; color: #0B1020; font-family: Inter, 'Helvetica Neue', Arial, sans-serif">
+<header style="border-bottom: 1px solid #E3E4E8">
+<div style="max-width: 1280px; margin: 0 auto; padding: 20px 5.5%; box-sizing: content-box; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 40px">
+<div class="ho-brand" style="display: flex; align-items: center; gap: 14px; min-width: 0"><a href="#top" aria-label="Ваш Финдир — на главную" style="min-height: 44px; display: flex; align-items: center"><img src="/_blob/b00e6e342dc6cc08d0220620415c5b01" alt="Ваш Финдир" style="height: 36px; width: auto; display: block"></a></div>
+<div class="vf-hdr-full" style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 56px">
+<nav aria-label="Основная навигация" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 40px">
+<a href="#services" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Услуги</a>
+<a href="#cases" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Кейсы</a>
+<a href="#paper" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Газета</a>
+<a href="#partners" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">Партнёрам</a>
+<a href="#about" style="font-size: 15px; font-weight: 500; text-decoration: none; min-height: 44px; display: flex; align-items: center">О Компании</a>
+</nav>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+<a href="tel:+79991234567" style="font-size: 16px; font-weight: 700; color: #0B1020; text-decoration: none; white-space: nowrap">+7 (999) 123-45-67</a>
+<span style="font-size: 12px; color: #475569">Пн–Пт: 09:00–18:00</span>
+</div>
+</div>
+<div class="vf-hdr-compact" style="align-items: center; gap: 8px">
+<a href="tel:+79991234567" aria-label="Позвонить: +7 (999) 123-45-67" style="width: 44px; height: 44px; border-radius: 10px; background: #F5F5F7; color: #0B1020; display: flex; align-items: center; justify-content: center"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h3l1.5 4-2 1.2a9 9 0 0 0 4.8 4.8L13 11l4 1.5v3A1.5 1.5 0 0 1 15.5 17 12.5 12.5 0 0 1 3 4.5 1.5 1.5 0 0 1 4.5 3z"></path></svg></a>
+<button type="button" aria-label="Открыть меню" style="width: 44px; height: 44px; border: none; border-radius: 10px; background: #F5F5F7; color: #0B1020; display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h14"></path></svg></button>
+</div>
+</div>
+</header>
+<main id="top" style="max-width: 1280px; margin: 0 auto; padding: 24px 5.5% 40px; box-sizing: content-box">
+<section aria-labelledby="hero-title" class="ho-card" style="position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1fr) 520px; grid-template-areas: 'text visual'; overflow: hidden; border-radius: 24px; border: 1px solid #E3E4E8; background: #F5F5F7">
+<div class="ho-bands" aria-hidden="true" style="position: absolute; inset: 0; z-index: -1; pointer-events: none"><div style="position: absolute; top: -10%; bottom: -10%; right: 380px; width: 260px; transform: skewX(-14deg); background: rgba(26,51,127,0.08)"></div><div style="position: absolute; top: -10%; bottom: -10%; right: -120px; width: 400px; transform: skewX(-14deg); background: rgba(26,51,127,0.12)"></div></div>
+<div class="ho-text" style="grid-area: text; min-width: 0; box-sizing: border-box; padding: 56px 32px 48px 40px; display: flex; flex-direction: column; align-items: flex-start">
+<h1 id="hero-title" class="ho-h1" style="margin: 0; max-width: 15em; font-size: clamp(30px, 3.3vw, 46px); line-height: 1.15; font-weight: 700; letter-spacing: -0.02em">Финдир на&nbsp;аутсорсинге:<br><span class="ho-h1-acc" style="color: {{accent}}">предсказуемые финансы <span style="white-space: nowrap">и рост прибыли</span></span></h1>
+<p class="ho-sub" style="margin: 16px 0 0; max-width: 520px; font-size: 18px; line-height: 1.55; font-weight: 400; color: #334155; text-wrap: pretty">Финдир и&nbsp;аналитик планируют ваш cashflow,&nbsp;считают маржу и&nbsp;ищут точки роста. Все цифры в&nbsp;онлайн сервисе.</p>
+<div class="ho-cta" style="margin-top: 32px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px">
+<a class="b2-btn" href="#contact" style="display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 30px; border-radius: 10px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none; box-sizing: border-box">Записаться на&nbsp;диагностику</a>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #475569">Бесплатная встреча, 40&nbsp;минут онлайн</p>
+</div>
+<ul class="ho-stats" style="margin: 40px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: nowrap; row-gap: 16px"><li class="ho-stat" style="display: flex; flex-direction: column; gap: 2px; padding: 0 24px; padding-left: 0"><strong style="font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; color: #0B1020; white-space: nowrap">235+</strong><span style="max-width: 20em; font-size: 14px; line-height: 1.4; color: #475569">доверили нам<br>учёт и&nbsp;финансы</span></li><li class="ho-stat" style="display: flex; flex-direction: column; gap: 2px; padding: 0 24px; border-left: 1px solid #E3E4E8"><strong style="font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; color: #0B1020; white-space: nowrap">11&nbsp;лет</strong><span style="max-width: 20em; font-size: 14px; line-height: 1.4; color: #475569">в&nbsp;финансах</span></li><li class="ho-stat" style="display: flex; flex-direction: column; gap: 2px; padding: 0 24px; border-left: 1px solid #E3E4E8"><strong style="font-size: 30px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; color: #0B1020; white-space: nowrap">23,5%</strong><span style="max-width: 20em; font-size: 14px; line-height: 1.4; color: #475569"><button type="button" class="ho-tip" aria-describedby="ho-tip-text" style="position: relative; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: help; text-decoration: underline dotted #64748B; text-underline-offset: 4px">прибыли в&nbsp;среднем<br>теряют компании<span id="ho-tip-text" role="tooltip" class="ho-tipbox" style="position: absolute; left: 0; top: calc(100% + 8px); z-index: 5; width: max-content; max-width: 240px; padding: 10px 12px; border-radius: 10px; background: #0B1020; color: #FFFFFF; font-size: 13px; line-height: 1.4; box-shadow: 0 8px 24px rgba(11,16,32,0.2)">По&nbsp;[N]&nbsp;проектам за&nbsp;[период]</span></button></span></li></ul>
+</div>
+
+<div class="ho-svc" role="img" aria-label="Пример экрана онлайн сервиса, демонстрационные данные" style="position: absolute; z-index: 3; right: 332px; top: 40px; width: 224px; box-sizing: border-box; padding: 12px 14px 14px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 12px 32px rgba(15,23,42,0.12); display: flex; flex-direction: column; gap: 10px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 12px; line-height: 1.3; font-weight: 600; color: #0B1020">Ваш Финдир<span style="display: inline-flex; align-items: center; min-height: 20px; padding: 0 8px; border-radius: 9999px; background: #E7F0EC; color: #0B6644; font-size: 11px; font-weight: 600">Онлайн</span></span>
+<span style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px"><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; line-height: 1.3; color: #475569">Кэш на&nbsp;счетах</span><span style="font-size: 16px; line-height: 1.2; font-weight: 700; color: #0B1020; white-space: nowrap">4,8&nbsp;млн&nbsp;₽</span></span><span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; line-height: 1.3; color: #475569">Маржа</span><span style="font-size: 16px; line-height: 1.2; font-weight: 700; color: #0B1020; white-space: nowrap">31,2% <span style="font-size: 11px; font-weight: 600; color: #0B6644">+2,1</span></span></span></span>
+<span style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 11px; line-height: 1.3; color: #475569">Прибыль по&nbsp;месяцам</span><span aria-hidden="true" style="display: flex; align-items: flex-end; gap: 5px; height: 40px; border-bottom: 1px solid #E3E4E8"><span style="flex: 1; height: 38%; border-radius: 3px 3px 0 0; background: #C9CDDA"></span><span style="flex: 1; height: 46%; border-radius: 3px 3px 0 0; background: #C9CDDA"></span><span style="flex: 1; height: 42%; border-radius: 3px 3px 0 0; background: #C9CDDA"></span><span style="flex: 1; height: 55%; border-radius: 3px 3px 0 0; background: #C9CDDA"></span><span style="flex: 1; height: 61%; border-radius: 3px 3px 0 0; background: #C9CDDA"></span><span style="flex: 1; height: 72%; border-radius: 3px 3px 0 0; background: {{accent}}"></span></span></span>
+</div>
+<div class="ho-visual" style="grid-area: visual; min-width: 0; min-height: 500px; position: relative">
+<div class="ho-vband" aria-hidden="true" style="display: none; position: absolute; top: -10%; bottom: -10%; left: 6%; width: 44%; transform: skewX(-14deg); background: rgba(26,51,127,0.08)"></div>
+<div class="ho-vband" aria-hidden="true" style="display: none; position: absolute; top: -10%; bottom: -10%; left: 56%; width: 70%; transform: skewX(-14deg); background: rgba(26,51,127,0.12)"></div>
+<img class="ho-photo" src="/_blob/20e06709f9a0ecc0f4710ccd51a34f6a" alt="Павел Новиков, управляющий партнёр" style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 98%; width: auto; display: block">
+<p class="ho-badge" style="position: absolute; left: -30px; bottom: 28px; margin: 0; box-sizing: border-box; padding: 14px 18px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 12px 32px rgba(15,23,42,0.12); display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 17px; line-height: 1.3; font-weight: 700; color: #0B1020">Павел Новиков</strong><span style="font-size: 14px; line-height: 1.4; color: #475569">Управляющий партнёр</span></p></div>
+</section>
+<section aria-label="Почему нам можно доверять" style="padding: 24px 0 0">
+<ul class="tr-grid" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch">
+<li class="tr-card tr-ind" style="box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E4E8"><h2 style="margin: 0; font-size: 18px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; color: #0B1020">С&nbsp;кем работаем</h2><ul aria-label="Отрасли" style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px"><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Торговля</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Услуги</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Маркетплейсы</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Реклама</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">IT</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Производство</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Транспорт</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Медицина</li><li style="display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 9999px; background: #F5F5F7; border: 1px solid #E3E4E8; font-size: 14px; line-height: 1.2; color: #334155">Строительство</li></ul></li>
+<li class="tr-card tr-ai" style="box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border-radius: 16px; position: relative; overflow: hidden; background: {{accent}}; color: #FFFFFF"><div aria-hidden="true" style="position: absolute; top: -20%; bottom: -20%; right: -14%; width: 42%; transform: skewX(-14deg); background: rgba(255,255,255,0.08)"></div><span aria-hidden="true" style="position: relative; display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 12px; border-radius: 12px; background: #FFFFFF; color: {{accent}}; font-size: 18px; line-height: 1; font-weight: 800; letter-spacing: 0.02em"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20 2v4M22 4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg>AI</span><h2 style="margin: 0; font-size: 18px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; position: relative; font-size: 20px; color: #FFFFFF"><span class="vf-sr">AI‑</span>Решения для&nbsp;финансового управления</h2><p style="position: relative; margin: 0; font-size: 15px; line-height: 1.5; color: #E3EAFE">Быстрее собираем данные, находим отклонения</p></li>
+<li class="tr-card tr-team" style="box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 24px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E3E4E8"><h2 style="margin: 0; font-size: 18px; line-height: 1.3; font-weight: 700; letter-spacing: -0.01em; color: #0B1020">Ваша команда</h2><span aria-hidden="true" style="display: flex"><img src="/_blob/ff63e819cbb241b4d0c723fdc2ab6323" alt="" style="width: 48px; height: 48px; border-radius: 9999px; object-fit: cover; object-position: 50% 0; background: #ECECEF; border: 2px solid #FFFFFF; margin-left: 0; display: block"><img src="/_blob/a13cf839273af60d99c03e20cf04beb2" alt="" style="width: 48px; height: 48px; border-radius: 9999px; object-fit: cover; object-position: 50% 0; background: #ECECEF; border: 2px solid #FFFFFF; margin-left: -10px; display: block"><img src="/_blob/62d42dbca47c30b0491cfe935292a80c" alt="" style="width: 48px; height: 48px; border-radius: 9999px; object-fit: cover; object-position: 50% 0; background: #ECECEF; border: 2px solid #FFFFFF; margin-left: -10px; display: block"><img src="/_blob/c9f4670e46ff451dacaa0ffa83007b3b" alt="" style="width: 48px; height: 48px; border-radius: 9999px; object-fit: cover; object-position: 50% 0; background: #ECECEF; border: 2px solid #FFFFFF; margin-left: -10px; display: block"></span><p style="margin: 0; font-size: 15px; line-height: 1.5; color: #475569">Финдир, налоговый консультант и&nbsp;аналитики</p><a class="b2-link" href="#team" style="margin-top: auto; display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 600; color: {{accent}}; text-decoration: none">Кто будет с&nbsp;вами работать&nbsp;→</a></li>
+</ul>
+</section>
+</main></div></x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1A337F","options":["#1A337F","#2563EB","#0B6644"]},"$preview":{"width":1440,"height":1050}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#1A337F' };
+}
+}
+</script></body></html>
