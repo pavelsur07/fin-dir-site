@@ -5,7 +5,7 @@
     lead, primary {label, href, attrs}, note, person {image, alt, photo_800 -- база файлов -800.avif/-800.webp | webp_base -- база -320/-640/-960.webp},
     badge {title (необязательно), text, screen (необязательно) -- скриншот /assets/screens/<screen>-720|1440.webp, с md}, chips [строки] (необязательно) -- метки внизу карточки, последняя выделена.
     offer_layout (необязательно) -- надзаголовок без пилюли и фото рядом с текстом с md.
-    guarantee (необязательно), service_card (необязательно), facts [{value, text, note?, requires_source?, source?}] (необязательно).
+    guarantee (необязательно), service_card (необязательно), facts [{value, text, note?, requires_source?, source?}] (необязательно); \n в text -- перенос строки.
     Пробелы, которые нельзя переносить, -- неразрывные (U+00A0).
     С md весь экран -- одна карточка; на мобильном текст над карточкой, в карточке фото и метки-пилюли.
 #}
@@ -96,15 +96,15 @@
                 <ul class="relative z-10 grid {{ facts|length > 2 ? 'grid-cols-3' : 'grid-cols-2' }} divide-x divide-border-subtle px-4 py-6 md:col-span-3 md:col-start-1 md:row-start-2 md:w-fit md:px-6 md:py-8 xl:col-span-6 xl:px-8" aria-label="Опыт в цифрах">
                     {% for fact in facts %}
                         {% set tooltip_id = hero_id ~ '-fact-source-' ~ loop.index %}
-                        <li class="flex min-w-0 flex-col items-start gap-0.5 px-3 first:pl-0 last:pr-0 md:px-5">
-                            <strong class="whitespace-nowrap type-t3-num text-accent md:type-t8">{{ fact.value }}</strong>
+                        <li class="flex min-w-0 flex-col items-start gap-0.5 px-3 first:pl-0 last:pr-0 lg:px-6">
+                            <strong class="whitespace-nowrap type-t3-num text-accent md:type-t-code lg:type-t8">{{ fact.value }}</strong>
                             {% if fact.requires_source|default(false) %}
-                                <div class="group relative type-t7 text-fg-secondary md:type-t6">
-                                    <button type="button" aria-describedby="{{ tooltip_id }}" class="cursor-help rounded-xs text-left underline decoration-dotted underline-offset-4 focus-visible:shadow-focus">{{ fact.text }}</button>
+                                <div class="group relative type-t7 text-fg-secondary lg:type-t6">
+                                    <button type="button" aria-describedby="{{ tooltip_id }}" class="cursor-help rounded-xs text-left underline decoration-dotted underline-offset-4 focus-visible:shadow-focus">{{ fact.text|nl2br }}</button>
                                     <span id="{{ tooltip_id }}" role="tooltip" class="invisible absolute right-0 top-full z-20 w-max max-w-crumb rounded-md border border-border-subtle bg-surface-raised p-3 text-fg shadow-md group-hover:visible group-focus-within:visible">{{ fact.source }}</span>
                                 </div>
                             {% else %}
-                                <span class="type-t7 text-fg-secondary md:type-t6">{{ fact.text }}</span>
+                                <span class="type-t7 text-fg-secondary lg:type-t6">{{ fact.text|nl2br }}</span>
                             {% endif %}
                             {% if fact.note|default(null) %}<span class="type-t7 text-fg-muted">{{ fact.note }}</span>{% endif %}
                         </li>

@@ -54,22 +54,20 @@
 {% block body %}
     {% include 'website/sections/_hero.html.twig' with {
         offer_layout: true,
-        label: 'Для бизнеса с оборотом от 2 млн ₽ в месяц',
         title_lines: [{text: 'Финдир на аутсорсинге:'}, {text: 'предсказуемые финансы', accent: true}, {text: 'и рост прибыли', accent: true}],
         title_nowrap: true,
         person: {image: '/assets/people/pavel-novikov.png', photo_800: '/assets/people/pavel-novikov', alt: 'Павел Новиков, управляющий партнёр'},
-        lead: 'Финдир и аналитик планируют ваш кэш, считают маржу и ищут точки роста. Все цифры в онлайн сервисе.',
+        lead: 'Финдир и аналитик планируют ваш cashflow, считают маржу и ищут точки роста. Все цифры в онлайн сервисе.',
         note: 'Бесплатная встреча, 40 минут онлайн',
         primary: {label: 'Записаться на диагностику', href: '#lead-form', attrs: {'data-vf-lead-modal-open': ''}},
-        guarantee: 'Не найдём точки роста, вернём оплату первого месяца',
         badge: {title: 'Павел Новиков', text: 'Управляющий партнёр'},
         facts: vf_trust_facts.hero,
         service_card: true,
     } only %}
     {% include 'website/sections/_trust_strip.html.twig' with {
-        facts: [],
+        cards: vf_trust_cards,
         people: vf_team.people,
-        team: {text: 'Финдир, налоговый консультант и аналитики.', link_label: 'Кто будет с вами работать →', href: '#home-team-title'},
+        team: {href: '#home-team-title'},
     } only %}
     {# Экраны сервиса -- наклонные PNG/WebP с прозрачным фоном из макета, файлы в /assets/screens/. #}
     {% set natalia = {photo: '/assets/people/nataliy-novikova-portrait.png', photo_webp: '/assets/people/nataliy-novikova-portrait', alt: 'Наталья Новикова, налоговый консультант'} %}
