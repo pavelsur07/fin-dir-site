@@ -94,7 +94,8 @@ final class WebsiteFoundationTest extends WebTestCase
         self::assertSelectorTextNotContains($hero, 'Для бизнеса с оборотом');
         self::assertSelectorTextContains($hero.' p', 'Финдир и аналитик планируют ваш cashflow, считают маржу и ищут точки роста. Все цифры в онлайн сервисе.');
         self::assertSelectorTextContains($hero, $clientCount);
-        self::assertSelectorTextContains($hero, $heroFacts[0]['note']);
+        self::assertSelectorTextNotContains($hero, 'по данным на');
+        self::assertSelectorCount(1, $hero.' ul[aria-label="Опыт в цифрах"] li:first-child br');
         self::assertSelectorTextContains($hero, '11 лет');
         self::assertSelectorExists($hero.' [role="img"][aria-label="Пример экрана онлайн сервиса, демонстрационные данные"]');
         self::assertSelectorTextNotContains('main [data-vf-section="trust-strip"]', $clientCount);

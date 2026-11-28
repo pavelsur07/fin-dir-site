@@ -23,7 +23,8 @@ twig:
           short_value: *vf_client_count
           short_text: 'компаний'
       hero:
-        - { value: *vf_client_count, text: *vf_client_text, note: *vf_client_note }
+        # Подпись в две строки по макету «Вариант A» (\n -- перенос строки); пометку о дате в первом экране не выводим.
+        - { value: *vf_client_count, text: "доверили нам\nучёт и\u00a0финансы" }
         - { value: '11 лет', text: 'в финансах' }
         # Показать только после добавления подтверждённого source.
         - { value: '23,5%', text: 'прибыли в среднем теряют компании', requires_source: true }
